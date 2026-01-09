@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Get Pixel Color</title>
+</head>
+<body>
+
+<button id="startBtn">Bắt đầu</button>
+<button onclick="clearResult()">Clear</button>
+
+<p id="result"></p>
+
+<script>
+document.getElementById("startBtn").onclick = async () => {
+  const res = await fetch("http://localhost:3000/start", {
+    method: "POST"
+  });
+  const data = await res.json();
+
+  document.getElementById("result").innerHTML =
+    `Màu tại (${data.x}, ${data.y}) là 
+     <span style="color:${data.color}">${data.color}</span>`;
+};
+
+function clearResult() {
+  document.getElementById("result").innerText = "";
+}
+</script>
+
+</body>
+</html>
