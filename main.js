@@ -1,105 +1,421 @@
+const { UI_Btn_Show_TieuDiem } = require("./src/Button_Common");
+const { UI_TieuDiem } = require("./src/UI_tieudiem");
+const { updateButton, handleGetColor_TX } = require("./src/util");
+
 const { chromium } = require("playwright");
+
+// pngjs dùng để đọc pixel từ ảnh screenshot
 const { PNG } = require("pngjs");
 
-// ==== Biến toàn cục để tái sử dụng ====
-const colorArray = [];
-const startX = 51;
-const startY = 51;
-const width = 100;
-const height = 100;
+let startX = 455;
+let startY = 326;
 
-// ==== Hàm hiển thị màu trên trang ====
-async function showColorOnPage(page, r, g, b, x, y, width, height) {
-  await page.evaluate(({ r, g, b, x, y, width, height }) => {
-    let div = document.getElementById("color-overlay");
-    if (!div) {
-      div = document.createElement("div");
-      div.id = "color-overlay";
-      div.style.position = "absolute";
-      div.style.zIndex = 9999;
-      div.style.pointerEvents = "none"; // không cản click
-      document.body.appendChild(div);
-    }
+// 1. ______________________TÌM KẾT QUẢ__________________
+let X_Ketqua = startX + 33; //488
+let Y_Ketqua = startY; //326
 
-    div.style.left = x + "px";
-    div.style.top = y + "px";
-    div.style.width = width + "px";
-    div.style.height = height + "px";
-    div.style.backgroundColor = `rgb(${r},${g},${b})`;
-    div.style.border = "2px solid red";
-    div.style.opacity = 0.5;
+// 2. ______________________Đặt Tài _____________________
+let X_DatTai = startX - 325; // 130
+let Y_DatTai = startY - 61 ;//265
 
-    // 👉 căn giữa theo (x, y)
-    div.style.transform = "translate(-50%, -50%)";
-  }, { r, g, b, x, y, width, height });
+// 3._______________________Đặt Xỉu _____________________
+let X_DatXiu = startX; //455
+let Y_DatXiu = startY - 61 ; //265
+
+// 4._______________________cược 1_____________________
+let X_cuoc1 = startX - 405; //50
+let Y_cuoc1 = startY + 49 ; //375
+
+// 5._______________________cược 10_____________________
+let X_cuoc10 = startX - 335; //120
+let Y_cuoc10 = startY + 49 ; //375
+
+// 5._______________________Nút Đặt cược_____________________
+let X_Submit = startX - 180; //275
+let Y_Submit = startY + 111 ; //437
+
+// Kích thước tiêu điểm
+const width = 2;
+const height = 2;
+
+
+
+// Màu mục tiêu (nếu trùng thì click)
+const TARGET_HEX = "#075be3";
+
+// Thời gian lặp (ms) – 7 giây
+const INTERVAL_MS = 7;
+
+
+// ================== STATE – TRẠNG THÁI ==================
+
+// Đang chạy hay không
+let isRunning = false;
+
+// Lưu interval để stop đúng
+let intervalId = null;
+
+// Biến page dùng chung toàn file
+let page;
+
+
+// ================== XỬ LÝ START ==================
+
+/**
+ * Hàm xử lý khi bấm BẮT ĐẦU
+ * - Set isRunning = true
+ * - Đổi text + màu button
+ * - Chạy kiểm tra màu lần đầu
+ * - Set interval chạy định kỳ
+ */
+async function handleStart() {
+  if (isRunning) return;
+
+  isRunning = true;
+
+  await updateButton(page,"⏹ Dừng...", "#e23a10ff");
+
+  // Chạy lần đầu ngay
+  await CheckColor_X_Y();
+
+  // Chạy lặp theo INTERVAL_MS
+  intervalId = setInterval(CheckColor_X_Y, INTERVAL_MS * 1000);
+
+  // Hiển thị đồng hồ đếm ngược
+  await ShowTime70();
 }
 
 
-// ==== Hàm kiểm tra màu và click nếu trùng ====
-async function checkColorAndClick(page, hex, x, y, targetHex = "#075be3") {
-  console.log(`Kiểm tra màu: ${hex}, so sánh với target: ${targetHex}`);
-  if (hex === targetHex) {
-    console.log(`Màu trùng! Click vào vị trí (${x}, ${y})`);
-    await page.mouse.click(x, y);
-  }
+// ================== XỬ LÝ STOP ==================
+
+/**
+ * Hàm xử lý khi bấm DỪNG
+ * - Set isRunning = false
+ * - Clear interval
+ * - Đổi lại trạng thái button
+ */
+async function handleStop() {
+  if (!isRunning) return;
+
+  isRunning = false;
+  clearInterval(intervalId);
+  intervalId = null;
+
+  await updateButton("Bắt đầu", "#28a745");
+
+  // Ẩn timer ngay lập tức khi dừng
+  await page.evaluate(() => {
+    const timerDiv = document.getElementById("timer-display");
+    if (timerDiv) timerDiv.style.display = "none";
+  });
 }
 
-// ==== Hàm chụp ảnh và lấy màu trung bình ====
-async function captureAndGetColor(page) {
+
+
+
+
+
+// ================== UPDATE BUTTON ==================
+
+/**
+ * Cập nhật text + màu của nút Start/Dừng
+ * Chạy trong browser context
+ */
+
+// ================== MAIN – CHƯƠNG TRÌNH CHÍNH ==================
+(async () => {
+  // Mở trình duyệt
+  const browser = await chromium.launch({ headless: false });
+
+  // Tạo tab mới
+  page = await browser.newPage();
+
+  // Vào Facebook
+  await page.goto("https://web.sun.win/", {
+    waitUntil: "networkidle",
+  });
+
+
+// Tạo overlay nhiều điểm
+await UI_TieuDiem(page, startX, startY, width, height, "control", "#ff0000");   // đỏ
+await UI_TieuDiem(page, X_Ketqua, Y_Ketqua, width, height, "tieudiem-2", "#007bff"); // xanh dương
+await UI_TieuDiem(page, X_DatTai, Y_DatTai, width, height, "tieudiem-3", "#28a745"); // xanh lá
+await UI_TieuDiem(page, X_DatXiu, Y_DatXiu, width, height, "tieudiem-4", "#ffc107"); // vàng
+await UI_TieuDiem(page, X_cuoc1, Y_cuoc1, width, height, "tieudiem-5", "#6f42c1"); // tím
+await UI_TieuDiem(page, X_cuoc10, Y_cuoc10, width, height, "tieudiem-6", "#fd7e14"); // cam
+await UI_TieuDiem(page, X_Submit, Y_Submit, width, height, "tieudiem-7", "#e83e8c"); // hồng
+
+
+// Tạo UI tách biệt
+  await UI_Btn_Show_TieuDiem(page);
+  await UI_DieuKhien(page);//điều khiển 
+  await UI_Start(page);//Bắt đầu
+
+  
+})();
+
+
+// ================== LOGIC LẤY MÀU ==================
+
+/**
+ * Hàm chính:
+ * - Chụp screenshot
+ * - Tính màu trung bình vùng X,Y
+ * - In RGB + HEX
+ * - Kiểm tra kết quả
+ */
+async function CheckColor_X_Y() {
+  if (!isRunning) return;
+
   try {
-    const screenshotBuffer = await page.screenshot({ fullPage: true });
-    const png = PNG.sync.read(screenshotBuffer);
+    const buffer = await page.screenshot({ fullPage: true });
+    const png = PNG.sync.read(buffer);
 
-    let rSum = 0, gSum = 0, bSum = 0, count = 0;
+    let r = 0, g = 0, b = 0, count = 0;
 
     for (let y = startY; y < startY + height; y++) {
-      for (let x = startX; x < startX + width; x++) {
+      for (let x = X_Ketqua; x < X_Ketqua + width; x++) {
         const idx = (png.width * y + x) << 2;
-        rSum += png.data[idx];
-        gSum += png.data[idx + 1];
-        bSum += png.data[idx + 2];
+        r += png.data[idx];
+        g += png.data[idx + 1];
+        b += png.data[idx + 2];
         count++;
       }
     }
 
-    const rAvg = Math.round(rSum / count);
-    const gAvg = Math.round(gSum / count);
-    const bAvg = Math.round(bSum / count);
-    const hex = "#" + [rAvg, gAvg, bAvg].map(v => v.toString(16).padStart(2, "0")).join("");
+    r = Math.round(r / count);
+    g = Math.round(g / count);
+    b = Math.round(b / count);
 
-    // Lưu vào array
-    colorArray.push({ rgb: [rAvg, gAvg, bAvg], hex });
-    console.log(`Mã màu lần ${colorArray.length}: RGB(${rAvg},${gAvg},${bAvg}) HEX ${hex}`);
+    const hex = "#" + [r, g, b].map(v => v.toString(16).padStart(2, "0")).join("");
 
-    // Gọi hàm kiểm tra màu và click
-    await checkColorAndClick(page, hex, startX, startY);
+    // console.log(`🎨 RGB(${r},${g},${b}) HEX ${hex}`);
+  // await page.mouse.click(x, y);
 
-    // Hiển thị màu trên trang
-    await showColorOnPage(page, rAvg, gAvg, bAvg, startX, startY, width, height);
+    await CheckKetQuaTX(page, hex, X_Ketqua, Y_Ketqua);
+    if(hex){
+      handleGetColor_TX(r,g,b)
+    }
+    // ✅ Reset countdown về 70 mỗi lần CheckColor_X_Y được gọi
+    countdown = 70;
 
-  } catch (error) {
-    console.error("Lỗi khi lấy màu:", error);
+  } catch (err) {
+    console.error("❌ Capture error:", err);
   }
 }
 
-// ==== Main ====
-(async () => {
-  const browser = await chromium.launch({ headless: false });
-  const page = await browser.newPage();
+// ================== UI – TẠO NÚT START ==================
 
-  await page.goto("https://www.facebook.com", { waitUntil: "networkidle" });
+/**
+ * Tạo nút Start/Dừng trên trang web
+ * - Gắn sự kiện click
+ * - Click sẽ gọi toggleCapture (Node.js)
+ */
+async function UI_Start(page) {
+  // Tạo button trong browser
+  await page.evaluate(() => {
+    const btn = document.createElement("button");
+    btn.id = "start-button";
+    btn.innerText = "▶ Bắt đầu";
+    Object.assign(btn.style, {
+      position: "fixed",
+      bottom: "15px",
+      right: "15px",
+      zIndex: 9999,
+      padding: "10px 20px",
+      backgroundColor: "#28a745",
+      color: "#fff",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+    });
+    document.body.appendChild(btn);
+  });
+  
 
-  // Gọi lần đầu
-  await captureAndGetColor(page);
+  // Expose hàm toggleCapture từ Node → Browser
+  await page.exposeFunction("toggleCapture", toggleCapture);
 
-  // Sau đó cứ 70 giây gọi lại
-  setInterval(() => captureAndGetColor(page),  7 * 1000);
-})();
-
-
-
- function cac() {
-  console.log(`abc`);
+  // Gắn sự kiện click cho button
+  await page.evaluate(() => {
+    document
+      .getElementById("start-button")
+      .addEventListener("click", () => {
+        window.toggleCapture();
+      });
+  });
 }
-cac();
+
+
+let countdown = 70;      // biến global cho countdown
+let countdownInterval;   // interval global để có thể clear
+
+async function ShowTime70() {
+  // Thêm div hiển thị nếu chưa có
+  await page.evaluate(() => {
+    let timerDiv = document.getElementById("timer-display");
+    if (!timerDiv) {
+      timerDiv = document.createElement("div");
+      timerDiv.id = "timer-display";
+      Object.assign(timerDiv.style, {
+        position: "fixed",
+        bottom: "60px",
+        right: "15px",
+        zIndex: 9999,
+        padding: "10px 15px",
+        backgroundColor: "#007bff",
+        color: "#fff",
+        fontSize: "20px",
+        fontWeight: "bold",
+        borderRadius: "5px",
+      });
+      document.body.appendChild(timerDiv);
+    }
+  });
+
+  // Hiển thị lần đầu
+  await page.evaluate((c) => {
+    const timerDiv = document.getElementById("timer-display");
+    if (timerDiv) timerDiv.innerText = c;
+  }, countdown);
+
+  // Xóa interval cũ nếu có
+  if (countdownInterval) clearInterval(countdownInterval);
+
+  // Tạo interval đếm ngược
+  countdownInterval = setInterval(async () => {
+    if (!isRunning) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+      // Ẩn div khi dừng
+      await page.evaluate(() => {
+        const timerDiv = document.getElementById("timer-display");
+        if (timerDiv) timerDiv.style.display = "none";
+      });
+      return;
+    }
+
+    // Hiển thị countdown
+    await page.evaluate((c) => {
+      const timerDiv = document.getElementById("timer-display");
+      if (timerDiv) {
+        timerDiv.style.display = "block";
+        timerDiv.innerText = c;
+      }
+    }, countdown);
+
+    countdown--;
+
+    // Khi countdown < 0 thì reset về 70
+    if (countdown < 0) countdown = 70;
+
+  }, 1000);
+}
+
+
+// ================== TOGGLE START / STOP ==================
+
+/**
+ * Hàm chuyển đổi trạng thái
+ * - Nếu đang chạy → dừng
+ * - Nếu đang dừng → chạy
+ */
+async function toggleCapture() {
+  isRunning ? await handleStop() : await handleStart();
+}
+
+// ================== UI – NÚT ĐIỀU CHỈNH startX / startY ==================
+// ================== UI – NÚT ĐIỀU CHỈNH SÁT ==================
+async function UI_DieuKhien(page) {
+  await page.evaluate(() => {
+    let container = document.getElementById("adjust-buttons");
+    if (!container) {
+      container = document.createElement("div");
+      container.id = "adjust-buttons";
+      Object.assign(container.style, {
+        position: "fixed",
+        top: "10px",
+        right: "10px",
+        zIndex: 9999,
+        display: "grid",
+        gridTemplateColumns: "25px 25px 25px",
+        gridTemplateRows: "25px 25px",
+        gap: "1px", // siêu sát
+      });
+      document.body.appendChild(container);
+
+      // Layout 4 nút bàn phím thật
+      const layout = [
+        { id: "up-btn", text: "⬆️", col: 2, row: 1 },
+        { id: "left-btn", text: "⬅️", col: 1, row: 2 },
+        { id: "down-btn", text: "⬇️", col: 2, row: 2 },
+        { id: "right-btn", text: "➡️", col: 3, row: 2 },
+      ];
+
+      layout.forEach(btnInfo => {
+        const btn = document.createElement("button");
+        btn.id = btnInfo.id;
+        btn.innerText = btnInfo.text;
+        Object.assign(btn.style, {
+          width: "25px",
+          height: "25px",
+          fontSize: "16px",
+          borderRadius: "3px",
+          border: "1px solid black",
+          cursor: "pointer",
+          backgroundColor: "black",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gridColumn: btnInfo.col,
+          gridRow: btnInfo.row,
+          padding: "0",
+          margin: "0",
+        });
+        container.appendChild(btn);
+      });
+    }
+  });
+
+  // Expose Node.js function để update startX/startY
+  await page.exposeFunction("adjustStartXY", async (dx, dy) => {
+    startX += dx;
+    startY += dy;
+
+    X_Ketqua += dx;
+    Y_Ketqua += dy;
+
+    X_DatTai += dx;
+    Y_DatTai += dy;
+
+    X_DatXiu += dx;
+    Y_DatXiu += dy;
+
+     X_cuoc1 += dx;
+    Y_cuoc1 += dy;
+
+    X_cuoc10 += dx;
+    Y_cuoc10 += dy;
+
+    X_Submit += dx;
+    Y_Submit += dy;
+
+    // console.log(`🖌 startX=${startX}, startY=${startY}`);
+    await UI_TieuDiem(page, startX, startY, width, height, "control", "#ff0000");   // đỏ
+    await UI_TieuDiem(page, X_Ketqua, Y_Ketqua, width, height, "tieudiem-2", "#007bff"); // xanh dương
+    await UI_TieuDiem(page, X_DatTai, Y_DatTai, width, height, "tieudiem-3", "#28a745"); // xanh lá
+    await UI_TieuDiem(page, X_DatXiu, Y_DatXiu, width, height, "tieudiem-4", "#ffc107"); // vàng
+    await UI_TieuDiem(page, X_cuoc1, Y_cuoc1, width, height, "tieudiem-5", "#6f42c1"); // tím
+    await UI_TieuDiem(page, X_cuoc10, Y_cuoc10, width, height, "tieudiem-6", "#fd7e14"); // cam
+    await UI_TieuDiem(page, X_Submit, Y_Submit, width, height, "tieudiem-7", "#e83e8c"); // hồng
+  });
+
+  // Gắn sự kiện click cho 4 nút
+  await page.evaluate(() => {
+    document.getElementById("up-btn").addEventListener("click", () => window.adjustStartXY(0, -1));
+    document.getElementById("down-btn").addEventListener("click", () => window.adjustStartXY(0, 1));
+    document.getElementById("left-btn").addEventListener("click", () => window.adjustStartXY(-1, 0));
+    document.getElementById("right-btn").addEventListener("click", () => window.adjustStartXY(1, 0));
+  });
+}
 
