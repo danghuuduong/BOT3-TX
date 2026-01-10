@@ -1,6 +1,12 @@
 const { UI_Btn_Show_TieuDiem } = require("./src/Button_Common");
 const { UI_TieuDiem } = require("./src/UI_tieudiem");
-const { updateButton, handleGetColor_TX } = require("./src/util");
+const {
+  updateButton, handleGetColor_TX,TinHieuMuaBan,
+  type01, type02, type03, type04, type05, type06,
+  type07, type08, type09, type10, type11, type12,
+  type13, type14, type15, type16, type17, type18,
+  type19, type20, type21, type22, type23, type24,
+} = require('./src/util');
 
 const { chromium } = require("playwright");
 
@@ -38,13 +44,8 @@ let Y_Submit = startY + 111 ; //437
 const width = 2;
 const height = 2;
 
-
-
-// Màu mục tiêu (nếu trùng thì click)
-const TARGET_HEX = "#075be3";
-
 // Thời gian lặp (ms) – 7 giây
-const INTERVAL_MS = 7;
+const INTERVAL_MS = 70;
 
 
 // ================== STATE – TRẠNG THÁI ==================
@@ -54,20 +55,44 @@ let isRunning = false;
 
 // Lưu interval để stop đúng
 let intervalId = null;
-
-// Biến page dùng chung toàn file
 let page;
 
+const MAX_LENGTH = 13;
+const ArrayKQ = [];
 
-// ================== XỬ LÝ START ==================
+const LuutruLongmach = [
+  { id: 1,  type: type01, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 2,  type: type02, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 3,  type: type03, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 4,  type: type04, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
 
-/**
- * Hàm xử lý khi bấm BẮT ĐẦU
- * - Set isRunning = true
- * - Đổi text + màu button
- * - Chạy kiểm tra màu lần đầu
- * - Set interval chạy định kỳ
- */
+  { id: 5,  type: type05, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 6,  type: type06, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 7,  type: type07, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 8,  type: type08, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+
+  { id: 9,  type: type09, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 10, type: type10, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 11, type: type11, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 12, type: type12, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+
+  { id: 13, type: type13, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 14, type: type14, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 15, type: type15, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 16, type: type16, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+
+  { id: 17, type: type17, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 18, type: type18, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 19, type: type19, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 20, type: type20, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+
+  { id: 21, type: type21, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 22, type: type22, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 23, type: type23, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 24, type: type24, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+];
+
+
 async function handleStart() {
   if (isRunning) return;
 
@@ -85,15 +110,6 @@ async function handleStart() {
   await ShowTime70();
 }
 
-
-// ================== XỬ LÝ STOP ==================
-
-/**
- * Hàm xử lý khi bấm DỪNG
- * - Set isRunning = false
- * - Clear interval
- * - Đổi lại trạng thái button
- */
 async function handleStop() {
   if (!isRunning) return;
 
@@ -110,27 +126,13 @@ async function handleStop() {
   });
 }
 
-
-
-
-
-
-// ================== UPDATE BUTTON ==================
-
-/**
- * Cập nhật text + màu của nút Start/Dừng
- * Chạy trong browser context
- */
-
 // ================== MAIN – CHƯƠNG TRÌNH CHÍNH ==================
 (async () => {
-  // Mở trình duyệt
   const browser = await chromium.launch({ headless: false });
 
   // Tạo tab mới
   page = await browser.newPage();
 
-  // Vào Facebook
   await page.goto("https://web.sun.win/", {
     waitUntil: "networkidle",
   });
@@ -154,16 +156,6 @@ await UI_TieuDiem(page, X_Submit, Y_Submit, width, height, "tieudiem-7", "#e83e8
   
 })();
 
-
-// ================== LOGIC LẤY MÀU ==================
-
-/**
- * Hàm chính:
- * - Chụp screenshot
- * - Tính màu trung bình vùng X,Y
- * - In RGB + HEX
- * - Kiểm tra kết quả
- */
 async function CheckColor_X_Y() {
   if (!isRunning) return;
 
@@ -189,27 +181,23 @@ async function CheckColor_X_Y() {
 
     const hex = "#" + [r, g, b].map(v => v.toString(16).padStart(2, "0")).join("");
 
-    // console.log(`🎨 RGB(${r},${g},${b}) HEX ${hex}`);
+  // console.log(`🎨 RGB(${r},${g},${b}) HEX ${hex}`);
   // await page.mouse.click(x, y);
 
     if(hex){
-      handleGetColor_TX(r,g,b)
+      const ketqua = handleGetColor_TX(r,g,b)
+      if(ketqua !== "null"){
+          ArrayKQ.push(ketqua === "black" ? "Tai" : "Xiu"); 
+          if (ArrayKQ.length > MAX_LENGTH) {ArrayKQ.shift()}
+          ShowChuoiKetQuaTX();
+      }
     }
-    // ✅ Reset countdown về 70 mỗi lần CheckColor_X_Y được gọi
     countdown = 70;
-
-  } catch (err) {
-    console.error("❌ Capture error:", err);
+  } catch (err) { console.error("❌ Capture error:", err);
   }
 }
-
 // ================== UI – TẠO NÚT START ==================
 
-/**
- * Tạo nút Start/Dừng trên trang web
- * - Gắn sự kiện click
- * - Click sẽ gọi toggleCapture (Node.js)
- */
 async function UI_Start(page) {
   // Tạo button trong browser
   await page.evaluate(() => {
@@ -232,7 +220,6 @@ async function UI_Start(page) {
   });
   
 
-  // Expose hàm toggleCapture từ Node → Browser
   await page.exposeFunction("toggleCapture", toggleCapture);
 
   // Gắn sự kiện click cho button
@@ -243,6 +230,11 @@ async function UI_Start(page) {
         window.toggleCapture();
       });
   });
+}
+
+async function ShowChuoiKetQuaTX() {
+  const tinHieu = TinHieuMuaBan(ArrayKQ)
+  console.log("Kết quả", ArrayKQ)
 }
 
 
@@ -311,20 +303,10 @@ async function ShowTime70() {
   }, 1000);
 }
 
-
-// ================== TOGGLE START / STOP ==================
-
-/**
- * Hàm chuyển đổi trạng thái
- * - Nếu đang chạy → dừng
- * - Nếu đang dừng → chạy
- */
 async function toggleCapture() {
   isRunning ? await handleStop() : await handleStart();
 }
 
-// ================== UI – NÚT ĐIỀU CHỈNH startX / startY ==================
-// ================== UI – NÚT ĐIỀU CHỈNH SÁT ==================
 async function UI_DieuKhien(page) {
   await page.evaluate(() => {
     let container = document.getElementById("adjust-buttons");
