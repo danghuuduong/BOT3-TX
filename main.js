@@ -192,7 +192,6 @@ async function CheckColor_X_Y() {
     // console.log(`🎨 RGB(${r},${g},${b}) HEX ${hex}`);
   // await page.mouse.click(x, y);
 
-    await CheckKetQuaTX(page, hex, X_Ketqua, Y_Ketqua);
     if(hex){
       handleGetColor_TX(r,g,b)
     }
