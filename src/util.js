@@ -2,30 +2,36 @@ const T = "T";
 const X = "X";
 
 // ================= TYPES =================
+
 const TYPES = {
   TYPE_1_1: "1-1",
   TYPE_1_1_PLUS: "1-1 Plus",
-  TYPE_1_1_FOMO: "1-1-Fomo",
-  TYPE_1_1_PLUS_FOMO: "1-1-Plus-Fomo",
 
   TYPE_2_2: "2-2",
   TYPE_2_2_PLUS: "2-2 Plus",
-  TYPE_2_2_FOMO: "2-2-Fomo",
-  TYPE_2_2_PLUS_FOMO: "2-2-Plus-Fomo",
 
   TYPE_3_3: "3-3",
   TYPE_3_3_PLUS: "3-3 Plus",
-  TYPE_3_3_FOMO: "3-3-Fomo",
-  TYPE_3_3_PLUS_FOMO: "3-3-Plus-Fomo",
+
+  TYPE_2_1: "2-1",
+  TYPE_2_1_PLUS: "2-1 Plus",
+
+  TYPE_3_1: "3-1",
+  TYPE_3_1_PLUS: "3-1 Plus",
+
+  TYPE_123: "123",
+  TYPE_123_PLUS: "123 Plus",
 };
 
 // ================= LOCK STATE =================
 const lockState = {
-  "1-1": false,
-  "1-1Plus": false,
-  "2-2": false,
-  "3-3": false,
+  [TYPES.TYPE_1_1]: false,
+  [TYPES.TYPE_1_1_PLUS]: false,
+
+  [TYPES.TYPE_2_2]: false,
+  [TYPES.TYPE_3_3]: false,
 };
+
 
 // ================= HELPERS =================
 function getLastTX(array, n) {
@@ -35,9 +41,12 @@ function getLastTX(array, n) {
 
 // ================= VALID STRUCTURE =================
 function isValid_1_1(s4) { return s4 === "TXTX" || s4 === "XTXT"; }
-function isValid_1_1Plus(s4) { return s4 === "TXTXT" || s4 === "XTXTX"; }
-function isValid_2_2(s4) { return s4 === "TTXX" || s4 === "XXTT"; }
-function isValid_3_3(s6) { return s6 === "TTTXXX" || s6 === "XXXTTT"; }
+function isValid_2_2(s4, s5) { return s4 === "TTXX" || s4 === "XXTT" || s5 === "TTXXT" || S5 === "XXTTX"; }
+function isValid_3_3(s6, s7, s8) {
+  return s6 === "TTTXXX" || s6 === "XXXTTT"
+    || s7 === "TTTXXXT" || s7 === "XXXTTTX"
+    || s8 === "TTTXXXTT" || s8 === "XXXTTTXX";
+}
 
 // ================= MAIN =================
 function TinHieuMuaBan(ArrayKQ) {
@@ -52,83 +61,80 @@ function TinHieuMuaBan(ArrayKQ) {
   const s8 = getLastTX(ArrayKQ, 8);
   const s9 = getLastTX(ArrayKQ, 9);
 
-  // ================= RESET LOCK (tách riêng – KHÔNG else) =================
-  //  Đang mở khóa oder.
-  // nếu dell phải 1 1 thì reset . nhưng trong trường hợp này là phải . nên k rơi vào false để reset đuâ. đi xuống dưới
-  if (!isValid_1_1(s4)) lockState["1-1"] = false;
-  if (!isValid_1_1Plus(s5)) lockState["1-1Plus"] = false;
 
-  if (!isValid_2_2(s4)) lockState["2-2"] = false;
-  if (!isValid_3_3(s6)) lockState["3-3"] = false;
-  // nếu 1-1 oke thì xuống.  mà k oke thì xử lý trên bằng không khóa ữa false.
-  // ================= 1-1 =================
-  if (lockState["1-1"]) {
-    if (!isValid_1_1(s4)) lockState["1-1"] = false;
+  // ==================================================================== 1-1 =============================================
+  if (lockState[TYPES.TYPE_1_1]) {
+    if (!isValid_1_1(s4)) lockState[TYPES.TYPE_1_1] = false;
   } else {
     if (s4 === "XTXT" || s4 === "TXTX") {
-      lockState["1-1"] = true;
+      lockState[TYPES.TYPE_1_1] = true;
       return {
         huong: s4 === "XTXT" ? T : X,
         type: TYPES.TYPE_1_1
       };
     }
   }
-  // ================================================
-
-  if (lockState["1-1Plus"]) {
+  //             1-1 Plus
+  if (lockState[TYPES.TYPE_1_1_PLUS]) {
     if (!isValid_1_1(s4)) {
-      lockState["1-1"] = false
-      lockState["1-1Plus"] = false
+      lockState[TYPES.TYPE_1_1] = false
+      lockState[TYPES.TYPE_1_1_PLUS] = false
     };
   } else {
     if (s5 === "TXTXT" || s5 === "XTXTX") {
-      lockState["1-1Plus"] = true;
+      lockState[TYPES.TYPE_1_1_PLUS] = true;
       return {
         huong: s5 === "TXTXT" ? T : X,
         type: TYPES.TYPE_1_1_PLUS
       };
     }
   }
+  // ==================================================================== 2- 2 =============================================
 
-  // ================= 2-2 =================
-  if (!lockState["2-2"]) {
-    if (s6 === "XTXXTT") {
-      lockState["2-2"] = true;
-      return { huong: T, type: TYPES.TYPE_2_2 };
+
+  if (lockState[TYPES.TYPE_2_2]) {
+    if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2] = false;
+  } else {
+    if (s6 === "XTXXTT" || s6 === "TXTTXX") {
+      lockState[TYPES.TYPE_2_2] = true;
+      return {
+        huong: s6 === "XTXXTT" ? T : X,
+        type: TYPES.TYPE_2_2
+      };
     }
-    if (s6 === "TXTTXX") {
-      lockState["2-2"] = true;
-      return { huong: X, type: TYPES.TYPE_2_2 };
-    }
-    if (s7 === "XTXXTTX") {
-      lockState["2-2"] = true;
-      return { huong: T, type: TYPES.TYPE_2_2_PLUS };
-    }
-    if (s7 === "TXTTXXT") {
-      lockState["2-2"] = true;
-      return { huong: X, type: TYPES.TYPE_2_2_PLUS };
+  }
+  // Plus
+  if (lockState[TYPES.TYPE_2_2_PLUS]) {
+    if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2_PLUS] = false;
+  } else {
+    if (s7 === "XTXXTTX" || s7 === "TXTTXXT") {
+      lockState[TYPES.TYPE_2_2_PLUS] = true;
+      return {
+        huong: s7 === "XTXXTTX" ? T : X,
+        type: TYPES.TYPE_2_2_PLUS
+      };
     }
   }
 
   // ================= 3-3 =================
-  if (!lockState["3-3"]) {
-    if (s8 === "XTXXXTTT") {
-      lockState["3-3"] = true;
-      return { huong: T, type: TYPES.TYPE_3_3 };
-    }
-    if (s8 === "TXTTTXXX") {
-      lockState["3-3"] = true;
-      return { huong: X, type: TYPES.TYPE_3_3 };
-    }
-    if (s9 === "XTXXXTTTX") {
-      lockState["3-3"] = true;
-      return { huong: T, type: TYPES.TYPE_3_3_PLUS };
-    }
-    if (s9 === "TXTTTXXXT") {
-      lockState["3-3"] = true;
-      return { huong: X, type: TYPES.TYPE_3_3_PLUS };
-    }
-  }
+  // if (!lockState["3-3"]) {
+  //   if (s8 === "XTXXXTTT") {
+  //     lockState["3-3"] = true;
+  //     return { huong: T, type: TYPES.TYPE_3_3 };
+  //   }
+  //   if (s8 === "TXTTTXXX") {
+  //     lockState["3-3"] = true;
+  //     return { huong: X, type: TYPES.TYPE_3_3 };
+  //   }
+  //   if (s9 === "XTXXXTTTX") {
+  //     lockState["3-3"] = true;
+  //     return { huong: T, type: TYPES.TYPE_3_3_PLUS };
+  //   }
+  //   if (s9 === "TXTTTXXXT") {
+  //     lockState["3-3"] = true;
+  //     return { huong: X, type: TYPES.TYPE_3_3_PLUS };
+  //   }
+  // }
 
   return { huong: "null", type: "null" };
 }
@@ -153,11 +159,20 @@ function handleGetColor_TX(r, g, b) {
   return "null";
 }
 
+function getHuongForItem(item, huongGoc) {
+  if (huongGoc == "null") return "null"
+  if (item.isFomo) {
+    return huongGoc === T ? X : T;
+  }
+  return huongGoc;
+}
+
 // ================= EXPORT =================
 module.exports = {
   TinHieuMuaBan,
   updateButton,
   handleGetColor_TX,
+  getHuongForItem,
   TYPES,
   T,
   X,

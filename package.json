@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "play-sound": "^1.1.6",
     "playwright": "^1.57.0",
     "pngjs": "^7.0.0"
   }

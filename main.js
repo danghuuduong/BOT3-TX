@@ -1,13 +1,14 @@
 const { UI_Btn_Show_TieuDiem } = require("./src/Button_Common");
-const { UI_TieuDiem } = require("./src/UI_tieudiem");
+const { UI_TieuDiem, UI_Update_Table, UI_Table_LuuTru, UI_History, UI_Update_History } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan,
   TYPES, T, X
 } = require('./src/util');
-const { handleGetTien } = require('./src/util');
-
-
+const { handleGetTien, getHuongForItem } = require('./src/util');
+const player = require("play-sound")();
+const path = require("path");
 const { chromium } = require("playwright");
+const LOCK_SOUND = path.join(__dirname, "tinh.mp3");
 
 // pngjs dùng để đọc pixel từ ảnh screenshot
 const { PNG } = require("pngjs");
@@ -65,39 +66,37 @@ let soDuTaiKhoan = 1000;
 let soDuLonNhat = 1000;
 
 const LuutruLongmach = [
-  { id: 1, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1 },
-  { id: 2, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1_PLUS },
-  { id: 3, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1_FOMO },
-  { id: 4, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1_PLUS_FOMO },
+  { id: 1, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1 },
+  { id: 3, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1, isFomo: true },
+  { id: 2, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1_PLUS },
+  { id: 4, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1_PLUS, isFomo: true },
 
-  { id: 5, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2 },
-  { id: 6, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2_PLUS },
-  { id: 7, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2_FOMO },
-  { id: 8, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2_PLUS_FOMO },
+  { id: 5, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2 },
+  { id: 7, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2, isFomo: true },
+  { id: 6, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2_PLUS },
+  { id: 8, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2_PLUS, isFomo: true },
 
-  { id: 9, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3 },
-  { id: 10, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3_PLUS },
-  { id: 11, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3_FOMO },
-  { id: 12, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3_PLUS_FOMO },
+  { id: 9, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3 },
+  { id: 11, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3, isFomo: true },
+  { id: 10, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3_PLUS },
+  { id: 12, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3_PLUS, isFomo: true },
 
-  { id: 13, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1 },
-  { id: 14, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1_PLUS },
-  { id: 15, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1_FOMO },
-  { id: 16, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1_PLUS_FOMO },
+  { id: 13, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1 },
+  { id: 15, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1, isFomo: true },
+  { id: 14, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1_PLUS },
+  { id: 16, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1_PLUS, isFomo: true },
 
-  { id: 17, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1 },
-  { id: 18, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1_PLUS },
-  { id: 19, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1_FOMO },
-  { id: 20, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1_PLUS_FOMO },
+  { id: 17, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1 },
+  { id: 19, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1, isFomo: true },
+  { id: 18, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1_PLUS },
+  { id: 20, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1_PLUS, isFomo: true },
 
-  { id: 21, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123 },
-  { id: 22, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123_PLUS },
-  { id: 23, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123_FOMO },
-  { id: 24, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123_PLUS_FOMO },
+  { id: 21, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123 },
+  { id: 23, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123, isFomo: true },
+  { id: 22, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123_PLUS },
+  { id: 24, isTrading: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123_PLUS, isFomo: true },
 ];
-
-
-
+const arrayHistory = [];
 
 async function handleStart() {
   if (isRunning) return;
@@ -159,6 +158,9 @@ async function handleStop() {
   await UI_DieuKhien(page);//điều khiển 
   await UI_Start(page);//Bắt đầu
 
+  await UI_Table_LuuTru(page);//Bắt đầu
+  await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
+  await UI_History(page); // tạo container history
 
 })();
 
@@ -191,6 +193,7 @@ async function CheckColor_X_Y() {
     // console.log(`🎨 RGB(${r},${g},${b}) HEX ${hex}`);
     // await page.mouse.click(x, y);
 
+
     if (hex) {
       const ketqua = handleGetColor_TX(r, g, b)
       if (ketqua !== "null") {
@@ -205,68 +208,124 @@ async function CheckColor_X_Y() {
   }
 }
 
-function updateAray(type, updates) {
-  const item = LuutruLongmach.find(i => i.type === type);
+function updateAray(id, updates) {
+  const item = LuutruLongmach.find(i => i.id === id);
   if (!item) return;
-
-  // Cập nhật trực tiếp các key được truyền
   Object.assign(item, updates);
 }
 
 async function ThucHienGiaoDich() {
-  const tinHieuAI = TinHieuMuaBan(ArrayKQ)
-  const resultNew = ArrayKQ[ArrayKQ?.length - 1]
-  const item = LuutruLongmach.find(i => i.type === tinHieuAI.type);
-  if (resultNew !== "null") {
-    const isWin = ketqua === item.huong
-    const isNgam = item.thepDanhChoNgam < item.ngam
-    
-    // ============================================== TP SL ==========================================
-    if (item.isTrading) {
+
+  const tinHieuAI = TinHieuMuaBan(ArrayKQ);
+
+  const resultNew = ArrayKQ.at(-1);
+  if (resultNew === "null") return;
+
+  // 🔥 LẤY TẤT CẢ ITEM CÙNG TYPE
+
+
+  if (tinHieuAI.huong !== "null") {
+    console.log("Type", tinHieuAI.type);
+
+    player.play(LOCK_SOUND, (err) => {
+      if (err) console.log("Sound error:", err);
+    });
+  }
+  // ========================== ĐẶT LỆNH ==========================
+  const items = LuutruLongmach.filter(i => i.type === tinHieuAI.type);
+  for (const item of items) {
+    const huongDanh = getHuongForItem(item, tinHieuAI.huong);
+    const isNgam = item.thepDanhChoNgam < item.ngam;
+    if (huongDanh !== "null" && !item.isTrading) {
+      const tinhVol = handleGetTien(item.thep + 1, soDuLonNhat, 30);
+      if (!isNgam) {
+        // onlick 10 ..
+      }
+      updateAray(item.id, {
+        isTrading: true,
+        huong: huongDanh,
+        ...(isNgam && { thepDanhChoNgam: item.thepDanhChoNgam + 1 }),
+        ...(!isNgam && {
+          thep: item.thep + 1,
+          vol: tinhVol,
+        }),
+      });
+      await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
+
+
+      // =======================HISTORY=========================
+      const now = new Date();
+      const timeVN = now.toLocaleString("vi-VN", { hour12: false, timeZone: "Asia/Ho_Chi_Minh" });
+
+      arrayHistory.push({
+        id: item.id,
+        type: item.isFomo ? tinHieuAI.type + " fomo" : tinHieuAI.type,
+        huong: huongDanh,
+        thep: item.thep + 1,
+        vol: tinhVol,
+        time: timeVN
+      });
+
+      // Cập nhật UI lịch sử
+      await UI_Update_History(page, arrayHistory);
+
+    }
+  }
+
+  // ========================== TP / SL ==========================
+  for (const item of LuutruLongmach) {
+    if (item.isTrading && item.huong) {
+      const isNgam = item.thepDanhChoNgam < item.ngam;
+      const isWin = resultNew === item.huong
       if (isWin) {
-        updateAray(tinHieuAI.type, {
+        if (!isNgam) {
+          soDuTaiKhoan = soDuTaiKhoan + item.vol * 0.98;
+          if (soDuTaiKhoan > soDuLonNhat) {
+            soDuLonNhat = soDuTaiKhoan
+          }
+        }
+        updateAray(item.id, {
           isTrading: false,
           huong: "null",
           ...(isNgam && { thepDanhChoNgam: 0 }),
-          ...(!isNgam && { profit: item.profit + (vol * 0.98) }),
-          ...(!isNgam && { A: item.thep === 1 ? item.A + 1 : item.A }),
-          ...(!isNgam && { B: item.thep === 2 ? item.B + 1 : item.B }),
-          ...(!isNgam && { C: item.thep === 3 ? item.C + 1 : item.C }),
-          ...(!isNgam && { D: item.thep === 4 ? item.D + 1 : item.D }),
-          ...(!isNgam && { E: item.thep === 5 ? item.E + 1 : item.E }),
-          ...(!isNgam && { thep: 0 }),
-          ...(!isNgam && { vol: 0 }),
-          ...(!isNgam && { win: item.win + 1 }),
+          ...(!isNgam && {
+            profit: item.profit + item.vol * 0.98,
+            thep: 0,
+            vol: 0,
+            win: item.win + 1,
+            A: item.thep === 1 ? item.A + 1 : item.A,
+            B: item.thep === 2 ? item.B + 1 : item.B,
+            C: item.thep === 3 ? item.C + 1 : item.C,
+            D: item.thep === 4 ? item.D + 1 : item.D,
+            E: item.thep === 5 ? item.E + 1 : item.E,
+          }),
         });
-      } else {//slost
-        updateAray(tinHieuAI.type, {
+
+
+      } else {
+        if (!isNgam) {
+          soDuTaiKhoan = soDuTaiKhoan - item.vol * 0.98;
+        }
+        updateAray(item.id, {
           isTrading: false,
           huong: "null",
-          ...(!isNgam && { vol: 0 }),
-          ...(!isNgam && { profit: item.profit - (vol * 0.98) }),
-          ...(!isNgam && { lost: item.lost + 1 }),
-          ...(!isNgam && item.thep >= 5 && { thep: 0 }),
-          ...(!isNgam && item.thep >= 5 && { deal: item.deal + 1 }),
+          ...(!isNgam && {
+            profit: item.profit - item.vol * 0.98,
+            vol: 0,
+            lost: item.lost + 1,
+          }),
+          ...(!isNgam && item.thep >= 5 && {
+            thep: 0,
+            deal: item.deal + 1,
+          }),
         });
+
       }
-    } else {// ============================================= Oder =======================================
-      if (!item.isWaiting) {
-        const tinhVol = handleGetTien(item.thep + 1, soDuLonNhat, 30);
-        if (!isNgam) {
-          // onlick 10 ..
-        }
-        updateAray(tinHieuAI.type, {
-          isTrading: true,
-          isWaiting: true,
-          huong: tinHieuAI.huong,
-          ...(isNgam && { thepDanhChoNgam: item.thepDanhChoNgam + 1 }),
-          ...(!isNgam && { thep: item.thep + 1 }),
-          ...(!isNgam && { vol: tinhVol }),
-        });
-      }
+      await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
     }
   }
 }
+
 
 // ================== UI – TẠO NÚT START ==================
 async function UI_Start(page) {
