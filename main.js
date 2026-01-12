@@ -1,12 +1,11 @@
 const { UI_Btn_Show_TieuDiem } = require("./src/Button_Common");
 const { UI_TieuDiem } = require("./src/UI_tieudiem");
 const {
-  updateButton, handleGetColor_TX,TinHieuMuaBan,
-  type01, type02, type03, type04, type05, type06,
-  type07, type08, type09, type10, type11, type12,
-  type13, type14, type15, type16, type17, type18,
-  type19, type20, type21, type22, type23, type24,
+  updateButton, handleGetColor_TX, TinHieuMuaBan,
+  TYPES, T, X
 } = require('./src/util');
+const { handleGetTien } = require('./src/util');
+
 
 const { chromium } = require("playwright");
 
@@ -22,23 +21,23 @@ let Y_Ketqua = startY; //326
 
 // 2. ______________________Đặt Tài _____________________
 let X_DatTai = startX - 325; // 130
-let Y_DatTai = startY - 61 ;//265
+let Y_DatTai = startY - 61;//265
 
 // 3._______________________Đặt Xỉu _____________________
 let X_DatXiu = startX; //455
-let Y_DatXiu = startY - 61 ; //265
+let Y_DatXiu = startY - 61; //265
 
 // 4._______________________cược 1_____________________
 let X_cuoc1 = startX - 405; //50
-let Y_cuoc1 = startY + 49 ; //375
+let Y_cuoc1 = startY + 49; //375
 
 // 5._______________________cược 10_____________________
 let X_cuoc10 = startX - 335; //120
-let Y_cuoc10 = startY + 49 ; //375
+let Y_cuoc10 = startY + 49; //375
 
 // 5._______________________Nút Đặt cược_____________________
 let X_Submit = startX - 180; //275
-let Y_Submit = startY + 111 ; //437
+let Y_Submit = startY + 111; //437
 
 // Kích thước tiêu điểm
 const width = 2;
@@ -57,40 +56,47 @@ let isRunning = false;
 let intervalId = null;
 let page;
 
+let countdown = 70;      // biến global cho countdown
+let countdownInterval;   // interval global để có thể clear
+
 const MAX_LENGTH = 13;
 const ArrayKQ = [];
+let soDuTaiKhoan = 1000;
+let soDuLonNhat = 1000;
 
 const LuutruLongmach = [
-  { id: 1,  type: type01, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 2,  type: type02, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 3,  type: type03, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 4,  type: type04, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 1, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1 },
+  { id: 2, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1_PLUS },
+  { id: 3, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1_FOMO },
+  { id: 4, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_1_1_PLUS_FOMO },
 
-  { id: 5,  type: type05, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 6,  type: type06, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 7,  type: type07, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 8,  type: type08, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 5, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2 },
+  { id: 6, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2_PLUS },
+  { id: 7, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2_FOMO },
+  { id: 8, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_2_PLUS_FOMO },
 
-  { id: 9,  type: type09, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 10, type: type10, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 11, type: type11, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 12, type: type12, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 9, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3 },
+  { id: 10, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3_PLUS },
+  { id: 11, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3_FOMO },
+  { id: 12, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_3_PLUS_FOMO },
 
-  { id: 13, type: type13, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 14, type: type14, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 15, type: type15, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 16, type: type16, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 13, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1 },
+  { id: 14, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1_PLUS },
+  { id: 15, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1_FOMO },
+  { id: 16, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_2_1_PLUS_FOMO },
 
-  { id: 17, type: type17, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 18, type: type18, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 19, type: type19, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 20, type: type20, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 17, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1 },
+  { id: 18, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1_PLUS },
+  { id: 19, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1_FOMO },
+  { id: 20, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_3_1_PLUS_FOMO },
 
-  { id: 21, type: type21, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 22, type: type22, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 23, type: type23, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
-  { id: 24, type: type24, taophan: 0, thep: 1, win: 0, lost: 0, profit: 0, mot: 0, hai: 0, ba: 0, bon: 0, nam: 0 },
+  { id: 21, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123 },
+  { id: 22, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123_PLUS },
+  { id: 23, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123_FOMO },
+  { id: 24, isTrading: false, isWaiting: false, huong: "null", profit: 0, thepDanhChoNgam: 0, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, type: TYPES.TYPE_123_PLUS_FOMO },
 ];
+
+
 
 
 async function handleStart() {
@@ -98,7 +104,7 @@ async function handleStart() {
 
   isRunning = true;
 
-  await updateButton(page,"⏹ Dừng...", "#e23a10ff");
+  await updateButton(page, "⏹ Dừng...", "#e23a10ff");
 
   // Chạy lần đầu ngay
   await CheckColor_X_Y();
@@ -117,7 +123,7 @@ async function handleStop() {
   clearInterval(intervalId);
   intervalId = null;
 
-  await updateButton("Bắt đầu", "#28a745");
+  await updateButton(page, "Bắt đầu", "#28a745");
 
   // Ẩn timer ngay lập tức khi dừng
   await page.evaluate(() => {
@@ -138,24 +144,25 @@ async function handleStop() {
   });
 
 
-// Tạo overlay nhiều điểm
-await UI_TieuDiem(page, startX, startY, width, height, "control", "#ff0000");   // đỏ
-await UI_TieuDiem(page, X_Ketqua, Y_Ketqua, width, height, "tieudiem-2", "#007bff"); // xanh dương
-await UI_TieuDiem(page, X_DatTai, Y_DatTai, width, height, "tieudiem-3", "#28a745"); // xanh lá
-await UI_TieuDiem(page, X_DatXiu, Y_DatXiu, width, height, "tieudiem-4", "#ffc107"); // vàng
-await UI_TieuDiem(page, X_cuoc1, Y_cuoc1, width, height, "tieudiem-5", "#6f42c1"); // tím
-await UI_TieuDiem(page, X_cuoc10, Y_cuoc10, width, height, "tieudiem-6", "#fd7e14"); // cam
-await UI_TieuDiem(page, X_Submit, Y_Submit, width, height, "tieudiem-7", "#e83e8c"); // hồng
+  // Tạo overlay nhiều điểm
+  await UI_TieuDiem(page, startX, startY, width, height, "control", "#ff0000");   // đỏ
+  await UI_TieuDiem(page, X_Ketqua, Y_Ketqua, width, height, "tieudiem-2", "#007bff"); // xanh dương
+  await UI_TieuDiem(page, X_DatTai, Y_DatTai, width, height, "tieudiem-3", "#28a745"); // xanh lá
+  await UI_TieuDiem(page, X_DatXiu, Y_DatXiu, width, height, "tieudiem-4", "#ffc107"); // vàng
+  await UI_TieuDiem(page, X_cuoc1, Y_cuoc1, width, height, "tieudiem-5", "#6f42c1"); // tím
+  await UI_TieuDiem(page, X_cuoc10, Y_cuoc10, width, height, "tieudiem-6", "#fd7e14"); // cam
+  await UI_TieuDiem(page, X_Submit, Y_Submit, width, height, "tieudiem-7", "#e83e8c"); // hồng
 
 
-// Tạo UI tách biệt
+  // Tạo UI tách biệt
   await UI_Btn_Show_TieuDiem(page);
   await UI_DieuKhien(page);//điều khiển 
   await UI_Start(page);//Bắt đầu
 
-  
+
 })();
 
+// ================================================== HANDLE LOGIC ===========================================
 async function CheckColor_X_Y() {
   if (!isRunning) return;
 
@@ -181,23 +188,87 @@ async function CheckColor_X_Y() {
 
     const hex = "#" + [r, g, b].map(v => v.toString(16).padStart(2, "0")).join("");
 
-  // console.log(`🎨 RGB(${r},${g},${b}) HEX ${hex}`);
-  // await page.mouse.click(x, y);
+    // console.log(`🎨 RGB(${r},${g},${b}) HEX ${hex}`);
+    // await page.mouse.click(x, y);
 
-    if(hex){
-      const ketqua = handleGetColor_TX(r,g,b)
-      if(ketqua !== "null"){
-          ArrayKQ.push(ketqua === "black" ? "Tai" : "Xiu"); 
-          if (ArrayKQ.length > MAX_LENGTH) {ArrayKQ.shift()}
-          ShowChuoiKetQuaTX();
+    if (hex) {
+      const ketqua = handleGetColor_TX(r, g, b)
+      if (ketqua !== "null") {
+        ArrayKQ.push(ketqua === "black" ? T : X);
+        if (ArrayKQ.length > MAX_LENGTH) { ArrayKQ.shift() }
+        ThucHienGiaoDich();
       }
     }
     countdown = 70;
-  } catch (err) { console.error("❌ Capture error:", err);
+  } catch (err) {
+    console.error("❌ Capture error:", err);
   }
 }
-// ================== UI – TẠO NÚT START ==================
 
+function updateAray(type, updates) {
+  const item = LuutruLongmach.find(i => i.type === type);
+  if (!item) return;
+
+  // Cập nhật trực tiếp các key được truyền
+  Object.assign(item, updates);
+}
+
+async function ThucHienGiaoDich() {
+  const tinHieuAI = TinHieuMuaBan(ArrayKQ)
+  const resultNew = ArrayKQ[ArrayKQ?.length - 1]
+  const item = LuutruLongmach.find(i => i.type === tinHieuAI.type);
+  if (resultNew !== "null") {
+    const isWin = ketqua === item.huong
+    const isNgam = item.thepDanhChoNgam < item.ngam
+    
+    // ============================================== TP SL ==========================================
+    if (item.isTrading) {
+      if (isWin) {
+        updateAray(tinHieuAI.type, {
+          isTrading: false,
+          huong: "null",
+          ...(isNgam && { thepDanhChoNgam: 0 }),
+          ...(!isNgam && { profit: item.profit + (vol * 0.98) }),
+          ...(!isNgam && { A: item.thep === 1 ? item.A + 1 : item.A }),
+          ...(!isNgam && { B: item.thep === 2 ? item.B + 1 : item.B }),
+          ...(!isNgam && { C: item.thep === 3 ? item.C + 1 : item.C }),
+          ...(!isNgam && { D: item.thep === 4 ? item.D + 1 : item.D }),
+          ...(!isNgam && { E: item.thep === 5 ? item.E + 1 : item.E }),
+          ...(!isNgam && { thep: 0 }),
+          ...(!isNgam && { vol: 0 }),
+          ...(!isNgam && { win: item.win + 1 }),
+        });
+      } else {//slost
+        updateAray(tinHieuAI.type, {
+          isTrading: false,
+          huong: "null",
+          ...(!isNgam && { vol: 0 }),
+          ...(!isNgam && { profit: item.profit - (vol * 0.98) }),
+          ...(!isNgam && { lost: item.lost + 1 }),
+          ...(!isNgam && item.thep >= 5 && { thep: 0 }),
+          ...(!isNgam && item.thep >= 5 && { deal: item.deal + 1 }),
+        });
+      }
+    } else {// ============================================= Oder =======================================
+      if (!item.isWaiting) {
+        const tinhVol = handleGetTien(item.thep + 1, soDuLonNhat, 30);
+        if (!isNgam) {
+          // onlick 10 ..
+        }
+        updateAray(tinHieuAI.type, {
+          isTrading: true,
+          isWaiting: true,
+          huong: tinHieuAI.huong,
+          ...(isNgam && { thepDanhChoNgam: item.thepDanhChoNgam + 1 }),
+          ...(!isNgam && { thep: item.thep + 1 }),
+          ...(!isNgam && { vol: tinhVol }),
+        });
+      }
+    }
+  }
+}
+
+// ================== UI – TẠO NÚT START ==================
 async function UI_Start(page) {
   // Tạo button trong browser
   await page.evaluate(() => {
@@ -218,7 +289,7 @@ async function UI_Start(page) {
     });
     document.body.appendChild(btn);
   });
-  
+
 
   await page.exposeFunction("toggleCapture", toggleCapture);
 
@@ -231,15 +302,6 @@ async function UI_Start(page) {
       });
   });
 }
-
-async function ShowChuoiKetQuaTX() {
-  const tinHieu = TinHieuMuaBan(ArrayKQ)
-  console.log("Kết quả", ArrayKQ)
-}
-
-
-let countdown = 70;      // biến global cho countdown
-let countdownInterval;   // interval global để có thể clear
 
 async function ShowTime70() {
   // Thêm div hiển thị nếu chưa có
@@ -372,7 +434,7 @@ async function UI_DieuKhien(page) {
     X_DatXiu += dx;
     Y_DatXiu += dy;
 
-     X_cuoc1 += dx;
+    X_cuoc1 += dx;
     Y_cuoc1 += dy;
 
     X_cuoc10 += dx;
