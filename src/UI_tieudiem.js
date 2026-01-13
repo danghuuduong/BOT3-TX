@@ -134,12 +134,12 @@ async function UI_History(page) {
       container.id = "history-container";
       Object.assign(container.style, {
         position: "fixed",
-        top: "50%",
+        top: "10px",
         right: "5px",
-        transform: "translateY(-50%)",
+        // transform: "translateY(-50%)",
         width: "200px",
-        maxHeight: "330px",
-        minHeight: "200px",
+        maxHeight: "530px",
+        minHeight: "300px",
         overflowY: "auto",
         backgroundColor: "#fff",
         border: "1px solid #000",
@@ -161,25 +161,81 @@ async function UI_Update_History(page, history) {
 
     container.innerHTML = ""; // xóa cũ
 
-    // Render theo yêu cầu: chia 2 dòng
     history.forEach(item => {
       const div = document.createElement("div");
       div.style.marginBottom = "6px";
       div.style.borderBottom = "1px dashed #ccc";
       div.style.paddingBottom = "2px";
 
+      // 👉 chỉ lấy giờ : phút
+      const timeHHMM = new Date(item.time).toLocaleTimeString("vi-VN", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
       div.innerHTML = `
-        <div>${item.time}: ${item.type} - ${item.huong}</div>
-        <div>- Tại thép: ${item.thep}, Số tiền: ${item.vol} (k)</div>
+        <div>${timeHHMM}: ${item.type} - ${item.huong}</div>
+        <div>- Tại thếp: ${item.thep}, Số tiền: ${item.vol}K</div>
       `;
+
       container.appendChild(div);
     });
 
-    // Tự scroll xuống dưới mỗi khi update
+    // tự scroll xuống cuối
     container.scrollTop = container.scrollHeight;
 
   }, history);
 }
 
 
-module.exports = { UI_TieuDiem, UI_Update_Table, UI_Table_LuuTru, UI_Update_History, UI_History };
+async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 1000) {
+  await page.evaluate(({ x, y, size, icon, id, timeoutMs }) => {
+    // xóa cũ nếu còn
+    const old = document.getElementById(id);
+    if (old) old.remove();
+
+    // inject keyframes (chỉ inject 1 lần)
+    if (!document.getElementById("ui-click-style")) {
+      const style = document.createElement("style");
+      style.id = "ui-click-style";
+      style.innerHTML = `
+        @keyframes clickPulse {
+          0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
+          50%  { transform: translate(-50%, -50%) scale(1.6); opacity: 1; }
+          100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    // tạo icon
+    const el = document.createElement("div");
+    el.id = id;
+    el.innerText = icon || "🖱️";
+
+    Object.assign(el.style, {
+      position: "fixed",
+      left: x + "px",
+      top: y + "px",
+      fontSize: size + "px",
+      zIndex: 9999,
+      pointerEvents: "none",
+      userSelect: "none",
+      transform: "translate(-50%, -50%)",
+      animation: "clickPulse 0.4s ease-in-out infinite",
+    });
+
+    document.body.appendChild(el);
+
+    // tự biến mất
+    setTimeout(() => {
+      el.remove();
+    }, timeoutMs);
+
+  }, { x, y, size, icon, id, timeoutMs }); 
+}
+
+
+
+
+module.exports = { UI_MouseClick, UI_Update_Table, UI_Table_LuuTru, UI_Update_History, UI_History };
