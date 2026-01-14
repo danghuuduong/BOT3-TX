@@ -286,10 +286,11 @@ async function ThucHienGiaoDich() {
             soDuLonNhat = soDuTaiKhoan
           }
           // update status trên History
-          const item = arrayHistory.find(i => i.id === item.id);
+           // update status trên History
+          const itemHistory = arrayHistory.find(i => i.id === item.id);
           const param = { status: "win" }
-          if (!item) return;
-          Object.assign(item, param);
+          if (!itemHistory) return;
+          Object.assign(itemHistory, param);
           await UI_Update_History(page, arrayHistory);
 
         }
@@ -320,10 +321,10 @@ async function ThucHienGiaoDich() {
           profitAll = soDuTaiKhoan - item.vol;
 
           // update status trên History
-          const item = arrayHistory.find(i => i.id === item.id);
+          const itemHistory = arrayHistory.find(i => i.id === item.id);
           const param = { status: "lost" }
-          if (!item) return;
-          Object.assign(item, param);
+          if (!itemHistory) return;
+          Object.assign(itemHistory, param);
           await UI_Update_History(page, arrayHistory);
         }
         updateAray(item.id, {
