@@ -148,7 +148,7 @@ async function UI_Update_Table(page, data) {
         item.id,
         item.type,
         item.isFomo ? "Fomo" : "Bẻ🔥",
-        item.isTrading ? item.huong === T ? "⚫" : "⚪" : "Chưa",
+        item.isTrading ? item.huong === "T" ? "⚫" : "⚪" : "Chưa",
         `${item.thepChoNgam}/${item.ngam} ${icon} `,
         item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/${5} Thếp`,
         item.ngam && !item.isNgamDone ? 'Chưa Vô' : item.vol,
