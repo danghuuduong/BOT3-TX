@@ -214,7 +214,7 @@ function TinHieuMuaBan(ArrayKQ) {
     if (s9 === "TXXXTXXXT" || s9 === "XTTTXTTTX") {
       lockState[TYPES.TYPE_3_1_PLUS] = true;
       return {
-        huong: s9 === "TXXXTXXXT" ? X : T,
+        huong: s9 === "TXXXTXXXT" ? T : X,
         type: TYPES.TYPE_3_1_PLUS
       };
     }
@@ -223,7 +223,7 @@ function TinHieuMuaBan(ArrayKQ) {
   // ==================================================================== 123 =============================================
 
   if (lockState[TYPES.TYPE_123]) {
-    if (!isValid_123(s6, S7)) lockState[TYPES.TYPE_123] = false;
+    if (!isValid_123(s6, s7)) lockState[TYPES.TYPE_123] = false;
   } else {
     if (s7 === "TXTTXXX" || s7 === "XTXXTTT") {
       lockState[TYPES.TYPE_123] = true;
@@ -235,12 +235,12 @@ function TinHieuMuaBan(ArrayKQ) {
   }
 
   if (lockState[TYPES.TYPE_123_PLUS]) {
-    if (!isValid_123(s6, S7)) lockState[TYPES.TYPE_123_PLUS] = false;
+    if (!isValid_123(s6, s7)) lockState[TYPES.TYPE_123_PLUS] = false;
   } else {
-    if (S8 === "TXTTXXXT" || S8 === "XTXXTTTX") {
+    if (s8 === "TXTTXXXT" || s8 === "XTXXTTTX") {
       lockState[TYPES.TYPE_123_PLUS] = true;
       return {
-        huong: S8 === "TXTTXXXT" ? X : T,
+        huong: s8 === "TXTTXXXT" ? X : T,
         type: TYPES.TYPE_123_PLUS
       };
     }

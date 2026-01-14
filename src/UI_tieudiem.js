@@ -28,7 +28,6 @@ async function UI_TieuDiem(page, X, Y, width, height, id, color = "red") {
 async function UI_Table_LuuTru(page) {
   await page.evaluate(() => {
     if (!document.getElementById("longmach-table-container")) {
-      // Container để scroll
       const container = document.createElement("div");
       container.id = "longmach-table-container";
       Object.assign(container.style, {
@@ -36,41 +35,95 @@ async function UI_Table_LuuTru(page) {
         bottom: "10px",
         left: "50%",
         transform: "translateX(-50%)",
-        maxHeight: "200px",   // hiển thị khoảng 8 hàng (~25px mỗi hàng)
+        maxHeight: "200px",
+        maxWidth: "95vw",
         overflowY: "auto",
+        overflowX: "auto",
         zIndex: 9999,
+        background: "#fff",
       });
 
-      // Tạo table
+      // ===== TOGGLE BUTTON =====
+      const toggleBtn = document.createElement("div");
+      toggleBtn.innerText = "▼";
+      Object.assign(toggleBtn.style, {
+        position: "fixed",          // luôn nằm ngoài table
+        bottom: `209px`, // 10px trên table
+        left: "50%",
+        transform: "translateX(-50%)",
+        fontSize: "14px",
+        padding: "2px 6px",
+        cursor: "pointer",
+        background: "#FFFFFF",     // xanh dương nhạt
+        border: "1px solid #000",
+        borderRadius: "3px",
+        userSelect: "none",
+        zIndex: 10000,
+      });
+
+      let isHidden = false;
+
+      toggleBtn.onclick = () => {
+        isHidden = !isHidden;
+        if (isHidden) {
+          container.style.display = "none";
+          toggleBtn.style.bottom = "10px";  // xuống dưới màn hình
+          toggleBtn.style.top = "auto";     // reset top
+          toggleBtn.innerText = "▲";
+        } else {
+          container.style.display = "block";
+          // toggleBtn.style.top = `${container.getBoundingClientRect().top - 10}px`;
+          toggleBtn.style.bottom = `209px`;
+          toggleBtn.innerText = "▼";
+        }
+      };
+
+      document.body.appendChild(toggleBtn);
+
+      // ===== TABLE =====
       const table = document.createElement("table");
       table.id = "longmach-table";
       Object.assign(table.style, {
         width: "100%",
-        background: "#fff",   // nền trắng
+        background: "#fff",
         borderCollapse: "collapse",
         fontSize: "12px",
+        tableLayout: "fixed",
       });
 
-      // Thêm thead
+      const headers = [
+        "ID", "Type", "FOMO", "Vô", "Số Ngầm", "Thếp",
+        "Số Tiền", "Win", "Lost", "Lãi",
+        "A", "B", "C", "D", "E", "Cháy"
+      ];
+
+      const widths = [
+        "30px", "70px", "50px", "60px", "60px", "90px",
+        "50px", "45px", "45px", "65px",
+        "35px", "35px", "35px", "35px", "35px",
+        "35px",
+      ];
+
       const thead = document.createElement("thead");
       const tr = document.createElement("tr");
-      ["ID", "Type", "FOMO", "Vô", "Hướng", "Ngầm", "Thếp", "Số Tiền", "Win", "Lost", "Lãi", "A", "B", "C", "D", "E", "Cháy"]
-        .forEach(h => {
-          const th = document.createElement("th");
-          th.innerText = h;
-          Object.assign(th.style, {
-            border: "1px solid #000",
-            padding: "4px 6px",
-            color: "#000",
-            background: "#eee",
-            textAlign: "center",
-          });
-          tr.appendChild(th);
+
+      headers.forEach((h, i) => {
+        const th = document.createElement("th");
+        th.innerText = h;
+        Object.assign(th.style, {
+          border: "1px solid #000",
+          padding: "4px 6px",
+          background: "#eee",
+          textAlign: "center",
+          whiteSpace: "nowrap",
+          width: widths[i],
         });
+        tr.appendChild(th);
+      });
+
       thead.appendChild(tr);
       table.appendChild(thead);
 
-      // Thêm tbody
       const tbody = document.createElement("tbody");
       tbody.id = "longmach-body";
       table.appendChild(tbody);
@@ -90,20 +143,21 @@ async function UI_Update_Table(page, data) {
 
     rows.forEach(item => {
       const tr = document.createElement("tr");
+      const icon = item.isNgamDone ? '✅' : '';
+
       const cols = [
         item.id,
         item.type,
-        item.isFomo ? "" : "🔥",
-        item.isTrading ? "ON" : "Chưa",
-        item.huong,
-        `${item.thepDanhChoNgam}/${item.ngam}`,
-        item.thep,
-        item.vol,
+        item.isFomo ? "Fomo" : "Bẻ🔥",
+        item.isTrading ? item.huong : "Chưa",
+        `${item.thepChoNgam}/${item.ngam} ${icon} `,
+        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/${5} Thếp`,
+        item.ngam && !item.isNgamDone ? 'Chưa Vô' : item.vol,
         item.win,
         item.lost,
         item.profit.toFixed(2),
         item.A, item.B, item.C, item.D, item.E,
-        item.deal,
+        item.deal ? `${item.deal} 🐤` : "-",
       ];
 
       cols.forEach(v => {
@@ -127,6 +181,7 @@ async function UI_Update_Table(page, data) {
 
 
 
+
 async function UI_History(page) {
   await page.evaluate(() => {
     if (!document.getElementById("history-container")) {
@@ -134,9 +189,8 @@ async function UI_History(page) {
       container.id = "history-container";
       Object.assign(container.style, {
         position: "fixed",
-        top: "10px",
-        right: "5px",
-        // transform: "translateY(-50%)",
+        top: "33px",
+        right: "10px",
         width: "200px",
         maxHeight: "530px",
         minHeight: "300px",
@@ -149,11 +203,44 @@ async function UI_History(page) {
         fontFamily: "monospace",
         zIndex: 9999,
       });
+
+      // ===== BUTTON TOGGLE =====
+      const toggleBtn = document.createElement("div");
+      toggleBtn.innerText = "▼";
+      Object.assign(toggleBtn.style, {
+        position: "fixed",  // ngoài container
+        top: "10px",
+        right: "10px",
+        fontSize: "14px",
+        padding: "2px 6px",
+        cursor: "pointer",
+        background: "#FFFFFF",     // xanh dương nhạt
+        border: "1px solid #000",
+        borderRadius: "3px",
+        userSelect: "none",
+        zIndex: 10000,
+      });
+
+      let isHidden = false;
+
+      toggleBtn.onclick = () => {
+        isHidden = !isHidden;
+        if (isHidden) {
+          container.style.display = "none";
+          toggleBtn.style.top = "10px";
+          toggleBtn.innerText = "▲";
+        } else {
+          container.style.display = "block";
+          toggleBtn.style.top = "10px";
+          toggleBtn.innerText = "▼";
+        }
+      };
+
+      document.body.appendChild(toggleBtn);
       document.body.appendChild(container);
     }
   });
 }
-
 async function UI_Update_History(page, history) {
   await page.evaluate((history) => {
     const container = document.getElementById("history-container");
@@ -167,15 +254,12 @@ async function UI_Update_History(page, history) {
       div.style.borderBottom = "1px dashed #ccc";
       div.style.paddingBottom = "2px";
 
-      // 👉 chỉ lấy giờ : phút
-      const timeHHMM = new Date(item.time).toLocaleTimeString("vi-VN", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-
       div.innerHTML = `
-        <div>${timeHHMM}: ${item.type} - ${item.huong}</div>
-        <div>- Tại thếp: ${item.thep}, Số tiền: ${item.vol}K</div>
+        <div>${item.time}: ${item.type} - ${item.huong}</div>
+        <div>Thếp: ${item.thep}, Vol: ${item.vol}K 
+        ${item.status !== "null" ?
+          item.status === "win" ? '✅' : 'X'
+          : ''}</div>
       `;
 
       container.appendChild(div);
@@ -227,15 +311,14 @@ async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeo
 
     document.body.appendChild(el);
 
-    // tự biến mất
     setTimeout(() => {
       el.remove();
     }, timeoutMs);
 
-  }, { x, y, size, icon, id, timeoutMs }); 
+  }, { x, y, size, icon, id, timeoutMs });
 }
 
 
 
 
-module.exports = { UI_MouseClick, UI_Update_Table, UI_Table_LuuTru, UI_Update_History, UI_History };
+module.exports = { UI_MouseClick, UI_Update_Table, UI_Table_LuuTru, UI_Update_History, UI_History, UI_TieuDiem };
