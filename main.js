@@ -64,8 +64,8 @@ let countdownInterval;   // interval global để có thể clear
 
 const MAX_LENGTH = 13;
 const ArrayKQ = [];
-let soDuTaiKhoan = 1000;
-let soDuLonNhat = 1000;
+let soDuTaiKhoan = 10000;
+let soDuLonNhat = 10000;
 let profitAll = 0;
 
 const LuutruLongmach = [
@@ -131,7 +131,7 @@ async function handleStart() {
     await CheckColor_X_Y();
   }, INTERVAL_MS * 1000);
 
-  
+
   // Hiển thị đồng hồ đếm ngược
   await ShowTime70();
 }
@@ -295,6 +295,11 @@ async function ThucHienGiaoDich() {
               C: item.thep === 3 ? item.C + 1 : item.C,
               D: item.thep === 4 ? item.D + 1 : item.D,
               E: item.thep === 5 ? item.E + 1 : item.E,
+              A1: item.thep === 6 ? item.A1 + 1 : item.A1,
+              A2: item.thep === 7 ? item.A2 + 1 : item.A2,
+              A3: item.thep === 8 ? item.A3 + 1 : item.A3,
+              A4: item.thep === 9 ? item.A4 + 1 : item.A4,
+              A5: item.thep === 10 ? item.A5 + 1 : item.A5,
               vol: 0,
               ...(item?.ngam && item?.isNgamDone ? { isNgamDone: false, thepChoNgam: 0 } : {}),
               thep: 0,
@@ -321,7 +326,7 @@ async function ThucHienGiaoDich() {
           ...(isNgam
             ? (item?.thepChoNgam >= item.ngam ? { isNgamDone: true } : {})
             : {
-              ...(item.thep >= 5 ? { thep: 0, deal: item.deal + 1 } : {}),
+              ...(item.thep >= 10 ? { thep: 0, deal: item.deal + 1 } : {}),
               vol: 0,
               profit: item.profit - item.vol,
               lost: item.lost + 1,
@@ -343,7 +348,7 @@ async function ThucHienGiaoDich() {
     const isNgam = item.ngam && !item.isNgamDone;
 
     if (huongDanh !== "null" && !item.isTrading) {
-      const tinhVol = handleGetTien(item.thep + 1, soDuLonNhat, 30);
+      const tinhVol = handleGetTien(item.thep + 1, soDuLonNhat, 3);
 
 
       if (!isNgam) {
@@ -598,6 +603,8 @@ async function UI_DieuKhien(page) {
     document.getElementById("right-btn").addEventListener("click", () => window.adjustStartXY(1, 0));
   });
 }
+
+
 
 
 async function clickTheoTinhVol(page, tinhVol, icon) {
