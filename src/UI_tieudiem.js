@@ -94,15 +94,20 @@ async function UI_Table_LuuTru(page) {
       const headers = [
         "ID", "Type", "FOMO", "Vô", "Số Ngầm", "Thếp",
         "Số Tiền", "Win", "Lost", "Lãi",
-        "A", "B", "C", "D", "E", "Cháy"
+        "A", "B", "C", "D", "E",
+        "A1", "A2", "A3", "A4", "A5",
+        "Cháy"
       ];
+
 
       const widths = [
         "30px", "70px", "50px", "60px", "60px", "90px",
         "50px", "45px", "45px", "65px",
         "35px", "35px", "35px", "35px", "35px",
+        "35px", "35px", "35px", "35px", "35px",
         "35px",
       ];
+
 
       const thead = document.createElement("thead");
       const tr = document.createElement("tr");
@@ -155,9 +160,14 @@ async function UI_Update_Table(page, data) {
         item.win,
         item.lost,
         item.profit.toFixed(2),
+
         item.A, item.B, item.C, item.D, item.E,
+
+        item.A1, item.A2, item.A3, item.A4, item.A5,
+
         item.deal ? `${item.deal} 🐤` : "-",
       ];
+
 
       cols.forEach(v => {
         const td = document.createElement("td");

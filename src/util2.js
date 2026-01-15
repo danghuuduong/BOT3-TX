@@ -2,9 +2,7 @@ function handleGetTien(thep, monyTong, phantram = 10) {
   const tienPhanTram = monyTong * (phantram / 100);
   const level = Math.floor(tienPhanTram / 85);
   if (level === 0) return 0;
-
   const base = level * 85;
-
   switch (thep) {
     case 1: return Math.floor(base / 42.5);
     case 2: return Math.floor(base / 17);
