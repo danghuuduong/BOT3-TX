@@ -4,12 +4,18 @@ const X = "X";
 // ================= TYPES =================
 
 const TYPES = {
+  TYPE_1_create: "TYPE_1_create", // new
+
   TYPE_1_1: "1-1",
   TYPE_1_1_PLUS: "1-1 Plus",
 
+
+  TYPE_2_create: "TYPE_2_create", // new
   TYPE_2_2: "2-2",
   TYPE_2_2_PLUS: "2-2 Plus",
 
+
+  TYPE_3_create: "TYPE_3_create", // new
   TYPE_3_3: "3-3",
   TYPE_3_3_PLUS: "3-3 Plus",
 
@@ -21,14 +27,24 @@ const TYPES = {
 
   TYPE_123: "123",
   TYPE_123_PLUS: "123 Plus",
+
+  TYPE_4: "4",
+  TYPE_5: "5",
+
 };
 
 // ================= LOCK STATE =================
 const lockState = {
+  [TYPES.TYPE_1_create]: false,
   [TYPES.TYPE_1_1]: false,
   [TYPES.TYPE_1_1_PLUS]: false,
+
+  [TYPES.TYPE_2_create]: false,
   [TYPES.TYPE_2_2]: false,
   [TYPES.TYPE_2_2_PLUS]: false,
+
+
+  [TYPES.TYPE_3_create]: false,
   [TYPES.TYPE_3_3]: false,
   [TYPES.TYPE_3_3_PLUS]: false,
 
@@ -40,6 +56,10 @@ const lockState = {
 
   [TYPES.TYPE_123]: false,
   [TYPES.TYPE_123_PLUS]: false,
+
+  [TYPES.TYPE_4]: false,
+  [TYPES.TYPE_5]: false,
+
 };
 
 
@@ -50,6 +70,14 @@ function getLastTX(array, n) {
 }
 
 // ================= VALID STRUCTURE =================
+function isValid_1_Create(s3) { return s3 === "TXT" || s3 === "XTX"; }
+function isValid_2_Create(s5) { return s5 === "XTXXT" || s5 === "TXTTX"; }
+
+function isValid_4(s4) { return s4 === "TTTT" || s4 === "XXXX"; }
+function isValid_5(s5) { return s5 === "TTTTT" || s5 === "XXXXX"; }
+
+
+
 function isValid_1_1(s4) { return s4 === "TXTX" || s4 === "XTXT"; }
 function isValid_2_2(s4, s5) { return s4 === "TTXX" || s4 === "XXTT" || s5 === "TTXXT" || s5 === "XXTTX"; }
 function isValid_3_3(s6, s7, s8) {
@@ -81,6 +109,7 @@ function TinHieuMuaBan(ArrayKQ) {
     return { huong: "null", type: "null" };
   }
 
+  const s3 = getLastTX(ArrayKQ, 3);
   const s4 = getLastTX(ArrayKQ, 4);
   const s5 = getLastTX(ArrayKQ, 5);
   const s6 = getLastTX(ArrayKQ, 6);
@@ -89,6 +118,20 @@ function TinHieuMuaBan(ArrayKQ) {
   const s9 = getLastTX(ArrayKQ, 9);
   const s10 = getLastTX(ArrayKQ, 10);
 
+
+
+  // ==================================================================== 1-Create =============================================
+  if (lockState[TYPES.TYPE_1_create]) {
+    if (!isValid_1_Create(s3)) lockState[TYPES.TYPE_1_create] = false;
+  } else {
+    if (s3 === "XTX" || s3 === "TXT") {
+      lockState[TYPES.TYPE_1_create] = true;
+      return {
+        huong: s3 === "XTX" ? X : T,
+        type: TYPES.TYPE_1_create
+      };
+    }
+  }
 
   // ==================================================================== 1-1 =============================================
   if (lockState[TYPES.TYPE_1_1]) {
@@ -117,6 +160,11 @@ function TinHieuMuaBan(ArrayKQ) {
       };
     }
   }
+
+
+
+
+
   // ==================================================================== 2- 2 =============================================
 
 
@@ -143,6 +191,22 @@ function TinHieuMuaBan(ArrayKQ) {
       };
     }
   }
+
+
+  // ==================================================================== 3-Create =============================================
+  if (lockState[TYPES.TYPE_3_create]) {
+    if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_create] = false;
+  } else {
+    if (s7 === "XTXXXTT" || s7 === "TXTTTXX") {
+      lockState[TYPES.TYPE_3_create] = true;
+      return {
+        huong: s7 === "XTXXXTT" ? X : T,
+        type: TYPES.TYPE_3_create
+      };
+    }
+  }
+
+
   // ==================================================================== 3- 3 =============================================
   if (lockState[TYPES.TYPE_3_3]) {
     if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3] = false;
@@ -190,6 +254,20 @@ function TinHieuMuaBan(ArrayKQ) {
       return {
         huong: s7 === "TXXTXXT" ? T : X,
         type: TYPES.TYPE_2_1_PLUS
+      };
+    }
+  }
+
+
+  // ==================================================================== 2-Create =============================================
+  if (lockState[TYPES.TYPE_2_create]) {
+    if (!isValid_2_Create(s5) && !isValid_2_1_2(s5, s6, s7)) lockState[TYPES.TYPE_2_create] = false;
+  } else {
+    if (s5 === "XTXXT" || s5 === "TXTTX") {
+      lockState[TYPES.TYPE_2_create] = true;
+      return {
+        huong: s5 === "XTXXT" ? X : T,
+        type: TYPES.TYPE_2_create
       };
     }
   }
@@ -245,7 +323,30 @@ function TinHieuMuaBan(ArrayKQ) {
       };
     }
   }
+  // ========================================================================== type 4 ===========================================
+  if (lockState[TYPES.TYPE_4]) {
+    if (!isValid_4(s4)) lockState[TYPES.TYPE_4] = false;
+  } else {
+    if (s4 === "TTTT" || s4 === "XXXX") {
+      lockState[TYPES.TYPE_4] = true;
+      return {
+        huong: s4 === "TTTT" ? X : T,
+        type: TYPES.TYPE_4
+      };
+    }
+  }
 
+  if (lockState[TYPES.TYPE_5]) {
+    if (!isValid_5(s5)) lockState[TYPES.TYPE_5] = false;
+  } else {
+    if (s5 === "TTTTT" || s5 === "XXXXX") {
+      lockState[TYPES.TYPE_5] = true;
+      return {
+        huong: s5 === "TTTTT" ? X : T,
+        type: TYPES.TYPE_5
+      };
+    }
+  }
 
   return { huong: "null", type: "null" };
 }
