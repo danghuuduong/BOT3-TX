@@ -95,17 +95,18 @@ async function UI_Table_LuuTru(page) {
         "ID", "Type", "FOMO", "Vô", "Số Ngầm", "Thếp",
         "Số Tiền", "Win", "Lost", "Lãi",
         "A", "B", "C", "D", "E",
-        "A1", "A2", "A3", "A4", "A5",
-        "Cháy"
+        "Cháy",
+        "STOP"        // ✅ cuối cùng
       ];
+
 
 
       const widths = [
         "30px", "70px", "50px", "60px", "60px", "90px",
         "50px", "45px", "45px", "65px",
         "35px", "35px", "35px", "35px", "35px",
-        "35px", "35px", "35px", "35px", "35px",
-        "35px",
+        "35px",       // Cháy
+        "40px",       // ✅ STOP (cuối)
       ];
 
 
@@ -155,7 +156,7 @@ async function UI_Update_Table(page, data) {
         item.isFomo ? "Fomo" : "Bẻ🔥",
         item.isTrading ? item.huong === "T" ? "⚫" : "⚪" : "Chưa",
         `${item.thepChoNgam}/${item.ngam} ${icon} `,
-        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/${10} Thếp`,
+        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/${5} Thếp`,
         item.ngam && !item.isNgamDone ? 'Chưa Vô' : item.vol,
         item.win,
         item.lost,
@@ -163,9 +164,10 @@ async function UI_Update_Table(page, data) {
 
         item.A, item.B, item.C, item.D, item.E,
 
-        item.A1, item.A2, item.A3, item.A4, item.A5,
+        // item.A1, item.A2, item.A3, item.A4, item.A5,
 
         item.deal ? `${item.deal} 🐤` : "-",
+        item.isStop ? "🔴" : "🟢",           // ✅ STOP CUỐI
       ];
 
 
@@ -187,99 +189,6 @@ async function UI_Update_Table(page, data) {
 
 
 }
-
-
-
-
-async function UI_History(page) {
-  await page.evaluate(() => {
-    if (!document.getElementById("history-container")) {
-      const container = document.createElement("div");
-      container.id = "history-container";
-      Object.assign(container.style, {
-        position: "fixed",
-        top: "33px",
-        right: "10px",
-        width: "200px",
-        maxHeight: "530px",
-        minHeight: "300px",
-        overflowY: "auto",
-        backgroundColor: "#fff",
-        border: "1px solid #000",
-        borderRadius: "5px",
-        padding: "5px",
-        fontSize: "12px",
-        fontFamily: "monospace",
-        zIndex: 9999,
-      });
-
-      // ===== BUTTON TOGGLE =====
-      const toggleBtn = document.createElement("div");
-      toggleBtn.innerText = "▼";
-      Object.assign(toggleBtn.style, {
-        position: "fixed",  // ngoài container
-        top: "10px",
-        right: "10px",
-        fontSize: "14px",
-        padding: "2px 6px",
-        cursor: "pointer",
-        background: "#FFFFFF",     // xanh dương nhạt
-        border: "1px solid #000",
-        borderRadius: "3px",
-        userSelect: "none",
-        zIndex: 10000,
-      });
-
-      let isHidden = false;
-
-      toggleBtn.onclick = () => {
-        isHidden = !isHidden;
-        if (isHidden) {
-          container.style.display = "none";
-          toggleBtn.style.top = "10px";
-          toggleBtn.innerText = "▲";
-        } else {
-          container.style.display = "block";
-          toggleBtn.style.top = "10px";
-          toggleBtn.innerText = "▼";
-        }
-      };
-
-      document.body.appendChild(toggleBtn);
-      document.body.appendChild(container);
-    }
-  });
-}
-async function UI_Update_History(page, history) {
-  await page.evaluate((history) => {
-    const container = document.getElementById("history-container");
-    if (!container) return;
-
-    container.innerHTML = ""; // xóa cũ
-
-    history.forEach(item => {
-      const div = document.createElement("div");
-      div.style.marginBottom = "6px";
-      div.style.borderBottom = "1px dashed #ccc";
-      div.style.paddingBottom = "2px";
-
-      div.innerHTML = `
-        <div>${item.time}: ${item.type} - ${item.huong}</div>
-        <div>Thếp: ${item.thep}, Vol: ${item.vol}K 
-        ${item.status !== "null" ?
-          item.status === "win" ? '✅' : 'X'
-          : ''}</div>
-      `;
-
-      container.appendChild(div);
-    });
-
-    // tự scroll xuống cuối
-    container.scrollTop = container.scrollHeight;
-
-  }, history);
-}
-
 
 async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 1000) {
   await page.evaluate(({ x, y, size, icon, id, timeoutMs }) => {
@@ -327,7 +236,4 @@ async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeo
   }, { x, y, size, icon, id, timeoutMs });
 }
 
-
-
-
-module.exports = { UI_MouseClick, UI_Update_Table, UI_Table_LuuTru, UI_Update_History, UI_History, UI_TieuDiem };
+module.exports = { UI_MouseClick, UI_Update_Table, UI_Table_LuuTru, UI_TieuDiem };

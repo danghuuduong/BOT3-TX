@@ -1,4 +1,4 @@
-function handleGetTien(thep, monyTong, phantram = 10) {
+function handleGetTien(thep, monyTong, phantram ) {
   const tienPhanTram = monyTong * (phantram / 100);
   const level = Math.floor(tienPhanTram / 85);
   if (level === 0) return 0;

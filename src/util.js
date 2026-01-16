@@ -4,18 +4,18 @@ const X = "X";
 // ================= TYPES =================
 
 const TYPES = {
-  TYPE_1_create: "TYPE_1_create", // new
+  TYPE_1_create: "1_CREATE", // new
 
   TYPE_1_1: "1-1",
   TYPE_1_1_PLUS: "1-1 Plus",
 
 
-  TYPE_2_create: "TYPE_2_create", // new
+  TYPE_2_create: "2_CREATE", // new
   TYPE_2_2: "2-2",
   TYPE_2_2_PLUS: "2-2 Plus",
 
 
-  TYPE_3_create: "TYPE_3_create", // new
+  TYPE_3_create: "3_CREATE", // new
   TYPE_3_3: "3-3",
   TYPE_3_3_PLUS: "3-3 Plus",
 
