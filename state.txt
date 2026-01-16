@@ -3,16 +3,16 @@ soDuLonNhat=490
 phanTramGiaoDich=18
 profitAll=0
 
-ArrayKQ=T,X,T,T,T,X,T,X,X,X,X,X,T
+ArrayKQ=X,T,T,T,X,T,X,X,X,X,X,T,X
 
 LuutruLongmach=
 [
   {
     "id": 1,
-    "isTrading": false,
-    "huong": "null",
+    "isTrading": true,
+    "huong": "X",
     "profit": 0,
-    "thepChoNgam": 0,
+    "thepChoNgam": 1,
     "isNgamDone": false,
     "ngam": 1,
     "thep": 0,
@@ -30,14 +30,14 @@ LuutruLongmach=
   },
   {
     "id": 2,
-    "isTrading": false,
-    "huong": "null",
+    "isTrading": true,
+    "huong": "T",
     "profit": 0,
     "thepChoNgam": 1,
     "isNgamDone": true,
     "ngam": 1,
-    "thep": 0,
-    "vol": 0,
+    "thep": 1,
+    "vol": 2,
     "win": 0,
     "lost": 0,
     "A": 0,
