@@ -30,7 +30,6 @@ const TYPES = {
 
   TYPE_4: "4",
   TYPE_5: "5",
-
 };
 
 // ================= LOCK STATE =================
@@ -61,6 +60,7 @@ const lockState = {
   [TYPES.TYPE_5]: false,
 
 };
+
 
 
 // ================= HELPERS =================
