@@ -415,6 +415,8 @@ async function ThucHienGiaoDich() {
 
           await clickTheoTinhVol(page, tinhVol, "🎯")
 
+          const delay = 500 + Math.floor(Math.random() * 1501); // 500 → 2000
+          await page.waitForTimeout(delay);
 
           await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
           await page.mouse.click(X_Submit, Y_Submit);
@@ -662,7 +664,7 @@ async function clickN(page, x, y, n, icon = "🖱️") {
     await page.mouse.move(x, y);
     await page.mouse.click(x, y);
 
-    const delay = 100 + Math.floor(Math.random() * 51); // 100 → 150
+    const delay = 50 + Math.floor(Math.random() * 151); // 50 → 200
     await page.waitForTimeout(delay);
   }
 }

@@ -190,7 +190,7 @@ async function UI_Update_Table(page, data) {
 
 }
 
-async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 1000) {
+async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 2000) {
   await page.evaluate(({ x, y, size, icon, id, timeoutMs }) => {
     // xóa cũ nếu còn
     const old = document.getElementById(id);
