@@ -47,14 +47,14 @@ async function UI_Table_LuuTru(page) {
       const toggleBtn = document.createElement("div");
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
-        position: "fixed",          // luôn nằm ngoài table
-        bottom: `209px`, // 10px trên table
+        position: "fixed",
+        bottom: `209px`,
         left: "50%",
         transform: "translateX(-50%)",
         fontSize: "14px",
         padding: "2px 6px",
         cursor: "pointer",
-        background: "#FFFFFF",     // xanh dương nhạt
+        background: "#fff",
         border: "1px solid #000",
         borderRadius: "3px",
         userSelect: "none",
@@ -67,12 +67,10 @@ async function UI_Table_LuuTru(page) {
         isHidden = !isHidden;
         if (isHidden) {
           container.style.display = "none";
-          toggleBtn.style.bottom = "10px";  // xuống dưới màn hình
-          toggleBtn.style.top = "auto";     // reset top
+          toggleBtn.style.bottom = "10px";
           toggleBtn.innerText = "▲";
         } else {
           container.style.display = "block";
-          // toggleBtn.style.top = `${container.getBoundingClientRect().top - 10}px`;
           toggleBtn.style.bottom = `209px`;
           toggleBtn.innerText = "▼";
         }
@@ -92,23 +90,18 @@ async function UI_Table_LuuTru(page) {
       });
 
       const headers = [
-        "ID", "Type", "FOMO", "Vô", "Số Ngầm", "Thếp",
+        "ID", "Type", "FOMO", "Vô", "Ngầm", "Thếp",
         "Số Tiền", "Win", "Lost", "Lãi",
         "A", "B", "C", "D", "E",
-        "Cháy",
-        "STOP"        // ✅ cuối cùng
+        "Cháy", "STOP"
       ];
-
-
 
       const widths = [
-        "30px", "70px", "50px", "60px", "60px", "90px",
+        "30px", "70px", "50px", "60px", "70px", "90px",
         "50px", "45px", "45px", "65px",
         "35px", "35px", "35px", "35px", "35px",
-        "35px",       // Cháy
-        "40px",       // ✅ STOP (cuối)
+        "35px", "60px"
       ];
-
 
       const thead = document.createElement("thead");
       const tr = document.createElement("tr");
@@ -140,23 +133,26 @@ async function UI_Table_LuuTru(page) {
   });
 }
 
+
 async function UI_Update_Table(page, data) {
   await page.evaluate((rows) => {
     const tbody = document.getElementById("longmach-body");
     if (!tbody) return;
+
     tbody.innerHTML = "";
 
     rows.forEach(item => {
       const tr = document.createElement("tr");
       const icon = item.isNgamDone ? '✅' : '';
 
+      // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
         item.id,
         item.type,
         item.isFomo ? "Fomo" : "Bẻ🔥",
         item.isTrading ? item.huong === "T" ? "⚫" : "⚪" : "Chưa",
-        `${item.thepChoNgam}/${item.ngam} ${icon} `,
-        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/${5} Thếp`,
+        `${item.thepChoNgam}/${item.ngam} ${icon}`,
+        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/5 Thếp`,
         item.ngam && !item.isNgamDone ? 'Chưa Vô' : item.vol,
         item.win,
         item.lost,
@@ -164,31 +160,48 @@ async function UI_Update_Table(page, data) {
 
         item.A, item.B, item.C, item.D, item.E,
 
-        // item.A1, item.A2, item.A3, item.A4, item.A5,
-
         item.deal ? `${item.deal} 🐤` : "-",
-        item.isStop ? "🔴" : "🟢",           // ✅ STOP CUỐI
       ];
-
 
       cols.forEach(v => {
         const td = document.createElement("td");
         td.innerText = v;
         Object.assign(td.style, {
-          border: "1px solid #000",  // màu đen
+          border: "1px solid #000",
           padding: "2px 4px",
-          color: "#000",              // text màu đen
           textAlign: "center",
+          color: "#000",
         });
         tr.appendChild(td);
       });
 
+      // ===== STOP (CLICK ĐƯỢC) =====
+      const stopTd = document.createElement("td");
+      stopTd.innerText = item.isStop ? "🔴 STOP" : "🟢 RUN";
+
+      Object.assign(stopTd.style, {
+        border: "1px solid #000",
+        textAlign: "center",
+        cursor: "pointer",
+        userSelect: "none",
+        fontWeight: "bold",
+      });
+
+      stopTd.addEventListener("click", (e) => {
+        e.stopPropagation();
+        window.postMessage({
+          type: "STOP_CLICK",
+          stopId: item.id   // ✅ QUAN TRỌNG
+        }, "*");
+      });
+
+      tr.appendChild(stopTd);
+      
       tbody.appendChild(tr);
     });
   }, data);
-
-
 }
+
 
 async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 2000) {
   await page.evaluate(({ x, y, size, icon, id, timeoutMs }) => {

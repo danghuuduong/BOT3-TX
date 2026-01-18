@@ -212,22 +212,23 @@ async function handleStop() {
 
   await page.exposeFunction(
     "applyCaiDatVon",
-    async (soDu, soDuMax, percent, stopId) => {
+    async (soDu, soDuMax, percent, stopId, ngam) => {
       soDuTaiKhoan = soDu;
       soDuLonNhat = soDuMax;
       phanTramGiaoDich = percent;
 
-      // ✅ TOGGLE CHẶN / MỞ ID GIAO DỊCH
-      if (stopId > 0) {
+      // ===== UPDATE NGẦM THEO ID =====
+      if (stopId > 0 && ngam > 0) {
         const item = LuutruLongmach.find(i => i.id === stopId);
         if (item) {
-          updateAray(stopId, { isStop: !item.isStop });
-          await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
+          updateAray(stopId, { ngam });
+          await UI_Update_Table(page, LuutruLongmach);
         }
       }
 
       await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);
       saveStateTXT();
+
       await UI_Update_CaiDatVon(
         page,
         soDuTaiKhoan,
@@ -236,6 +237,29 @@ async function handleStop() {
       );
     }
   );
+
+  // ===== CLICK STOP TRONG TABLE =====
+  await page.exposeFunction("__UI_EVENT__", async ({ type, stopId }) => {
+    if (type === "STOP_CLICK") {
+      const item = LuutruLongmach.find(i => i.id === stopId);
+      if (!item) return;
+      updateAray(stopId, { isStop: !item.isStop });
+      await UI_Update_Table(page, LuutruLongmach);
+    }
+  });
+
+  // ===== BẮT MESSAGE TỪ UI =====
+  await page.evaluate(() => {
+    if (window.__UI_EVENT_BOUND__) return;
+    window.__UI_EVENT_BOUND__ = true;
+
+    window.addEventListener("message", (e) => {
+      if (e.data?.type) {
+        window.__UI_EVENT__(e.data);
+      }
+    });
+  });
+
 
 
   // Tạo overlay nhiều điểm
@@ -724,7 +748,7 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
           value="${soDuMax}" />
       </div>
 
-      <div style="margin-bottom:10px">
+      <div style="margin-bottom:5px">
         % giao dịch
         <input id="inp-percent" type="number"
           style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
@@ -738,12 +762,20 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
         </span>
       </div>
 
+    
       <div style="margin-bottom:10px">
-        🚫 Chặn ID giao dịch
-        <input id="inp-stop-id" type="number"
-          placeholder="Ví dụ: 1"
-          style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px" />
+         🧩 ID của ngầm
+        <div style="display:flex; gap:6px; margin-top:4px">
+          <input id="inp-stop-id" type="number"
+            placeholder="ID"
+            style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+
+          <input id="inp-ngam" type="number"
+            placeholder="Ngầm"
+            style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+        </div>
       </div>
+
 
       <button id="btn-apply"
         style="width:100%;padding:7px;background:#007bff;color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:bold">
@@ -782,12 +814,13 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
     // ===== APPLY =====
     document.getElementById("btn-apply").onclick = () => {
       const stopId = Number(document.getElementById("inp-stop-id").value || 0);
-
+      const ngam = Number(document.getElementById("inp-ngam").value || 0);
       window.applyCaiDatVon(
         Number(document.getElementById("inp-sodu").value || 0),
         Number(document.getElementById("inp-max").value || 0),
         Number(document.getElementById("inp-percent").value || 0),
-        stopId
+        stopId,
+        ngam
       );
     };
   }, { soDu, soDuMax, percent });
