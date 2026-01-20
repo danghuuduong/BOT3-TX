@@ -118,15 +118,15 @@ const LuutruLongmach = [
   { id: 5, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_1_1_PLUS }, //ngon
   { id: 6, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_1_1_PLUS, isFomo: true },
 
-  { id: 7, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_2_create },
+  { id: 7, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_2_create },
   { id: 8, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_2_create, isFomo: true }, // ngon
   { id: 9, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_2_2 },
   { id: 10, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_2_2, isFomo: true },
   { id: 11, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_2_2_PLUS },
-  { id: 12, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_2_2_PLUS, isFomo: true },
+  { id: 12, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_2_2_PLUS, isFomo: true },
 
   { id: 13, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_3_create },
-  { id: 14, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_3_create, isFomo: true },
+  { id: 14, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: true, type: TYPES.TYPE_3_create, isFomo: true },
   { id: 15, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_3_3 },
   { id: 16, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_3_3, isFomo: true },
   { id: 17, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_3_3_PLUS },
@@ -142,7 +142,7 @@ const LuutruLongmach = [
   { id: 25, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_3_1_PLUS },
   { id: 26, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_3_1_PLUS, isFomo: true },
 
-  { id: 27, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_123 },
+  { id: 27, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_123 },
   // { id: 28, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0,isStop:false , type: TYPES.TYPE_123, isFomo: true },
   { id: 28, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_123_PLUS },
   { id: 29, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0, A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES.TYPE_123_PLUS, isFomo: true },
