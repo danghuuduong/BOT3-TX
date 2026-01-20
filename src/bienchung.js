@@ -3,40 +3,40 @@ const Xiu = "Xiu"
 // ============= Cầu 1 - 1 ==================
 const type01 = "1-1"
 const type02 = "1-1 Plus"
-const type03 = "1-1-Fomo"
-const type04 = "1-1-Plus-Fomo"
+const type03 = "1-1-Dep"
+const type04 = "1-1-Plus-Dep"
 
 
 // ============= Cầu 2 - 2 ==================
 const type05 = "2-2"
 const type06 = "2-2 Plus"
-const type07 = "2-2-Fomo"
-const type08 = "2-2-Plus-Fomo"
+const type07 = "2-2-Dep"
+const type08 = "2-2-Plus-Dep"
 
 
 // ============= Cầu 3 - 3 ==================
 const type09 = "3-3"
 const type10 = "3-3 Plus"
-const type11 = "3-3-Fomo"
-const type12 = "3-3-Plus-Fomo"
+const type11 = "3-3-Dep"
+const type12 = "3-3-Plus-Dep"
 
 // ============= Cầu 2-1-2==================
 const type13 = "2-1"
 const type14 = "2-1 Plus"
-const type15 = "2-1-Fomo"
-const type16 = "2-1-Plus-Fomo"
+const type15 = "2-1-Dep"
+const type16 = "2-1-Plus-Dep"
 
 // ============= Cầu 3-1-3==================
 const type17 = "3-1"
 const type18 = "3-1 Plus"
-const type19 = "3-1-Fomo"
-const type20 = "3-1-Plus-Fomo"
+const type19 = "3-1-Dep"
+const type20 = "3-1-Plus-Dep"
 
 // ============= Cầu 1-2-3==================
 const type21 = "123"
 const type22 = "123 Plus"
-const type23 = "123-Fomo"
-const type24 = "123-Plus-Fomo"
+const type23 = "123-Dep"
+const type24 = "123-Plus-Dep"
 
 module.exports = {
   TinHieuMuaBan,

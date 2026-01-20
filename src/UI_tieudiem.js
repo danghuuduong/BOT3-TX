@@ -1,3 +1,5 @@
+
+
 async function UI_TieuDiem(page, X, Y, width, height, id, color = "red") {
   await page.evaluate(({ X, Y, width, height, id, color }) => {
     let div = document.getElementById(id);
@@ -95,18 +97,25 @@ async function UI_Table_LuuTru(page) {
         "ID", "Type", "FOMO", "Vô", "Số Ngầm", "Thếp",
         "Số Tiền", "Win", "Lost", "Lãi",
         "A", "B", "C", "D", "E",
-        "Cháy",
-        "STOP"        // ✅ cuối cùng
-      ];
 
+        // ✅ BỔ SUNG
+        "A1", "A2", "A3", "A4", "A5",
+
+        "Cháy",
+        "STOP"
+      ];
 
 
       const widths = [
         "30px", "70px", "50px", "60px", "60px", "90px",
         "50px", "45px", "45px", "65px",
         "35px", "35px", "35px", "35px", "35px",
-        "35px",       // Cháy
-        "40px",       // ✅ STOP (cuối)
+
+        // ✅ BỔ SUNG
+        "35px", "35px", "35px", "35px", "35px",
+
+        "35px",
+        "40px",
       ];
 
 
@@ -156,7 +165,7 @@ async function UI_Update_Table(page, data) {
         item.isFomo ? "Fomo" : "Bẻ🔥",
         item.isTrading ? item.huong === "T" ? "⚫" : "⚪" : "Chưa",
         `${item.thepChoNgam}/${item.ngam} ${icon} `,
-        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/${5} Thếp`,
+        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/${10} Thếp`,
         item.ngam && !item.isNgamDone ? 'Chưa Vô' : item.vol,
         item.win,
         item.lost,
@@ -164,7 +173,13 @@ async function UI_Update_Table(page, data) {
 
         item.A, item.B, item.C, item.D, item.E,
 
-        // item.A1, item.A2, item.A3, item.A4, item.A5,
+
+        // ✅ BỔ SUNG
+        item.A1,
+        item.A2,
+        item.A3,
+        item.A4,
+        item.A5,
 
         item.deal ? `${item.deal} 🐤` : "-",
         item.isStop ? "🔴" : "🟢",           // ✅ STOP CUỐI

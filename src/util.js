@@ -1,5 +1,8 @@
 const T = "T";
 const X = "X";
+const Dep = "A";
+const Xau = "B";
+const maxThep = 10;
 
 // ================= TYPES =================
 
@@ -32,6 +35,13 @@ const TYPES = {
   TYPE_5: "5",
 
 };
+const TYPES2 = {
+  typeBeThangDep: "beDep",
+  typeBeThangXau: "beXau",
+  typeSenke: "senke",
+};
+
+
 
 // ================= LOCK STATE =================
 const lockState = {
@@ -70,11 +80,11 @@ function getLastTX(array, n) {
 }
 
 // ================= VALID STRUCTURE =================
-function isValid_1_Create(s3) { return s3 === "TXT" || s3 === "XTX"; }
-function isValid_2_Create(s5) { return s5 === "XTXXT" || s5 === "TXTTX"; }
+// function isValid_1_Create(s3) { return s3 === "TXT" || s3 === "XTX"; }
+// function isValid_2_Create(s5) { return s5 === "XTXXT" || s5 === "TXTTX"; }
 
-function isValid_4(s4) { return s4 === "TTTT" || s4 === "XXXX"; }
-function isValid_5(s5) { return s5 === "TTTTT" || s5 === "XXXXX"; }
+// function isValid_4(s4) { return s4 === "TTTT" || s4 === "XXXX"; }
+// function isValid_5(s5) { return s5 === "TTTTT" || s5 === "XXXXX"; }
 
 
 
@@ -120,18 +130,7 @@ function TinHieuMuaBan(ArrayKQ) {
 
 
 
-  // ==================================================================== 1-Create =============================================
-  if (lockState[TYPES.TYPE_1_create]) {
-    if (!isValid_1_Create(s3)) lockState[TYPES.TYPE_1_create] = false;
-  } else {
-    if (s3 === "XTX" || s3 === "TXT") {
-      lockState[TYPES.TYPE_1_create] = true;
-      return {
-        huong: s3 === "XTX" ? X : T,
-        type: TYPES.TYPE_1_create
-      };
-    }
-  }
+
 
   // ==================================================================== 1-1 =============================================
   if (lockState[TYPES.TYPE_1_1]) {
@@ -193,20 +192,6 @@ function TinHieuMuaBan(ArrayKQ) {
   }
 
 
-  // ==================================================================== 3-Create =============================================
-  if (lockState[TYPES.TYPE_3_create]) {
-    if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_create] = false;
-  } else {
-    if (s7 === "XTXXXTT" || s7 === "TXTTTXX") {
-      lockState[TYPES.TYPE_3_create] = true;
-      return {
-        huong: s7 === "XTXXXTT" ? X : T,
-        type: TYPES.TYPE_3_create
-      };
-    }
-  }
-
-
   // ==================================================================== 3- 3 =============================================
   if (lockState[TYPES.TYPE_3_3]) {
     if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3] = false;
@@ -258,19 +243,6 @@ function TinHieuMuaBan(ArrayKQ) {
     }
   }
 
-
-  // ==================================================================== 2-Create =============================================
-  if (lockState[TYPES.TYPE_2_create]) {
-    if (!isValid_2_Create(s5) && !isValid_2_1_2(s5, s6, s7)) lockState[TYPES.TYPE_2_create] = false;
-  } else {
-    if (s5 === "XTXXT" || s5 === "TXTTX") {
-      lockState[TYPES.TYPE_2_create] = true;
-      return {
-        huong: s5 === "XTXXT" ? X : T,
-        type: TYPES.TYPE_2_create
-      };
-    }
-  }
   // ==================================================================== 3- 1 3=============================================
 
 
@@ -323,31 +295,38 @@ function TinHieuMuaBan(ArrayKQ) {
       };
     }
   }
-  // ========================================================================== type 4 ===========================================
-  if (lockState[TYPES.TYPE_4]) {
-    if (!isValid_4(s4)) lockState[TYPES.TYPE_4] = false;
-  } else {
-    if (s4 === "TTTT" || s4 === "XXXX") {
-      lockState[TYPES.TYPE_4] = true;
-      return {
-        huong: s4 === "TTTT" ? X : T,
-        type: TYPES.TYPE_4
-      };
-    }
+  return { huong: "null", type: "null" };
+}
+
+function TinHieuMuaBanNew(ArrayKQ_XAU) {
+  if (!Array.isArray(ArrayKQ_XAU) || ArrayKQ_XAU.length < 5) {
+    return { huong: "null", type: "null" };
   }
 
-  if (lockState[TYPES.TYPE_5]) {
-    if (!isValid_5(s5)) lockState[TYPES.TYPE_5] = false;
-  } else {
-    if (s5 === "TTTTT" || s5 === "XXXXX") {
-      lockState[TYPES.TYPE_5] = true;
-      return {
-        huong: s5 === "TTTTT" ? X : T,
-        type: TYPES.TYPE_5
-      };
-    }
+  const s2 = getLastTX(ArrayKQ_XAU, 2);
+  const s4 = getLastTX(ArrayKQ_XAU, 4);
+
+  // ==================================================================== 1-1 =============================================
+  if (s2 === "AA") {
+    return {
+      isPheDep: false,
+      type: TYPES2.typeBeThangDep
+    };
   }
 
+  if (s2 === "BB") {
+    return { 
+      isPheDep: true,
+      type: TYPES2.typeBeThangXau };
+  }
+
+
+  if (s4 === "ABAB" || s4 === "BABA") {
+    return {
+      isPheDep: s4 === "BABA" ? true : false,
+      type: TYPES2.typeSenke
+    };
+  }
   return { huong: "null", type: "null" };
 }
 
@@ -371,9 +350,9 @@ function handleGetColor_TX(r, g, b) {
   return "null";
 }
 
-function getHuongForItem(item, huongGoc) {
+function getHuongForItem(tinHieuAINew, huongGoc) {
   if (huongGoc == "null") return "null"
-  if (item.isFomo) {
+  if (tinHieuAINew.isPheDep) {
     return huongGoc === T ? X : T;
   }
   return huongGoc;
@@ -382,10 +361,14 @@ function getHuongForItem(item, huongGoc) {
 // ================= EXPORT =================
 module.exports = {
   TinHieuMuaBan,
+  TinHieuMuaBanNew,
   updateButton,
   handleGetColor_TX,
   getHuongForItem,
   TYPES,
   T,
   X,
+  Dep,
+  Xau,
+  maxThep
 };
