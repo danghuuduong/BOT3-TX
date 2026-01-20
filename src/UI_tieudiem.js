@@ -93,6 +93,7 @@ async function UI_Table_LuuTru(page) {
         "ID", "Type", "FOMO", "Vô", "Ngầm", "Thếp",
         "Số Tiền", "Win", "Lost", "Lãi",
         "A", "B", "C", "D", "E",
+        "A1", "A2", "A3", "A4", "A5",
         "Cháy", "STOP"
       ];
 
@@ -100,8 +101,10 @@ async function UI_Table_LuuTru(page) {
         "30px", "70px", "50px", "60px", "70px", "90px",
         "50px", "45px", "45px", "65px",
         "35px", "35px", "35px", "35px", "35px",
+        "40px", "40px", "40px", "40px", "40px",
         "35px", "60px"
       ];
+
 
       const thead = document.createElement("thead");
       const tr = document.createElement("tr");
@@ -152,7 +155,7 @@ async function UI_Update_Table(page, data) {
         item.isFomo ? "Fomo" : "Bẻ🔥",
         item.isTrading ? item.huong === "T" ? "⚫" : "⚪" : "Chưa",
         `${item.thepChoNgam}/${item.ngam} ${icon}`,
-        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/5 Thếp`,
+        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/15 Thếp`,
         item.ngam && !item.isNgamDone ? 'Chưa Vô' : item.vol,
         item.win,
         item.lost,
@@ -160,8 +163,16 @@ async function UI_Update_Table(page, data) {
 
         item.A, item.B, item.C, item.D, item.E,
 
+        // ✅ 5 CỘT MỚI
+        item.A1 ?? "-",
+        item.A2 ?? "-",
+        item.A3 ?? "-",
+        item.A4 ?? "-",
+        item.A5 ?? "-",
+
         item.deal ? `${item.deal} 🐤` : "-",
       ];
+
 
       cols.forEach(v => {
         const td = document.createElement("td");
@@ -196,7 +207,7 @@ async function UI_Update_Table(page, data) {
       });
 
       tr.appendChild(stopTd);
-      
+
       tbody.appendChild(tr);
     });
   }, data);

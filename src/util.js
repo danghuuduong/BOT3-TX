@@ -1,6 +1,6 @@
 const T = "T";
 const X = "X";
-
+const maxThep = 15
 // ================= TYPES =================
 
 const TYPES = {
@@ -386,6 +386,7 @@ module.exports = {
   handleGetColor_TX,
   getHuongForItem,
   TYPES,
+  maxThep,
   T,
   X,
 };
