@@ -331,18 +331,17 @@ async function ThucHienGiaoDich() {
   saveStateTXT();
   // ========================== ĐẶT LỆNH ==========================
 
-  if (tinHieuAI.huong !== "null") {
-    player.play(LOCK_SOUND, (err) => {
-      if (err) console.log("Sound error:", err);
-    });
-  }
+  // if (tinHieuAI.huong !== "null") {
+  //   player.play(LOCK_SOUND, (err) => {
+  //     // if (err) console.log("Sound error:", err);
+  //   });
+  // }
+
+
 
   const tinHieuAINew = TinHieuMuaBanNew(ArrayKQ_XAU);
   const arrayNew = LuutruLongmach.filter(i => i.type === tinHieuAINew.type && !i.isStop); {
     if (tinHieuAINew.huong !== "null" && tinHieuAI.huong !== "null") {
-      // player.play(LOCK_SOUND, (err) => {
-      //   if (err) console.log("Sound error:", err);
-      // });
 
       for (const item of arrayNew) {
         const huongDanhNew = getHuongForItem(tinHieuAINew, tinHieuAI.huong);
@@ -358,8 +357,6 @@ async function ThucHienGiaoDich() {
             isFomo: tinHieuAINew.isPheDep
           }),
         });
-        console.log('LuutruLongmach', LuutruLongmach);
-
         await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
         saveStateTXT();
       }
@@ -649,7 +646,7 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
           value="${soDuMax}" />
       </div>
 
-      <div style="margin-bottom:10px">
+      <div style="margin-bottom:5px">
         % giao dịch
         <input id="inp-percent" type="number"
           style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
@@ -663,12 +660,20 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
         </span>
       </div>
 
+    
       <div style="margin-bottom:10px">
-        🚫 Chặn ID giao dịch
-        <input id="inp-stop-id" type="number"
-          placeholder="Ví dụ: 1"
-          style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px" />
+         🧩 ID của ngầm
+        <div style="display:flex; gap:6px; margin-top:4px">
+          <input id="inp-stop-id" type="number"
+            placeholder="ID"
+            style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+
+          <input id="inp-ngam" type="number"
+            placeholder="Ngầm"
+            style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+        </div>
       </div>
+
 
       <button id="btn-apply"
         style="width:100%;padding:7px;background:#007bff;color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:bold">
@@ -707,16 +712,18 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
     // ===== APPLY =====
     document.getElementById("btn-apply").onclick = () => {
       const stopId = Number(document.getElementById("inp-stop-id").value || 0);
-
+      const ngam = Number(document.getElementById("inp-ngam").value || 0);
       window.applyCaiDatVon(
         Number(document.getElementById("inp-sodu").value || 0),
         Number(document.getElementById("inp-max").value || 0),
         Number(document.getElementById("inp-percent").value || 0),
-        stopId
+        stopId,
+        ngam
       );
     };
   }, { soDu, soDuMax, percent });
 }
+
 
 async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
   await page.evaluate(({ soDu, soDuMax, percent }) => {
