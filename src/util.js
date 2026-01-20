@@ -34,6 +34,8 @@ const TYPES = {
   TYPE_4: "4",
   TYPE_5: "5",
 
+  TYPE_KHOI_CHAN: "KHOI_CHAN"
+
 };
 const TYPES2 = {
   typeBeThangDep: "beDep",
@@ -69,6 +71,7 @@ const lockState = {
 
   [TYPES.TYPE_4]: false,
   [TYPES.TYPE_5]: false,
+  [TYPES.TYPE_KHOI_CHAN]: false
 
 };
 
@@ -79,6 +82,46 @@ function getLastTX(array, n) {
   return array.slice(-n).join("");
 }
 
+function detectKhoiChanEarly_TX(str) {
+  if (!str || str.length < 5) return null;
+
+  let blocks = [];
+  let count = 1;
+
+  for (let i = 1; i <= str.length; i++) {
+    if (str[i] === str[i - 1]) {
+      count++;
+    } else {
+      blocks.push({ char: str[i - 1], len: count });
+      count = 1;
+    }
+  }
+
+  if (blocks.length < 3) return null;
+
+  const b1 = blocks[blocks.length - 3]; // block chẵn 1
+  const b2 = blocks[blocks.length - 2]; // block chẵn 2
+  const b3 = blocks[blocks.length - 1]; // block quay đầu
+
+  // 2 block chẵn + quay đầu đúng 1
+  if (
+    b1.len >= 2 &&
+    b2.len >= 2 &&
+    b1.char !== b2.char &&
+    b3.len === 1 &&
+    b3.char === b1.char
+  ) {
+    return {
+      huong: b1.char === T ? X : T
+    };
+  }
+
+  return null;
+}
+
+
+
+
 // ================= VALID STRUCTURE =================
 // function isValid_1_Create(s3) { return s3 === "TXT" || s3 === "XTX"; }
 // function isValid_2_Create(s5) { return s5 === "XTXXT" || s5 === "TXTTX"; }
@@ -87,6 +130,9 @@ function getLastTX(array, n) {
 // function isValid_5(s5) { return s5 === "TTTTT" || s5 === "XXXXX"; }
 
 
+function isStillInKhoiChan_TX(str) {
+  return /(T{2,}X{2,}T+|X{2,}T{2,}X+)/.test(str);
+}
 
 function isValid_1_1(s4) { return s4 === "TXTX" || s4 === "XTXT"; }
 function isValid_2_2(s4, s5) { return s4 === "TTXX" || s4 === "XXTT" || s5 === "TTXXT" || s5 === "XXTTX"; }
@@ -133,6 +179,11 @@ function TinHieuMuaBan(ArrayKQ) {
 
 
   // ==================================================================== 1-1 =============================================
+
+
+
+
+
   if (lockState[TYPES.TYPE_1_1]) {
     if (!isValid_1_1(s4)) lockState[TYPES.TYPE_1_1] = false;
   } else {
@@ -160,10 +211,6 @@ function TinHieuMuaBan(ArrayKQ) {
     }
   }
 
-
-
-
-
   // ==================================================================== 2- 2 =============================================
 
 
@@ -190,6 +237,10 @@ function TinHieuMuaBan(ArrayKQ) {
       };
     }
   }
+
+
+
+
 
 
   // ==================================================================== 3- 3 =============================================
@@ -295,6 +346,32 @@ function TinHieuMuaBan(ArrayKQ) {
       };
     }
   }
+
+
+
+
+  // ==================================================================== KHOI CHAN =============================================
+
+  const sKC = ArrayKQ.slice(-20).join("");
+
+  if (lockState[TYPES.TYPE_KHOI_CHAN]) {
+    if (!isStillInKhoiChan_TX(sKC)) {
+      lockState[TYPES.TYPE_KHOI_CHAN] = false;
+    }
+  } else {
+    const signal = detectKhoiChanEarly_TX(sKC);
+    if (signal) {
+      lockState[TYPES.TYPE_KHOI_CHAN] = true;
+      return {
+        huong: signal.huong,
+        type: TYPES.TYPE_KHOI_CHAN
+      };
+    }
+  }
+
+
+
+
   return { huong: "null", type: "null" };
 }
 
@@ -306,29 +383,37 @@ function TinHieuMuaBanNew(ArrayKQ_XAU) {
   const s2 = getLastTX(ArrayKQ_XAU, 2);
   const s4 = getLastTX(ArrayKQ_XAU, 4);
 
+
+
+
+
   // ==================================================================== 1-1 =============================================
-  if (s2 === "AA") {
+  if (s2 === "A") {
     return {
       isPheDep: false,
       type: TYPES2.typeBeThangDep
     };
   }
 
-  if (s2 === "BB") {
-    return { 
+  if (s2 === "B") {
+    return {
       isPheDep: true,
-      type: TYPES2.typeBeThangXau };
+      type: TYPES2.typeBeThangXau
+    };
   }
 
 
-  if (s4 === "ABAB" || s4 === "BABA") {
+  if (s4 === "ABA" || s4 === "BAB") {
     return {
-      isPheDep: s4 === "BABA" ? true : false,
+      isPheDep: s4 === "ABA" ? true : false,
       type: TYPES2.typeSenke
     };
   }
   return { huong: "null", type: "null" };
 }
+
+
+
 
 // ================= UI =================
 async function updateButton(page, text, color) {

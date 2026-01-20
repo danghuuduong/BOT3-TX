@@ -71,7 +71,7 @@ let page;
 let countdown = 70;
 let countdownInterval;
 
-const MAX_LENGTH = 15;
+const MAX_LENGTH = 10;
 const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
@@ -85,15 +85,15 @@ let profitAll = 0;
 
 const LuutruLongmach = [
   {
-    id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: true, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
+    id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 1, thep: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, A4: 0, A5: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isFomo: false
   },
   {
-    id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: true, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
+    id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 1, thep: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, A4: 0, A5: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isFomo: true
   },
   {
-    id: 3, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: true, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
+    id: 3, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 1, thep: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, A4: 0, A5: 0, deal: 0, isStop: false, type: TYPES2.typeSenke, isFomo: false
   },
 ];
@@ -290,11 +290,11 @@ async function ThucHienGiaoDich() {
               C: item.thep === 3 ? item.C + 1 : item.C,
               D: item.thep === 4 ? item.D + 1 : item.D,
               E: item.thep === 5 ? item.E + 1 : item.E,
-              A1: item.thep === 6 ? item.A + 1 : item.A1,
-              A2: item.thep === 7 ? item.A + 1 : item.A2,
-              A3: item.thep === 8 ? item.A + 1 : item.A3,
-              A4: item.thep === 9 ? item.A + 1 : item.A4,
-              A5: item.thep === 10 ? item.A + 1 : item.A5,
+              A1: item.thep === 6 ? item.A1 + 1 : item.A1,
+              A2: item.thep === 7 ? item.A2 + 1 : item.A2,
+              A3: item.thep === 8 ? item.A3 + 1 : item.A3,
+              A4: item.thep === 9 ? item.A4 + 1 : item.A4,
+              A5: item.thep === 10 ? item.A5 + 1 : item.A5,
               vol: 0,
               ...(item?.ngam && item?.isNgamDone ? { isNgamDone: false, thepChoNgam: 0 } : {}),
               thep: 0,
@@ -348,6 +348,8 @@ async function ThucHienGiaoDich() {
             isFomo: tinHieuAINew.isPheDep
           }),
         });
+        console.log('LuutruLongmach', LuutruLongmach);
+
         await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
         saveStateTXT();
       }
