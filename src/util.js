@@ -1,6 +1,6 @@
 const T = "T";
 const X = "X";
-const maxThep = 15
+const maxThep = 10
 // ================= TYPES =================
 
 const TYPES = {
