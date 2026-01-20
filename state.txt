@@ -1,0 +1,92 @@
+soDuTaiKhoan=1000
+soDuLonNhat=1000
+phanTramGiaoDich=25
+profitAll=0
+
+ArrayKQ=T,X,X,T,T,X,T,X,X,X
+ArrayKQ_XAU=B,B
+
+LuutruLongmach=
+[
+  {
+    "id": 1,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 0,
+    "thepChoNgam": 0,
+    "isNgamDone": false,
+    "ngam": 1,
+    "thep": 0,
+    "vol": 0,
+    "win": 0,
+    "lost": 0,
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0,
+    "E": 0,
+    "A1": 0,
+    "A2": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "deal": 0,
+    "isStop": false,
+    "type": "beDep",
+    "isFomo": false
+  },
+  {
+    "id": 2,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 0,
+    "thepChoNgam": 0,
+    "isNgamDone": false,
+    "ngam": 1,
+    "thep": 0,
+    "vol": 0,
+    "win": 0,
+    "lost": 0,
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0,
+    "E": 0,
+    "A1": 0,
+    "A2": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "deal": 0,
+    "isStop": false,
+    "type": "beXau",
+    "isFomo": true
+  },
+  {
+    "id": 3,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 0,
+    "thepChoNgam": 0,
+    "isNgamDone": false,
+    "ngam": 1,
+    "thep": 0,
+    "vol": 0,
+    "win": 0,
+    "lost": 0,
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0,
+    "E": 0,
+    "A1": 0,
+    "A2": 0,
+    "A3": 0,
+    "A4": 0,
+    "A5": 0,
+    "deal": 0,
+    "isStop": false,
+    "type": "senke",
+    "isFomo": false
+  }
+]

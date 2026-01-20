@@ -229,10 +229,10 @@ function TinHieuMuaBan(ArrayKQ) {
   if (lockState[TYPES.TYPE_2_2_PLUS]) {
     if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2_PLUS] = false;
   } else {
-    if (s7 === "XTXXTTX" || s7 === "TXTTXXT") {
+    if (s6 === "TXXTTX" || s6 === "XTTXXT") {
       lockState[TYPES.TYPE_2_2_PLUS] = true;
       return {
-        huong: s7 === "XTXXTTX" ? T : X,
+        huong: s6 === "TXXTTX" ? T : X,
         type: TYPES.TYPE_2_2_PLUS
       };
     }
@@ -285,10 +285,10 @@ function TinHieuMuaBan(ArrayKQ) {
   if (lockState[TYPES.TYPE_2_1_PLUS]) {
     if (!isValid_2_1_2(s5, s6, s7)) lockState[TYPES.TYPE_2_1_PLUS] = false;
   } else {
-    if (s7 === "TXXTXXT" || s7 === "XTTXTTX") {
+    if (s6 === "XXTXXT" || s6 === "TTXTTX") {
       lockState[TYPES.TYPE_2_1_PLUS] = true;
       return {
-        huong: s7 === "TXXTXXT" ? T : X,
+        huong: s6 === "XXTXXT" ? T : X,
         type: TYPES.TYPE_2_1_PLUS
       };
     }

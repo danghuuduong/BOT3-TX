@@ -331,9 +331,19 @@ async function ThucHienGiaoDich() {
   saveStateTXT();
   // ========================== ĐẶT LỆNH ==========================
 
+  if (tinHieuAI.huong !== "null") {
+    player.play(LOCK_SOUND, (err) => {
+      if (err) console.log("Sound error:", err);
+    });
+  }
+
   const tinHieuAINew = TinHieuMuaBanNew(ArrayKQ_XAU);
   const arrayNew = LuutruLongmach.filter(i => i.type === tinHieuAINew.type && !i.isStop); {
     if (tinHieuAINew.huong !== "null" && tinHieuAI.huong !== "null") {
+      // player.play(LOCK_SOUND, (err) => {
+      //   if (err) console.log("Sound error:", err);
+      // });
+
       for (const item of arrayNew) {
         const huongDanhNew = getHuongForItem(tinHieuAINew, tinHieuAI.huong);
         const isNgam = item.ngam && !item.isNgamDone;
