@@ -85,15 +85,15 @@ let profitAll = 0;
 
 const LuutruLongmach = [
   {
-    id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 1, thep: 0, vol: 0, win: 0, lost: 0,
+    id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, A4: 0, A5: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isFomo: false
   },
   {
-    id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 1, thep: 0, vol: 0, win: 0, lost: 0,
+    id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, A4: 0, A5: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isFomo: true
   },
   {
-    id: 3, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 1, thep: 0, vol: 0, win: 0, lost: 0,
+    id: 3, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, A4: 0, A5: 0, deal: 0, isStop: false, type: TYPES2.typeSenke, isFomo: false
   },
 ];
@@ -158,12 +158,10 @@ async function handleStop() {
       phanTramGiaoDich = percent;
 
       // ✅ TOGGLE CHẶN / MỞ ID GIAO DỊCH
-      if (stopId > 0) {
-        const item = LuutruLongmach.find(i => i.id === stopId);
-        if (item) {
-          updateAray(stopId, { isStop: !item.isStop });
-          await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
-        }
+      const item = LuutruLongmach.find(i => i.id === stopId);
+      if (item) {
+        updateAray(stopId, { isStop: !item.isStop });
+        await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
       }
 
       await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);

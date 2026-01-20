@@ -376,37 +376,36 @@ function TinHieuMuaBan(ArrayKQ) {
 }
 
 function TinHieuMuaBanNew(ArrayKQ_XAU) {
-  if (!Array.isArray(ArrayKQ_XAU) || ArrayKQ_XAU.length < 1) {
+  if (!Array.isArray(ArrayKQ_XAU) || ArrayKQ_XAU.length < 2) {
     return { huong: "null", type: "null" };
   }
 
-  const s1= getLastTX(ArrayKQ_XAU, 1);
+  const s2= getLastTX(ArrayKQ_XAU, 2);
 
 
   // ==================================================================== 1-1 =============================================
-  if (s1 === "A") {
+  if (s2 === "AA") {
     return {
       isPheDep: false,
       type: TYPES2.typeBeThangDep
     };
   }
 
-  if (s1 === "B") {
-    return {
+  if (s2 === "BB") {
+    return { 
       isPheDep: true,
-      type: TYPES2.typeBeThangXau
-    };
+      type: TYPES2.typeBeThangXau };
   }
 
-  if (!Array.isArray(ArrayKQ_XAU) || ArrayKQ_XAU.length < 3) {
+  if (!Array.isArray(ArrayKQ_XAU) || ArrayKQ_XAU.length < 4) {
     return { huong: "null", type: "null" };
   }
-  const s3 = getLastTX(ArrayKQ_XAU, 3);
+  const s4 = getLastTX(ArrayKQ_XAU, 4);
 
 
-  if (s3 === "ABA" || s3 === "BAB") {
+  if (s4 === "ABAB" || s4 === "BABA") {
     return {
-      isPheDep: s3 === "ABA" ? true : false,
+      isPheDep: s4 === "BABA" ? true : false,
       type: TYPES2.typeSenke
     };
   }

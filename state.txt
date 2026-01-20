@@ -1,10 +1,10 @@
-soDuTaiKhoan=1007.8399999999999
-soDuLonNhat=1007.8399999999999
+soDuTaiKhoan=1109.7000000000005
+soDuLonNhat=1130.7000000000005
 phanTramGiaoDich=25
-profitAll=7.84
+profitAll=109.69999999999996
 
-ArrayKQ=T,X,T,T,X,X,X,T,X,T
-ArrayKQ_XAU=B,B,A,B,A,A,A,B,B,A,B,B,A,B
+ArrayKQ=T,X,T,X,T,X,T,T,T,X
+ArrayKQ_XAU=A,B,A,B,A,B,A,B,B,B,A,B,B,B,A,A,A,B,A,B,A,A,B,B,B,B,A,A,A,B,B,B,B,A,B,A,A,A,B,A,A,B,B,A,B,A,A,A,B,B,B,B,B,B,A,B,A,A,A,A
 
 LuutruLongmach=
 [
@@ -12,16 +12,16 @@ LuutruLongmach=
     "id": 1,
     "isTrading": false,
     "huong": "null",
-    "profit": 0,
+    "profit": 22.659999999999997,
     "thepChoNgam": 0,
     "isNgamDone": false,
-    "ngam": 1,
-    "thep": 0,
+    "ngam": 0,
+    "thep": 2,
     "vol": 0,
-    "win": 0,
-    "lost": 0,
-    "A": 0,
-    "B": 0,
+    "win": 6,
+    "lost": 6,
+    "A": 2,
+    "B": 4,
     "C": 0,
     "D": 0,
     "E": 0,
@@ -37,21 +37,21 @@ LuutruLongmach=
   },
   {
     "id": 2,
-    "isTrading": true,
-    "huong": "X",
-    "profit": 7.84,
-    "thepChoNgam": 1,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 52.47999999999999,
+    "thepChoNgam": 0,
     "isNgamDone": false,
-    "ngam": 1,
+    "ngam": 0,
     "thep": 0,
     "vol": 0,
-    "win": 2,
-    "lost": 0,
-    "A": 2,
-    "B": 0,
-    "C": 0,
+    "win": 6,
+    "lost": 10,
+    "A": 1,
+    "B": 2,
+    "C": 2,
     "D": 0,
-    "E": 0,
+    "E": 1,
     "A1": 0,
     "A2": 0,
     "A3": 0,
@@ -66,19 +66,19 @@ LuutruLongmach=
     "id": 3,
     "isTrading": false,
     "huong": "null",
-    "profit": 0,
+    "profit": 34.559999999999995,
     "thepChoNgam": 0,
     "isNgamDone": false,
-    "ngam": 1,
+    "ngam": 0,
     "thep": 0,
     "vol": 0,
-    "win": 0,
-    "lost": 0,
-    "A": 0,
-    "B": 0,
+    "win": 5,
+    "lost": 5,
+    "A": 3,
+    "B": 1,
     "C": 0,
     "D": 0,
-    "E": 0,
+    "E": 1,
     "A1": 0,
     "A2": 0,
     "A3": 0,
@@ -87,6 +87,6 @@ LuutruLongmach=
     "deal": 0,
     "isStop": false,
     "type": "senke",
-    "isFomo": false
+    "isFomo": true
   }
 ]
