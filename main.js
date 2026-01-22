@@ -17,9 +17,9 @@ const { PNG } = require("pngjs");
 const fs = require("fs");
 
 const TYPES2 = {
-  typeBeThangDep: "beDep",
-  typeBeThangXau: "beXau",
-  typeSenke: "senke",
+  typeBeThangDep: "Bên Xấu",
+  typeBeThangXau: "Bên Đẹp",
+  typeSenke: "Sen Kẽ",
 };
 
 
@@ -78,6 +78,8 @@ let muaGiaLap = "null"
 
 let soDuTaiKhoan = 1000;
 let soDuLonNhat = 1000;
+let nguongTienDat = 6000;
+let soTienMuonRut = 2000;
 let phanTramGiaoDich = 30;
 
 let profitAll = 0;
@@ -144,36 +146,51 @@ async function handleStop() {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://web.sunwin.biz/", {
+  await page.goto("https://www.facebook.com/", {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
 
 
-  await page.exposeFunction(
-    "applyCaiDatVon",
-    async (soDu, soDuMax, percent, stopId) => {
-      soDuTaiKhoan = soDu;
-      soDuLonNhat = soDuMax;
-      phanTramGiaoDich = percent;
+await page.exposeFunction(
+  "applyCaiDatVon",
+  async (
+    soDu,
+    soDuMax,
+    percent,
+    stopId,
+    nguongRut,
+    soTienRut
+  ) => {
+    soDuTaiKhoan = soDu;
+    soDuLonNhat = soDuMax;
+    phanTramGiaoDich = percent;
 
-      // ✅ TOGGLE CHẶN / MỞ ID GIAO DỊCH
-      const item = LuutruLongmach.find(i => i.id === stopId);
-      if (item) {
-        updateAray(stopId, { isStop: !item.isStop });
-        await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
-      }
+    // ✅ GẮN VÀO BIẾN GLOBAL (KHÔNG LOGIC)
+    nguongTienDat = nguongRut;
+    soTienMuonRut = soTienRut;
 
-      await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);
-      saveStateTXT();
-      await UI_Update_CaiDatVon(
-        page,
-        soDuTaiKhoan,
-        soDuLonNhat,
-        phanTramGiaoDich
-      );
+    // ===== LOGIC CŨ GIỮ NGUYÊN =====
+    const item = LuutruLongmach.find(i => i.id === stopId);
+    if (item) {
+      updateAray(stopId, { isStop: !item.isStop });
+      await UI_Update_Table(page, LuutruLongmach);
     }
-  );
+
+    await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);
+    saveStateTXT();
+
+    // ===== UPDATE UI =====
+    await UI_Update_CaiDatVon(
+      page,
+      soDuTaiKhoan,
+      soDuLonNhat,
+      phanTramGiaoDich
+    );
+  }
+);
+
+
 
 
   // Tạo overlay nhiều điểm
@@ -592,157 +609,186 @@ async function clickN(page, x, y, n, icon = "🖱️") {
 }
 
 async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
-  await page.evaluate(({ soDu, soDuMax, percent }) => {
-    if (document.getElementById("ui-caidat-von")) return;
+  await page.evaluate( ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut }) => {
+      if (document.getElementById("ui-caidat-von")) return;
 
-    const container = document.createElement("div");
-    container.id = "ui-caidat-von";
-    Object.assign(container.style, {
-      position: "fixed",
-      top: "33px",
-      right: "10px",
-      width: "210px",
-      backgroundColor: "#fff",
-      border: "1px solid #000",
-      borderRadius: "8px",
-      padding: "10px 16px 14px 16px",
-      fontSize: "12px",
-      fontFamily: "monospace",
-      zIndex: 9999,
-      boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-    });
+      const container = document.createElement("div");
+      container.id = "ui-caidat-von";
+      Object.assign(container.style, {
+        position: "fixed",
+        top: "33px",
+        right: "10px",
+        width: "210px",
+        backgroundColor: "#fff",
+        border: "1px solid #000",
+        borderRadius: "8px",
+        padding: "10px 16px 14px 16px",
+        fontSize: "12px",
+        fontFamily: "monospace",
+        zIndex: 9999,
+        boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+      });
 
-    // ✅ SỬA LOGIC % Ở ĐÂY
-    const tienGD = percent ? Math.floor(soDuMax * percent / 100) : 0;
-    container.innerHTML = `
-      <style>
-        #ui-caidat-von input[type=number]::-webkit-inner-spin-button,
-        #ui-caidat-von input[type=number]::-webkit-outer-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
-        #ui-caidat-von input[type=number] {
-          -moz-appearance: textfield;
-        }
-      </style>
+      const tienGD = percent ? Math.floor(soDuMax * percent / 100) : 0;
+      container.innerHTML = `
+        <style>
+          #ui-caidat-von input[type=number]::-webkit-inner-spin-button,
+          #ui-caidat-von input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+          #ui-caidat-von input[type=number] {
+            -moz-appearance: textfield;
+          }
+        </style>
 
-      <div style="font-weight:bold;margin-bottom:10px;text-align:center">
-        ⚙️ CÀI ĐẶT VỐN
-      </div>
-
-      <div style="margin-bottom:8px">
-        Số dư hiện tại
-        <input id="inp-sodu" type="number"
-          style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
-          value="${soDu}" />
-      </div>
-
-      <div style="margin-bottom:8px">
-        Số dư lớn nhất
-        <input id="inp-max" type="number"
-          style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
-          value="${soDuMax}" />
-      </div>
-
-      <div style="margin-bottom:5px">
-        % giao dịch
-        <input id="inp-percent" type="number"
-          style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
-          value="${percent}" />
-      </div>
-
-      <div style="margin-bottom:10px">
-        💰 Tiền giao dịch:
-        <span style="color:#dc3545;font-weight:bold;font-size:13px">
-          ${tienGD}
-        </span>
-      </div>
-
-    
-      <div style="margin-bottom:10px">
-         🧩 ID của ngầm
-        <div style="display:flex; gap:6px; margin-top:4px">
-          <input id="inp-stop-id" type="number"
-            placeholder="ID"
-            style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
-
-          <input id="inp-ngam" type="number"
-            placeholder="Ngầm"
-            style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+        <div style="font-weight:bold;margin-bottom:10px;text-align:center">
+          ⚙️ CÀI ĐẶT VỐN
         </div>
-      </div>
 
+        <div style="margin-bottom:8px">
+          Số dư hiện tại
+          <input id="inp-sodu" type="number"
+            style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
+            value="${soDu}" />
+        </div>
 
-      <button id="btn-apply"
-        style="width:100%;padding:7px;background:#007bff;color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:bold">
-        Cài đặt
-      </button>
-    `;
+        <div style="margin-bottom:8px">
+          Số dư lớn nhất
+          <input id="inp-max" type="number"
+            style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
+            value="${soDuMax}" />
+        </div>
 
-    // ===== TOGGLE =====
-    const toggleBtn = document.createElement("div");
-    toggleBtn.innerText = "▼";
-    Object.assign(toggleBtn.style, {
-      position: "fixed",
-      top: "10px",
-      right: "10px",
-      fontSize: "14px",
-      padding: "3px 7px",
-      cursor: "pointer",
-      background: "#fff",
-      border: "1px solid #999",
-      borderRadius: "4px",
-      userSelect: "none",
-      zIndex: 10000,
-    });
+        <div style="margin-bottom:5px">
+          % giao dịch
+          <input id="inp-percent" type="number"
+            style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
+            value="${percent}" />
+        </div>
 
+        <div style="margin-bottom:10px">
+          💰 Tiền giao dịch:
+          <span style="color:#dc3545;font-weight:bold;font-size:13px">
+            ${tienGD}
+          </span>
+        </div>
 
-    let isHidden = false;
-    toggleBtn.onclick = () => {
-      isHidden = !isHidden;
-      container.style.display = isHidden ? "none" : "block";
-      toggleBtn.innerText = isHidden ? "▲" : "▼";
-    };
+        <div style="margin-bottom:10px">
+          🧩 ID của ngầm
+          <div style="display:flex; gap:6px; margin-top:4px">
+            <input id="inp-stop-id" type="number"
+              placeholder="ID"
+              style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
 
-    document.body.appendChild(toggleBtn);
-    document.body.appendChild(container);
+            <input id="inp-ngam" type="number"
+              placeholder="Ngầm"
+              style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+          </div>
+        </div>
 
-    // ===== APPLY =====
-    document.getElementById("btn-apply").onclick = () => {
-      const stopId = Number(document.getElementById("inp-stop-id").value || 0);
-      const ngam = Number(document.getElementById("inp-ngam").value || 0);
-      window.applyCaiDatVon(
-        Number(document.getElementById("inp-sodu").value || 0),
-        Number(document.getElementById("inp-max").value || 0),
-        Number(document.getElementById("inp-percent").value || 0),
-        stopId,
-        ngam
-      );
-    };
-  }, { soDu, soDuMax, percent });
+        <div style="margin-bottom:10px">
+          💸 Rút tiền tự động
+          <div style="display:flex; gap:6px; margin-top:4px">
+            <input id="inp-nguong-rut" type="number"
+              value="${nguongTienDat}"
+              placeholder="Ngưỡng"
+              style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+
+            <input id="inp-so-tien-rut" type="number"
+              value="${soTienMuonRut}"
+              placeholder="Số tiền rút"
+              style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+          </div>
+        </div>
+
+        <button id="btn-apply"
+          style="width:100%;padding:7px;background:#007bff;color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:bold">
+          Cài đặt
+        </button>
+      `;
+
+      const toggleBtn = document.createElement("div");
+      toggleBtn.innerText = "▼";
+      Object.assign(toggleBtn.style, {
+        position: "fixed",
+        top: "10px",
+        right: "10px",
+        fontSize: "14px",
+        padding: "3px 7px",
+        cursor: "pointer",
+        background: "#fff",
+        border: "1px solid #999",
+        borderRadius: "4px",
+        userSelect: "none",
+        zIndex: 10000,
+      });
+
+      let isHidden = false;
+      toggleBtn.onclick = () => {
+        isHidden = !isHidden;
+        container.style.display = isHidden ? "none" : "block";
+        toggleBtn.innerText = isHidden ? "▲" : "▼";
+      };
+
+      document.body.appendChild(toggleBtn);
+      document.body.appendChild(container);
+
+      document.getElementById("btn-apply").onclick = () => {
+        const stopId = Number(document.getElementById("inp-stop-id").value || 0);
+        const ngam = Number(document.getElementById("inp-ngam").value || 0);
+
+        nguongTienDat = Number(document.getElementById("inp-nguong-rut").value || nguongTienDat);
+
+        soTienMuonRut =  Number(document.getElementById("inp-so-tien-rut").value || soTienMuonRut);
+
+        window.applyCaiDatVon(
+          Number(document.getElementById("inp-sodu").value || 0),
+          Number(document.getElementById("inp-max").value || 0),
+          Number(document.getElementById("inp-percent").value || 0),
+          stopId,
+          ngam
+        );
+      };
+    },
+    { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut }
+  );
 }
+
 
 
 async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
-  await page.evaluate(({ soDu, soDuMax, percent }) => {
-    const box = document.getElementById("ui-caidat-von");
-    if (!box) return;
+  await page.evaluate(
+    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut }) => {
+      const box = document.getElementById("ui-caidat-von");
+      if (!box) return;
 
-    const inpSoDu = document.getElementById("inp-sodu");
-    const inpMax = document.getElementById("inp-max");
-    const inpPercent = document.getElementById("inp-percent");
+      const inpSoDu = document.getElementById("inp-sodu");
+      const inpMax = document.getElementById("inp-max");
+      const inpPercent = document.getElementById("inp-percent");
 
-    if (inpSoDu) inpSoDu.value = soDu;
-    if (inpMax) inpMax.value = soDuMax;
-    if (inpPercent) inpPercent.value = percent;
+      const inpNguongRut = document.getElementById("inp-nguong-rut");
+      const inpSoTienRut = document.getElementById("inp-so-tien-rut");
 
-    const spanTien = box.querySelector("span");
+      if (inpSoDu) inpSoDu.value = soDu;
+      if (inpMax) inpMax.value = soDuMax;
+      if (inpPercent) inpPercent.value = percent;
 
-    if (spanTien && percent) {
-      spanTien.innerText = percent ? Math.floor(soDuMax * percent / 100) : 0;
-    }
-  }, { soDu, soDuMax, percent });
+      // ✅ SYNC 2 INPUT RÚT TIỀN
+      if (inpNguongRut) inpNguongRut.value = nguongTienDat;
+      if (inpSoTienRut) inpSoTienRut.value = soTienMuonRut;
+
+      const spanTien = box.querySelector("span");
+      if (spanTien) {
+        spanTien.innerText = percent
+          ? Math.floor(soDuMax * percent / 100)
+          : 0;
+      }
+    },
+    { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut }
+  );
 }
+
 
 function saveStateTXT() {
   try {

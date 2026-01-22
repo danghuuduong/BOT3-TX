@@ -94,7 +94,7 @@ async function UI_Table_LuuTru(page) {
       });
 
       const headers = [
-        "ID", "Type", "FOMO", "Vô", "Số Ngầm", "Thếp",
+        "ID", "Type", "Bên", "Vô", "Số Ngầm", "Thếp",
         "Số Tiền", "Win", "Lost", "Lãi",
         "A", "B", "C", "D", "E",
 
