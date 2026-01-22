@@ -71,7 +71,7 @@ let page;
 let countdown = 70;
 let countdownInterval;
 
-const MAX_LENGTH = 10;
+const MAX_LENGTH = 25;
 const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"

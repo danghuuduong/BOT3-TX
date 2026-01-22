@@ -128,10 +128,35 @@ function detectKhoiChanEarly_TX(str) {
 
 // function isValid_4(s4) { return s4 === "TTTT" || s4 === "XXXX"; }
 // function isValid_5(s5) { return s5 === "TTTTT" || s5 === "XXXXX"; }
-
-
 function isStillInKhoiChan_TX(str) {
-  return /(T{2,}X{2,}T+|X{2,}T{2,}X+)/.test(str);
+  if (!str || str.length < 4) return true;
+
+  let blocks = [];
+  let count = 1;
+
+  for (let i = 1; i <= str.length; i++) {
+    if (str[i] === str[i - 1]) count++;
+    else {
+      blocks.push({ char: str[i - 1], len: count });
+      count = 1;
+    }
+  }
+
+  if (blocks.length < 4) return true;
+
+  const b1 = blocks[blocks.length - 4];
+  const b2 = blocks[blocks.length - 3];
+  const b3 = blocks[blocks.length - 2];
+  const b4 = blocks[blocks.length - 1];
+
+  const isExit =
+    b1.len >= 2 &&
+    b2.len >= 2 &&
+    b3.len === 1 &&
+    b4.len === 1 &&
+    b3.char !== b4.char;
+
+  return !isExit;
 }
 
 function isValid_1_1(s4) { return s4 === "TXTX" || s4 === "XTXT"; }
@@ -174,15 +199,7 @@ function TinHieuMuaBan(ArrayKQ) {
   const s9 = getLastTX(ArrayKQ, 9);
   const s10 = getLastTX(ArrayKQ, 10);
 
-
-
-
-
   // ==================================================================== 1-1 =============================================
-
-
-
-
 
   if (lockState[TYPES.TYPE_1_1]) {
     if (!isValid_1_1(s4)) lockState[TYPES.TYPE_1_1] = false;
@@ -237,11 +254,6 @@ function TinHieuMuaBan(ArrayKQ) {
       };
     }
   }
-
-
-
-
-
 
   // ==================================================================== 3- 3 =============================================
   if (lockState[TYPES.TYPE_3_3]) {
@@ -335,24 +347,24 @@ function TinHieuMuaBan(ArrayKQ) {
     }
   }
 
-  if (lockState[TYPES.TYPE_123_PLUS]) {
-    if (!isValid_123(s6, s7)) lockState[TYPES.TYPE_123_PLUS] = false;
-  } else {
-    if (s8 === "TXTTXXXT" || s8 === "XTXXTTTX") {
-      lockState[TYPES.TYPE_123_PLUS] = true;
-      return {
-        huong: s8 === "TXTTXXXT" ? X : T,
-        type: TYPES.TYPE_123_PLUS
-      };
-    }
-  }
+  // if (lockState[TYPES.TYPE_123_PLUS]) {
+  //   if (!isValid_123(s6, s7)) lockState[TYPES.TYPE_123_PLUS] = false;
+  // } else {
+  //   if (s8 === "TXTTXXXT" || s8 === "XTXXTTTX") {
+  //     lockState[TYPES.TYPE_123_PLUS] = true;
+  //     return {
+  //       huong: s8 === "TXTTXXXT" ? X : T,
+  //       type: TYPES.TYPE_123_PLUS
+  //     };
+  //   }
+  // }
 
 
 
 
   // ==================================================================== KHOI CHAN =============================================
 
-  const sKC = ArrayKQ.slice(-20).join("");
+  const sKC = ArrayKQ.slice(-25).join("");
 
   if (lockState[TYPES.TYPE_KHOI_CHAN]) {
     if (!isStillInKhoiChan_TX(sKC)) {
