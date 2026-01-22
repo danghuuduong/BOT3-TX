@@ -11,11 +11,11 @@ function handleGetTien(thep, monyTong, phantram) {
     case 3:  return Math.floor(base / 7.72727272727);
     case 4:  return Math.floor(base / 3.86363636364);
     case 5:  return Math.floor(base / 1.88888888889);
-    case 6:  return Math.floor(base / 0.944444444445);
-    case 7:  return Math.floor(base / 0.472222222222);
-    case 8:  return Math.floor(base / 0.236111111111);
-    case 9:  return Math.floor(base / 0.118055555556);
-    case 10: return Math.floor(base / 0.059027777778);
+    // case 6:  return Math.floor(base / 0.944444444445);
+    // case 7:  return Math.floor(base / 0.472222222222);
+    // case 8:  return Math.floor(base / 0.236111111111);
+    // case 9:  return Math.floor(base / 0.118055555556);
+    // case 10: return Math.floor(base / 0.059027777778);
     default:
       return 0;
   }

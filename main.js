@@ -49,6 +49,9 @@ let Y_cuoc1 = startY + 49; //375
 let X_cuoc10 = startX - 335; //120
 let Y_cuoc10 = startY + 49; //375
 
+let X_cuoc100 = startX - 195; //120
+let Y_cuoc100 = startY + 49; //375
+
 // 5._______________________Nút Đặt cược_____________________
 let X_Submit = startX - 180; //275
 let Y_Submit = startY + 111; //437
@@ -87,16 +90,16 @@ let profitAll = 0;
 
 const LuutruLongmach = [
   {
-    id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, A4: 0, A5: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isFomo: false
+    id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 1, thep: 0, vol: 0, win: 0, lost: 0,
+    A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isFomo: false
   },
   {
-    id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, A4: 0, A5: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isFomo: true
+    id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
+    A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isFomo: true
   },
   {
-    id: 3, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, A4: 0, A5: 0, deal: 0, isStop: false, type: TYPES2.typeSenke, isFomo: false
+    id: 3, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 1, thep: 0, vol: 0, win: 0, lost: 0,
+    A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES2.typeSenke, isFomo: false
   },
 ];
 
@@ -146,49 +149,72 @@ async function handleStop() {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://www.facebook.com/", {
+  await page.goto("https://web.sunwin.biz/", {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
 
 
-await page.exposeFunction(
-  "applyCaiDatVon",
-  async (
-    soDu,
-    soDuMax,
-    percent,
-    stopId,
-    nguongRut,
-    soTienRut
-  ) => {
-    soDuTaiKhoan = soDu;
-    soDuLonNhat = soDuMax;
-    phanTramGiaoDich = percent;
+  await page.exposeFunction(
+    "applyCaiDatVon",
+    async (
+      soDu,
+      soDuMax,
+      percent,
+      stopId,
+      ngam,
+      nguongRut,
+      soTienRut
+    ) => {
+      soDuTaiKhoan = soDu;
+      soDuLonNhat = soDuMax;
+      phanTramGiaoDich = percent;
 
-    // ✅ GẮN VÀO BIẾN GLOBAL (KHÔNG LOGIC)
-    nguongTienDat = nguongRut;
-    soTienMuonRut = soTienRut;
+      // ✅ GẮN VÀO BIẾN GLOBAL (KHÔNG LOGIC)
+      nguongTienDat = nguongRut;
+      soTienMuonRut = soTienRut;
 
-    // ===== LOGIC CŨ GIỮ NGUYÊN =====
-    const item = LuutruLongmach.find(i => i.id === stopId);
-    if (item) {
+      // ===== LOGIC CŨ GIỮ NGUYÊN =====
+      const item = LuutruLongmach.find(i => i.id === stopId);
+      if (item) {
+        updateAray(stopId, { ngam: ngam, });
+        await UI_Update_Table(page, LuutruLongmach);
+      }
+
+      await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);
+      saveStateTXT();
+
+      // ===== UPDATE UI =====
+      await UI_Update_CaiDatVon(
+        page,
+        soDuTaiKhoan,
+        soDuLonNhat,
+        phanTramGiaoDich
+      );
+    }
+  );
+
+  // ===== CLICK STOP TRONG TABLE =====
+  await page.exposeFunction("__UI_EVENT__", async ({ type, stopId }) => {
+    if (type === "STOP_CLICK") {
+      const item = LuutruLongmach.find(i => i.id === stopId);
+      if (!item) return;
       updateAray(stopId, { isStop: !item.isStop });
       await UI_Update_Table(page, LuutruLongmach);
     }
+  });
 
-    await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);
-    saveStateTXT();
+  // ===== BẮT MESSAGE TỪ UI =====
+  await page.evaluate(() => {
+    if (window.__UI_EVENT_BOUND__) return;
+    window.__UI_EVENT_BOUND__ = true;
 
-    // ===== UPDATE UI =====
-    await UI_Update_CaiDatVon(
-      page,
-      soDuTaiKhoan,
-      soDuLonNhat,
-      phanTramGiaoDich
-    );
-  }
-);
+    window.addEventListener("message", (e) => {
+      if (e.data?.type) {
+        window.__UI_EVENT__(e.data);
+      }
+    });
+  });
 
 
 
@@ -200,7 +226,8 @@ await page.exposeFunction(
   await UI_TieuDiem(page, X_DatXiu, Y_DatXiu, width, height, "tieudiem-4", "#ffc107"); // vàng
   await UI_TieuDiem(page, X_cuoc1, Y_cuoc1, width, height, "tieudiem-5", "#6f42c1"); // tím
   await UI_TieuDiem(page, X_cuoc10, Y_cuoc10, width, height, "tieudiem-6", "#fd7e14"); // cam
-  await UI_TieuDiem(page, X_Submit, Y_Submit, width, height, "tieudiem-7", "#e83e8c"); // hồng
+  await UI_TieuDiem(page, X_cuoc100, Y_cuoc100, width, height, "tieudiem-7", "#2bf011"); // cam
+  await UI_TieuDiem(page, X_Submit, Y_Submit, width, height, "tieudiem-8", "#e83e8c"); // hồng
 
 
   // Tạo UI tách biệt
@@ -270,10 +297,10 @@ async function ThucHienGiaoDich() {
   if (muaGiaLap !== "null") {
     const isWin = resultNew === muaGiaLap
     if (isWin) {
-      ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > 1000) { ArrayKQ_XAU.shift() }
+      ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       muaGiaLap = "null"
     } else {
-      ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > 1000) { ArrayKQ_XAU.shift() }
+      ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       muaGiaLap = "null"
     }
   }
@@ -305,11 +332,11 @@ async function ThucHienGiaoDich() {
               C: item.thep === 3 ? item.C + 1 : item.C,
               D: item.thep === 4 ? item.D + 1 : item.D,
               E: item.thep === 5 ? item.E + 1 : item.E,
-              A1: item.thep === 6 ? item.A1 + 1 : item.A1,
-              A2: item.thep === 7 ? item.A2 + 1 : item.A2,
-              A3: item.thep === 8 ? item.A3 + 1 : item.A3,
-              A4: item.thep === 9 ? item.A4 + 1 : item.A4,
-              A5: item.thep === 10 ? item.A5 + 1 : item.A5,
+              // A1: item.thep === 6 ? item.A1 + 1 : item.A1,
+              // A2: item.thep === 7 ? item.A2 + 1 : item.A2,
+              // A3: item.thep === 8 ? item.A3 + 1 : item.A3,
+              // A4: item.thep === 9 ? item.A4 + 1 : item.A4,
+              // A5: item.thep === 10 ? item.A5 + 1 : item.A5,
               vol: 0,
               ...(item?.ngam && item?.isNgamDone ? { isNgamDone: false, thepChoNgam: 0 } : {}),
               thep: 0,
@@ -345,15 +372,6 @@ async function ThucHienGiaoDich() {
   await UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
   saveStateTXT();
   // ========================== ĐẶT LỆNH ==========================
-
-  // if (tinHieuAI.huong !== "null") {
-  //   player.play(LOCK_SOUND, (err) => {
-  //     // if (err) console.log("Sound error:", err);
-  //   });
-  // }
-
-
-
   const tinHieuAINew = TinHieuMuaBanNew(ArrayKQ_XAU);
   const arrayNew = LuutruLongmach.filter(i => i.type === tinHieuAINew.type && !i.isStop); {
     if (tinHieuAINew.huong !== "null" && tinHieuAI.huong !== "null") {
@@ -362,6 +380,29 @@ async function ThucHienGiaoDich() {
         const huongDanhNew = getHuongForItem(tinHieuAINew, tinHieuAI.huong);
         const isNgam = item.ngam && !item.isNgamDone;
         const tinhVol = handleGetTien(item.thep + 1, soDuLonNhat, phanTramGiaoDich);
+
+        if (!isNgam) {
+          // =======================HandlClick=========================
+          // onlick 10 ..
+          const isTai = huongDanhNew === T;
+
+          await UI_MouseClick(page,
+            isTai ? X_DatTai : X_DatXiu,
+            isTai ? Y_DatTai : Y_DatXiu, "👈");
+          await page.mouse.click(
+            isTai ? X_DatTai : X_DatXiu,
+            isTai ? Y_DatTai : Y_DatXiu);
+
+
+          await clickTheoTinhVol(page, tinhVol, "🎯")
+
+          const delay = 500 + Math.floor(Math.random() * 1501); // 500 → 2000
+          await page.waitForTimeout(delay);
+
+          await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+          await page.mouse.click(X_Submit, Y_Submit);
+        }
+
         updateAray(item.id, {
           isTrading: true,
           huong: huongDanhNew,
@@ -372,7 +413,7 @@ async function ThucHienGiaoDich() {
             isFomo: tinHieuAINew.isPheDep
           }),
         });
-        await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
+        await UI_Update_Table(page, LuutruLongmach);
         saveStateTXT();
       }
     }
@@ -551,6 +592,9 @@ async function UI_DieuKhien(page) {
     X_cuoc10 += dx;
     Y_cuoc10 += dy;
 
+    X_cuoc100 += dx;
+    Y_cuoc100 += dy;
+
     X_Submit += dx;
     Y_Submit += dy;
 
@@ -561,7 +605,9 @@ async function UI_DieuKhien(page) {
     await UI_TieuDiem(page, X_DatXiu, Y_DatXiu, width, height, "tieudiem-4", "#ffc107"); // vàng
     await UI_TieuDiem(page, X_cuoc1, Y_cuoc1, width, height, "tieudiem-5", "#6f42c1"); // tím
     await UI_TieuDiem(page, X_cuoc10, Y_cuoc10, width, height, "tieudiem-6", "#fd7e14"); // cam
-    await UI_TieuDiem(page, X_Submit, Y_Submit, width, height, "tieudiem-7", "#e83e8c"); // hồng
+    await UI_TieuDiem(page, X_cuoc100, Y_cuoc100, width, height, "tieudiem-7", "#2bf011"); // cam
+    await UI_TieuDiem(page, X_Submit, Y_Submit, width, height, "tieudiem-8", "#e83e8c"); // hồng
+
   });
 
   // Gắn sự kiện click cho 4 nút
@@ -577,15 +623,17 @@ async function clickTheoTinhVol(page, tinhVol, icon) {
   const vol = Math.floor(tinhVol);
   if (vol <= 0) return;
 
-  // 1 → 9
-  if (vol <= 9) {
-    await clickN(page, X_cuoc1, Y_cuoc1, vol, icon);
-    return;
-  }
+  // >= 100
+  const soLan100 = Math.floor(vol / 100);
+  let du = vol % 100;
 
-  // ≥ 10
-  const soLan10 = Math.floor(vol / 10);
-  const soLan1 = vol % 10;
+  // >= 10
+  const soLan10 = Math.floor(du / 10);
+  const soLan1 = du % 10;
+
+  if (soLan100 > 0) {
+    await clickN(page, X_cuoc100, Y_cuoc100, soLan100, icon);
+  }
 
   if (soLan10 > 0) {
     await clickN(page, X_cuoc10, Y_cuoc10, soLan10, icon);
@@ -596,6 +644,7 @@ async function clickTheoTinhVol(page, tinhVol, icon) {
   }
 }
 
+
 async function clickN(page, x, y, n, icon = "🖱️") {
   for (let i = 0; i < n; i++) {
     await UI_MouseClick(page, x, y, icon, 18, "ui-mouse-click", 1000);
@@ -603,34 +652,34 @@ async function clickN(page, x, y, n, icon = "🖱️") {
     await page.mouse.move(x, y);
     await page.mouse.click(x, y);
 
-    const delay = 50 + Math.floor(Math.random() * 151); // 50 → 200
+    const delay = 30 + Math.floor(Math.random() * 121);
     await page.waitForTimeout(delay);
   }
 }
 
 async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
-  await page.evaluate( ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut }) => {
-      if (document.getElementById("ui-caidat-von")) return;
+  await page.evaluate(({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut }) => {
+    if (document.getElementById("ui-caidat-von")) return;
 
-      const container = document.createElement("div");
-      container.id = "ui-caidat-von";
-      Object.assign(container.style, {
-        position: "fixed",
-        top: "33px",
-        right: "10px",
-        width: "210px",
-        backgroundColor: "#fff",
-        border: "1px solid #000",
-        borderRadius: "8px",
-        padding: "10px 16px 14px 16px",
-        fontSize: "12px",
-        fontFamily: "monospace",
-        zIndex: 9999,
-        boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-      });
+    const container = document.createElement("div");
+    container.id = "ui-caidat-von";
+    Object.assign(container.style, {
+      position: "fixed",
+      top: "33px",
+      right: "10px",
+      width: "210px",
+      backgroundColor: "#fff",
+      border: "1px solid #000",
+      borderRadius: "8px",
+      padding: "10px 16px 14px 16px",
+      fontSize: "12px",
+      fontFamily: "monospace",
+      zIndex: 9999,
+      boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+    });
 
-      const tienGD = percent ? Math.floor(soDuMax * percent / 100) : 0;
-      container.innerHTML = `
+    const tienGD = percent ? Math.floor(soDuMax * percent / 100) : 0;
+    container.innerHTML = `
         <style>
           #ui-caidat-von input[type=number]::-webkit-inner-spin-button,
           #ui-caidat-von input[type=number]::-webkit-outer-spin-button {
@@ -669,7 +718,7 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
 
         <div style="margin-bottom:10px">
           💰 Tiền giao dịch:
-          <span style="color:#dc3545;font-weight:bold;font-size:13px">
+         <span id="tien-gd" style="color:#dc3545;font-weight:bold;font-size:13px">
             ${tienGD}
           </span>
         </div>
@@ -708,49 +757,50 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
         </button>
       `;
 
-      const toggleBtn = document.createElement("div");
-      toggleBtn.innerText = "▼";
-      Object.assign(toggleBtn.style, {
-        position: "fixed",
-        top: "10px",
-        right: "10px",
-        fontSize: "14px",
-        padding: "3px 7px",
-        cursor: "pointer",
-        background: "#fff",
-        border: "1px solid #999",
-        borderRadius: "4px",
-        userSelect: "none",
-        zIndex: 10000,
-      });
+    const toggleBtn = document.createElement("div");
+    toggleBtn.innerText = "▼";
+    Object.assign(toggleBtn.style, {
+      position: "fixed",
+      top: "10px",
+      right: "10px",
+      fontSize: "14px",
+      padding: "3px 7px",
+      cursor: "pointer",
+      background: "#fff",
+      border: "1px solid #999",
+      borderRadius: "4px",
+      userSelect: "none",
+      zIndex: 10000,
+    });
 
-      let isHidden = false;
-      toggleBtn.onclick = () => {
-        isHidden = !isHidden;
-        container.style.display = isHidden ? "none" : "block";
-        toggleBtn.innerText = isHidden ? "▲" : "▼";
-      };
+    let isHidden = false;
+    toggleBtn.onclick = () => {
+      isHidden = !isHidden;
+      container.style.display = isHidden ? "none" : "block";
+      toggleBtn.innerText = isHidden ? "▲" : "▼";
+    };
 
-      document.body.appendChild(toggleBtn);
-      document.body.appendChild(container);
+    document.body.appendChild(toggleBtn);
+    document.body.appendChild(container);
 
-      document.getElementById("btn-apply").onclick = () => {
-        const stopId = Number(document.getElementById("inp-stop-id").value || 0);
-        const ngam = Number(document.getElementById("inp-ngam").value || 0);
+    document.getElementById("btn-apply").onclick = () => {
+      const stopId = Number(document.getElementById("inp-stop-id").value || 0);
+      const ngam = Number(document.getElementById("inp-ngam").value || 0);
 
-        nguongTienDat = Number(document.getElementById("inp-nguong-rut").value || nguongTienDat);
+      nguongTienDat = Number(document.getElementById("inp-nguong-rut").value || nguongTienDat);
+      soTienMuonRut = Number(document.getElementById("inp-so-tien-rut").value || soTienMuonRut);
 
-        soTienMuonRut =  Number(document.getElementById("inp-so-tien-rut").value || soTienMuonRut);
-
-        window.applyCaiDatVon(
-          Number(document.getElementById("inp-sodu").value || 0),
-          Number(document.getElementById("inp-max").value || 0),
-          Number(document.getElementById("inp-percent").value || 0),
-          stopId,
-          ngam
-        );
-      };
-    },
+      window.applyCaiDatVon(
+        Number(document.getElementById("inp-sodu").value || 0),
+        Number(document.getElementById("inp-max").value || 0),
+        Number(document.getElementById("inp-percent").value || 0),
+        stopId,
+        ngam,
+        nguongTienDat,
+        soTienMuonRut
+      );
+    };
+  },
     { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut }
   );
 }
@@ -763,22 +813,14 @@ async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
       const box = document.getElementById("ui-caidat-von");
       if (!box) return;
 
-      const inpSoDu = document.getElementById("inp-sodu");
-      const inpMax = document.getElementById("inp-max");
-      const inpPercent = document.getElementById("inp-percent");
+      document.getElementById("inp-sodu").value = soDu;
+      document.getElementById("inp-max").value = soDuMax;
+      document.getElementById("inp-percent").value = percent;
 
-      const inpNguongRut = document.getElementById("inp-nguong-rut");
-      const inpSoTienRut = document.getElementById("inp-so-tien-rut");
+      document.getElementById("inp-nguong-rut").value = nguongTienDat;
+      document.getElementById("inp-so-tien-rut").value = soTienMuonRut;
 
-      if (inpSoDu) inpSoDu.value = soDu;
-      if (inpMax) inpMax.value = soDuMax;
-      if (inpPercent) inpPercent.value = percent;
-
-      // ✅ SYNC 2 INPUT RÚT TIỀN
-      if (inpNguongRut) inpNguongRut.value = nguongTienDat;
-      if (inpSoTienRut) inpSoTienRut.value = soTienMuonRut;
-
-      const spanTien = box.querySelector("span");
+      const spanTien = document.getElementById("tien-gd");
       if (spanTien) {
         spanTien.innerText = percent
           ? Math.floor(soDuMax * percent / 100)

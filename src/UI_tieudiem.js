@@ -98,8 +98,8 @@ async function UI_Table_LuuTru(page) {
         "Số Tiền", "Win", "Lost", "Lãi",
         "A", "B", "C", "D", "E",
 
-        // ✅ BỔ SUNG
-        "A1", "A2", "A3", "A4", "A5",
+        // // ✅ BỔ SUNG
+        // "A1", "A2", "A3", "A4", "A5",
 
         "Cháy",
         "STOP"
@@ -111,8 +111,8 @@ async function UI_Table_LuuTru(page) {
         "50px", "45px", "45px", "65px",
         "35px", "35px", "35px", "35px", "35px",
 
-        // ✅ BỔ SUNG
-        "35px", "35px", "35px", "35px", "35px",
+        // // ✅ BỔ SUNG
+        // "35px", "35px", "35px", "35px", "35px",
 
         "35px",
         "40px",
@@ -149,23 +149,27 @@ async function UI_Table_LuuTru(page) {
   });
 }
 
+
+
 async function UI_Update_Table(page, data) {
   await page.evaluate((rows) => {
     const tbody = document.getElementById("longmach-body");
     if (!tbody) return;
+
     tbody.innerHTML = "";
 
     rows.forEach(item => {
       const tr = document.createElement("tr");
       const icon = item.isNgamDone ? '✅' : '';
 
+      // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
         item.id,
         item.type,
         item.isFomo ? "Fomo" : "Bẻ🔥",
         item.isTrading ? item.huong === "T" ? "⚫" : "⚪" : "Chưa",
-        `${item.thepChoNgam}/${item.ngam} ${icon} `,
-        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/${10} Thếp`,
+        `${item.thepChoNgam}/${item.ngam} ${icon}`,
+        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/10 Thếp`,
         item.ngam && !item.isNgamDone ? 'Chưa Vô' : item.vol,
         item.win,
         item.lost,
@@ -174,15 +178,14 @@ async function UI_Update_Table(page, data) {
         item.A, item.B, item.C, item.D, item.E,
 
 
-        // ✅ BỔ SUNG
-        item.A1,
-        item.A2,
-        item.A3,
-        item.A4,
-        item.A5,
+        // // ✅ BỔ SUNG
+        // item.A1,
+        // item.A2,
+        // item.A3,
+        // item.A4,
+        // item.A5,
 
         item.deal ? `${item.deal} 🐤` : "-",
-        item.isStop ? "🔴" : "🟢",           // ✅ STOP CUỐI
       ];
 
 
@@ -198,12 +201,33 @@ async function UI_Update_Table(page, data) {
         tr.appendChild(td);
       });
 
+      // ===== STOP (CLICK ĐƯỢC) =====
+      const stopTd = document.createElement("td");
+      stopTd.innerText = item.isStop ? "🔴" : "🟢";
+
+      Object.assign(stopTd.style, {
+        border: "1px solid #000",
+        textAlign: "center",
+        cursor: "pointer",
+        userSelect: "none",
+        fontWeight: "bold",
+      });
+
+      stopTd.addEventListener("click", (e) => {
+        e.stopPropagation();
+        window.postMessage({
+          type: "STOP_CLICK",
+          stopId: item.id   // ✅ QUAN TRỌNG
+        }, "*");
+      });
+
+      tr.appendChild(stopTd);
+
       tbody.appendChild(tr);
     });
   }, data);
-
-
 }
+
 
 async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 2000) {
   await page.evaluate(({ x, y, size, icon, id, timeoutMs }) => {

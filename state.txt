@@ -1,92 +1,77 @@
-soDuTaiKhoan=3913.7199999999957
-soDuLonNhat=3913.7199999999957
-phanTramGiaoDich=25
-profitAll=2913.7199999999984
+soDuTaiKhoan=1024.731
+soDuLonNhat=1024.731
+phanTramGiaoDich=20
+profitAll=0
 
-ArrayKQ=T,T,X,X,T,X,T,X,X,T,T,X,X,T,X,X,X,X,T,X,X,T,X,T,X
-ArrayKQ_XAU=A,B,A,B,A,B,A,B,B,B,A,B,B,B,A,A,A,B,A,B,A,A,B,B,B,B,A,A,A,B,B,B,B,A,B,A,A,A,B,A,A,B,B,A,B,A,A,A,B,B,B,B,B,B,A,B,A,A,A,A,A,A,B,B,B,B,B,B,B,A,A,B,B,A,B,A,B,A,A,A,B,A,A,A,B,B,B,B,A,B,B,A,A,B,B,B,B,A,A,A,A,B,A,A,B,B,B,A,B,A,B,A,B,B,B,A,B,B,A,B,A,A,B,B,B,B,A,A,A,B,B,A,A,A,B,A,B,A,B,B,A,B,B,B,A,B,B,A,B,A,B,A,B,B,A,A,B,B,A,B,B,A,A,B,B,A,B,A,A,B,A,B,A,A,B,B,B,B,A,B,A,A,B,A,A,B,B,A,A,B,B,B,B,A,A,A,A,B,B,A,A,B,B,A,B,A,A,B,A,A,B,A,B,B,B,B,A,A,A,A,A,B,A,B,A,A,A,B,B,A,A,B,B,A,B,B,B,B,B,B,A,A,B,B,A,A,B,B,A,A,B,B,A,A,B,B,A,A,A,B,A,B,B,A,B,A,A,B,B,A,B,A,B,A,A,A,B,B,B,B,B,A,B,B,A,A,B,B,A,B,A,A,B,A,A,B,B,A,B,B,B,B,A,B,A,A,B,B,A,A,B,A,B,A,A,B,B,B,A,B,B,A,A,B,A,B,B,A,A,B,B,B,B,A,B,A,B,A,A,A,A,B,B,B,A,A,A,B,A,A,B,A,B,B,A,B,B,A,A,A,A,B,A,B,A,A,B,B,B,A,A,A,A,B,B,B,B,B,B,B,A,B,B,B,A,B,B,B,B,A,A,B,B,B,B,A,A,B,B,B,A,B,A,B,B,B,A,B,A,B,B,B,A,A,A,A,A,B,B,B,A,A,B,B,A,B,A,B,A,A,B,A,A,A,B,A,A,A,B,B,B,A,B,B,B,A,B,B,A,A,B,B,A,A,A,B,A,A,A,A,A,A,B,B,A,A,A,B,A,A,A,B,A,A,B,A,B,A,B,B,A,A,B,B,B,B,A,A,B,B,B,B,B,B,A,A,A,A,A,B,A,A,A,B,B,A,A,A,B,A,B,A,A,A,A,B,A,B,A,A,A,A,B,B,A,A,A,B,A,A,A,A,B,A,A,B,B,A,A,A,B,A,B,B,A,B,B,A,A,A,B,A,B,B,B,B,B,B,A,B,A,B,A,B,B,B,B,A,B,A,B,B,A,A,A,A,B,A,B,B,B,A,A,B,A,B,A,B,A,A,B,A,A,B,A,A,B,A,A
+ArrayKQ=T,T,X,T,X,X,T,X,T,T,X,X,X,X,X,X,X,X,T,T,X,X,X,T,T
+ArrayKQ_XAU=A,A,B,A,B,A,B,B,A,B,B,B,B,A,A
 
 LuutruLongmach=
 [
   {
     "id": 1,
-    "isTrading": true,
-    "huong": "X",
-    "profit": 1217.2799999999997,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 0,
     "thepChoNgam": 0,
     "isNgamDone": false,
-    "ngam": 0,
-    "thep": 1,
-    "vol": 22,
-    "win": 81,
-    "lost": 58,
-    "A": 45,
-    "B": 21,
-    "C": 10,
-    "D": 3,
-    "E": 2,
-    "A1": 0,
-    "A2": 0,
-    "A3": 0,
-    "A4": 0,
-    "A5": 0,
+    "ngam": 1,
+    "thep": 0,
+    "vol": 0,
+    "win": 0,
+    "lost": 0,
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0,
+    "E": 0,
     "deal": 0,
     "isStop": false,
-    "type": "beDep",
+    "type": "Bên Xấu",
     "isFomo": false
   },
   {
     "id": 2,
     "isTrading": false,
     "huong": "null",
-    "profit": 1113.0599999999997,
+    "profit": 0,
     "thepChoNgam": 0,
     "isNgamDone": false,
-    "ngam": 0,
+    "ngam": 2,
     "thep": 0,
     "vol": 0,
-    "win": 78,
-    "lost": 73,
-    "A": 41,
-    "B": 16,
-    "C": 14,
-    "D": 1,
-    "E": 4,
-    "A1": 2,
-    "A2": 0,
-    "A3": 0,
-    "A4": 0,
-    "A5": 0,
+    "win": 0,
+    "lost": 0,
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0,
+    "E": 0,
     "deal": 0,
     "isStop": false,
-    "type": "beXau",
+    "type": "Bên Đẹp",
     "isFomo": true
   },
   {
     "id": 3,
     "isTrading": false,
     "huong": "null",
-    "profit": 583.3800000000001,
+    "profit": 0,
     "thepChoNgam": 0,
     "isNgamDone": false,
-    "ngam": 0,
+    "ngam": 1,
     "thep": 0,
     "vol": 0,
-    "win": 38,
-    "lost": 38,
-    "A": 17,
-    "B": 10,
-    "C": 6,
-    "D": 4,
-    "E": 1,
-    "A1": 0,
-    "A2": 0,
-    "A3": 0,
-    "A4": 0,
-    "A5": 0,
+    "win": 0,
+    "lost": 0,
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0,
+    "E": 0,
     "deal": 0,
     "isStop": false,
-    "type": "senke",
-    "isFomo": true
+    "type": "Sen Kẽ",
+    "isFomo": false
   }
 ]

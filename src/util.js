@@ -2,7 +2,7 @@ const T = "T";
 const X = "X";
 const Dep = "A";
 const Xau = "B";
-const maxThep = 10;
+const maxThep = 5;
 
 // ================= TYPES =================
 
@@ -38,11 +38,10 @@ const TYPES = {
 
 };
 const TYPES2 = {
-  typeBeThangDep: "beDep",
-  typeBeThangXau: "beXau",
-  typeSenke: "senke",
+  typeBeThangDep: "Bên Xấu",
+  typeBeThangXau: "Bên Đẹp",
+  typeSenke: "Sen Kẽ",
 };
-
 
 
 // ================= LOCK STATE =================
