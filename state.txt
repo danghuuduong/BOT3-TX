@@ -3,21 +3,21 @@ soDuLonNhat=3913.7199999999957
 phanTramGiaoDich=25
 profitAll=2913.7199999999984
 
-ArrayKQ=T,T,T,X,X,T,X,T,X,X,T,T,X,X,T,X,X,X,X,T,X,X,T,X,T
-ArrayKQ_XAU=A,B,A,B,A,B,A,B,B,B,A,B,B,B,A,A,A,B,A,B,A,A,B,B,B,B,A,A,A,B,B,B,B,A,B,A,A,A,B,A,A,B,B,A,B,A,A,A,B,B,B,B,B,B,A,B,A,A,A,A,A,A,B,B,B,B,B,B,B,A,A,B,B,A,B,A,B,A,A,A,B,A,A,A,B,B,B,B,A,B,B,A,A,B,B,B,B,A,A,A,A,B,A,A,B,B,B,A,B,A,B,A,B,B,B,A,B,B,A,B,A,A,B,B,B,B,A,A,A,B,B,A,A,A,B,A,B,A,B,B,A,B,B,B,A,B,B,A,B,A,B,A,B,B,A,A,B,B,A,B,B,A,A,B,B,A,B,A,A,B,A,B,A,A,B,B,B,B,A,B,A,A,B,A,A,B,B,A,A,B,B,B,B,A,A,A,A,B,B,A,A,B,B,A,B,A,A,B,A,A,B,A,B,B,B,B,A,A,A,A,A,B,A,B,A,A,A,B,B,A,A,B,B,A,B,B,B,B,B,B,A,A,B,B,A,A,B,B,A,A,B,B,A,A,B,B,A,A,A,B,A,B,B,A,B,A,A,B,B,A,B,A,B,A,A,A,B,B,B,B,B,A,B,B,A,A,B,B,A,B,A,A,B,A,A,B,B,A,B,B,B,B,A,B,A,A,B,B,A,A,B,A,B,A,A,B,B,B,A,B,B,A,A,B,A,B,B,A,A,B,B,B,B,A,B,A,B,A,A,A,A,B,B,B,A,A,A,B,A,A,B,A,B,B,A,B,B,A,A,A,A,B,A,B,A,A,B,B,B,A,A,A,A,B,B,B,B,B,B,B,A,B,B,B,A,B,B,B,B,A,A,B,B,B,B,A,A,B,B,B,A,B,A,B,B,B,A,B,A,B,B,B,A,A,A,A,A,B,B,B,A,A,B,B,A,B,A,B,A,A,B,A,A,A,B,A,A,A,B,B,B,A,B,B,B,A,B,B,A,A,B,B,A,A,A,B,A,A,A,A,A,A,B,B,A,A,A,B,A,A,A,B,A,A,B,A,B,A,B,B,A,A,B,B,B,B,A,A,B,B,B,B,B,B,A,A,A,A,A,B,A,A,A,B,B,A,A,A,B,A,B,A,A,A,A,B,A,B,A,A,A,A,B,B,A,A,A,B,A,A,A,A,B,A,A,B,B,A,A,A,B,A,B,B,A,B,B,A,A,A,B,A,B,B,B,B,B,B,A,B,A,B,A,B,B,B,B,A,B,A,B,B,A,A,A,A,B,A,B,B,B,A,A,B,A,B,A,B,A,A,B,A,A,B,A,A,B,A
+ArrayKQ=T,T,X,X,T,X,T,X,X,T,T,X,X,T,X,X,X,X,T,X,X,T,X,T,X
+ArrayKQ_XAU=A,B,A,B,A,B,A,B,B,B,A,B,B,B,A,A,A,B,A,B,A,A,B,B,B,B,A,A,A,B,B,B,B,A,B,A,A,A,B,A,A,B,B,A,B,A,A,A,B,B,B,B,B,B,A,B,A,A,A,A,A,A,B,B,B,B,B,B,B,A,A,B,B,A,B,A,B,A,A,A,B,A,A,A,B,B,B,B,A,B,B,A,A,B,B,B,B,A,A,A,A,B,A,A,B,B,B,A,B,A,B,A,B,B,B,A,B,B,A,B,A,A,B,B,B,B,A,A,A,B,B,A,A,A,B,A,B,A,B,B,A,B,B,B,A,B,B,A,B,A,B,A,B,B,A,A,B,B,A,B,B,A,A,B,B,A,B,A,A,B,A,B,A,A,B,B,B,B,A,B,A,A,B,A,A,B,B,A,A,B,B,B,B,A,A,A,A,B,B,A,A,B,B,A,B,A,A,B,A,A,B,A,B,B,B,B,A,A,A,A,A,B,A,B,A,A,A,B,B,A,A,B,B,A,B,B,B,B,B,B,A,A,B,B,A,A,B,B,A,A,B,B,A,A,B,B,A,A,A,B,A,B,B,A,B,A,A,B,B,A,B,A,B,A,A,A,B,B,B,B,B,A,B,B,A,A,B,B,A,B,A,A,B,A,A,B,B,A,B,B,B,B,A,B,A,A,B,B,A,A,B,A,B,A,A,B,B,B,A,B,B,A,A,B,A,B,B,A,A,B,B,B,B,A,B,A,B,A,A,A,A,B,B,B,A,A,A,B,A,A,B,A,B,B,A,B,B,A,A,A,A,B,A,B,A,A,B,B,B,A,A,A,A,B,B,B,B,B,B,B,A,B,B,B,A,B,B,B,B,A,A,B,B,B,B,A,A,B,B,B,A,B,A,B,B,B,A,B,A,B,B,B,A,A,A,A,A,B,B,B,A,A,B,B,A,B,A,B,A,A,B,A,A,A,B,A,A,A,B,B,B,A,B,B,B,A,B,B,A,A,B,B,A,A,A,B,A,A,A,A,A,A,B,B,A,A,A,B,A,A,A,B,A,A,B,A,B,A,B,B,A,A,B,B,B,B,A,A,B,B,B,B,B,B,A,A,A,A,A,B,A,A,A,B,B,A,A,A,B,A,B,A,A,A,A,B,A,B,A,A,A,A,B,B,A,A,A,B,A,A,A,A,B,A,A,B,B,A,A,A,B,A,B,B,A,B,B,A,A,A,B,A,B,B,B,B,B,B,A,B,A,B,A,B,B,B,B,A,B,A,B,B,A,A,A,A,B,A,B,B,B,A,A,B,A,B,A,B,A,A,B,A,A,B,A,A,B,A,A
 
 LuutruLongmach=
 [
   {
     "id": 1,
-    "isTrading": false,
-    "huong": "null",
+    "isTrading": true,
+    "huong": "X",
     "profit": 1217.2799999999997,
     "thepChoNgam": 0,
     "isNgamDone": false,
     "ngam": 0,
-    "thep": 0,
-    "vol": 0,
+    "thep": 1,
+    "vol": 22,
     "win": 81,
     "lost": 58,
     "A": 45,

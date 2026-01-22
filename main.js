@@ -144,7 +144,7 @@ async function handleStop() {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://web.sunwin.sx/", {
+  await page.goto("https://web.sunwin.biz/", {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
