@@ -47,6 +47,7 @@ async function UI_Table_LuuTru(page) {
 
       // ===== TOGGLE BUTTON =====
       const toggleBtn = document.createElement("div");
+      toggleBtn.id = "longmach-toggle";
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
         position: "fixed",          // luôn nằm ngoài table

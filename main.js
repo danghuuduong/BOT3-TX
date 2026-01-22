@@ -56,6 +56,43 @@ let Y_cuoc100 = startY + 49; //375
 let X_Submit = startX - 180; //275
 let Y_Submit = startY + 111; //437
 
+// ========================================== Chức năng rút tiền.====================================
+
+// 1. Click vào CryTO Hoặc Button Rút tiền (2 LẦn).
+let X_ButtonRutTien = 0; //488
+let Y_ButtonRutTien = 0; //326
+
+// 2. Click vào Tab Rút  .
+let X_BtnTabRut = 0; //488
+let Y_BtnTabRut = 0; //326
+
+// 3. Click vào INput Nhập Ví.
+let X_InpVi = 0; //488
+let Y_InpVi = 0; //326
+// 4. Nhập Địa chỉ Ví 
+let Diachivi = "TG7KWfmgdFDFgX91Q2MBPGYebkqLH5osKa"
+
+// 5. Click vào INput Nhập Số tiền.
+let X_InpNhapSoTien = 0; //488
+let Y_InpNhapSoTien = 0; //326
+// sài biến soTienMuonRut  thêm 3 số 0 nữa.  ví dụ 2000 thì nhập 2 000 000
+
+// 6. Click vào Tab Rút  .
+let X_BtnSumitRutTien = 0; //488
+let Y_BtnSumitRutTien = 0; //326
+
+// 8. Click Tắt   .
+let X_BtnCLose = 0; //488
+let Y_BtnCLose = 0; //326
+
+// 9. Click lại Menu kết quả TX   .
+let X_MenuTX = 0; //488
+let Y_MenuTX = 0; //326
+
+let tongTienDaRut = 0;
+
+
+
 const width = 2;
 const height = 2;
 
@@ -418,6 +455,78 @@ async function ThucHienGiaoDich() {
       }
     }
   }
+  if (
+    soDuTaiKhoan >= soDuLonNhat &&
+    soDuTaiKhoan >= nguongTienDat &&
+    muaGiaLap === "null" && tinHieuAINew.huong === "null" && tinHieuAI.huong === "null") {
+
+
+    const btn = document.getElementById("longmach-toggle");
+    if (btn && btn.innerText === "▼") btn.click();
+    await page.waitForTimeout(100);
+
+    // CLick vào button cryto 2 lần 
+    await UI_MouseClick(page, X_ButtonRutTien, Y_ButtonRutTien, "🎯");
+    await page.mouse.click(X_ButtonRutTien, Y_ButtonRutTien);
+    await page.waitForTimeout(100);
+    await page.mouse.click(X_ButtonRutTien, Y_ButtonRutTien);
+
+    // 2. Click vào Tab Rút  .
+    const delay = 3000 + Math.floor(Math.random() * 2001); // 3000 → 5000 ms (3–5 giây)
+    await page.waitForTimeout(delay);
+    await UI_MouseClick(page, X_BtnTabRut, Y_BtnTabRut, "🎯");
+    await page.mouse.click(X_BtnTabRut, Y_BtnTabRut);
+
+    // 3. Click vào INput Nhập Ví.
+    const delay1 = 30 + Math.floor(Math.random() * 121);
+    await page.waitForTimeout(delay1);
+    await UI_MouseClick(page, X_InpVi, Y_InpVi, "🎯");
+    await page.mouse.click(X_InpVi, Y_InpVi);
+
+    // 4. Nhập Địa chỉ Ví 
+    await page.keyboard.type(Diachivi, { delay: 30 });   // nhanh
+
+    // // 5. Click vào INput Nhập Số tiền.
+    await page.waitForTimeout(delay1);
+    await UI_MouseClick(page, X_InpNhapSoTien, Y_InpNhapSoTien, "🎯");
+    await page.mouse.click(X_InpNhapSoTien, Y_InpNhapSoTien);
+
+    // 6 Nhập Số tiền mong muốn rút là nhiêu
+    await page.waitForTimeout(delay1);
+    await page.keyboard.type(`${soTienMuonRut}000`, { delay: 40 });
+
+    // 7. Submit
+    const delay2 = 1000 + Math.floor(Math.random() * 2001); // 3000 → 5000 ms (3–5 giây)
+    await page.waitForTimeout(delay2);
+    await UI_MouseClick(page, X_BtnSumitRutTien, Y_BtnSumitRutTien, "✅");
+    await page.mouse.click(X_BtnSumitRutTien, Y_BtnSumitRutTien);
+
+    // 8. Đóng Rút Tiền
+    await page.waitForTimeout(delay2);
+    await UI_MouseClick(page, X_BtnCLose, Y_BtnCLose, "🔴");
+    await page.mouse.click(X_BtnCLose, Y_BtnCLose);
+
+
+    // 9. Click lại Menu
+    await page.waitForTimeout(delay2);
+    await UI_MouseClick(page, X_MenuTX, Y_MenuTX, "🔴");
+    await page.mouse.click(X_MenuTX, Y_MenuTX);
+
+    soDuTaiKhoan = soDuLonNhat - soTienMuonRut;
+    soDuLonNhat = soDuLonNhat - soTienMuonRut;
+    tongTienDaRut += soTienMuonRut;
+
+    await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);
+    saveStateTXT();
+
+    await UI_Update_CaiDatVon(
+      page,
+      soDuTaiKhoan,
+      soDuLonNhat,
+      phanTramGiaoDich
+    );
+
+  }
 }
 
 // ================== UI – TẠO NÚT START ==================
@@ -658,28 +767,30 @@ async function clickN(page, x, y, n, icon = "🖱️") {
 }
 
 async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
-  await page.evaluate(({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut }) => {
-    if (document.getElementById("ui-caidat-von")) return;
+  await page.evaluate(
+    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut }) => {
+      if (document.getElementById("ui-caidat-von")) return;
 
-    const container = document.createElement("div");
-    container.id = "ui-caidat-von";
-    Object.assign(container.style, {
-      position: "fixed",
-      top: "33px",
-      right: "10px",
-      width: "210px",
-      backgroundColor: "#fff",
-      border: "1px solid #000",
-      borderRadius: "8px",
-      padding: "10px 16px 14px 16px",
-      fontSize: "12px",
-      fontFamily: "monospace",
-      zIndex: 9999,
-      boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-    });
+      const container = document.createElement("div");
+      container.id = "ui-caidat-von";
+      Object.assign(container.style, {
+        position: "fixed",
+        top: "33px",
+        right: "10px",
+        width: "210px",
+        backgroundColor: "#fff",
+        border: "1px solid #000",
+        borderRadius: "8px",
+        padding: "10px 16px 14px 16px",
+        fontSize: "12px",
+        fontFamily: "monospace",
+        zIndex: 9999,
+        boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+      });
 
-    const tienGD = percent ? Math.floor(soDuMax * percent / 100) : 0;
-    container.innerHTML = `
+      const tienGD = percent ? Math.floor(soDuMax * percent / 100) : 0;
+
+      container.innerHTML = `
         <style>
           #ui-caidat-von input[type=number]::-webkit-inner-spin-button,
           #ui-caidat-von input[type=number]::-webkit-outer-spin-button {
@@ -698,27 +809,27 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
         <div style="margin-bottom:8px">
           Số dư hiện tại
           <input id="inp-sodu" type="number"
-            style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
+            style="width:100%;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
             value="${soDu}" />
         </div>
 
         <div style="margin-bottom:8px">
           Số dư lớn nhất
           <input id="inp-max" type="number"
-            style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
+            style="width:100%;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
             value="${soDuMax}" />
         </div>
 
         <div style="margin-bottom:5px">
           % giao dịch
           <input id="inp-percent" type="number"
-            style="width:100%;box-sizing:border-box;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
+            style="width:100%;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
             value="${percent}" />
         </div>
 
         <div style="margin-bottom:10px">
           💰 Tiền giao dịch:
-         <span id="tien-gd" style="color:#dc3545;font-weight:bold;font-size:13px">
+          <span id="tien-gd" style="color:#dc3545;font-weight:bold">
             ${tienGD}
           </span>
         </div>
@@ -726,13 +837,10 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
         <div style="margin-bottom:10px">
           🧩 ID của ngầm
           <div style="display:flex; gap:6px; margin-top:4px">
-            <input id="inp-stop-id" type="number"
-              placeholder="ID"
-              style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
-
-            <input id="inp-ngam" type="number"
-              placeholder="Ngầm"
-              style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+            <input id="inp-stop-id" type="number" placeholder="ID"
+              style="width:50%;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+            <input id="inp-ngam" type="number" placeholder="Ngầm"
+              style="width:50%;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
           </div>
         </div>
 
@@ -741,75 +849,78 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
           <div style="display:flex; gap:6px; margin-top:4px">
             <input id="inp-nguong-rut" type="number"
               value="${nguongTienDat}"
-              placeholder="Ngưỡng"
-              style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
-
+              style="width:50%;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
             <input id="inp-so-tien-rut" type="number"
               value="${soTienMuonRut}"
-              placeholder="Số tiền rút"
-              style="width:50%;box-sizing:border-box;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+              style="width:50%;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
           </div>
         </div>
 
+        <div style="margin-bottom:10px">
+          🧾 Đã rút:
+          <span id="tong-da-rut" style="color:#28a745;font-weight:bold">
+            ${tongTienDaRut}
+          </span>
+        </div>
+
         <button id="btn-apply"
-          style="width:100%;padding:7px;background:#007bff;color:#fff;border:none;border-radius:5px;cursor:pointer;font-weight:bold">
+          style="width:100%;padding:7px;background:#007bff;color:#fff;border:none;border-radius:5px;font-weight:bold">
           Cài đặt
         </button>
       `;
 
-    const toggleBtn = document.createElement("div");
-    toggleBtn.innerText = "▼";
-    Object.assign(toggleBtn.style, {
-      position: "fixed",
-      top: "10px",
-      right: "10px",
-      fontSize: "14px",
-      padding: "3px 7px",
-      cursor: "pointer",
-      background: "#fff",
-      border: "1px solid #999",
-      borderRadius: "4px",
-      userSelect: "none",
-      zIndex: 10000,
-    });
+      const toggleBtn = document.createElement("div");
+      toggleBtn.innerText = "▼";
+      Object.assign(toggleBtn.style, {
+        position: "fixed",
+        top: "10px",
+        right: "10px",
+        padding: "3px 7px",
+        background: "#fff",
+        border: "1px solid #999",
+        borderRadius: "4px",
+        cursor: "pointer",
+        zIndex: 10000,
+      });
 
-    let isHidden = false;
-    toggleBtn.onclick = () => {
-      isHidden = !isHidden;
-      container.style.display = isHidden ? "none" : "block";
-      toggleBtn.innerText = isHidden ? "▲" : "▼";
-    };
+      let isHidden = false;
+      toggleBtn.onclick = () => {
+        isHidden = !isHidden;
+        container.style.display = isHidden ? "none" : "block";
+        toggleBtn.innerText = isHidden ? "▲" : "▼";
+      };
 
-    document.body.appendChild(toggleBtn);
-    document.body.appendChild(container);
+      document.body.appendChild(toggleBtn);
+      document.body.appendChild(container);
 
-    document.getElementById("btn-apply").onclick = () => {
-      const stopId = Number(document.getElementById("inp-stop-id").value || 0);
-      const ngam = Number(document.getElementById("inp-ngam").value || 0);
+      document.getElementById("btn-apply").onclick = () => {
+        const stopId = Number(document.getElementById("inp-stop-id").value || 0);
+        const ngam = Number(document.getElementById("inp-ngam").value || 0);
 
-      nguongTienDat = Number(document.getElementById("inp-nguong-rut").value || nguongTienDat);
-      soTienMuonRut = Number(document.getElementById("inp-so-tien-rut").value || soTienMuonRut);
+        nguongTienDat = Number(document.getElementById("inp-nguong-rut").value || nguongTienDat);
+        soTienMuonRut = Number(document.getElementById("inp-so-tien-rut").value || soTienMuonRut);
 
-      window.applyCaiDatVon(
-        Number(document.getElementById("inp-sodu").value || 0),
-        Number(document.getElementById("inp-max").value || 0),
-        Number(document.getElementById("inp-percent").value || 0),
-        stopId,
-        ngam,
-        nguongTienDat,
-        soTienMuonRut
-      );
-    };
-  },
-    { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut }
+        window.applyCaiDatVon(
+          Number(document.getElementById("inp-sodu").value || 0),
+          Number(document.getElementById("inp-max").value || 0),
+          Number(document.getElementById("inp-percent").value || 0),
+          stopId,
+          ngam,
+          nguongTienDat,
+          soTienMuonRut
+        );
+      };
+    },
+    { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut }
   );
 }
 
 
 
+
 async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
   await page.evaluate(
-    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut }) => {
+    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut }) => {
       const box = document.getElementById("ui-caidat-von");
       if (!box) return;
 
@@ -826,10 +937,21 @@ async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
           ? Math.floor(soDuMax * percent / 100)
           : 0;
       }
+
+      const spanRut = document.getElementById("tong-da-rut");
+      if (spanRut) spanRut.innerText = tongTienDaRut;
     },
-    { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut }
+    {
+      soDu,
+      soDuMax,
+      percent,
+      nguongTienDat,
+      soTienMuonRut,
+      tongTienDaRut, // ✅ BẮT BUỘC PHẢI TRUYỀN
+    }
   );
 }
+
 
 
 function saveStateTXT() {
@@ -840,10 +962,16 @@ function saveStateTXT() {
     lines.push(`soDuLonNhat=${soDuLonNhat}`);
     lines.push(`phanTramGiaoDich=${phanTramGiaoDich}`);
     lines.push(`profitAll=${profitAll}`);
+
+    // ✅ THÊM 3 PHẦN
+    lines.push(`nguongTienDat=${nguongTienDat}`);
+    lines.push(`soTienMuonRut=${soTienMuonRut}`);
+    lines.push(`tongTienDaRut=${tongTienDaRut}`);
+
     lines.push("");
 
     lines.push(`ArrayKQ=${ArrayKQ.join(",")}`);
-    lines.push(`ArrayKQ_XAU=${ArrayKQ_XAU.join(",")}`); // ✅ THÊM NÀY NỮA
+    lines.push(`ArrayKQ_XAU=${ArrayKQ_XAU.join(",")}`);
     lines.push("");
 
     // ✅ GHI DẠNG JSON NHIỀU DÒNG
@@ -855,6 +983,7 @@ function saveStateTXT() {
     console.error("❌ Save TXT lỗi:", err.message);
   }
 }
+
 
 function loadStateTXT() {
   if (!fs.existsSync(STATE_FILE)) return;
@@ -873,11 +1002,17 @@ function loadStateTXT() {
     phanTramGiaoDich = Number(getVal("phanTramGiaoDich")) || phanTramGiaoDich;
     profitAll = Number(getVal("profitAll")) || profitAll;
 
+    // ✅ LOAD THÊM 3 BIẾN
+    nguongTienDat = Number(getVal("nguongTienDat")) || nguongTienDat;
+    soTienMuonRut = Number(getVal("soTienMuonRut")) || soTienMuonRut;
+    tongTienDaRut = Number(getVal("tongTienDaRut")) || tongTienDaRut;
+
     const arrKQ = getVal("ArrayKQ");
     if (arrKQ) {
       ArrayKQ.length = 0;
       ArrayKQ.push(...arrKQ.split(","));
     }
+
     const arrXAU = getVal("ArrayKQ_XAU");
     if (arrXAU) {
       ArrayKQ_XAU.length = 0;
@@ -898,10 +1033,10 @@ function loadStateTXT() {
       }
     }
 
-    // console.log("✅ Load state TXT (pretty) OK");
   } catch (err) {
     console.error("❌ Load TXT lỗi → bỏ qua state:", err.message);
   }
 }
+
 
 
