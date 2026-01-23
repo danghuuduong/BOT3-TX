@@ -122,8 +122,8 @@ function detectKhoiChanEarly_TX(str) {
 
 
 // ================= VALID STRUCTURE =================
-// function isValid_1_Create(s3) { return s3 === "TXT" || s3 === "XTX"; }
-// function isValid_2_Create(s5) { return s5 === "XTXXT" || s5 === "TXTTX"; }
+function isValid_1_Create(s3) { return s3 === "TXT" || s3 === "XTX"; }
+function isValid_2_Create(s5) { return s5 === "XTXXT" || s5 === "TXTTX"; }
 
 // function isValid_4(s4) { return s4 === "TTTT" || s4 === "XXXX"; }
 // function isValid_5(s5) { return s5 === "TTTTT" || s5 === "XXXXX"; }
@@ -296,10 +296,10 @@ function TinHieuMuaBan(ArrayKQ) {
   if (lockState[TYPES.TYPE_2_1_PLUS]) {
     if (!isValid_2_1_2(s5, s6, s7)) lockState[TYPES.TYPE_2_1_PLUS] = false;
   } else {
-    if (s6 === "XXTXXT" || s6 === "TTXTTX") {
+    if (s7 === "TXXTXXT" || s7 === "XTTXTTX") {
       lockState[TYPES.TYPE_2_1_PLUS] = true;
       return {
-        huong: s6 === "XXTXXT" ? T : X,
+        huong: s7 === "TXXTXXT" ? T : X,
         type: TYPES.TYPE_2_1_PLUS
       };
     }
@@ -366,7 +366,7 @@ function TinHieuMuaBan(ArrayKQ) {
   const sKC = ArrayKQ.slice(-25).join("");
 
   if (lockState[TYPES.TYPE_KHOI_CHAN]) {
-    if (!isStillInKhoiChan_TX(sKC)) {
+    if (!isStillInKhoiChan_TX(sKC) || isValid_1_1(s4) || isValid_2_1_2(s5, s6, s7) || isValid_3_1_3(s7, s8, s9, s10) || isValid_123(s6, s7) || isValid_1_Create(s3) || isValid_2_Create(s5)) {
       lockState[TYPES.TYPE_KHOI_CHAN] = false;
     }
   } else {
@@ -379,10 +379,6 @@ function TinHieuMuaBan(ArrayKQ) {
       };
     }
   }
-
-
-
-
   return { huong: "null", type: "null" };
 }
 
@@ -391,7 +387,7 @@ function TinHieuMuaBanNew(ArrayKQ_XAU) {
     return { huong: "null", type: "null" };
   }
 
-  const s2= getLastTX(ArrayKQ_XAU, 2);
+  const s2 = getLastTX(ArrayKQ_XAU, 2);
 
 
   // ==================================================================== 1-1 =============================================
@@ -403,9 +399,10 @@ function TinHieuMuaBanNew(ArrayKQ_XAU) {
   }
 
   if (s2 === "BB") {
-    return { 
+    return {
       isPheDep: true,
-      type: TYPES2.typeBeThangXau };
+      type: TYPES2.typeBeThangXau
+    };
   }
 
   if (!Array.isArray(ArrayKQ_XAU) || ArrayKQ_XAU.length < 4) {
