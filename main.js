@@ -59,35 +59,35 @@ let Y_Submit = startY + 111; //437
 // ========================================== Chức năng rút tiền.====================================
 
 // 1. Click vào CryTO Hoặc Button Rút tiền (2 LẦn).
-let X_ButtonRutTien = 0; //488
-let Y_ButtonRutTien = 0; //326
+let X_ButtonRutTien = 230; //488
+let Y_ButtonRutTien = 680; //326
 
 // 2. Click vào Tab Rút  .
-let X_BtnTabRut = 0; //488
-let Y_BtnTabRut = 0; //326
+let X_BtnTabRut = 277; //488
+let Y_BtnTabRut = 327; //326
 
 // 3. Click vào INput Nhập Ví.
-let X_InpVi = 0; //488
-let Y_InpVi = 0; //326
+let X_InpVi = 830; //488
+let Y_InpVi = 255; //326
 // 4. Nhập Địa chỉ Ví 
 let Diachivi = "TG7KWfmgdFDFgX91Q2MBPGYebkqLH5osKa"
 
 // 5. Click vào INput Nhập Số tiền.
-let X_InpNhapSoTien = 0; //488
-let Y_InpNhapSoTien = 0; //326
+let X_InpNhapSoTien = 830; //488
+let Y_InpNhapSoTien = 375; //326
 // sài biến soTienMuonRut  thêm 3 số 0 nữa.  ví dụ 2000 thì nhập 2 000 000
 
 // 6. Click vào Tab Rút  .
-let X_BtnSumitRutTien = 0; //488
-let Y_BtnSumitRutTien = 0; //326
+let X_BtnSumitRutTien = 850; //488
+let Y_BtnSumitRutTien = 460; //326
 
 // 8. Click Tắt   .
-let X_BtnCLose = 0; //488
-let Y_BtnCLose = 0; //326
+let X_BtnCLose = 1040; //488
+let Y_BtnCLose = 145; //326
 
 // 9. Click lại Menu kết quả TX   .
-let X_MenuTX = 0; //488
-let Y_MenuTX = 0; //326
+let X_MenuTX = 288; //488
+let Y_MenuTX = 200; //326
 
 let tongTienDaRut = 0;
 
@@ -186,7 +186,7 @@ async function handleStop() {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://web.sunwin.biz/", {
+  await page.goto("https://web.sunwin.bi", {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
@@ -214,7 +214,7 @@ async function handleStop() {
       // ===== LOGIC CŨ GIỮ NGUYÊN =====
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (item) {
-        updateAray(stopId, { ngam: ngam, });
+        updateAray(stopId, { ngam: ngam });
         await UI_Update_Table(page, LuutruLongmach);
       }
 
@@ -276,6 +276,45 @@ async function handleStop() {
   await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
   await UI_Show_SoDu(page, soDuTaiKhoan, profitAll)
   await UI_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
+
+  async function injectMouseTracker(page) {
+    for (const frame of page.frames()) {
+      try {
+        await frame.evaluate(() => {
+          if (document.getElementById("mouse-coord-display")) return;
+
+          const box = document.createElement("div");
+          box.id = "mouse-coord-display";
+          Object.assign(box.style, {
+            position: "fixed",
+            pointerEvents: "none",
+            zIndex: 2147483647,
+            background: "rgba(0,0,0,0.75)",
+            color: "#00ff00",
+            padding: "2px 6px",
+            fontSize: "12px",
+            fontFamily: "monospace",
+            borderRadius: "4px",
+          });
+          document.body.appendChild(box);
+
+          document.addEventListener("mousemove", (e) => {
+            box.innerText = `X:${e.clientX} Y:${e.clientY}`;
+            box.style.left = e.clientX + 12 + "px";
+            box.style.top = e.clientY + 12 + "px";
+          }, true);
+        });
+      } catch (e) {
+        // ignore cross-origin iframe
+      }
+    }
+  }
+
+  // GỌI SAU page.goto
+  await injectMouseTracker(page);
+
+
+
 })();
 
 // ================================================== HANDLE LOGIC ===========================================
@@ -455,63 +494,74 @@ async function ThucHienGiaoDich() {
       }
     }
   }
+
+  const allNotTrading = LuutruLongmach.every(item => !item.isTrading);
   if (
     soDuTaiKhoan >= soDuLonNhat &&
     soDuTaiKhoan >= nguongTienDat &&
-    muaGiaLap === "null" && tinHieuAINew.huong === "null" && tinHieuAI.huong === "null") {
+    tinHieuAI.huong === "null" &&
+    allNotTrading
+  ) {
 
+    // ✅ FIX: document phải chạy trong browser
+    await page.evaluate(() => {
+      const btn = document.getElementById("longmach-toggle");
+      if (btn && btn.innerText === "▼") btn.click();
+    });
 
-    const btn = document.getElementById("longmach-toggle");
-    if (btn && btn.innerText === "▼") btn.click();
     await page.waitForTimeout(100);
 
-    // CLick vào button cryto 2 lần 
+    // 1. Click vào button crypto / rút tiền (2 lần)
     await UI_MouseClick(page, X_ButtonRutTien, Y_ButtonRutTien, "🎯");
     await page.mouse.click(X_ButtonRutTien, Y_ButtonRutTien);
     await page.waitForTimeout(100);
     await page.mouse.click(X_ButtonRutTien, Y_ButtonRutTien);
 
-    // 2. Click vào Tab Rút  .
-    const delay = 3000 + Math.floor(Math.random() * 2001); // 3000 → 5000 ms (3–5 giây)
+    // 2. Click tab Rút
+    const delay = 2000 + Math.floor(Math.random() * 2001);
     await page.waitForTimeout(delay);
     await UI_MouseClick(page, X_BtnTabRut, Y_BtnTabRut, "🎯");
     await page.mouse.click(X_BtnTabRut, Y_BtnTabRut);
 
-    // 3. Click vào INput Nhập Ví.
+    // 3. Click input ví
     const delay1 = 30 + Math.floor(Math.random() * 121);
     await page.waitForTimeout(delay1);
     await UI_MouseClick(page, X_InpVi, Y_InpVi, "🎯");
     await page.mouse.click(X_InpVi, Y_InpVi);
 
-    // 4. Nhập Địa chỉ Ví 
-    await page.keyboard.type(Diachivi, { delay: 30 });   // nhanh
+    // 4. Nhập địa chỉ ví
+    await page.keyboard.type(Diachivi, { delay: 30 });
 
-    // // 5. Click vào INput Nhập Số tiền.
+    // 5. Click input số tiền
     await page.waitForTimeout(delay1);
     await UI_MouseClick(page, X_InpNhapSoTien, Y_InpNhapSoTien, "🎯");
     await page.mouse.click(X_InpNhapSoTien, Y_InpNhapSoTien);
 
-    // 6 Nhập Số tiền mong muốn rút là nhiêu
+    // 6. Nhập số tiền rút
     await page.waitForTimeout(delay1);
     await page.keyboard.type(`${soTienMuonRut}000`, { delay: 40 });
 
     // 7. Submit
-    const delay2 = 1000 + Math.floor(Math.random() * 2001); // 3000 → 5000 ms (3–5 giây)
+    const delay2 = 1000 + Math.floor(Math.random() * 2001);
     await page.waitForTimeout(delay2);
     await UI_MouseClick(page, X_BtnSumitRutTien, Y_BtnSumitRutTien, "✅");
     await page.mouse.click(X_BtnSumitRutTien, Y_BtnSumitRutTien);
 
-    // 8. Đóng Rút Tiền
+    // 8. Đóng rút tiền
     await page.waitForTimeout(delay2);
     await UI_MouseClick(page, X_BtnCLose, Y_BtnCLose, "🔴");
     await page.mouse.click(X_BtnCLose, Y_BtnCLose);
+    await page.waitForTimeout(200);
+    await page.mouse.click(X_BtnCLose, X_BtnCLose);
+    await page.waitForTimeout(200);
+    await page.mouse.click(X_BtnCLose, X_BtnCLose);
 
-
-    // 9. Click lại Menu
+    // 9. Click lại menu TX
     await page.waitForTimeout(delay2);
     await UI_MouseClick(page, X_MenuTX, Y_MenuTX, "🔴");
     await page.mouse.click(X_MenuTX, Y_MenuTX);
 
+    // Cập nhật số dư
     soDuTaiKhoan = soDuLonNhat - soTienMuonRut;
     soDuLonNhat = soDuLonNhat - soTienMuonRut;
     tongTienDaRut += soTienMuonRut;
@@ -525,8 +575,8 @@ async function ThucHienGiaoDich() {
       soDuLonNhat,
       phanTramGiaoDich
     );
-
   }
+
 }
 
 // ================== UI – TẠO NÚT START ==================

@@ -51,7 +51,7 @@ async function UI_Table_LuuTru(page) {
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
         position: "fixed",          // luôn nằm ngoài table
-        bottom: `209px`, // 10px trên table
+        bottom: `91px`, // 10px trên table
         left: "50%",
         transform: "translateX(-50%)",
         fontSize: "14px",
@@ -76,7 +76,7 @@ async function UI_Table_LuuTru(page) {
         } else {
           container.style.display = "block";
           // toggleBtn.style.top = `${container.getBoundingClientRect().top - 10}px`;
-          toggleBtn.style.bottom = `209px`;
+          toggleBtn.style.bottom = `91px`;
           toggleBtn.innerText = "▼";
         }
       };

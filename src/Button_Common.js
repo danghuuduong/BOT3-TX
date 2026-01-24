@@ -61,7 +61,7 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
       box.id = "ui-so-du";
       Object.assign(box.style, {
         position: "fixed",
-        bottom: "60px",
+        bottom: "100px",
         right: "15px",
         zIndex: 10000,
 

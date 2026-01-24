@@ -87,6 +87,7 @@ function detectKhoiChanEarly_TX(str) {
   let blocks = [];
   let count = 1;
 
+  // Tách block
   for (let i = 1; i <= str.length; i++) {
     if (str[i] === str[i - 1]) {
       count++;
@@ -98,11 +99,12 @@ function detectKhoiChanEarly_TX(str) {
 
   if (blocks.length < 3) return null;
 
-  const b1 = blocks[blocks.length - 3]; // block chẵn 1
-  const b2 = blocks[blocks.length - 2]; // block chẵn 2
-  const b3 = blocks[blocks.length - 1]; // block quay đầu
+  // Lấy 3 block cuối
+  const b3 = blocks[blocks.length - 1]; // cá bẻ
+  const b2 = blocks[blocks.length - 2]; // chẵn 2
+  const b1 = blocks[blocks.length - 3]; // chẵn 1
 
-  // 2 block chẵn + quay đầu đúng 1
+  // Điều kiện: 2 khối chẵn + 1 cá bẻ
   if (
     b1.len >= 2 &&
     b2.len >= 2 &&
@@ -111,12 +113,13 @@ function detectKhoiChanEarly_TX(str) {
     b3.char === b1.char
   ) {
     return {
-      huong: b1.char === T ? X : T
+      huong: b1.char // hoặc đổi theo logic TX của bạn
     };
   }
 
   return null;
 }
+
 
 
 
@@ -241,18 +244,18 @@ function TinHieuMuaBan(ArrayKQ) {
       };
     }
   }
-  // Plus
-  if (lockState[TYPES.TYPE_2_2_PLUS]) {
-    if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2_PLUS] = false;
-  } else {
-    if (s6 === "TXXTTX" || s6 === "XTTXXT") {
-      lockState[TYPES.TYPE_2_2_PLUS] = true;
-      return {
-        huong: s6 === "TXXTTX" ? T : X,
-        type: TYPES.TYPE_2_2_PLUS
-      };
-    }
-  }
+  // // Plus
+  // if (lockState[TYPES.TYPE_2_2_PLUS]) {
+  //   if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2_PLUS] = false;
+  // } else {
+  //   if (s6 === "TXXTTX" || s6 === "XTTXXT") {
+  //     lockState[TYPES.TYPE_2_2_PLUS] = true;
+  //     return {
+  //       huong: s6 === "TXXTTX" ? T : X,
+  //       type: TYPES.TYPE_2_2_PLUS
+  //     };
+  //   }
+  // }
 
   // ==================================================================== 3- 3 =============================================
   if (lockState[TYPES.TYPE_3_3]) {
@@ -366,7 +369,7 @@ function TinHieuMuaBan(ArrayKQ) {
   const sKC = ArrayKQ.slice(-25).join("");
 
   if (lockState[TYPES.TYPE_KHOI_CHAN]) {
-    if (!isStillInKhoiChan_TX(sKC) || isValid_1_1(s4) || isValid_2_1_2(s5, s6, s7) || isValid_3_1_3(s7, s8, s9, s10) || isValid_123(s6, s7) || isValid_1_Create(s3) || isValid_2_Create(s5)) {
+    if (!isStillInKhoiChan_TX(sKC) ||  isValid_1_Create(s3)) {
       lockState[TYPES.TYPE_KHOI_CHAN] = false;
     }
   } else {
