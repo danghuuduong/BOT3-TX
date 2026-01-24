@@ -113,7 +113,7 @@ function detectKhoiChanEarly_TX(str) {
     b3.char === b1.char
   ) {
     return {
-      huong: b1.char // hoặc đổi theo logic TX của bạn
+      huong: b1.char === T ? X : T // hoặc đổi theo logic TX của bạn
     };
   }
 
@@ -270,17 +270,17 @@ function TinHieuMuaBan(ArrayKQ) {
     }
   }
 
-  if (lockState[TYPES.TYPE_3_3_PLUS]) {
-    if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3_PLUS] = false;
-  } else {
-    if (s9 === "XTXXXTTTX" || s9 === "TXTTTXXXT") {
-      lockState[TYPES.TYPE_3_3_PLUS] = true;
-      return {
-        huong: s9 === "XTXXXTTTX" ? T : X,
-        type: TYPES.TYPE_3_3_PLUS
-      };
-    }
-  }
+  // if (lockState[TYPES.TYPE_3_3_PLUS]) {
+  //   if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3_PLUS] = false;
+  // } else {
+  //   if (s9 === "XTXXXTTTX" || s9 === "TXTTTXXXT") {
+  //     lockState[TYPES.TYPE_3_3_PLUS] = true;
+  //     return {
+  //       huong: s9 === "XTXXXTTTX" ? T : X,
+  //       type: TYPES.TYPE_3_3_PLUS
+  //     };
+  //   }
+  // }
 
   // ==================================================================== 2- 1 2 =============================================
 

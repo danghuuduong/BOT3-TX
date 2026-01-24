@@ -77,6 +77,9 @@ let X_InpNhapSoTien = 830; //488
 let Y_InpNhapSoTien = 375; //326
 // sài biến soTienMuonRut  thêm 3 số 0 nữa.  ví dụ 2000 thì nhập 2 000 000
 
+// 5a Click vào nút Hủy Đặt cược cho gọn đã
+let X_HuyDatCuoc = 410; //488
+let Y_HuyDatCuoc = 430; //326
 // 6. Click vào Tab Rút  .
 let X_BtnSumitRutTien = 850; //488
 let Y_BtnSumitRutTien = 460; //326
@@ -504,6 +507,12 @@ async function ThucHienGiaoDich() {
   ) {
 
     // ✅ FIX: document phải chạy trong browser
+
+
+    await UI_MouseClick(page, X_HuyDatCuoc, Y_HuyDatCuoc, "🎯");
+    await page.mouse.click(X_HuyDatCuoc, Y_HuyDatCuoc);
+
+
     await page.evaluate(() => {
       const btn = document.getElementById("longmach-toggle");
       if (btn && btn.innerText === "▼") btn.click();
@@ -516,6 +525,8 @@ async function ThucHienGiaoDich() {
     await page.mouse.click(X_ButtonRutTien, Y_ButtonRutTien);
     await page.waitForTimeout(100);
     await page.mouse.click(X_ButtonRutTien, Y_ButtonRutTien);
+
+
 
     // 2. Click tab Rút
     const delay = 2000 + Math.floor(Math.random() * 2001);
