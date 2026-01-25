@@ -159,7 +159,7 @@ async function handleStart() {
 
   intervalId = setInterval(async () => {
     await CheckColor_X_Y();
-  }, INTERVAL_MS * 1000);
+  }, (INTERVAL_MS * 1000) + 40);
 
 
   // Hiển thị đồng hồ đếm ngược
@@ -413,8 +413,8 @@ async function ThucHienGiaoDich() {
       const isWin = resultNew === item.huong
       if (isWin) {
         if (!isNgam) {
-          soDuTaiKhoan = soDuTaiKhoan + (item.vol * 0.98);
-          profitAll = profitAll + (item.vol * 0.98)
+          soDuTaiKhoan = soDuTaiKhoan + (item.vol * 0.97);
+          profitAll = profitAll + (item.vol * 0.97)
         }
         updateAray(item.id, {
           isTrading: false,
@@ -707,6 +707,7 @@ async function ShowTime70() {
 
 async function toggleCapture() {
   isRunning ? await handleStop() : await handleStart();
+  await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
 }
 
 async function UI_DieuKhien(page) {
