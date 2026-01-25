@@ -22,6 +22,11 @@ const TYPES = {
   TYPE_3_3: "3-3",
   TYPE_3_3_PLUS: "3-3 Plus",
 
+
+  TYPE_4_4: "4-4",
+
+
+
   TYPE_2_1: "2-1",
   TYPE_2_1_PLUS: "2-1 Plus",
 
@@ -62,6 +67,9 @@ const lockState = {
   [TYPES.TYPE_3_create]: false,
   [TYPES.TYPE_3_3]: false,
   [TYPES.TYPE_3_3_PLUS]: false,
+
+
+  [TYPES.TYPE_4_4]: false,
 
   [TYPES.TYPE_2_1]: false,
   [TYPES.TYPE_2_1_PLUS]: false,
@@ -177,6 +185,16 @@ function isValid_3_3(s6, s7, s8) {
     || s7 === "TTTXXXT" || s7 === "XXXTTTX"
     || s8 === "TTTXXXTT" || s8 === "XXXTTTXX";
 }
+
+
+function isValid_4_4(s8, s9, s10, s11) {
+  return s8 === "TTTTXXXX" || s8 === "XXXXTTTT"
+    || s9 === "TTTTXXXXT" || s9 === "XXXXTTTTX"
+    || s10 === "TTTTXXXXTT" || s10 === "XXXXTTTTXX"
+    || s11 === "TTTTXXXXTTT" || s11 === "XXXXTTTTXXX";
+}
+
+
 function isValid_2_1_2(s5, s6, s7) {
   return s5 === "XXTXX" || s5 === "TTXTT"
     || s6 === "XXTXXT" || s6 === "TTXTTX"
@@ -205,7 +223,7 @@ function isValid_123(s6, s7) {
 
 // ================= MAIN =================
 function TinHieuMuaBan(ArrayKQ) {
-  if (!Array.isArray(ArrayKQ) || ArrayKQ.length < 10) {
+  if (!Array.isArray(ArrayKQ) || ArrayKQ.length < 13) {
     return { huong: "null", type: "null" };
   }
 
@@ -217,6 +235,9 @@ function TinHieuMuaBan(ArrayKQ) {
   const s8 = getLastTX(ArrayKQ, 8);
   const s9 = getLastTX(ArrayKQ, 9);
   const s10 = getLastTX(ArrayKQ, 10);
+  const s11 = getLastTX(ArrayKQ, 11);
+  const s12 = getLastTX(ArrayKQ, 12);
+  const s13 = getLastTX(ArrayKQ, 13);
 
   // ==================================================================== 1-1 =============================================
 
@@ -287,6 +308,9 @@ function TinHieuMuaBan(ArrayKQ) {
     }
   }
 
+
+
+
   // if (lockState[TYPES.TYPE_3_3_PLUS]) {
   //   if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3_PLUS] = false;
   // } else {
@@ -298,6 +322,20 @@ function TinHieuMuaBan(ArrayKQ) {
   //     };
   //   }
   // }
+  // ==========================================================================4-4==============================
+
+
+  if (lockState[TYPES.TYPE_4_4]) {
+    if (!isValid_4_4(s8, s9, s10, s11)) lockState[TYPES.TYPE_4_4] = false;
+  } else {
+    if (s10 === "XTXXXXTTTT" || s10 === "TXTTTTXXXX") {
+      lockState[TYPES.TYPE_4_4] = true;
+      return {
+        huong: s10 === "XTXXXXTTTT" ? T : X,
+        type: TYPES.TYPE_4_4
+      };
+    }
+  }
 
   // ==================================================================== 2- 1 2 =============================================
 

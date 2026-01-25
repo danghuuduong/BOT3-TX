@@ -97,10 +97,11 @@ async function UI_Table_LuuTru(page) {
       const headers = [
         "ID", "Type", "Bên", "Vô", "Số Ngầm", "Thếp",
         "Số Tiền", "Win", "Lost", "Lãi",
-        "A", "B", "C", "D", "E",
+        "1", "2", "3", "4", "5",
 
         // // ✅ BỔ SUNG
         // "A1", "A2", "A3", "A4", "A5",
+        "6", "7", "8",
 
         "Cháy",
         "STOP"
@@ -114,6 +115,7 @@ async function UI_Table_LuuTru(page) {
 
         // // ✅ BỔ SUNG
         // "35px", "35px", "35px", "35px", "35px",
+        "35px", "35px", "35px",
 
         "35px",
         "40px",
@@ -170,7 +172,7 @@ async function UI_Update_Table(page, data) {
         item.isFomo ? "Fomo" : "Bẻ🔥",
         item.isTrading ? item.huong === "T" ? "⚫" : "⚪" : "Chưa",
         `${item.thepChoNgam}/${item.ngam} ${icon}`,
-        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/10 Thếp`,
+        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/8 Thếp`,
         item.ngam && !item.isNgamDone ? 'Chưa Vô' : item.vol,
         item.win,
         item.lost,
@@ -180,9 +182,9 @@ async function UI_Update_Table(page, data) {
 
 
         // // ✅ BỔ SUNG
-        // item.A1,
-        // item.A2,
-        // item.A3,
+        item.A1,
+        item.A2,
+        item.A3,
         // item.A4,
         // item.A5,
 

@@ -1,4 +1,4 @@
-const { UI_Btn_Show_TieuDiem, UI_Show_SoDu } = require("./src/Button_Common");
+const { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_Update_ArrayKQ2, UI_ArrayKQ, UI_ArrayKQ2, UI_Update_ArrayKQ } = require("./src/Button_Common");
 const { UI_TieuDiem, UI_Update_Table, UI_Table_LuuTru, UI_MouseClick } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan, T, X, Dep,
@@ -131,15 +131,16 @@ let profitAll = 0;
 const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isFomo: false
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0,
+    deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isFomo: false
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isFomo: true
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isFomo: true
   },
   {
     id: 3, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES2.typeSenke, isFomo: false
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.typeSenke, isFomo: false
   },
 ];
 
@@ -316,7 +317,8 @@ async function handleStop() {
   // GỌI SAU page.goto
   await injectMouseTracker(page);
 
-
+  await UI_ArrayKQ(page);
+  await UI_ArrayKQ2(page);
 
 })();
 
@@ -351,6 +353,7 @@ async function CheckColor_X_Y() {
       if (ketqua !== "null") {
         ArrayKQ.push(ketqua === "black" ? T : X);
         if (ArrayKQ.length > MAX_LENGTH) { ArrayKQ.shift() }
+        await UI_Update_ArrayKQ(page, ArrayKQ);
         ThucHienGiaoDich();
       }
     }
@@ -378,9 +381,11 @@ async function ThucHienGiaoDich() {
     if (isWin) {
       ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       muaGiaLap = "null"
+      await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
     } else {
       ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       muaGiaLap = "null"
+      await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
     }
   }
   if (muaGiaLap === "null" && tinHieuAI.huong !== "null") {
@@ -411,9 +416,9 @@ async function ThucHienGiaoDich() {
               C: item.thep === 3 ? item.C + 1 : item.C,
               D: item.thep === 4 ? item.D + 1 : item.D,
               E: item.thep === 5 ? item.E + 1 : item.E,
-              // A1: item.thep === 6 ? item.A1 + 1 : item.A1,
-              // A2: item.thep === 7 ? item.A2 + 1 : item.A2,
-              // A3: item.thep === 8 ? item.A3 + 1 : item.A3,
+              A1: item.thep === 6 ? item.A1 + 1 : item.A1,
+              A2: item.thep === 7 ? item.A2 + 1 : item.A2,
+              A3: item.thep === 8 ? item.A3 + 1 : item.A3,
               // A4: item.thep === 9 ? item.A4 + 1 : item.A4,
               // A5: item.thep === 10 ? item.A5 + 1 : item.A5,
               vol: 0,
@@ -612,7 +617,6 @@ async function UI_Start(page) {
     document.body.appendChild(btn);
   });
 
-
   await page.exposeFunction("toggleCapture", toggleCapture);
 
   // Gắn sự kiện click cho button
@@ -689,6 +693,7 @@ async function ShowTime70() {
 
 async function toggleCapture() {
   isRunning ? await handleStop() : await handleStart();
+  await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
 }
 
 async function UI_DieuKhien(page) {
