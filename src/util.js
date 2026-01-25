@@ -2,7 +2,7 @@ const T = "T";
 const X = "X";
 const Dep = "A";
 const Xau = "B";
-const maxThep = 5;
+const maxThep = 8;
 
 // ================= TYPES =================
 
@@ -22,11 +22,19 @@ const TYPES = {
   TYPE_3_3: "3-3",
   TYPE_3_3_PLUS: "3-3 Plus",
 
+
+  TYPE_4_4: "4-4",
+
+
   TYPE_2_1: "2-1",
   TYPE_2_1_PLUS: "2-1 Plus",
 
   TYPE_3_1: "3-1",
   TYPE_3_1_PLUS: "3-1 Plus",
+
+  TYPE_4_1: "4-1",
+  TYPE_4_1_PLUS: "4-1 Plus",
+
 
   TYPE_123: "123",
   TYPE_123_PLUS: "123 Plus",
@@ -59,11 +67,20 @@ const lockState = {
   [TYPES.TYPE_3_3]: false,
   [TYPES.TYPE_3_3_PLUS]: false,
 
+  [TYPES.TYPE_4_4]: false,
+
+
+
   [TYPES.TYPE_2_1]: false,
   [TYPES.TYPE_2_1_PLUS]: false,
 
   [TYPES.TYPE_3_1]: false,
   [TYPES.TYPE_3_1_PLUS]: false,
+
+  [TYPES.TYPE_4_1]: false,
+  [TYPES.TYPE_4_1_PLUS]: false,
+
+
 
   [TYPES.TYPE_123]: false,
   [TYPES.TYPE_123_PLUS]: false,
@@ -168,6 +185,17 @@ function isValid_3_3(s6, s7, s8) {
     || s7 === "TTTXXXT" || s7 === "XXXTTTX"
     || s8 === "TTTXXXTT" || s8 === "XXXTTTXX";
 }
+
+
+
+function isValid_4_4(s8, s9, s10, s11) {
+  return s8 === "TTTTXXXX" || s8 === "XXXXTTTT"
+    || s9 === "TTTTXXXXT" || s9 === "XXXXTTTTX"
+    || s10 === "TTTTXXXXTT" || s10 === "XXXXTTTTXX"
+    || s11 === "TTTTXXXXTTT" || s11 === "XXXXTTTTXXX";
+}
+
+
 function isValid_2_1_2(s5, s6, s7) {
   return s5 === "XXTXX" || s5 === "TTXTT"
     || s6 === "XXTXXT" || s6 === "TTXTTX"
@@ -179,6 +207,14 @@ function isValid_3_1_3(s7, s8, s9, s10) {
     || s8 === "XXXTXXXT" || s8 === "TTTXTTTX"
     || s9 === "XXXTXXXTX" || s9 === "TTTXTTTXT"
     || s10 === "XXXTXXXTXX" || s10 === "TTTXTTTXTT";
+}
+
+function isValid_4_1_4(s9, s10, s11, s12, s13) {
+  return s9 === "XXXXTXXXX" || s9 === "TTTTXTTTT"
+    || s10 === "XXXXTXXXXT" || s10 === "TTTTXTTTTX"
+    || s11 === "XXXXTXXXXTX" || s11 === "TTTTXTTTTXT"
+    || s12 === "XXXXTXXXXTXX" || s12 === "TTTTXTTTTXTT"
+    || s13 === "XXXXTXXXXTXXX" || s13 === "TTTTXTTTTXTTT";
 }
 
 function isValid_123(s6, s7) {
@@ -200,6 +236,9 @@ function TinHieuMuaBan(ArrayKQ) {
   const s8 = getLastTX(ArrayKQ, 8);
   const s9 = getLastTX(ArrayKQ, 9);
   const s10 = getLastTX(ArrayKQ, 10);
+  const s11 = getLastTX(ArrayKQ, 11);
+  const s12 = getLastTX(ArrayKQ, 12);
+  const s13 = getLastTX(ArrayKQ, 13);
 
   // ==================================================================== 1-1 =============================================
 
@@ -282,6 +321,21 @@ function TinHieuMuaBan(ArrayKQ) {
   //   }
   // }
 
+
+  // ==================================================================== 4- 4 =============================================
+  if (lockState[TYPES.TYPE_4_4]) {
+    if (!isValid_4_4(s8, s9, s10, s11)) lockState[TYPES.TYPE_4_4] = false;
+  } else {
+    if (s10 === "XTXXXXTTTT" || s10 === "TXTTTTXXXX") {
+      lockState[TYPES.TYPE_4_4] = true;
+      return {
+        huong: s10 === "XTXXXXTTTT" ? T : X,
+        type: TYPES.TYPE_4_4
+      };
+    }
+  }
+
+
   // ==================================================================== 2- 1 2 =============================================
 
   if (lockState[TYPES.TYPE_2_1]) {
@@ -335,6 +389,31 @@ function TinHieuMuaBan(ArrayKQ) {
     }
   }
 
+
+  if (lockState[TYPES.TYPE_4_1]) {
+    if (!isValid_4_1_4(s9, s10, s11, s12, s13)) lockState[TYPES.TYPE_4_1] = false;
+  } else {
+    if (s10 === "TXXXXTXXXX" || s10 === "XTTTTXTTTT") {
+      lockState[TYPES.TYPE_4_1] = true;
+      return {
+        huong: s10 === "TXXXXTXXXX" ? X : T,
+        type: TYPES.TYPE_4_1
+      };
+    }
+  }
+
+  if (lockState[TYPES.TYPE_4_1_PLUS]) {
+    if (!isValid_4_1_4(s9, s10, s11, s12, s13)) lockState[TYPES.TYPE_4_1_PLUS] = false;
+  } else {
+    if (s11 === "TXXXXTXXXXT" || s11 === "XTTTTXTTTTX") {
+      lockState[TYPES.TYPE_4_1_PLUS] = true;
+      return {
+        huong: s11 === "TXXXXTXXXXT" ? T : X,
+        type: TYPES.TYPE_4_1_PLUS
+      };
+    }
+  }
+
   // ==================================================================== 123 =============================================
 
   if (lockState[TYPES.TYPE_123]) {
@@ -369,7 +448,7 @@ function TinHieuMuaBan(ArrayKQ) {
   const sKC = ArrayKQ.slice(-25).join("");
 
   if (lockState[TYPES.TYPE_KHOI_CHAN]) {
-    if (!isStillInKhoiChan_TX(sKC) ||  isValid_1_Create(s3)) {
+    if (!isStillInKhoiChan_TX(sKC) || isValid_1_Create(s3)) {
       lockState[TYPES.TYPE_KHOI_CHAN] = false;
     }
   } else {
@@ -439,12 +518,23 @@ async function updateButton(page, text, color) {
 }
 
 // ================= COLOR =================
-function handleGetColor_TX(r, g, b) {
-  const avg = (r + g + b) / (3 * 255);
-  if (avg > 0.85) return "white";
-  if (avg < 0.2) return "black";
+function handleGetColor_TX(r, g, b, hex) {
+  const brightness = (r + g + b) / 3;
+  const diff = Math.max(r, g, b) - Math.min(r, g, b);
+
+  // console.log("hex", hex, "brightness", brightness);
+
+  if (hex === "#afafaf" || brightness >= 180 || (brightness >= 140 && diff <= 15)) {
+    return "white";
+  }
+
+  if (hex === "#323232" || brightness <= 60) {
+    return "black";
+  }
+
   return "null";
 }
+
 
 function getHuongForItem(tinHieuAINew, huongGoc) {
   if (huongGoc == "null") return "null"

@@ -95,7 +95,7 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
     }
 
     const fmtBalance = Number(balance).toLocaleString("vi-VN");
-    const fmtProfit  = Number(pnl).toLocaleString("vi-VN");
+    const fmtProfit = Number(pnl).toLocaleString("vi-VN");
 
     let profitColor = "#666";
     if (pnl > 0) profitColor = "#0a8f08";
@@ -121,8 +121,8 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
     `;
 
     /* ===== NHẤP NHÁY NHẸ ===== */
-    box.style.transform = "scale(1.12)";
-    box.style.transition = "transform 0.2s ease";
+    box.style.transform = "scale(2)";
+    box.style.transition = "transform 0.4s ease";
     setTimeout(() => {
       box.style.transform = "scale(1)";
     }, 200);
@@ -131,6 +131,106 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
 }
 
 
+async function UI_ArrayKQ(page) {
+  await page.evaluate(() => {
+    if (document.getElementById("ui-array-kq")) return;
+
+    const box = document.createElement("div");
+    box.id = "ui-array-kq";
+
+    Object.assign(box.style, {
+      position: "fixed",
+      top: "10px",              // cách top 10px
+      left: "50%",              // căn giữa ngang
+      transform: "translateX(-50%)",
+      display: "flex",
+      gap: "1px",               // sát nhau
+      zIndex: 9999,
+      background: "rgba(255,255,255,0.9)",
+      padding: "6px 8px",
+      borderRadius: "6px",
+      border: "1px solid #000"
+    });
+
+    document.body.appendChild(box);
+  });
+}
 
 
-module.exports = { UI_Btn_Show_TieuDiem, UI_Show_SoDu };
+async function UI_Update_ArrayKQ(page, ArrayKQ) {
+  await page.evaluate((ArrayKQ) => {
+    const box = document.getElementById("ui-array-kq");
+    if (!box) return;
+
+    box.innerHTML = "";
+
+    const last10 = ArrayKQ.slice(-10);
+
+    last10.forEach(kq => {
+      const dot = document.createElement("div");
+
+      Object.assign(dot.style, {
+        width: "15px",
+        height: "15px",
+        borderRadius: "50%",
+        backgroundColor: kq === "T" ? "#000" : "#fff",
+        border: "1px solid #000", // để X trắng vẫn thấy
+      });
+
+      box.appendChild(dot);
+    });
+  }, ArrayKQ);
+}
+
+async function UI_ArrayKQ2(page) {
+  await page.evaluate(() => {
+    if (document.getElementById("ui-array-kq2")) return;
+
+    const box = document.createElement("div");
+    box.id = "ui-array-kq2";
+
+    Object.assign(box.style, {
+      position: "fixed",
+      top: "43px",              // cách top 10px
+      left: "50%",              // căn giữa ngang
+      transform: "translateX(-50%)",
+      display: "flex",
+      gap: "1px",               // sát nhau
+      zIndex: 9999,
+      background: "rgba(255,255,255,0.9)",
+      padding: "6px 8px",
+      borderRadius: "6px",
+      border: "1px solid #fff"
+    });
+
+    document.body.appendChild(box);
+  });
+}
+
+async function UI_Update_ArrayKQ2(page, ArrayKQ) {
+  await page.evaluate((ArrayKQ) => {
+    const box = document.getElementById("ui-array-kq2");
+    if (!box) return;
+
+    box.innerHTML = "";
+
+    const last10 = ArrayKQ.slice(-10);
+
+    last10.forEach(kq => {
+      const dot = document.createElement("div");
+
+      Object.assign(dot.style, {
+        width: "15px",
+        height: "15px",
+        borderRadius: "10px",
+        backgroundColor: kq === "A" ? "#20f70d" : "#f80404",
+        border: "1px solid #fff", // để X trắng vẫn thấy
+      });
+
+      box.appendChild(dot);
+    });
+  }, ArrayKQ);
+}
+
+
+module.exports = { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_ArrayKQ, UI_Update_ArrayKQ, UI_ArrayKQ2, UI_Update_ArrayKQ2 };

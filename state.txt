@@ -1,13 +1,13 @@
-soDuTaiKhoan=1295.355
-soDuLonNhat=1295.355
-phanTramGiaoDich=21
-profitAll=295.355
-nguongTienDat=7000
-soTienMuonRut=2000
+soDuTaiKhoan=769.1050000000002
+soDuLonNhat=769.1050000000002
+phanTramGiaoDich=100
+profitAll=10.719999999999999
+nguongTienDat=5000
+soTienMuonRut=1000
 tongTienDaRut=0
 
-ArrayKQ=T,T,X,T,X,T,T,T,X,X,T,T,X,X,X,T,X,T,X,T,X,X,T,T,T
-ArrayKQ_XAU=A,B,A,B,A,A,A,B
+ArrayKQ=T,X,X,T,T,X,X,T,X,X,T,X,X,X,T,T,X,X,T,T,T,X,X,X,X
+ArrayKQ_XAU=B,B,A,B,B,A,A,B,A,A,B,B,A,B,B,B,B,B,A,B,A,A,A,B,A
 
 LuutruLongmach=
 [
@@ -15,19 +15,22 @@ LuutruLongmach=
     "id": 1,
     "isTrading": false,
     "huong": "null",
-    "profit": 100,
+    "profit": 1.94,
     "thepChoNgam": 0,
     "isNgamDone": false,
     "ngam": 1,
     "thep": 0,
     "vol": 0,
-    "win": 33,
-    "lost": 38,
-    "A": 15,
-    "B": 11,
-    "C": 4,
-    "D": 2,
-    "E": 1,
+    "win": 1,
+    "lost": 1,
+    "A": 0,
+    "B": 1,
+    "C": 0,
+    "D": 0,
+    "E": 0,
+    "A1": 0,
+    "A2": 0,
+    "A3": 0,
     "deal": 0,
     "isStop": false,
     "type": "Bên Xấu",
@@ -37,19 +40,22 @@ LuutruLongmach=
     "id": 2,
     "isTrading": false,
     "huong": "null",
-    "profit": 80.74,
+    "profit": 7.799999999999999,
     "thepChoNgam": 0,
     "isNgamDone": false,
     "ngam": 1,
     "thep": 0,
     "vol": 0,
-    "win": 16,
-    "lost": 6,
-    "A": 13,
-    "B": 1,
-    "C": 1,
-    "D": 1,
+    "win": 6,
+    "lost": 2,
+    "A": 4,
+    "B": 2,
+    "C": 0,
+    "D": 0,
     "E": 0,
+    "A1": 0,
+    "A2": 0,
+    "A3": 0,
     "deal": 0,
     "isStop": false,
     "type": "Bên Đẹp",
@@ -59,19 +65,22 @@ LuutruLongmach=
     "id": 3,
     "isTrading": false,
     "huong": "null",
-    "profit": 113.63999999999999,
+    "profit": 0,
     "thepChoNgam": 0,
     "isNgamDone": false,
     "ngam": 1,
     "thep": 0,
     "vol": 0,
-    "win": 15,
-    "lost": 10,
-    "A": 9,
-    "B": 4,
-    "C": 1,
+    "win": 0,
+    "lost": 0,
+    "A": 0,
+    "B": 0,
+    "C": 0,
     "D": 0,
-    "E": 1,
+    "E": 0,
+    "A1": 0,
+    "A2": 0,
+    "A3": 0,
     "deal": 0,
     "isStop": false,
     "type": "Sen Kẽ",

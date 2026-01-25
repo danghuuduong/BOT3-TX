@@ -1,4 +1,4 @@
-const { UI_Btn_Show_TieuDiem, UI_Show_SoDu } = require("./src/Button_Common");
+const { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_ArrayKQ, UI_Update_ArrayKQ, UI_ArrayKQ2, UI_Update_ArrayKQ2 } = require("./src/Button_Common");
 const { UI_TieuDiem, UI_Update_Table, UI_Table_LuuTru, UI_MouseClick } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan, T, X, Dep,
@@ -28,69 +28,69 @@ const STATE_FILE = path.join(__dirname, "state.txt");
 
 
 // Đây chỉ là nơi xác định tiêu điểm thôi k dùng lmj cả
-let startX = 455;
-let startY = 326;
+let startX = 624;
+let startY = 449;
 
 // 1. ______________________TÌM KẾT QUẢ Chính__________________
-let X_Ketqua = startX + 33; //488
+let X_Ketqua = startX + 28; //480
 let Y_Ketqua = startY; //326
 
-let X_DatTai = startX - 325; // 130
-let Y_DatTai = startY - 61;//265
+let X_DatTai = 255; // 130
+let Y_DatTai = 375;//265
 
-let X_DatXiu = startX; //455
-let Y_DatXiu = startY - 61; //265
+let X_DatXiu = 662; //455
+let Y_DatXiu = 375
 
 // 4._______________________cược 1_____________________
-let X_cuoc1 = startX - 405; //50
-let Y_cuoc1 = startY + 49; //375
+let X_cuoc1 = 144
+let Y_cuoc1 = 490
 
 // 5._______________________cược 10_____________________
-let X_cuoc10 = startX - 335; //120
-let Y_cuoc10 = startY + 49; //375
+let X_cuoc10 = 233
+let Y_cuoc10 = 490
 
-let X_cuoc100 = startX - 195; //120
-let Y_cuoc100 = startY + 49; //375
+let X_cuoc100 = 411
+let Y_cuoc100 = 492
 
 // 5._______________________Nút Đặt cược_____________________
-let X_Submit = startX - 180; //275
-let Y_Submit = startY + 111; //437
+let X_Submit = 460
+let Y_Submit = 567
 
 // ========================================== Chức năng rút tiền.====================================
 
 // 1. Click vào CryTO Hoặc Button Rút tiền (2 LẦn).
-let X_ButtonRutTien = 230; //488
-let Y_ButtonRutTien = 680; //326
+let X_ButtonRutTien = 714; //488
+let Y_ButtonRutTien = 660; //326
 
 // 2. Click vào Tab Rút  .
-let X_BtnTabRut = 277; //488
-let Y_BtnTabRut = 327; //326
+let X_BtnTabRut = 640; //488
+let Y_BtnTabRut = 143; //326
 
 // 3. Click vào INput Nhập Ví.
-let X_InpVi = 830; //488
-let Y_InpVi = 255; //326
+let X_InpVi = 460; //488
+let Y_InpVi = 360; //326
 // 4. Nhập Địa chỉ Ví 
 let Diachivi = "TG7KWfmgdFDFgX91Q2MBPGYebkqLH5osKa"
 
 // 5. Click vào INput Nhập Số tiền.
-let X_InpNhapSoTien = 830; //488
-let Y_InpNhapSoTien = 375; //326
+let X_InpNhapSoTien = 460; //488
+let Y_InpNhapSoTien = 412; //326
 // sài biến soTienMuonRut  thêm 3 số 0 nữa.  ví dụ 2000 thì nhập 2 000 000
 
 // 5a Click vào nút Hủy Đặt cược cho gọn đã
-let X_HuyDatCuoc = 410; //488
-let Y_HuyDatCuoc = 430; //326
+let X_HuyDatCuoc = 668; //488
+let Y_HuyDatCuoc = 587; //326
 // 6. Click vào Tab Rút  .
-let X_BtnSumitRutTien = 850; //488
-let Y_BtnSumitRutTien = 460; //326
+let X_BtnSumitRutTien = 633; //488
+let Y_BtnSumitRutTien = 568; //326
 
 // 8. Click Tắt   .
-let X_BtnCLose = 1040; //488
-let Y_BtnCLose = 145; //326
+let X_BtnCLose = 1153; //488
+let Y_BtnCLose = 110; //326
 
 // 9. Click lại Menu kết quả TX   .
-let X_MenuTX = 288; //488
-let Y_MenuTX = 200; //326
+let X_MenuTX = 459; //488
+let Y_MenuTX = 313; //326
 
 let tongTienDaRut = 0;
 
@@ -99,7 +99,7 @@ let tongTienDaRut = 0;
 const width = 2;
 const height = 2;
 
-const INTERVAL_MS = 70;
+const INTERVAL_MS = 71;
 
 
 // ================== STATE – TRẠNG THÁI ==================
@@ -111,7 +111,7 @@ let isRunning = false;
 let intervalId = null;
 let page;
 
-let countdown = 70;
+let countdown = 71;
 let countdownInterval;
 
 const MAX_LENGTH = 25;
@@ -127,19 +127,19 @@ let phanTramGiaoDich = 30;
 
 let profitAll = 0;
 
-
 const LuutruLongmach = [
   {
-    id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 1, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isFomo: false
+    id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0,
+    deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isFomo: false
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isFomo: true
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isFomo: true
   },
   {
-    id: 3, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 1, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, deal: 0, isStop: false, type: TYPES2.typeSenke, isFomo: false
+    id: 3, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.typeSenke, isFomo: false
   },
 ];
 
@@ -189,7 +189,7 @@ async function handleStop() {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://web.sunwin.bi", {
+  await page.goto("https://play.hitclub.me", {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
@@ -298,16 +298,32 @@ async function handleStop() {
             fontSize: "12px",
             fontFamily: "monospace",
             borderRadius: "4px",
+            whiteSpace: "nowrap"
           });
           document.body.appendChild(box);
 
-          document.addEventListener("mousemove", (e) => {
-            box.innerText = `X:${e.clientX} Y:${e.clientY}`;
-            box.style.left = e.clientX + 12 + "px";
-            box.style.top = e.clientY + 12 + "px";
-          }, true);
+          document.addEventListener(
+            "mousemove",
+            (e) => {
+              const el = document.elementFromPoint(e.clientX, e.clientY);
+              let rgb = "N/A";
+
+              if (el) {
+                const style = getComputedStyle(el);
+                rgb =
+                  style.backgroundColor !== "rgba(0, 0, 0, 0)"
+                    ? style.backgroundColor
+                    : style.color;
+              }
+
+              box.textContent = `X:${e.clientX} Y:${e.clientY} ${rgb}`;
+              box.style.left = e.clientX + 12 + "px";
+              box.style.top = e.clientY + 12 + "px";
+            },
+            true
+          );
         });
-      } catch (e) {
+      } catch {
         // ignore cross-origin iframe
       }
     }
@@ -316,8 +332,8 @@ async function handleStop() {
   // GỌI SAU page.goto
   await injectMouseTracker(page);
 
-
-
+  await UI_ArrayKQ(page);
+  await UI_ArrayKQ2(page);
 })();
 
 // ================================================== HANDLE LOGIC ===========================================
@@ -345,16 +361,16 @@ async function CheckColor_X_Y() {
     b = Math.round(b / count);
 
     const hex = "#" + [r, g, b].map(v => v.toString(16).padStart(2, "0")).join("");
-
     if (hex) {
-      const ketqua = handleGetColor_TX(r, g, b)
+      const ketqua = handleGetColor_TX(r, g, b, hex)
       if (ketqua !== "null") {
         ArrayKQ.push(ketqua === "black" ? T : X);
         if (ArrayKQ.length > MAX_LENGTH) { ArrayKQ.shift() }
+        await UI_Update_ArrayKQ(page, ArrayKQ);
         ThucHienGiaoDich();
       }
     }
-    countdown = 70;
+    countdown = 71;
   } catch (err) {
     console.error("❌ Capture error:", err);
   }
@@ -378,9 +394,11 @@ async function ThucHienGiaoDich() {
     if (isWin) {
       ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       muaGiaLap = "null"
+      await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
     } else {
       ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       muaGiaLap = "null"
+      await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
     }
   }
   if (muaGiaLap === "null" && tinHieuAI.huong !== "null") {
@@ -411,9 +429,9 @@ async function ThucHienGiaoDich() {
               C: item.thep === 3 ? item.C + 1 : item.C,
               D: item.thep === 4 ? item.D + 1 : item.D,
               E: item.thep === 5 ? item.E + 1 : item.E,
-              // A1: item.thep === 6 ? item.A1 + 1 : item.A1,
-              // A2: item.thep === 7 ? item.A2 + 1 : item.A2,
-              // A3: item.thep === 8 ? item.A3 + 1 : item.A3,
+              A1: item.thep === 6 ? item.A1 + 1 : item.A1,
+              A2: item.thep === 7 ? item.A2 + 1 : item.A2,
+              A3: item.thep === 8 ? item.A3 + 1 : item.A3,
               // A4: item.thep === 9 ? item.A4 + 1 : item.A4,
               // A5: item.thep === 10 ? item.A5 + 1 : item.A5,
               vol: 0,
@@ -681,8 +699,8 @@ async function ShowTime70() {
 
     countdown--;
 
-    // Khi countdown < 0 thì reset về 70
-    if (countdown < 0) countdown = 70;
+    // Khi countdown < 0 thì reset về 71
+    if (countdown < 0) countdown = 71;
 
   }, 1000);
 }
