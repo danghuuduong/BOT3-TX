@@ -1,13 +1,13 @@
-soDuTaiKhoan=1295.355
-soDuLonNhat=1295.355
-phanTramGiaoDich=21
-profitAll=295.355
-nguongTienDat=7000
+soDuTaiKhoan=923.9149999999997
+soDuLonNhat=1538.0349999999967
+phanTramGiaoDich=25
+profitAll=-87.88500000000016
+nguongTienDat=6000
 soTienMuonRut=2000
 tongTienDaRut=0
 
-ArrayKQ=T,T,X,T,X,T,T,T,X,X,T,T,X,X,X,T,X,T,X,T,X,X,T,T,T
-ArrayKQ_XAU=A,B,A,B,A,A,A,B
+ArrayKQ=X,X,X,X,T,X,X,X,X,T,X,T,T,X,X,X,X,T,X,T,T,X,X,X,X
+ArrayKQ_XAU=B,B,B,A,A,B,A,B,A,B,B,B,A,B,A,A,B,B,B,B,B,B,B,B,B,B
 
 LuutruLongmach=
 [
@@ -15,17 +15,17 @@ LuutruLongmach=
     "id": 1,
     "isTrading": false,
     "huong": "null",
-    "profit": 100,
+    "profit": 347.12,
     "thepChoNgam": 0,
     "isNgamDone": false,
     "ngam": 1,
     "thep": 0,
     "vol": 0,
-    "win": 33,
-    "lost": 38,
-    "A": 15,
-    "B": 11,
-    "C": 4,
+    "win": 52,
+    "lost": 51,
+    "A": 24,
+    "B": 18,
+    "C": 7,
     "D": 2,
     "E": 1,
     "deal": 0,
@@ -37,20 +37,20 @@ LuutruLongmach=
     "id": 2,
     "isTrading": false,
     "huong": "null",
-    "profit": 80.74,
-    "thepChoNgam": 0,
-    "isNgamDone": false,
+    "profit": -348.26000000000005,
+    "thepChoNgam": 1,
+    "isNgamDone": true,
     "ngam": 1,
-    "thep": 0,
+    "thep": 1,
     "vol": 0,
-    "win": 16,
-    "lost": 6,
-    "A": 13,
-    "B": 1,
-    "C": 1,
-    "D": 1,
-    "E": 0,
-    "deal": 0,
+    "win": 36,
+    "lost": 39,
+    "A": 22,
+    "B": 6,
+    "C": 3,
+    "D": 4,
+    "E": 1,
+    "deal": 2,
     "isStop": false,
     "type": "Bên Đẹp",
     "isFomo": true
@@ -59,20 +59,20 @@ LuutruLongmach=
     "id": 3,
     "isTrading": false,
     "huong": "null",
-    "profit": 113.63999999999999,
+    "profit": -97.72000000000003,
     "thepChoNgam": 0,
     "isNgamDone": false,
     "ngam": 1,
     "thep": 0,
     "vol": 0,
-    "win": 15,
-    "lost": 10,
-    "A": 9,
-    "B": 4,
-    "C": 1,
-    "D": 0,
-    "E": 1,
-    "deal": 0,
+    "win": 27,
+    "lost": 27,
+    "A": 15,
+    "B": 7,
+    "C": 2,
+    "D": 1,
+    "E": 2,
+    "deal": 1,
     "isStop": false,
     "type": "Sen Kẽ",
     "isFomo": false

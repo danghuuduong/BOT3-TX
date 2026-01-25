@@ -2,7 +2,7 @@ const T = "T";
 const X = "X";
 const Dep = "A";
 const Xau = "B";
-const maxThep = 5;
+const maxThep = 8;
 
 // ================= TYPES =================
 
@@ -27,6 +27,10 @@ const TYPES = {
 
   TYPE_3_1: "3-1",
   TYPE_3_1_PLUS: "3-1 Plus",
+
+  TYPE_4_1: "4-1",
+  TYPE_4_1_PLUS: "4-1 Plus",
+
 
   TYPE_123: "123",
   TYPE_123_PLUS: "123 Plus",
@@ -64,6 +68,11 @@ const lockState = {
 
   [TYPES.TYPE_3_1]: false,
   [TYPES.TYPE_3_1_PLUS]: false,
+
+  [TYPES.TYPE_4_1]: false,
+  [TYPES.TYPE_4_1_PLUS]: false,
+
+
 
   [TYPES.TYPE_123]: false,
   [TYPES.TYPE_123_PLUS]: false,
@@ -179,6 +188,14 @@ function isValid_3_1_3(s7, s8, s9, s10) {
     || s8 === "XXXTXXXT" || s8 === "TTTXTTTX"
     || s9 === "XXXTXXXTX" || s9 === "TTTXTTTXT"
     || s10 === "XXXTXXXTXX" || s10 === "TTTXTTTXTT";
+}
+
+function isValid_4_1_4(s9, s10, s11, s12, s13) {
+  return s9 === "XXXXTXXXX" || s9 === "TTTTXTTTT"
+    || s10 === "XXXXTXXXXT" || s10 === "TTTTXTTTTX"
+    || s11 === "XXXXTXXXXTX" || s11 === "TTTTXTTTTXT"
+    || s12 === "XXXXTXXXXTXX" || s12 === "TTTTXTTTTXTT"
+    || s13 === "XXXXTXXXXTXXX" || s13 === "TTTTXTTTTXTTT";
 }
 
 function isValid_123(s6, s7) {
@@ -335,6 +352,31 @@ function TinHieuMuaBan(ArrayKQ) {
     }
   }
 
+
+  if (lockState[TYPES.TYPE_4_1]) {
+    if (!isValid_4_1_4(s9, s10, s11, s12, s13)) lockState[TYPES.TYPE_4_1] = false;
+  } else {
+    if (s10 === "TXXXXTXXXX" || s10 === "XTTTTXTTTT") {
+      lockState[TYPES.TYPE_4_1] = true;
+      return {
+        huong: s10 === "TXXXXTXXXX" ? X : T,
+        type: TYPES.TYPE_4_1
+      };
+    }
+  }
+
+  if (lockState[TYPES.TYPE_4_1_PLUS]) {
+    if (!isValid_4_1_4(s9, s10, s11, s12, s13)) lockState[TYPES.TYPE_4_1_PLUS] = false;
+  } else {
+    if (s11 === "TXXXXTXXXXT" || s11 === "XTTTTXTTTTX") {
+      lockState[TYPES.TYPE_4_1_PLUS] = true;
+      return {
+        huong: s11 === "TXXXXTXXXXT" ? T : X,
+        type: TYPES.TYPE_4_1_PLUS
+      };
+    }
+  }
+
   // ==================================================================== 123 =============================================
 
   if (lockState[TYPES.TYPE_123]) {
@@ -369,7 +411,7 @@ function TinHieuMuaBan(ArrayKQ) {
   const sKC = ArrayKQ.slice(-25).join("");
 
   if (lockState[TYPES.TYPE_KHOI_CHAN]) {
-    if (!isStillInKhoiChan_TX(sKC) ||  isValid_1_Create(s3)) {
+    if (!isStillInKhoiChan_TX(sKC) || isValid_1_Create(s3)) {
       lockState[TYPES.TYPE_KHOI_CHAN] = false;
     }
   } else {
