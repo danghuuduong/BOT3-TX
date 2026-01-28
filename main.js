@@ -135,7 +135,7 @@ const LuutruLongmach = [
     deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isFomo: false
   },
   {
-    id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
+    id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isFomo: true
   },
   {
@@ -160,7 +160,7 @@ async function handleStart() {
 
   intervalId = setInterval(async () => {
     await CheckColor_X_Y();
-  }, INTERVAL_MS * 1000);
+  }, (INTERVAL_MS * 1000) - 20);
 
 
   // Hiển thị đồng hồ đếm ngược
