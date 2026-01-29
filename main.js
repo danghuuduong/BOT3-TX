@@ -160,7 +160,7 @@ async function handleStart() {
 
   intervalId = setInterval(async () => {
     await CheckColor_X_Y();
-  }, (INTERVAL_MS * 1000) - 20);
+  }, (INTERVAL_MS * 1000) - 30);
 
 
   // Hiển thị đồng hồ đếm ngược

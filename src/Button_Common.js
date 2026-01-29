@@ -142,7 +142,7 @@ async function UI_ArrayKQ(page) {
       position: "fixed",
       top: "10px",              // cách top 10px
       left: "50%",              // căn giữa ngang
-      transform: "translateX(-50%)",
+       transform: "translateX(15px)",
       display: "flex",
       gap: "1px",               // sát nhau
       zIndex: 9999,
@@ -164,7 +164,7 @@ async function UI_Update_ArrayKQ(page, ArrayKQ) {
 
     box.innerHTML = "";
 
-    const last10 = ArrayKQ.slice(-10);
+    const last10 = ArrayKQ.slice(-15);
 
     last10.forEach(kq => {
       const dot = document.createElement("div");
@@ -193,7 +193,7 @@ async function UI_ArrayKQ2(page) {
       position: "fixed",
       top: "43px",              // cách top 10px
       left: "50%",              // căn giữa ngang
-      transform: "translateX(-50%)",
+      transform: "translateX(15px)",
       display: "flex",
       gap: "1px",               // sát nhau
       zIndex: 9999,
@@ -214,7 +214,7 @@ async function UI_Update_ArrayKQ2(page, ArrayKQ) {
 
     box.innerHTML = "";
 
-    const last10 = ArrayKQ.slice(-10);
+    const last10 = ArrayKQ.slice(-15);
 
     last10.forEach(kq => {
       const dot = document.createElement("div");
