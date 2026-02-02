@@ -17,12 +17,11 @@ const { PNG } = require("pngjs");
 const fs = require("fs");
 
 const TYPES2 = {
+  type_2_2_NEW: "type_2_2_NEW",
   typeBeThangDep: "Bên Xấu",
   typeBeThangXau: "Bên Đẹp",
   typeSenke: "Sen Kẽ",
 };
-
-
 
 const STATE_FILE = path.join(__dirname, "state.txt");
 
@@ -142,6 +141,17 @@ const LuutruLongmach = [
     id: 3, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.typeSenke, isFomo: false
   },
+
+  {
+    id: 4, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.type_2_2_NEW, isFomo: false
+  },
+
+  {
+    id: 5, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.type_2_2_NEW, isFomo: tru
+  },
+
 ];
 
 loadStateTXT();

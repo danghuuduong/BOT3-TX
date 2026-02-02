@@ -47,11 +47,11 @@ const TYPES = {
 
 };
 const TYPES2 = {
+  type_2_2_NEW: "type_2_2_NEW",
   typeBeThangDep: "Bên Xấu",
   typeBeThangXau: "Bên Đẹp",
   typeSenke: "Sen Kẽ",
 };
-
 
 // ================= LOCK STATE =================
 const lockState = {
@@ -89,6 +89,9 @@ const lockState = {
   [TYPES.TYPE_5]: false,
   [TYPES.TYPE_KHOI_CHAN]: false
 
+};
+const lockState_NEW = {
+  [TYPES2.type_2_2_NEW]: false,
 };
 
 
@@ -136,10 +139,6 @@ function detectKhoiChanEarly_TX(str) {
 
   return null;
 }
-
-
-
-
 
 // ================= VALID STRUCTURE =================
 function isValid_1_Create(s3) { return s3 === "TXT" || s3 === "XTX"; }
@@ -220,6 +219,12 @@ function isValid_123(s6, s7) {
   return s6 === "XTTXXX" || s6 === "TXXTTT"
     || s7 === "XTTXXXT" || s7 === "TXXTTTX"
 }
+
+
+function isValid_2_2NEW(s2) { return s2 === "AA" || s2 === "BB" }
+
+
+
 
 // ================= MAIN =================
 function TinHieuMuaBan(ArrayKQ) {
@@ -471,20 +476,24 @@ function TinHieuMuaBanNew(ArrayKQ_XAU) {
   }
 
   const s2 = getLastTX(ArrayKQ_XAU, 2);
+  const s3 = getLastTX(ArrayKQ_XAU, 3);
 
-
-  // ==================================================================== 1-1 =============================================
-  if (s2 === "AA") {
-    return {
-      isPheDep: false,
-      type: TYPES2.typeBeThangDep
-    };
+  if (lockState_NEW[TYPES_NEW.type_2_2_NEW]) {
+    if (!isValid_2_2NEW(s2)) lockState_NEW[TYPES_NEW.type_2_2_NEW] = false;
+  } else {
+    if (s2 === "AA" || s2 === "BB") {
+      lockState_NEW[TYPES_NEW.type_2_2_NEW] = true;
+      return {
+        isPheDep: s2 === "AA" ? false : true,
+        type:TYPES_NEW.type_2_2_NEW,
+      };
+    }
   }
 
-  if (s2 === "BB") {
+  if (s3 === "AAA" || s3 === "BBB") {
     return {
-      isPheDep: true,
-      type: TYPES2.typeBeThangXau
+      isPheDep: s3 === "AAA" ? false : true,
+      type: s3 === "AAA" ? TYPES2.typeBeThangDep : TYPES2.typeBeThangXau,
     };
   }
 
@@ -546,5 +555,5 @@ module.exports = {
   X,
   Dep,
   Xau,
-  maxThep
+  maxThep,
 };
