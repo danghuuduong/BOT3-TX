@@ -147,25 +147,28 @@ const LuutruLongmach = [
 loadStateTXT();
 
 async function handleStart() {
+  clearAllInterval();
+
   if (isRunning) return;
 
   isRunning = true;
+  countdown = 70;
 
   await updateButton(page, "⏹ Dừng...", "#e23a10ff");
 
-  // Chạy lần đầu ngay
+  // chạy 1 lần ngay
   await CheckColor_X_Y();
 
-  // Chạy lặp theo INTERVAL_MS
-
+  // interval chính
   intervalId = setInterval(async () => {
+    if (!isRunning) return;
     await CheckColor_X_Y();
-  }, (INTERVAL_MS * 1000) - 30);
+  }, (INTERVAL_MS * 1000) - 20);
 
-
-  // Hiển thị đồng hồ đếm ngược
+  // timer 70s
   await ShowTime70();
 }
+
 
 async function handleStop() {
   if (!isRunning) return;
@@ -190,7 +193,7 @@ async function handleStop() {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://web.sunwin.bi", {
+  await page.goto("https://web.sunwin.fo", {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
@@ -510,10 +513,6 @@ async function ThucHienGiaoDich() {
     tinHieuAI.huong === "null" &&
     allNotTrading
   ) {
-
-    // ✅ FIX: document phải chạy trong browser
-
-
     await UI_MouseClick(page, X_HuyDatCuoc, Y_HuyDatCuoc, "🎯");
     await page.mouse.click(X_HuyDatCuoc, Y_HuyDatCuoc);
 
@@ -1104,5 +1103,15 @@ function loadStateTXT() {
   }
 }
 
+function clearAllInterval() {
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+  }
 
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
+  }
+}
 
