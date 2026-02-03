@@ -169,7 +169,7 @@ async function UI_Update_Table(page, data) {
       const cols = [
         item.id,
         item.type,
-        item.isFomo ? "Fomo" : "Bẻ🔥",
+        item.isFomo === "null" ? " " : item.isFomo ? "Fomo" : "Bẻ🔥",
         item.isTrading ? item.huong === "T" ? "⚫" : "⚪" : "Chưa",
         `${item.thepChoNgam}/${item.ngam} ${icon}`,
         item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/8 Thếp`,

@@ -131,27 +131,26 @@ const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0,
-    deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isFomo: false
+    deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isDaoNguoc: "null", isFomo: false
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 3, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isFomo: true
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isDaoNguoc: "null", isFomo: true
   },
   {
     id: 3, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.typeSenke, isFomo: false
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.typeSenke, isDaoNguoc: "null", isFomo: "null"
   },
 
   {
-    id: 4, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.type_2_2_NEW, isFomo: false
+    id: 4, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 4, thep: 0, vol: 0, win: 0, lost: 0,
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.type_2_2_NEW, isDaoNguoc: "null", isFomo: false
   },
 
   {
-    id: 5, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 2, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.type_2_2_NEW, isFomo: tru
+    id: 5, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 4, thep: 0, vol: 0, win: 0, lost: 0,
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.type_2_2_NEW, isDaoNguoc: true, isFomo: true
   },
-
 ];
 
 loadStateTXT();
@@ -475,13 +474,14 @@ async function ThucHienGiaoDich() {
 
       for (const item of arrayNew) {
         const huongDanhNew = getHuongForItem(tinHieuAINew, tinHieuAI.huong);
+        const huongDanhNew2 = item?.isDaoNguoc === "null" ? huongDanhNew : huongDanhNew === T ? X : T
         const isNgam = item.ngam && !item.isNgamDone;
         const tinhVol = handleGetTien(item.thep + 1, soDuLonNhat, phanTramGiaoDich);
 
         if (!isNgam) {
           // =======================HandlClick=========================
           // onlick 10 ..
-          const isTai = huongDanhNew === T;
+          const isTai = huongDanhNew2 === T;
 
           await UI_MouseClick(page,
             isTai ? X_DatTai : X_DatXiu,
@@ -502,12 +502,12 @@ async function ThucHienGiaoDich() {
 
         updateAray(item.id, {
           isTrading: true,
-          huong: huongDanhNew,
+          huong: huongDanhNew2,
           ...(isNgam && { thepChoNgam: item.thepChoNgam + 1 }),
           ...(!isNgam && {
             thep: item.thep + 1,
             vol: tinhVol,
-            isFomo: tinHieuAINew.isPheDep
+            // isFomo: tinHieuAINew.isPheDep
           }),
         });
         await UI_Update_Table(page, LuutruLongmach);

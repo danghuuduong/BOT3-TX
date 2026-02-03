@@ -478,17 +478,26 @@ function TinHieuMuaBanNew(ArrayKQ_XAU) {
   const s2 = getLastTX(ArrayKQ_XAU, 2);
   const s3 = getLastTX(ArrayKQ_XAU, 3);
 
-  if (lockState_NEW[TYPES_NEW.type_2_2_NEW]) {
-    if (!isValid_2_2NEW(s2)) lockState_NEW[TYPES_NEW.type_2_2_NEW] = false;
-  } else {
-    if (s2 === "AA" || s2 === "BB") {
-      lockState_NEW[TYPES_NEW.type_2_2_NEW] = true;
-      return {
-        isPheDep: s2 === "AA" ? false : true,
-        type:TYPES_NEW.type_2_2_NEW,
-      };
-    }
+  // if (lockState_NEW[TYPES2.type_2_2_NEW]) {
+  //   if (!isValid_2_2NEW(s2)) lockState_NEW[TYPES2.type_2_2_NEW] = false;
+  // } else {
+  //   if (s3 === "BAA" || s3 === "ABB") {
+  //     lockState_NEW[TYPES2.type_2_2_NEW] = true;
+  //     return {
+  //       isPheDep: s3 === "BAA" ? false : true,
+  //       type: TYPES2.type_2_2_NEW,
+  //     };
+  //   }
+  // }
+
+
+  if (s3 === "BAA" || s3 === "ABB") {
+    return {
+      isPheDep: s3 === "BAA" ? false : true,
+      type: TYPES2.type_2_2_NEW,
+    };
   }
+
 
   if (s3 === "AAA" || s3 === "BBB") {
     return {
