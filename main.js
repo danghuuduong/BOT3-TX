@@ -17,7 +17,7 @@ const { PNG } = require("pngjs");
 const fs = require("fs");
 
 const TYPES2 = {
-  type_2_2_NEW: "type_2_2_NEW",
+  type_2_2_NEW: "2_NEW",
   typeBeThangDep: "Bên Xấu",
   typeBeThangXau: "Bên Đẹp",
   typeSenke: "Sen Kẽ",
