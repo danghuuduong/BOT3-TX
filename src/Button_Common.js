@@ -164,7 +164,7 @@ async function UI_Update_ArrayKQ(page, ArrayKQ) {
 
     box.innerHTML = "";
 
-    const last10 = ArrayKQ.slice(-15);
+    const last10 = ArrayKQ.slice(-20);
 
     last10.forEach(kq => {
       const dot = document.createElement("div");
@@ -214,7 +214,7 @@ async function UI_Update_ArrayKQ2(page, ArrayKQ) {
 
     box.innerHTML = "";
 
-    const last10 = ArrayKQ.slice(-15);
+    const last10 = ArrayKQ.slice(-20);
 
     last10.forEach(kq => {
       const dot = document.createElement("div");
