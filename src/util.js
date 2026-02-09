@@ -2,7 +2,7 @@ const T = "T";
 const X = "X";
 const Dep = "A";
 const Xau = "B";
-const maxThep = 8;
+const maxThep = 1;
 
 // ================= TYPES =================
 
@@ -394,6 +394,7 @@ function TinHieuMuaBan(ArrayKQ) {
     }
   }
 
+  // ==================================================================== 4- 1 4=============================================
 
   if (lockState[TYPES.TYPE_4_1]) {
     if (!isValid_4_1_4(s9, s10, s11, s12, s13)) lockState[TYPES.TYPE_4_1] = false;

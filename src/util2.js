@@ -45,14 +45,9 @@
 //   }
 // }
 
-function handleGetTien(thep, monyTong, phantram) {
+function handleGetTien(monyTong, phantram) {
   const tienPhanTram = monyTong * phantram / 100;
-  const level = Math.floor(tienPhanTram / 439);
-  if (level <= 0) return 0;
-
-  const heSo = [1, 3, 6, 13, 27, 55, 111, 223];
-
-  return level * (heSo[thep - 1] || 0);
+  return tienPhanTram
 }
 
 

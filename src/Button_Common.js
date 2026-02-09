@@ -142,7 +142,7 @@ async function UI_ArrayKQ(page) {
       position: "fixed",
       top: "10px",              // cách top 10px
       left: "50%",              // căn giữa ngang
-       transform: "translateX(15px)",
+      transform: "translateX(15px)",
       display: "flex",
       gap: "1px",               // sát nhau
       zIndex: 9999,
@@ -232,7 +232,58 @@ async function UI_Update_ArrayKQ2(page, ArrayKQ) {
   }, ArrayKQ);
 }
 
+async function UI_ChienThoi(page) {
+  await page.evaluate(() => {
+    if (document.getElementById("ui-chienthoi")) return;
+
+    const box = document.createElement("div");
+    box.id = "ui-chienthoi";
+
+    Object.assign(box.style, {
+      position: "fixed",
+      top: "80px",              // nằm dưới ui-array-kq2
+      left: "50%",
+      transform: "translateX(15px)",
+      zIndex: 9999,
+      background: "rgba(255,255,255,0.95)",
+      padding: "8px 10px",
+      borderRadius: "6px",
+      border: "1px solid #fff",
+      fontSize: "12px",
+      lineHeight: "1.6",
+      minWidth: "140px",
+      fontFamily: "Arial, sans-serif",
+    });
+
+    document.body.appendChild(box);
+  });
+}
+
+async function UI_Update_ChienThoi(page, chienthoi) {
+  await page.evaluate((ct) => {
+    const box = document.getElementById("ui-chienthoi");
+    if (!box) return;
+
+    const check = (v) =>
+      v ? `<span style="color:green">✔</span>` : "";
+
+    let colorSolai = "black";
+    if (ct.solai > 0) colorSolai = "green";
+    else if (ct.solai < 0) colorSolai = "red";
+
+    box.innerHTML = `
+      <div>🟢 Bên đẹp: ${check(ct.bendep)} </div>
+      <div>🔴 Bên xấu: ${check(ct.benxau)}</div>
+      <div>Điều kiện: ${ct.tiso} / ${ct.maxTiso}</div>
+      <div>💰 Số lãi: <span style="color:${colorSolai}">${ct.solai}</span></div>
+      <div>❌ Số lần thua: ${ct.solanthua}</div>
+      <div>🎯 Target: ${ct.solai}/${ct.target}</div>
+      <div>♻️ Nhân đôi: ${check(ct.isNhandoi)}</div>
+    `;
+  }, chienthoi);
+}
 
 
 
-module.exports = { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_ArrayKQ, UI_Update_ArrayKQ, UI_ArrayKQ2, UI_Update_ArrayKQ2 };
+
+module.exports = { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_ArrayKQ, UI_Update_ArrayKQ, UI_ArrayKQ2, UI_Update_ArrayKQ2, UI_ChienThoi, UI_Update_ChienThoi };

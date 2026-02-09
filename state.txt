@@ -1,6 +1,6 @@
 soDuTaiKhoan=2397.3830000000003
 soDuLonNhat=2397.3830000000003
-phanTramGiaoDich=100
+phanTramGiaoDich=10
 profitAll=1097.383
 nguongTienDat=5000
 soTienMuonRut=1000
