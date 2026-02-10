@@ -36,7 +36,7 @@ async function UI_Table_LuuTru(page) {
         position: "fixed",
         bottom: "10px",
         left: "50%",
-        transform: "translateX(-50%)",
+        transform: "translateX(-70%)",
         maxHeight: "200px",
         maxWidth: "95vw",
         overflowY: "auto",
@@ -51,7 +51,7 @@ async function UI_Table_LuuTru(page) {
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
         position: "fixed",          // luôn nằm ngoài table
-        bottom: `111px`, // 10px trên table
+        bottom: `75px`, // 10px trên table
         left: "50%",
         transform: "translateX(-50%)",
         fontSize: "14px",
@@ -66,17 +66,20 @@ async function UI_Table_LuuTru(page) {
 
       let isHidden = false;
 
+      const box = document.getElementById("ui-chienthoi");
       toggleBtn.onclick = () => {
         isHidden = !isHidden;
         if (isHidden) {
+          box.style.display = "none";
           container.style.display = "none";
           toggleBtn.style.bottom = "10px";  // xuống dưới màn hình
           toggleBtn.style.top = "auto";     // reset top
           toggleBtn.innerText = "▲";
         } else {
           container.style.display = "block";
+          box.style.display = "block";
           // toggleBtn.style.top = `${container.getBoundingClientRect().top - 10}px`;
-          toggleBtn.style.bottom = `91px`;
+          toggleBtn.style.bottom = `75px`;
           toggleBtn.innerText = "▼";
         }
       };
@@ -97,13 +100,13 @@ async function UI_Table_LuuTru(page) {
       const headers = [
         "ID", "Type", "Bên", "Vô", "Số Ngầm", "Thếp",
         "Số Tiền", "Win", "Lost", "Lãi",
-        "1", "2", "3", "4", "5",
+        // "1", "2", "3", "4", "5",
 
         // // ✅ BỔ SUNG
         // "A1", "A2", "A3", "A4", "A5",
-        "6", "7", "8",
+        // "6", "7", "8",
 
-        "Cháy",
+        // "Cháy",
         "STOP"
       ];
 
@@ -111,13 +114,13 @@ async function UI_Table_LuuTru(page) {
       const widths = [
         "30px", "70px", "50px", "60px", "60px", "90px",
         "50px", "45px", "45px", "65px",
-        "35px", "35px", "35px", "35px", "35px",
+        // "35px", "35px", "35px", "35px", "35px",
 
         // // ✅ BỔ SUNG
         // "35px", "35px", "35px", "35px", "35px",
-        "35px", "35px", "35px",
+        // "35px", "35px", "35px",
 
-        "35px",
+        // "35px",
         "40px",
       ];
 
@@ -178,17 +181,17 @@ async function UI_Update_Table(page, data) {
         item.lost,
         item.profit.toFixed(2),
 
-        item.A, item.B, item.C, item.D, item.E,
+        // item.A, item.B, item.C, item.D, item.E,
 
 
         // // ✅ BỔ SUNG
-        item.A1,
-        item.A2,
-        item.A3,
+        // item.A1,
+        // item.A2,
+        // item.A3,
         // item.A4,
         // item.A5,
 
-        item.deal ? `${item.deal} 🐤` : "-",
+        // item.deal ? `${item.deal} 🐤` : "-",
       ];
 
 

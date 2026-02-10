@@ -199,7 +199,7 @@ async function handleStop() {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://www.google.com/", {
+  await page.goto("https://nestjs.com/", {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
