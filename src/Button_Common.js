@@ -242,7 +242,7 @@ async function UI_ChienThoi(page) {
     Object.assign(box.style, {
       position: "fixed",
       bottom: "5px",              // nằm dưới ui-array-kq2
-      right: "298px",
+      right: "270px",
       transform: "translateY(-5px)",
       zIndex: 9999,
       background: "rgba(255,255,255,0.95)",
