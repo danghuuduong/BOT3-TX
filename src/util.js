@@ -552,6 +552,14 @@ function getHuongForItem(tinHieuAINew, huongGoc) {
   return huongGoc;
 }
 
+function checkABTrongDoXanh(arr) {
+  const countA = arr.filter(v => v === "A").length;
+  const countB = arr.filter(v => v === "B").length;
+
+  if (countB >= countA * 10) return "B";
+  if (countA >= countB * 10) return "A";
+  return "null";
+}
 // ================= EXPORT =================
 module.exports = {
   TinHieuMuaBan,
@@ -559,6 +567,7 @@ module.exports = {
   updateButton,
   handleGetColor_TX,
   getHuongForItem,
+  checkABTrongDoXanh,
   TYPES,
   T,
   X,

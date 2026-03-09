@@ -1,0 +1,66 @@
+soDuTaiKhoan=1000
+soDuLonNhat=1000
+phanTramGiaoDich=30
+profitAll=0
+nguongTienDat=6000
+soTienMuonRut=2000
+tongTienDaRut=0
+
+ArrayKQ=T,X,T,X,X,X,X,X,X,X,X,X,X,X,X,X,T,T,T,X
+ArrayKQ_XAU=
+
+LuutruLongmach=
+[
+  {
+    "id": 1,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 0,
+    "thepChoNgam": 0,
+    "isNgamDone": false,
+    "ngam": 0,
+    "thep": 0,
+    "vol": 0,
+    "win": 0,
+    "lost": 0,
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0,
+    "E": 0,
+    "A1": 0,
+    "A2": 0,
+    "A3": 0,
+    "deal": 0,
+    "isStop": false,
+    "type": "Bên Xấu",
+    "isDaoNguoc": "null",
+    "isFomo": false
+  },
+  {
+    "id": 2,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 0,
+    "thepChoNgam": 0,
+    "isNgamDone": false,
+    "ngam": 0,
+    "thep": 0,
+    "vol": 0,
+    "win": 0,
+    "lost": 0,
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0,
+    "E": 0,
+    "A1": 0,
+    "A2": 0,
+    "A3": 0,
+    "deal": 0,
+    "isStop": false,
+    "type": "Bên Đẹp",
+    "isDaoNguoc": "null",
+    "isFomo": true
+  }
+]

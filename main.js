@@ -17,10 +17,8 @@ const { PNG } = require("pngjs");
 const fs = require("fs");
 
 const TYPES2 = {
-  type_2_2_NEW: "2_NEW",
   typeBeThangDep: "Bên Xấu",
   typeBeThangXau: "Bên Đẹp",
-  typeSenke: "Sen Kẽ",
 };
 
 const STATE_FILE = path.join(__dirname, "state.txt");
@@ -123,10 +121,8 @@ let chienthoi = {
   benxau: false,
   solai: 0,
   tiso: 0,
-  maxTiso: 15,
-  solanthua: 0,
+  soLanMuonAn: 3,
   isNhandoi: false,
-  target: 500,
 }
 
 let soDuTaiKhoan = 1000;
@@ -142,11 +138,11 @@ const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0,
-    deal: 0, isStop: false, type: TYPES2.typeBeThangDep, isDaoNguoc: "null", isFomo: false
+    deal: 0, isStop: false, type: Dep, isDaoNguoc: "null", isFomo: false
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: TYPES2.typeBeThangXau, isDaoNguoc: "null", isFomo: true
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: Xau, isDaoNguoc: "null", isFomo: true
   }
 ];
 
@@ -199,7 +195,7 @@ async function handleStop() {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://nestjs.com/", {
+  await page.goto("https://web.sunwin.lt/", {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
@@ -380,27 +376,20 @@ function updateAray(id, updates) {
 
 async function ThucHienGiaoDich() {
   const tinHieuAI = TinHieuMuaBan(ArrayKQ);
+  const resultNew = ArrayKQ.at(-1); // kết quả cuối cùng trong array
 
-  const resultNew = ArrayKQ.at(-1);
-  if (resultNew === "null") { console.log("Bị vấn đề khi lấy kết quả"); return };
+  if (resultNew === "null") { console.log("Bị vấn đề về kết quả"); return };
 
   if (muaGiaLap !== "null") {
     const isWin = resultNew === muaGiaLap
     if (isWin) {
       ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
-      chienthoi.tiso = chienthoi.tiso - 1
-      if (!chienthoi.bendep && chienthoi.tiso <= chienthoi.maxTiso * -1) {
-        chienthoi.bendep = true
-      }
+
+
       muaGiaLap = "null"
       await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
     } else {
       ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
-      chienthoi.tiso = chienthoi.tiso + 1
-
-      if (!chienthoi.benxau && chienthoi.tiso >= chienthoi.maxTiso) {
-        chienthoi.benxau = true;
-      }
 
       muaGiaLap = "null"
       await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
@@ -408,6 +397,13 @@ async function ThucHienGiaoDich() {
   }
   if (muaGiaLap === "null" && tinHieuAI.huong !== "null") {
     muaGiaLap = tinHieuAI.huong
+  }
+  if (checkABTrongDoXanh(ArrayKQ_XAU) !== "null" && !chienthoi.bendep && !chienthoi.benxau) {
+    if (checkABTrongDoXanh(ArrayKQ_XAU) === "A") {
+      chienthoi.benxau = true;
+    } else {
+      chienthoi.bendep = true;
+    }
   }
 
 
@@ -422,12 +418,13 @@ async function ThucHienGiaoDich() {
           profitAll = profitAll + (item.vol * 0.98);
 
           if (chienthoi.bendep || chienthoi.benxau) {
-            chienthoi.solai = chienthoi.tinhVol + chienthoi.solai
-            if (chienthoi.solai >= chienthoi.target) {
+            chienthoi.solai += chienthoi.tinhVol
+            chienthoi.tiso = chienthoi.isNhandoi ? chienthoi.tiso + 2 : chienthoi.tiso + 1;
+
+            if (chienthoi.tiso >= chienthoi.soLanMuonAn) {
               chienthoi.bendep = false;
               chienthoi.benxau = false;
-              chienthoi.solai = 0;
-              chienthoi.solanthua = 0;
+              chienthoi.tiso = 0
               chienthoi.isNhandoi = false;
             }
             await UI_Update_ChienThoi(page, chienthoi);
@@ -462,8 +459,9 @@ async function ThucHienGiaoDich() {
           profitAll = profitAll - item.vol;
         }
         if (chienthoi.bendep || chienthoi.benxau) {
-          chienthoi.solanthua = chienthoi.solanthua + 1;
-          if (chienthoi.solanthua >= 4) {
+          chienthoi.tiso = chienthoi.isNhandoi ? chienthoi.tiso - 2 : chienthoi.tiso - 1;
+
+          if (chienthoi.tiso <= -3) {
             chienthoi.isNhandoi = true;
           }
           await UI_Update_ChienThoi(page, chienthoi);
@@ -495,13 +493,17 @@ async function ThucHienGiaoDich() {
   saveStateTXT();
   // ========================== ĐẶT LỆNH ==========================
 
-  if (tinHieuAI.huong !== "null" || chienthoi.bendep || chienthoi.benxau) {
+  // const tinHieuAINew = TinHieuMuaBanNew(ArrayKQ_XAU);
+
+  const arrayNew = LuutruLongmach.filter(i => i.type === tinHieuAINew.type && !i.isStop);
+
+
+  if (tinHieuAI.huong !== "null" && (chienthoi.bendep || chienthoi.benxau)) {
     for (const item of arrayNew) {
-      // const huongDanhNew = getHuongForItem(tinHieuAINew, tinHieuAI.huong);
       const huongDanhNew = chienthoi.bendep ? tinHieuAI.huong === T ? X : T : tinHieuAI.huong
       const isNgam = item.ngam && !item.isNgamDone;
       const tinhVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
-      const tinhVolNew = chienthoi.isNhandoi ? tinhVol * 1.5 : tinhVol;
+      const tinhVolNew = chienthoi.isNhandoi ? tinhVol * 2 : tinhVol;
 
       if (!isNgam) {
         // =======================HandlClick=========================
@@ -851,7 +853,6 @@ async function clickTheoTinhVol(page, tinhVol, icon) {
   }
 }
 
-
 async function clickN(page, x, y, n, icon = "🖱️") {
   for (let i = 0; i < n; i++) {
     await UI_MouseClick(page, x, y, icon, 18, "ui-mouse-click", 1000);
@@ -1013,9 +1014,6 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
   );
 }
 
-
-
-
 async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
   await page.evaluate(
     ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut }) => {
@@ -1050,8 +1048,6 @@ async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
   );
 }
 
-
-
 function saveStateTXT() {
   try {
     let lines = [];
@@ -1081,7 +1077,6 @@ function saveStateTXT() {
     console.error("❌ Save TXT lỗi:", err.message);
   }
 }
-
 
 function loadStateTXT() {
   if (!fs.existsSync(STATE_FILE)) return;
