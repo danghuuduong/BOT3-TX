@@ -537,11 +537,15 @@ async function updateButton(page, text, color) {
 }
 
 // ================= COLOR =================
+// function handleGetColor_TX(r, g, b) {
+//   const avg = (r + g + b) / (3 * 255);
+//   if (avg > 0.85) return "white";
+//   if (avg < 0.2) return "black";
+//   return "null";
+// }
+
 function handleGetColor_TX(r, g, b) {
-  const avg = (r + g + b) / (3 * 255);
-  if (avg > 0.85) return "white";
-  if (avg < 0.2) return "black";
-  return "null";
+  return Math.random() < 0.5 ? "white" : "black";
 }
 
 function getHuongForItem(tinHieuAINew, huongGoc) {
@@ -553,11 +557,12 @@ function getHuongForItem(tinHieuAINew, huongGoc) {
 }
 
 function checkABTrongDoXanh(arr) {
-  const countA = arr.filter(v => v === "A").length;
-  const countB = arr.filter(v => v === "B").length;
+  const countA = arr.filter(v => v === Dep).length || 0;
+  const countB = arr.filter(v => v === Xau).length || 0;
 
-  if (countB >= countA * 10) return "B";
-  if (countA >= countB * 10) return "A";
+  if (countB - countA >= 10) return Xau;
+  if (countA - countB >= 10) return Dep;
+
   return "null";
 }
 // ================= EXPORT =================

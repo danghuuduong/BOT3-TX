@@ -259,28 +259,31 @@ async function UI_ChienThoi(page) {
   });
 }
 
-async function UI_Update_ChienThoi(page, chienthoi) {
-  await page.evaluate((ct) => {
+async function UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU) {
+  await page.evaluate(({ ct, array }) => {
     const box = document.getElementById("ui-chienthoi");
     if (!box) return;
 
-    const check = (v) =>
-      v ? `<span style="color:green">✔</span>` : "";
+    const Dep = "A";
+    const Xau = "B";
+
+    const countA = array?.filter(v => v === Dep).length || 0;
+    const countB = array?.filter(v => v === Xau).length || 0;
+
+    const check = (v) => v ? `<span style="color:green">✅</span>` : "";
 
     let colorSolai = "black";
     if (ct.solai > 0) colorSolai = "green";
     else if (ct.solai < 0) colorSolai = "red";
 
     box.innerHTML = `
-      <div>🟢 Bên đẹp: ${check(ct.bendep)} </div>
-      <div>🔴 Bên xấu: ${check(ct.benxau)}</div>
-      <div>Điều kiện: ${ct.tiso} / ${ct.maxTiso}</div>
+      <div>🟢 Bên đẹp: ${countB - countA > 0 ? countB - countA : 0}/10 ${check(ct.bendep)}</div>
+      <div>🔴 Bên xấu: ${countA - countB > 0 ? countA - countB : 0}/10 ${check(ct.benxau)}</div>
+      <div>Điều kiện: ${ct.tiso} / ${ct.soLanMuonAn}</div>
       <div>💰 Số lãi: <span style="color:${colorSolai}">${ct.solai}</span></div>
-      <div>❌ Số lần thua: ${ct.solanthua}</div>
-      <div>🎯 Target: ${ct.solai}/${ct.target}</div>
       <div>♻️ Nhân đôi: ${check(ct.isNhandoi)}</div>
     `;
-  }, chienthoi);
+  }, { ct: chienthoi, array: ArrayKQ_XAU });
 }
 
 

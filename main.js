@@ -2,7 +2,7 @@ const { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_Update_ArrayKQ2, UI_ArrayKQ, UI_A
 const { UI_TieuDiem, UI_Update_Table, UI_Table_LuuTru, UI_MouseClick } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan, T, X, Dep,
-  Xau, maxThep, getHuongForItem, TinHieuMuaBanNew
+  Xau, maxThep, getHuongForItem, TinHieuMuaBanNew, checkABTrongDoXanh
 } = require('./src/util');
 
 const { handleGetTien } = require('./src/util2');
@@ -119,10 +119,10 @@ let muaGiaLap = "null"
 let chienthoi = {
   bendep: false,
   benxau: false,
-  solai: 0,
   tiso: 0,
   soLanMuonAn: 3,
   isNhandoi: false,
+  solai: 0,
 }
 
 let soDuTaiKhoan = 1000;
@@ -195,7 +195,7 @@ async function handleStop() {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://web.sunwin.lt/", {
+  await page.goto("https://www.facebook.com/", {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
@@ -398,8 +398,11 @@ async function ThucHienGiaoDich() {
   if (muaGiaLap === "null" && tinHieuAI.huong !== "null") {
     muaGiaLap = tinHieuAI.huong
   }
+
+  console.log("ArrayKQ_XAU", ArrayKQ_XAU);
+
   if (checkABTrongDoXanh(ArrayKQ_XAU) !== "null" && !chienthoi.bendep && !chienthoi.benxau) {
-    if (checkABTrongDoXanh(ArrayKQ_XAU) === "A") {
+    if (checkABTrongDoXanh(ArrayKQ_XAU) === Dep) {
       chienthoi.benxau = true;
     } else {
       chienthoi.bendep = true;
@@ -427,7 +430,7 @@ async function ThucHienGiaoDich() {
               chienthoi.tiso = 0
               chienthoi.isNhandoi = false;
             }
-            await UI_Update_ChienThoi(page, chienthoi);
+            await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
           }
         }
         updateAray(item.id, {
@@ -464,7 +467,7 @@ async function ThucHienGiaoDich() {
           if (chienthoi.tiso <= -3) {
             chienthoi.isNhandoi = true;
           }
-          await UI_Update_ChienThoi(page, chienthoi);
+          await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
         }
 
         updateAray(item.id, {
@@ -495,7 +498,7 @@ async function ThucHienGiaoDich() {
 
   // const tinHieuAINew = TinHieuMuaBanNew(ArrayKQ_XAU);
 
-  const arrayNew = LuutruLongmach.filter(i => i.type === tinHieuAINew.type && !i.isStop);
+  const arrayNew = LuutruLongmach.filter(i => i.type === checkABTrongDoXanh(ArrayKQ_XAU) && !i.isStop);
 
 
   if (tinHieuAI.huong !== "null" && (chienthoi.bendep || chienthoi.benxau)) {
