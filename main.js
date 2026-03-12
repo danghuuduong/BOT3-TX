@@ -111,7 +111,7 @@ let page;
 let countdown = 70;
 let countdownInterval;
 
-const MAX_LENGTH = 25;
+const MAX_LENGTH = 100;
 const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
@@ -120,7 +120,7 @@ let chienthoi = {
   bendep: false,
   benxau: false,
   tiso: 0,
-  soLanMuonAn: 3,
+  soLanMuonAn: 2,
   isNhandoi: false,
   solai: 0,
 }
@@ -323,7 +323,8 @@ async function handleStop() {
   await UI_ArrayKQ2(page);
 
   await UI_ChienThoi(page);
-  await UI_Update_ChienThoi(page, chienthoi);
+  await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+
 
 })();
 
@@ -384,15 +385,17 @@ async function ThucHienGiaoDich() {
     const isWin = resultNew === muaGiaLap
     if (isWin) {
       ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
-
-
       muaGiaLap = "null"
       await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+
     } else {
       ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
 
       muaGiaLap = "null"
       await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+
     }
   }
   if (muaGiaLap === "null" && tinHieuAI.huong !== "null") {
