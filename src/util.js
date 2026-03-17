@@ -556,12 +556,12 @@ function getHuongForItem(tinHieuAINew, huongGoc) {
   return huongGoc;
 }
 
-function checkABTrongDoXanh(arr) {
+function checkABTrongDoXanh(arr, number) {
   const countA = arr.filter(v => v === Dep).length || 0;
   const countB = arr.filter(v => v === Xau).length || 0;
 
-  if (countB - countA >= 7) return Xau;
-  if (countA - countB >= 7) return Dep;
+  if (countB - countA >= number) return Xau;
+  if (countA - countB >= number) return Dep;
 
   return "null";
 }

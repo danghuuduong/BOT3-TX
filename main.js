@@ -116,9 +116,12 @@ const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
 
+
+
 let chienthoi = {
   bendep: false,
   benxau: false,
+  filterType: "null",
   AnNumber: 0,
   soLanMuonAn: 2,
   isNhandoi: false,
@@ -131,6 +134,7 @@ let soDuLonNhat = 1000;
 let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
 let phanTramGiaoDich = 30;
+let soLanChoDoi = 7; // mặc định giống logic cũ
 
 let profitAll = 0;
 
@@ -208,8 +212,7 @@ async function handleStop() {
       soDu,
       soDuMax,
       percent,
-      stopId,
-      ngam,
+      wait,
       nguongRut,
       soTienRut
     ) => {
@@ -221,12 +224,8 @@ async function handleStop() {
       nguongTienDat = nguongRut;
       soTienMuonRut = soTienRut;
 
-      // ===== LOGIC CŨ GIỮ NGUYÊN =====
-      const item = LuutruLongmach.find(i => i.id === stopId);
-      if (item) {
-        updateAray(stopId, { ngam: ngam });
-        await UI_Update_Table(page, LuutruLongmach);
-      }
+
+      soLanChoDoi = wait;
 
       await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);
       saveStateTXT();
@@ -236,7 +235,8 @@ async function handleStop() {
         page,
         soDuTaiKhoan,
         soDuLonNhat,
-        phanTramGiaoDich
+        phanTramGiaoDich,
+        soLanChoDoi
       );
     }
   );
@@ -404,12 +404,14 @@ async function ThucHienGiaoDich() {
     muaGiaLap = tinHieuAI.huong
   }
 
-  if (checkABTrongDoXanh(ArrayKQ_XAU) !== "null" && !chienthoi.bendep && !chienthoi.benxau) {
-    if (checkABTrongDoXanh(ArrayKQ_XAU) === Dep) {
+  if (checkABTrongDoXanh(ArrayKQ_XAU, soLanChoDoi) !== "null" && !chienthoi.bendep && !chienthoi.benxau) {
+    if (checkABTrongDoXanh(ArrayKQ_XAU, soLanChoDoi) === Dep) {
       chienthoi.benxau = true;
+      chienthoi.filterType = Xau;
       await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
     } else {
       chienthoi.bendep = true;
+      chienthoi.filterType = Dep;
       await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
     }
   }
@@ -433,6 +435,7 @@ async function ThucHienGiaoDich() {
               chienthoi.hoanthanh = true;
               chienthoi.bendep = false;
               chienthoi.benxau = false;
+              chienthoi.filterType = "null";
               chienthoi.AnNumber = 0
               chienthoi.isNhandoi = false;
               chienthoi.soLanMuonAn = 2;
@@ -490,13 +493,19 @@ async function ThucHienGiaoDich() {
 
   await UI_Update_Table(page, LuutruLongmach);
   await UI_Show_SoDu(page, soDuTaiKhoan, profitAll)
-  await UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
+  await UI_Update_CaiDatVon(
+    page,
+    soDuTaiKhoan,
+    soDuLonNhat,
+    phanTramGiaoDich,
+    soLanChoDoi
+  );
   saveStateTXT();
   // ========================== ĐẶT LỆNH ==========================
 
   // const tinHieuAINew = TinHieuMuaBanNew(ArrayKQ_XAU);
 
-  const arrayNew = LuutruLongmach.filter(i => i.type === checkABTrongDoXanh(ArrayKQ_XAU) && !i.isStop);
+  const arrayNew = LuutruLongmach.filter(i => i.type === chienthoi.filterType && !i.isStop);
 
   if (tinHieuAI.huong === "null" && chienthoi.hoanthanh) {
     chienthoi.hoanthanh = false;
@@ -629,7 +638,8 @@ async function ThucHienGiaoDich() {
       page,
       soDuTaiKhoan,
       soDuLonNhat,
-      phanTramGiaoDich
+      phanTramGiaoDich,
+      soLanChoDoi
     );
   }
 }
@@ -870,7 +880,7 @@ async function clickN(page, x, y, n, icon = "🖱️") {
   }
 }
 
-async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
+async function UI_CaiDatVon(page, soDu, soDuMax, percent, soLanChoDoi) {
   await page.evaluate(
     ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut }) => {
       if (document.getElementById("ui-caidat-von")) return;
@@ -938,15 +948,12 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
           </span>
         </div>
 
-        // <div style="margin-bottom:10px">
-        //   🧩 ID của ngầm
-        //   <div style="display:flex; gap:6px; margin-top:4px">
-        //     <input id="inp-stop-id" type="number" placeholder="ID"
-        //       style="width:50%;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
-        //     <input id="inp-ngam" type="number" placeholder="Ngầm"
-        //       style="width:50%;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
-        //   </div>
-        // </div>
+        <div style="margin-bottom:10px">
+          ⏳ Số lần chờ đợi
+          <input id="inp-wait" type="number"
+            value="${soLanChoDoi}"
+            style="width:100%;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px" />
+        </div>
 
         <div style="margin-bottom:10px">
           💸 Rút tiền tự động
@@ -998,8 +1005,7 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
       document.body.appendChild(container);
 
       document.getElementById("btn-apply").onclick = () => {
-        const stopId = Number(document.getElementById("inp-stop-id").value || 0);
-        const ngam = Number(document.getElementById("inp-ngam").value || 0);
+        const wait = Number(document.getElementById("inp-wait").value || soLanChoDoi);
 
         nguongTienDat = Number(document.getElementById("inp-nguong-rut").value || nguongTienDat);
         soTienMuonRut = Number(document.getElementById("inp-so-tien-rut").value || soTienMuonRut);
@@ -1008,26 +1014,28 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
           Number(document.getElementById("inp-sodu").value || 0),
           Number(document.getElementById("inp-max").value || 0),
           Number(document.getElementById("inp-percent").value || 0),
-          stopId,
-          ngam,
+          wait,
           nguongTienDat,
           soTienMuonRut
         );
       };
     },
-    { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut }
+    { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, soLanChoDoi }
   );
 }
 
-async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
+async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent, soLanChoDoi) {
   await page.evaluate(
-    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut }) => {
+    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, soLanChoDoi }) => {
       const box = document.getElementById("ui-caidat-von");
       if (!box) return;
 
       document.getElementById("inp-sodu").value = soDu;
       document.getElementById("inp-max").value = soDuMax;
       document.getElementById("inp-percent").value = percent;
+
+      // ✅ THÊM DÒNG NÀY
+      document.getElementById("inp-wait").value = soLanChoDoi;
 
       document.getElementById("inp-nguong-rut").value = nguongTienDat;
       document.getElementById("inp-so-tien-rut").value = soTienMuonRut;
@@ -1048,7 +1056,8 @@ async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
       percent,
       nguongTienDat,
       soTienMuonRut,
-      tongTienDaRut, // ✅ BẮT BUỘC PHẢI TRUYỀN
+      tongTienDaRut,
+      soLanChoDoi // ✅ THÊM DÒNG NÀY
     }
   );
 }
@@ -1066,6 +1075,8 @@ function saveStateTXT() {
     lines.push(`nguongTienDat=${nguongTienDat}`);
     lines.push(`soTienMuonRut=${soTienMuonRut}`);
     lines.push(`tongTienDaRut=${tongTienDaRut}`);
+
+    lines.push(`soLanChoDoi=${soLanChoDoi}`);
 
     lines.push("");
 
@@ -1104,6 +1115,7 @@ function loadStateTXT() {
     nguongTienDat = Number(getVal("nguongTienDat")) || nguongTienDat;
     soTienMuonRut = Number(getVal("soTienMuonRut")) || soTienMuonRut;
     tongTienDaRut = Number(getVal("tongTienDaRut")) || tongTienDaRut;
+    soLanChoDoi = Number(getVal("soLanChoDoi")) || soLanChoDoi;
 
     const arrKQ = getVal("ArrayKQ");
     if (arrKQ) {
