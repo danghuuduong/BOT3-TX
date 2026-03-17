@@ -98,7 +98,7 @@ async function UI_Table_LuuTru(page) {
       });
 
       const headers = [
-        "ID", "Type", "Bên", "Vô", "Số Ngầm", "Thếp",
+        "ID", "Type", "Bên", "Vô",
         "Số Tiền", "Win", "Lost", "Lãi",
         // "1", "2", "3", "4", "5",
 
@@ -112,7 +112,7 @@ async function UI_Table_LuuTru(page) {
 
 
       const widths = [
-        "30px", "70px", "50px", "60px", "60px", "90px",
+        "30px", "70px", "50px", "60px",
         "50px", "45px", "45px", "65px",
         // "35px", "35px", "35px", "35px", "35px",
 
@@ -174,9 +174,7 @@ async function UI_Update_Table(page, data) {
         item.type,
         item.isFomo === "null" ? " " : item.isFomo ? "Fomo" : "Bẻ🔥",
         item.isTrading ? item.huong === "T" ? "⚫" : "⚪" : "Chưa",
-        `${item.thepChoNgam}/${item.ngam} ${icon}`,
-        item.ngam && !item.isNgamDone ? 'Chờ ngầm' : `⭐️ ${item.thep}/8 Thếp`,
-        item.ngam && !item.isNgamDone ? 'Chưa Vô' : item.vol,
+        item.vol,
         item.win,
         item.lost,
         item.profit.toFixed(2),

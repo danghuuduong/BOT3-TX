@@ -242,10 +242,13 @@ async function UI_ChienThoi(page) {
     Object.assign(box.style, {
       position: "fixed",
       bottom: "5px",              // nằm dưới ui-array-kq2
-      right: "270px",
+      right: "240px",
       transform: "translateY(-5px)",
       zIndex: 9999,
-      background: "rgba(255,255,255,0.95)",
+      background: "rgba(255,255,255,0.55)",
+      backdropFilter: "blur(4px)",
+      WebkitBackdropFilter: "blur(4px)",
+
       padding: "8px 10px",
       borderRadius: "6px",
       border: "1px solid #fff",
@@ -277,9 +280,9 @@ async function UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU) {
     else if (ct.solai < 0) colorSolai = "red";
 
     box.innerHTML = `
-      <div>🟢 Bên đẹp: ${countB - countA > 0 ? countB - countA : 0}/4 ${check(ct.bendep)}</div>
-      <div>🔴 Bên xấu: ${countA - countB > 0 ? countA - countB : 0}/4 ${check(ct.benxau)}</div>
-      <div>Điều kiện: ${ct.tiso} / ${ct.soLanMuonAn}</div>
+      <div>🟢 Bên đẹp: ${countB - countA > 0 ? countB - countA : 0}/7 ${check(ct.bendep)}</div>
+      <div>🔴 Bên xấu: ${countA - countB > 0 ? countA - countB : 0}/7 ${check(ct.benxau)}</div>
+      <div>Điều kiện: ${ct.AnNumber} / ${ct.soLanMuonAn} ${check(ct.hoanthanh)}</div>
       <div>💰 Số lãi: <span style="color:${colorSolai}">${ct.solai}</span></div>
       <div>♻️ Nhân đôi: ${check(ct.isNhandoi)}</div>
     `;

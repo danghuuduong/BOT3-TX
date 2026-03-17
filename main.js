@@ -119,10 +119,11 @@ let muaGiaLap = "null"
 let chienthoi = {
   bendep: false,
   benxau: false,
-  tiso: 0,
+  AnNumber: 0,
   soLanMuonAn: 2,
   isNhandoi: false,
   solai: 0,
+  hoanthanh: false,
 }
 
 let soDuTaiKhoan = 1000;
@@ -136,12 +137,12 @@ let profitAll = 0;
 
 const LuutruLongmach = [
   {
-    id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
+    id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0,
     deal: 0, isStop: false, type: Dep, isDaoNguoc: "null", isFomo: false
   },
   {
-    id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, thep: 0, vol: 0, win: 0, lost: 0,
+    id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: Xau, isDaoNguoc: "null", isFomo: true
   }
 ];
@@ -386,6 +387,7 @@ async function ThucHienGiaoDich() {
     if (isWin) {
       ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       muaGiaLap = "null"
+
       await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
       await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
 
@@ -402,13 +404,13 @@ async function ThucHienGiaoDich() {
     muaGiaLap = tinHieuAI.huong
   }
 
-  console.log("ArrayKQ_XAU", ArrayKQ_XAU);
-
   if (checkABTrongDoXanh(ArrayKQ_XAU) !== "null" && !chienthoi.bendep && !chienthoi.benxau) {
     if (checkABTrongDoXanh(ArrayKQ_XAU) === Dep) {
       chienthoi.benxau = true;
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
     } else {
       chienthoi.bendep = true;
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
     }
   }
 
@@ -420,18 +422,20 @@ async function ThucHienGiaoDich() {
       const isWin = resultNew === item.huong
       if (isWin) {
         if (!isNgam) {
-          soDuTaiKhoan = soDuTaiKhoan + (item.vol * 0.98);
-          profitAll = profitAll + (item.vol * 0.98);
+          soDuTaiKhoan += (item.vol * 0.98);
+          profitAll += (item.vol * 0.98);
 
           if (chienthoi.bendep || chienthoi.benxau) {
-            chienthoi.solai += chienthoi.tinhVol
-            chienthoi.tiso = chienthoi.isNhandoi ? chienthoi.tiso + 2 : chienthoi.tiso + 1;
+            chienthoi.solai += (item.vol * 0.98);
+            chienthoi.AnNumber = chienthoi.isNhandoi ? chienthoi.AnNumber + 2 : chienthoi.AnNumber + 1;
 
-            if (chienthoi.tiso >= chienthoi.soLanMuonAn) {
+            if (chienthoi.AnNumber >= chienthoi.soLanMuonAn) {
+              chienthoi.hoanthanh = true;
               chienthoi.bendep = false;
               chienthoi.benxau = false;
-              chienthoi.tiso = 0
+              chienthoi.AnNumber = 0
               chienthoi.isNhandoi = false;
+              chienthoi.soLanMuonAn = 2;
             }
             await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
           }
@@ -444,31 +448,23 @@ async function ThucHienGiaoDich() {
             : {
               profit: item.profit + (item.vol * 0.98),
               win: item.win + 1,
-              A: item.thep === 1 ? item.A + 1 : item.A,
-              B: item.thep === 2 ? item.B + 1 : item.B,
-              C: item.thep === 3 ? item.C + 1 : item.C,
-              D: item.thep === 4 ? item.D + 1 : item.D,
-              E: item.thep === 5 ? item.E + 1 : item.E,
-              A1: item.thep === 6 ? item.A1 + 1 : item.A1,
-              A2: item.thep === 7 ? item.A2 + 1 : item.A2,
-              A3: item.thep === 8 ? item.A3 + 1 : item.A3,
-              // A4: item.thep === 9 ? item.A4 + 1 : item.A4,
-              // A5: item.thep === 10 ? item.A5 + 1 : item.A5,
+
               vol: 0,
               ...(item?.ngam && item?.isNgamDone ? { isNgamDone: false, thepChoNgam: 0 } : {}),
-              thep: 0,
             }),
         });
       } else {
         if (!isNgam) {
-          soDuTaiKhoan = soDuTaiKhoan - item.vol;
-          profitAll = profitAll - item.vol;
+          soDuTaiKhoan -= item.vol;
+          profitAll -= item.vol;
         }
         if (chienthoi.bendep || chienthoi.benxau) {
-          chienthoi.tiso = chienthoi.isNhandoi ? chienthoi.tiso - 2 : chienthoi.tiso - 1;
+          chienthoi.AnNumber = chienthoi.isNhandoi ? chienthoi.AnNumber - 2 : chienthoi.AnNumber - 1;
+          chienthoi.solai -= item.vol;
 
-          if (chienthoi.tiso <= -3) {
+          if (chienthoi.AnNumber <= -3) {
             chienthoi.isNhandoi = true;
+            chienthoi.soLanMuonAn = 1
           }
           await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
         }
@@ -479,7 +475,6 @@ async function ThucHienGiaoDich() {
           ...(isNgam
             ? (item?.thepChoNgam >= item.ngam ? { isNgamDone: true } : {})
             : {
-              ...(item.thep >= maxThep ? { thep: 0, deal: item.deal + 1 } : {}),
               vol: 0,
               profit: item.profit - item.vol,
               lost: item.lost + 1,
@@ -503,6 +498,10 @@ async function ThucHienGiaoDich() {
 
   const arrayNew = LuutruLongmach.filter(i => i.type === checkABTrongDoXanh(ArrayKQ_XAU) && !i.isStop);
 
+  if (tinHieuAI.huong === "null" && chienthoi.hoanthanh) {
+    chienthoi.hoanthanh = false;
+    await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+  }
 
   if (tinHieuAI.huong !== "null" && (chienthoi.bendep || chienthoi.benxau)) {
     for (const item of arrayNew) {
@@ -511,40 +510,40 @@ async function ThucHienGiaoDich() {
       const tinhVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
       const tinhVolNew = chienthoi.isNhandoi ? tinhVol * 2 : tinhVol;
 
-      if (!isNgam) {
-        // =======================HandlClick=========================
-        // onlick 10 ..
-        const isTai = huongDanhNew === T;
+      // if (!isNgam) {
+      //   // =======================HandlClick=========================
+      //   // onlick 10 ..
+      //   const isTai = huongDanhNew === T;
 
-        await UI_MouseClick(page,
-          isTai ? X_DatTai : X_DatXiu,
-          isTai ? Y_DatTai : Y_DatXiu, "👈");
-        await page.mouse.click(
-          isTai ? X_DatTai : X_DatXiu,
-          isTai ? Y_DatTai : Y_DatXiu);
+      //   await UI_MouseClick(page,
+      //     isTai ? X_DatTai : X_DatXiu,
+      //     isTai ? Y_DatTai : Y_DatXiu, "👈");
+      //   await page.mouse.click(
+      //     isTai ? X_DatTai : X_DatXiu,
+      //     isTai ? Y_DatTai : Y_DatXiu);
 
 
-        await clickTheoTinhVol(page, tinhVolNew, "🎯")
+      //   await clickTheoTinhVol(page, tinhVolNew, "🎯")
 
-        const delay = 500 + Math.floor(Math.random() * 1501); // 500 → 2000
-        await page.waitForTimeout(delay);
+      //   const delay = 500 + Math.floor(Math.random() * 1501); // 500 → 2000
+      //   await page.waitForTimeout(delay);
 
-        await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-        await page.mouse.click(X_Submit, Y_Submit);
-      }
+      //   await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      //   await page.mouse.click(X_Submit, Y_Submit);
+      // }
 
       updateAray(item.id, {
         isTrading: true,
         huong: huongDanhNew,
         ...(isNgam && { thepChoNgam: item.thepChoNgam + 1 }),
         ...(!isNgam && {
-          thep: item.thep + 1,
           vol: tinhVolNew,
           // isFomo: tinHieuAINew.isPheDep
         }),
       });
       await UI_Update_Table(page, LuutruLongmach);
       saveStateTXT();
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
     }
   }
 
@@ -939,15 +938,15 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
           </span>
         </div>
 
-        <div style="margin-bottom:10px">
-          🧩 ID của ngầm
-          <div style="display:flex; gap:6px; margin-top:4px">
-            <input id="inp-stop-id" type="number" placeholder="ID"
-              style="width:50%;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
-            <input id="inp-ngam" type="number" placeholder="Ngầm"
-              style="width:50%;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
-          </div>
-        </div>
+        // <div style="margin-bottom:10px">
+        //   🧩 ID của ngầm
+        //   <div style="display:flex; gap:6px; margin-top:4px">
+        //     <input id="inp-stop-id" type="number" placeholder="ID"
+        //       style="width:50%;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+        //     <input id="inp-ngam" type="number" placeholder="Ngầm"
+        //       style="width:50%;padding:6px;border:0.8px solid #ccc;border-radius:5px" />
+        //   </div>
+        // </div>
 
         <div style="margin-bottom:10px">
           💸 Rút tiền tự động

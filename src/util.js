@@ -560,8 +560,8 @@ function checkABTrongDoXanh(arr) {
   const countA = arr.filter(v => v === Dep).length || 0;
   const countB = arr.filter(v => v === Xau).length || 0;
 
-  if (countB - countA >= 4) return Xau;
-  if (countA - countB >= 4) return Dep;
+  if (countB - countA >= 7) return Xau;
+  if (countA - countB >= 7) return Dep;
 
   return "null";
 }
