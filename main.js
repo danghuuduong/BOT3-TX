@@ -133,7 +133,7 @@ let soDuTaiKhoan = 1000;
 let soDuLonNhat = 1000;
 let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
-let phanTramGiaoDich = 30;
+let phanTramGiaoDich = 1;
 let soLanChoDoi = 7; // mặc định giống logic cũ
 
 let profitAll = 0;
@@ -229,6 +229,12 @@ async function handleStop() {
 
       await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);
       saveStateTXT();
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
+      // if (chienthoi.bendep || chienthoi.benxau) {
+      //   chienthoi.benxau = true;
+      //   chienthoi.filterType = Xau;
+      // }
+
 
       // ===== UPDATE UI =====
       await UI_Update_CaiDatVon(
@@ -282,7 +288,7 @@ async function handleStop() {
   await UI_Table_LuuTru(page);//Bắt đầu
   await UI_Update_Table(page, LuutruLongmach);//Bắt đầu
   await UI_Show_SoDu(page, soDuTaiKhoan, profitAll)
-  await UI_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
+  await UI_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich, soLanChoDoi);
 
   async function injectMouseTracker(page) {
     for (const frame of page.frames()) {
@@ -324,7 +330,7 @@ async function handleStop() {
   await UI_ArrayKQ2(page);
 
   await UI_ChienThoi(page);
-  await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+  await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
 
 
 })();
@@ -389,14 +395,14 @@ async function ThucHienGiaoDich() {
       muaGiaLap = "null"
 
       await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
-      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
 
     } else {
       ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
 
       muaGiaLap = "null"
       await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
-      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
 
     }
   }
@@ -408,11 +414,11 @@ async function ThucHienGiaoDich() {
     if (checkABTrongDoXanh(ArrayKQ_XAU, soLanChoDoi) === Dep) {
       chienthoi.benxau = true;
       chienthoi.filterType = Xau;
-      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
     } else {
       chienthoi.bendep = true;
       chienthoi.filterType = Dep;
-      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
     }
   }
 
@@ -440,7 +446,7 @@ async function ThucHienGiaoDich() {
               chienthoi.isNhandoi = false;
               chienthoi.soLanMuonAn = 2;
             }
-            await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+            await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
           }
         }
         updateAray(item.id, {
@@ -469,7 +475,7 @@ async function ThucHienGiaoDich() {
             chienthoi.isNhandoi = true;
             chienthoi.soLanMuonAn = 1
           }
-          await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+          await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
         }
 
         updateAray(item.id, {
@@ -509,7 +515,7 @@ async function ThucHienGiaoDich() {
 
   if (tinHieuAI.huong === "null" && chienthoi.hoanthanh) {
     chienthoi.hoanthanh = false;
-    await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+    await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
   }
 
   if (tinHieuAI.huong !== "null" && (chienthoi.bendep || chienthoi.benxau)) {
@@ -552,7 +558,7 @@ async function ThucHienGiaoDich() {
       });
       await UI_Update_Table(page, LuutruLongmach);
       saveStateTXT();
-      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU);
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
     }
   }
 
@@ -882,7 +888,7 @@ async function clickN(page, x, y, n, icon = "🖱️") {
 
 async function UI_CaiDatVon(page, soDu, soDuMax, percent, soLanChoDoi) {
   await page.evaluate(
-    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut }) => {
+    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, soLanChoDoi }) => {
       if (document.getElementById("ui-caidat-von")) return;
 
       const container = document.createElement("div");
