@@ -280,10 +280,10 @@ async function UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi = 0
     else if (ct.solai < 0) colorSolai = "red";
 
     box.innerHTML = `
-      <div>🟢 Bên đẹp: ${countB - countA > 0 ? countB - countA : 0}/${soLanChoDoi} ${check(ct.bendep)}</div>
+      <div>🟢 Bên đẹp: ${countB - countA > 0 ? countB - countA : 0}/${soLanChoDoi + 2} ${check(ct.bendep)}</div>
       <div>🔴 Bên xấu: ${countA - countB > 0 ? countA - countB : 0}/${soLanChoDoi} ${check(ct.benxau)}</div>
       <div>Điều kiện: ${ct.AnNumber} / ${ct.soLanMuonAn} ${check(ct.hoanthanh)}</div>
-      <div>💰 Số lãi: <span style="color:${colorSolai}">${ct.solai}</span></div>
+      <div>💰 Số lãi: <span style="color:${colorSolai}">${ct.solai.toFixed(2)}</span></div>
       <div>♻️ Nhân đôi: ${check(ct.isNhandoi)}</div>
     `;
   }, { ct: chienthoi, array: ArrayKQ_XAU, soLanChoDoi });

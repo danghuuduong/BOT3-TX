@@ -1,14 +1,14 @@
-soDuTaiKhoan=1008.8000000000001
-soDuLonNhat=1008.8000000000001
+soDuTaiKhoan=1665.154
+soDuLonNhat=1665.154
 phanTramGiaoDich=1
-profitAll=8.800000000000004
-nguongTienDat=6000
-soTienMuonRut=2000
+profitAll=530
+nguongTienDat=3000
+soTienMuonRut=1000
 tongTienDaRut=0
-soLanChoDoi=3
+soLanChoDoi=7
 
-ArrayKQ=X,T,T,T,T,T,T,X,X,X,T,T,T,X,X,T,T,T,X,X,X,X,X,X,T,T,X,T,X,T,T,T,T,X,T,X,X,T,T,T,X,X,X,X,T,T,X,T,T,T,T,X,X,X,X,X,T,T,T,T,X,T,X,X,X,T,X,T,T,X,T,T,X,X,X,X,X,X,X,T,X,T,T,T,T,X,T,T,T,T,X,X,T,T,T,X,T,X,T,X
-ArrayKQ_XAU=A,A,B,B,B,A,A,B,B,A,B,B,A,B,B,B,B,B,A,B,A,A,A
+ArrayKQ=T,X,X,X,X,T,X,T,T,X,T,X,X,X,X,T,X,T,T,T,X,X,T,T,X,T,X,T,X,X,X,T,X,T,X,T,T,X,T,T,T,T,X,T,X,T,X
+ArrayKQ_XAU=A,B,B,B,B,B,A,A,A,A,A,B,A,A
 
 LuutruLongmach=
 [
@@ -16,13 +16,13 @@ LuutruLongmach=
     "id": 1,
     "isTrading": false,
     "huong": "null",
-    "profit": 8.800000000000004,
+    "profit": 0,
     "thepChoNgam": 0,
     "isNgamDone": false,
     "ngam": 0,
     "vol": 0,
-    "win": 3,
-    "lost": 4,
+    "win": 0,
+    "lost": 0,
     "A": 0,
     "B": 0,
     "C": 0,
@@ -35,7 +35,8 @@ LuutruLongmach=
     "isStop": false,
     "type": "A",
     "isDaoNguoc": "null",
-    "isFomo": false
+    "isFomo": true,
+    "minAnNumber": 0
   },
   {
     "id": 2,
@@ -60,6 +61,7 @@ LuutruLongmach=
     "isStop": false,
     "type": "B",
     "isDaoNguoc": "null",
-    "isFomo": true
+    "isFomo": false,
+    "minAnNumber": 0
   }
 ]

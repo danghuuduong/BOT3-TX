@@ -70,14 +70,14 @@ async function UI_Table_LuuTru(page) {
       toggleBtn.onclick = () => {
         isHidden = !isHidden;
         if (isHidden) {
-          box.style.display = "none";
+          if (box) box.style.display = "none";
           container.style.display = "none";
           toggleBtn.style.bottom = "10px";  // xuống dưới màn hình
           toggleBtn.style.top = "auto";     // reset top
           toggleBtn.innerText = "▲";
         } else {
           container.style.display = "block";
-          box.style.display = "block";
+          if (box) box.style.display = "block";
           // toggleBtn.style.top = `${container.getBoundingClientRect().top - 10}px`;
           toggleBtn.style.bottom = `75px`;
           toggleBtn.innerText = "▼";
@@ -100,6 +100,7 @@ async function UI_Table_LuuTru(page) {
       const headers = [
         "ID", "Type", "Bên", "Vô",
         "Số Tiền", "Win", "Lost", "Lãi",
+        "MIN",
         // "1", "2", "3", "4", "5",
 
         // // ✅ BỔ SUNG
@@ -114,6 +115,7 @@ async function UI_Table_LuuTru(page) {
       const widths = [
         "30px", "70px", "50px", "60px",
         "50px", "45px", "45px", "65px",
+        "50px",
         // "35px", "35px", "35px", "35px", "35px",
 
         // // ✅ BỔ SUNG
@@ -172,12 +174,13 @@ async function UI_Update_Table(page, data) {
       const cols = [
         item.id,
         item.type,
-        item.isFomo === "null" ? " " : item.isFomo ? "Fomo" : "Bẻ🔥",
+        item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Xấu🔥",
         item.isTrading ? item.huong === "T" ? "⚫" : "⚪" : "Chưa",
-        item.vol,
+        item.vol.toFixed(2),
         item.win,
         item.lost,
         item.profit.toFixed(2),
+        item.minAnNumber
 
         // item.A, item.B, item.C, item.D, item.E,
 

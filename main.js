@@ -25,8 +25,8 @@ const STATE_FILE = path.join(__dirname, "state.txt");
 
 
 // Đây chỉ là nơi xác định tiêu điểm thôi k dùng lmj cả
-let startX = 455;
-let startY = 326;
+let startX = 708;
+let startY = 519;
 
 // 1. ______________________TÌM KẾT QUẢ Chính__________________
 let X_Ketqua = startX + 33; //488
@@ -86,8 +86,8 @@ let X_BtnCLose = 1040; //488
 let Y_BtnCLose = 145; //326
 
 // 9. Click lại Menu kết quả TX   .
-let X_MenuTX = 288; //488
-let Y_MenuTX = 200; //326
+let X_MenuTX = 545; //488
+let Y_MenuTX = 400; //326
 
 let tongTienDaRut = 0;
 
@@ -111,7 +111,7 @@ let page;
 let countdown = 70;
 let countdownInterval;
 
-const MAX_LENGTH = 100;
+const MAX_LENGTH = 300;
 const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
@@ -135,7 +135,6 @@ let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
 let phanTramGiaoDich = 1;
 let soLanChoDoi = 7; // mặc định giống logic cũ
-
 let profitAll = 0;
 
 
@@ -143,11 +142,11 @@ const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, vol: 0, win: 0, lost: 0,
     A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0,
-    deal: 0, isStop: false, type: Dep, isDaoNguoc: "null", isFomo: false
+    deal: 0, isStop: false, type: Dep, isDaoNguoc: "null", isFomo: true, minAnNumber: 0
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, thepChoNgam: 0, isNgamDone: false, ngam: 0, vol: 0, win: 0, lost: 0,
-    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: Xau, isDaoNguoc: "null", isFomo: true
+    A: 0, B: 0, C: 0, D: 0, E: 0, A1: 0, A2: 0, A3: 0, deal: 0, isStop: false, type: Xau, isDaoNguoc: "null", isFomo: false, minAnNumber: 0
   }
 ];
 
@@ -200,7 +199,7 @@ async function handleStop() {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://www.facebook.com/", {
+  await page.goto("https://web.sunwin.ag/", {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
@@ -281,6 +280,11 @@ async function handleStop() {
 
 
   // Tạo UI tách biệt
+
+  await UI_ChienThoi(page);
+  await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
+
+
   await UI_Btn_Show_TieuDiem(page);
   await UI_DieuKhien(page);//điều khiển 
   await UI_Start(page);//Bắt đầu
@@ -329,8 +333,7 @@ async function handleStop() {
   await UI_ArrayKQ(page);
   await UI_ArrayKQ2(page);
 
-  await UI_ChienThoi(page);
-  await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
+
 
 
 })();
@@ -411,62 +414,66 @@ async function ThucHienGiaoDich() {
   }
 
   if (checkABTrongDoXanh(ArrayKQ_XAU, soLanChoDoi) !== "null" && !chienthoi.bendep && !chienthoi.benxau) {
-    if (checkABTrongDoXanh(ArrayKQ_XAU, soLanChoDoi) === Dep) {
-      chienthoi.benxau = true;
-      chienthoi.filterType = Xau;
-      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
-    } else {
+    if (checkABTrongDoXanh(ArrayKQ_XAU, soLanChoDoi + 2) === Xau) {
       chienthoi.bendep = true;
       chienthoi.filterType = Dep;
       await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
     }
+    if (checkABTrongDoXanh(ArrayKQ_XAU, soLanChoDoi) === Dep) {
+      chienthoi.benxau = true;
+      chienthoi.filterType = Xau;
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
+    }
+
   }
 
 
   // ========================== TP / SL ==========================
   for (const item of LuutruLongmach) {
     if (item.isTrading && item.huong) {
-      const isNgam = item.ngam && !item.isNgamDone;
       const isWin = resultNew === item.huong
       if (isWin) {
-        if (!isNgam) {
-          soDuTaiKhoan += (item.vol * 0.98);
-          profitAll += (item.vol * 0.98);
+        soDuTaiKhoan += (item.vol * 0.98);
+        profitAll += (item.vol * 0.98);
 
-          if (chienthoi.bendep || chienthoi.benxau) {
-            chienthoi.solai += (item.vol * 0.98);
-            chienthoi.AnNumber = chienthoi.isNhandoi ? chienthoi.AnNumber + 2 : chienthoi.AnNumber + 1;
+        if (chienthoi.bendep || chienthoi.benxau) {
+          chienthoi.solai += (item.vol * 0.98);
+          chienthoi.AnNumber = chienthoi.isNhandoi ? chienthoi.AnNumber + 2 : chienthoi.AnNumber + 1;
 
-            if (chienthoi.AnNumber >= chienthoi.soLanMuonAn) {
-              chienthoi.hoanthanh = true;
-              chienthoi.bendep = false;
-              chienthoi.benxau = false;
-              chienthoi.filterType = "null";
-              chienthoi.AnNumber = 0
-              chienthoi.isNhandoi = false;
-              chienthoi.soLanMuonAn = 2;
+          if (chienthoi.AnNumber >= chienthoi.soLanMuonAn) {
+
+            const countA = ArrayKQ_XAU.filter(v => v === Dep).length;
+            const countB = ArrayKQ_XAU.filter(v => v === Xau).length;
+
+            ArrayKQ_XAU.length = 0;
+
+            const diff = Math.abs(countA - countB);
+            if (diff > 0) {
+              const val = countA > countB ? Dep : Xau;
+              for (let i = 0; i < diff; i++) {
+                ArrayKQ_XAU.push(val);
+              }
             }
-            await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
+            chienthoi.hoanthanh = true;
+            chienthoi.bendep = false;
+            chienthoi.benxau = false;
+            chienthoi.filterType = "null";
+            chienthoi.AnNumber = 0
+            chienthoi.isNhandoi = false;
+            chienthoi.soLanMuonAn = 2;
           }
+          await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
         }
         updateAray(item.id, {
           isTrading: false,
           huong: "null",
-          ...(isNgam
-            ? { thepChoNgam: 0 }
-            : {
-              profit: item.profit + (item.vol * 0.98),
-              win: item.win + 1,
-
-              vol: 0,
-              ...(item?.ngam && item?.isNgamDone ? { isNgamDone: false, thepChoNgam: 0 } : {}),
-            }),
+          profit: item.profit + (item.vol * 0.98),
+          win: item.win + 1,
+          vol: 0,
         });
       } else {
-        if (!isNgam) {
-          soDuTaiKhoan -= item.vol;
-          profitAll -= item.vol;
-        }
+        soDuTaiKhoan -= item.vol;
+        profitAll -= item.vol;
         if (chienthoi.bendep || chienthoi.benxau) {
           chienthoi.AnNumber = chienthoi.isNhandoi ? chienthoi.AnNumber - 2 : chienthoi.AnNumber - 1;
           chienthoi.solai -= item.vol;
@@ -475,19 +482,17 @@ async function ThucHienGiaoDich() {
             chienthoi.isNhandoi = true;
             chienthoi.soLanMuonAn = 1
           }
+
           await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
         }
 
         updateAray(item.id, {
           isTrading: false,
           huong: "null",
-          ...(isNgam
-            ? (item?.thepChoNgam >= item.ngam ? { isNgamDone: true } : {})
-            : {
-              vol: 0,
-              profit: item.profit - item.vol,
-              lost: item.lost + 1,
-            }),
+          vol: 0,
+          profit: item.profit - item.vol,
+          lost: item.lost + 1,
+          minAnNumber : chienthoi.AnNumber <= item.minAnNumber ? chienthoi.AnNumber : item.minAnNumber
         });
       }
     }
@@ -521,40 +526,35 @@ async function ThucHienGiaoDich() {
   if (tinHieuAI.huong !== "null" && (chienthoi.bendep || chienthoi.benxau)) {
     for (const item of arrayNew) {
       const huongDanhNew = chienthoi.bendep ? tinHieuAI.huong === T ? X : T : tinHieuAI.huong
-      const isNgam = item.ngam && !item.isNgamDone;
       const tinhVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
       const tinhVolNew = chienthoi.isNhandoi ? tinhVol * 2 : tinhVol;
 
-      // if (!isNgam) {
-      //   // =======================HandlClick=========================
-      //   // onlick 10 ..
-      //   const isTai = huongDanhNew === T;
+      // =======================HandlClick=========================
+      const isTai = huongDanhNew === T;
 
-      //   await UI_MouseClick(page,
-      //     isTai ? X_DatTai : X_DatXiu,
-      //     isTai ? Y_DatTai : Y_DatXiu, "👈");
-      //   await page.mouse.click(
-      //     isTai ? X_DatTai : X_DatXiu,
-      //     isTai ? Y_DatTai : Y_DatXiu);
+      await UI_MouseClick(page,
+        isTai ? X_DatTai : X_DatXiu,
+        isTai ? Y_DatTai : Y_DatXiu, "👈");
+      await page.mouse.click(
+        isTai ? X_DatTai : X_DatXiu,
+        isTai ? Y_DatTai : Y_DatXiu);
 
 
-      //   await clickTheoTinhVol(page, tinhVolNew, "🎯")
+      await clickTheoTinhVol(page, tinhVolNew, "🎯")
 
-      //   const delay = 500 + Math.floor(Math.random() * 1501); // 500 → 2000
-      //   await page.waitForTimeout(delay);
+      const delay = 500 + Math.floor(Math.random() * 1501); // 500 → 2000
+      await page.waitForTimeout(delay);
 
-      //   await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-      //   await page.mouse.click(X_Submit, Y_Submit);
-      // }
+      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      await page.mouse.click(X_Submit, Y_Submit);
+      // =======================End HandlClick=========================
+
+
 
       updateAray(item.id, {
         isTrading: true,
         huong: huongDanhNew,
-        ...(isNgam && { thepChoNgam: item.thepChoNgam + 1 }),
-        ...(!isNgam && {
-          vol: tinhVolNew,
-          // isFomo: tinHieuAINew.isPheDep
-        }),
+        vol: tinhVolNew,
       });
       await UI_Update_Table(page, LuutruLongmach);
       saveStateTXT();
