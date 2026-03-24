@@ -1,14 +1,14 @@
-soDuTaiKhoan=1665.154
-soDuLonNhat=1665.154
+soDuTaiKhoan=1842.0340000000012
+soDuLonNhat=1842.0340000000012
 phanTramGiaoDich=1
-profitAll=530
+profitAll=706.8799999999995
 nguongTienDat=3000
 soTienMuonRut=1000
 tongTienDaRut=0
 soLanChoDoi=7
 
-ArrayKQ=T,X,X,X,X,T,X,T,T,X,T,X,X,X,X,T,X,T,T,T,X,X,T,T,X,T,X,T,X,X,X,T,X,T,X,T,T,X,T,T,T,T,X,T,X,T,X
-ArrayKQ_XAU=A,B,B,B,B,B,A,A,A,A,A,B,A,A
+ArrayKQ=X,X,X,X,X,X,X,X,T,T,X,X,X,X,X,X,T,X,T
+ArrayKQ_XAU=A,A,A,A
 
 LuutruLongmach=
 [
@@ -16,7 +16,7 @@ LuutruLongmach=
     "id": 1,
     "isTrading": false,
     "huong": "null",
-    "profit": 0,
+    "profit": 280,
     "thepChoNgam": 0,
     "isNgamDone": false,
     "ngam": 0,
@@ -32,7 +32,7 @@ LuutruLongmach=
     "A2": 0,
     "A3": 0,
     "deal": 0,
-    "isStop": false,
+    "isStop": true,
     "type": "A",
     "isDaoNguoc": "null",
     "isFomo": true,
@@ -42,13 +42,13 @@ LuutruLongmach=
     "id": 2,
     "isTrading": false,
     "huong": "null",
-    "profit": 0,
+    "profit": 426.8800000000002,
     "thepChoNgam": 0,
     "isNgamDone": false,
     "ngam": 0,
     "vol": 0,
-    "win": 0,
-    "lost": 0,
+    "win": 23,
+    "lost": 14,
     "A": 0,
     "B": 0,
     "C": 0,
@@ -58,10 +58,10 @@ LuutruLongmach=
     "A2": 0,
     "A3": 0,
     "deal": 0,
-    "isStop": false,
+    "isStop": true,
     "type": "B",
     "isDaoNguoc": "null",
     "isFomo": false,
-    "minAnNumber": 0
+    "minAnNumber": -5
   }
 ]

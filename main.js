@@ -1,4 +1,4 @@
-const { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_Update_ArrayKQ2, UI_ArrayKQ, UI_ArrayKQ2, UI_Update_ArrayKQ, UI_ChienThoi, UI_Update_ChienThoi } = require("./src/Button_Common");
+const { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_Update_KetQua_XauDep_Array, UI_ArrayKQ, UI_ArrayKQ2, UI_Update_ArrayKQ, UI_ChienThoi, UI_Update_ChienThoi } = require("./src/Button_Common");
 const { UI_TieuDiem, UI_Update_Table, UI_Table_LuuTru, UI_MouseClick } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan, T, X, Dep,
@@ -397,14 +397,14 @@ async function ThucHienGiaoDich() {
       ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       muaGiaLap = "null"
 
-      await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
+      await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
       await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
 
     } else {
       ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
 
       muaGiaLap = "null"
-      await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
+      await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
       await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
 
     }
@@ -414,7 +414,7 @@ async function ThucHienGiaoDich() {
   }
 
   if (checkABTrongDoXanh(ArrayKQ_XAU, soLanChoDoi) !== "null" && !chienthoi.bendep && !chienthoi.benxau) {
-    if (checkABTrongDoXanh(ArrayKQ_XAU, soLanChoDoi + 2) === Xau) {
+    if (checkABTrongDoXanh(ArrayKQ_XAU, soLanChoDoi) === Xau) {
       chienthoi.bendep = true;
       chienthoi.filterType = Dep;
       await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
@@ -447,7 +447,7 @@ async function ThucHienGiaoDich() {
 
             ArrayKQ_XAU.length = 0;
 
-            const diff = Math.abs(countA - countB);
+            const diff = Math.abs(countA - countB) - 2;
             if (diff > 0) {
               const val = countA > countB ? Dep : Xau;
               for (let i = 0; i < diff; i++) {
@@ -461,6 +461,7 @@ async function ThucHienGiaoDich() {
             chienthoi.AnNumber = 0
             chienthoi.isNhandoi = false;
             chienthoi.soLanMuonAn = 2;
+            await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
           }
           await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
         }
@@ -492,7 +493,7 @@ async function ThucHienGiaoDich() {
           vol: 0,
           profit: item.profit - item.vol,
           lost: item.lost + 1,
-          minAnNumber : chienthoi.AnNumber <= item.minAnNumber ? chienthoi.AnNumber : item.minAnNumber
+          minAnNumber: chienthoi.AnNumber <= item.minAnNumber ? chienthoi.AnNumber : item.minAnNumber
         });
       }
     }
@@ -748,7 +749,7 @@ async function ShowTime70() {
 
 async function toggleCapture() {
   isRunning ? await handleStop() : await handleStart();
-  await UI_Update_ArrayKQ2(page, ArrayKQ_XAU);
+  await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
 }
 
 async function UI_DieuKhien(page) {
