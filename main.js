@@ -111,7 +111,7 @@ let page;
 let countdown = 70;
 let countdownInterval;
 
-const MAX_LENGTH = 300;
+const MAX_LENGTH = 1000;
 const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
@@ -446,8 +446,8 @@ async function ThucHienGiaoDich() {
             const countB = ArrayKQ_XAU.filter(v => v === Xau).length;
 
             ArrayKQ_XAU.length = 0;
-
-            const diff = Math.abs(countA - countB) - 2;
+            const NgamThem = chienthoi.isNhandoi ? 4 : 2;
+            const diff = Math.abs(countA - countB) - NgamThem;
             if (diff > 0) {
               const val = countA > countB ? Dep : Xau;
               for (let i = 0; i < diff; i++) {
