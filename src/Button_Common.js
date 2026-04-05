@@ -5,14 +5,14 @@ async function UI_Btn_Show_TieuDiem(page) {
     if (!document.getElementById("show-tieudiem")) {
       const btnShow = document.createElement("button");
       btnShow.id = "show-tieudiem";
-      btnShow.innerHTML = '👁️ Tắt vị trí';
+      btnShow.innerHTML = '👁️ Bật vị trí'; // ✅ sửa text default
       Object.assign(btnShow.style, {
         position: "fixed",
         bottom: "15px",
         right: "122px",
         zIndex: 9999,
         padding: "10px 15px",
-        backgroundColor: "gray",
+        backgroundColor: "#007bff", // ✅ màu khi đang tắt
         color: "#fff",
         border: "none",
         borderRadius: "5px",
@@ -20,6 +20,12 @@ async function UI_Btn_Show_TieuDiem(page) {
       });
       document.body.appendChild(btnShow);
     }
+
+    // ✅ THÊM: ẩn overlay ngay từ đầu
+    const overlays = document.querySelectorAll("[id^='tieudiem-']");
+    overlays.forEach(div => {
+      div.style.display = "none";
+    });
   });
 
   // Logic bật/tắt overlay chỉ dùng display
@@ -35,17 +41,18 @@ async function UI_Btn_Show_TieuDiem(page) {
   // Gắn sự kiện click và thay đổi text/màu lần đầu
   await page.evaluate(() => {
     const btn = document.getElementById("show-tieudiem");
-    let clicked = false; // trạng thái lần đầu
+    let clicked = false; // giữ nguyên
+
     btn.addEventListener("click", () => {
       window.toggleTieuDiem();
 
       if (!clicked) {
-        btn.innerHTML = '👁️ Bật vị trí';
-        btn.style.backgroundColor = "#007bff";
-        clicked = true;
-      } else {
         btn.innerHTML = '👁️ Tắt vị trí';
         btn.style.backgroundColor = "gray";
+        clicked = true;
+      } else {
+        btn.innerHTML = '👁️ Bật vị trí';
+        btn.style.backgroundColor = "#007bff";
         clicked = false;
       }
     });
@@ -61,7 +68,7 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
       box.id = "ui-so-du";
       Object.assign(box.style, {
         position: "fixed",
-        bottom: "100px",
+        bottom: "58px",
         right: "15px",
         zIndex: 10000,
 
@@ -121,7 +128,7 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
     `;
 
     /* ===== NHẤP NHÁY NHẸ ===== */
-    box.style.transform = "scale(1.12)";
+    box.style.transform = "scale(1.4)";
     box.style.transition = "transform 0.2s ease";
     setTimeout(() => {
       box.style.transform = "scale(1)";
@@ -288,8 +295,5 @@ async function UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi = 0
     `;
   }, { ct: chienthoi, array: ArrayKQ_XAU, soLanChoDoi });
 }
-
-
-
 
 module.exports = { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_ArrayKQ, UI_Update_ArrayKQ, UI_ArrayKQ2, UI_Update_KetQua_XauDep_Array, UI_ChienThoi, UI_Update_ChienThoi };

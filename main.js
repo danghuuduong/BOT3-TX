@@ -2,7 +2,7 @@ const { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_Update_KetQua_XauDep_Array, UI_Ar
 const { UI_TieuDiem, UI_Update_Table, UI_Table_LuuTru, UI_MouseClick } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan, T, X, Dep,
-  Xau, maxThep, getHuongForItem, TinHieuMuaBanNew, checkABTrongDoXanh
+  Xau, maxThep, checkABTrongDoXanh
 } = require('./src/util');
 
 const { handleGetTien } = require('./src/util2');
@@ -67,7 +67,9 @@ let Y_BtnTabRut = 327; //326
 let X_InpVi = 830; //488
 let Y_InpVi = 255; //326
 // 4. Nhập Địa chỉ Ví 
-let Diachivi = "TG7KWfmgdFDFgX91Q2MBPGYebkqLH5osKa"
+// let Diachivi = "TG7KWfmgdFDFgX91Q2MBPGYebkqLH5osKa" OKX
+let Diachivi = "TRoDmJWchuBpK8jBbPLWqhWAVNau63dsZx"
+
 
 // 5. Click vào INput Nhập Số tiền.
 let X_InpNhapSoTien = 830; //488
@@ -192,6 +194,123 @@ async function handleStop() {
   });
 }
 
+
+async function UI_Reset(page) {
+  await page.evaluate(() => {
+    if (document.getElementById("reset-btn")) return;
+
+    const wrap = document.createElement("div");
+    Object.assign(wrap.style, {
+      position: "fixed",
+      top: "10px",
+      left: "10px",
+      zIndex: 9999,
+      background: "#fff",
+      padding: "4px",
+      border: "1px solid #ccc",
+      borderRadius: "6px",
+      fontSize: "11px",
+      fontFamily: "monospace",
+      width: "130px",
+      lineHeight: "16px"
+    });
+
+    wrap.innerHTML = `
+      <div style="margin-bottom:2px">Hàng 1 ( Kết quả TX)</div>
+      <input id="inp-arraykq" style="width:110px;height:18px;margin-bottom:4px"/>
+
+      <div style="margin-bottom:2px">Hàng 2(no ❌)</div>
+      <input id="inp-arraykqxau" style="width:110px;height:18px;margin-bottom:4px"/>
+
+      <button id="reset-btn" style="
+        width:100%;
+        padding:3px;
+        background:#dc3545;
+        color:#fff;
+        border:none;
+        border-radius:4px;
+        cursor:pointer;
+        font-size:11px;
+      ">🔄 Reset</button>
+    `;
+
+    document.body.appendChild(wrap);
+  });
+
+  // expose function (Node side)
+  if (!page._resetExposed) {
+    await page.exposeFunction("resetAll", async ({ arrKQ, arrKQXau }) => {
+
+      if (arrKQ && arrKQ.trim() !== "") {
+        ArrayKQ.length = 0;
+        ArrayKQ.push(...arrKQ.split(",").map(s => s.trim()).filter(Boolean));
+      }
+
+      // luôn reset
+      ArrayKQ_XAU.length = 0;
+      if (arrKQXau && arrKQXau.trim() !== "") {
+        ArrayKQ_XAU.push(...arrKQXau.split(",").map(s => s.trim()).filter(Boolean));
+      }
+
+      chienthoi = {
+        bendep: false,
+        benxau: false,
+        filterType: "null",
+        AnNumber: 0,
+        soLanMuonAn: 2,
+        isNhandoi: false,
+        solai: 0,
+        hoanthanh: false,
+      };
+
+      const check = checkABTrongDoXanh(ArrayKQ_XAU, soLanChoDoi);
+
+      if (check !== "null" && !chienthoi.bendep && !chienthoi.benxau) {
+        if (check === Xau) {
+          chienthoi.bendep = true;
+          chienthoi.filterType = Dep;
+        }
+        if (check === Dep) {
+          chienthoi.benxau = true;
+          chienthoi.filterType = Xau;
+        }
+      }
+
+      await UI_Update_ArrayKQ(page, ArrayKQ);
+      await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
+      await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
+
+      saveStateTXT();
+    });
+
+    page._resetExposed = true;
+  }
+
+  // browser side: bind click + clear input cuối cùng
+  await page.evaluate(() => {
+    const btn = document.getElementById("reset-btn");
+
+    if (!btn.dataset.bound) {
+      btn.dataset.bound = "true";
+
+      btn.addEventListener("click", async () => {
+        const inpKQ = document.getElementById("inp-arraykq");
+        const inpKQXau = document.getElementById("inp-arraykqxau");
+
+        const arrKQ = inpKQ.value;
+        const arrKQXau = inpKQXau.value;
+
+        // ✅ đợi chạy xong toàn bộ logic backend
+        await window.resetAll({ arrKQ, arrKQXau });
+
+        // ✅ clear input SAU CÙNG (chuẩn)
+        inpKQ.value = "";
+        inpKQXau.value = "";
+      });
+    }
+  });
+}
+
 // ================== MAIN – CHƯƠNG TRÌNH CHÍNH ==================
 (async () => {
   const browser = await chromium.launch({ headless: false });
@@ -199,7 +318,7 @@ async function handleStop() {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://web.sunwin.ag/", {
+  await page.goto("https://web.sunwin.live/", {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
@@ -229,11 +348,6 @@ async function handleStop() {
       await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);
       saveStateTXT();
       await UI_Update_ChienThoi(page, chienthoi, ArrayKQ_XAU, soLanChoDoi);
-      // if (chienthoi.bendep || chienthoi.benxau) {
-      //   chienthoi.benxau = true;
-      //   chienthoi.filterType = Xau;
-      // }
-
 
       // ===== UPDATE UI =====
       await UI_Update_CaiDatVon(
@@ -333,9 +447,10 @@ async function handleStop() {
   await UI_ArrayKQ(page);
   await UI_ArrayKQ2(page);
 
+  await UI_Reset(page);
 
-
-
+  await UI_Update_ArrayKQ(page, ArrayKQ);
+  await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
 })();
 
 // ================================================== HANDLE LOGIC ===========================================
@@ -386,6 +501,7 @@ function updateAray(id, updates) {
 }
 
 async function ThucHienGiaoDich() {
+
   const tinHieuAI = TinHieuMuaBan(ArrayKQ);
   const resultNew = ArrayKQ.at(-1); // kết quả cuối cùng trong array
 
@@ -515,7 +631,6 @@ async function ThucHienGiaoDich() {
   saveStateTXT();
   // ========================== ĐẶT LỆNH ==========================
 
-  // const tinHieuAINew = TinHieuMuaBanNew(ArrayKQ_XAU);
 
   const arrayNew = LuutruLongmach.filter(i => i.type === chienthoi.filterType && !i.isStop);
 
@@ -897,8 +1012,8 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent, soLanChoDoi) {
       Object.assign(container.style, {
         position: "fixed",
         top: "33px",
-        right: "10px",
-        width: "210px",
+        right: "5px",
+        width: "180px",
         backgroundColor: "#fff",
         border: "1px solid #000",
         borderRadius: "8px",
@@ -992,7 +1107,7 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent, soLanChoDoi) {
       Object.assign(toggleBtn.style, {
         position: "fixed",
         top: "10px",
-        right: "10px",
+        right: "5px",
         padding: "3px 7px",
         background: "#fff",
         border: "1px solid #999",
