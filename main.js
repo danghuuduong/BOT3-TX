@@ -562,7 +562,7 @@ async function ThucHienGiaoDich() {
             const countB = ArrayKQ_XAU.filter(v => v === Xau).length;
 
             ArrayKQ_XAU.length = 0;
-            const NgamThem = chienthoi.isNhandoi ? 4 : 2;
+            const NgamThem = chienthoi.isNhandoi ? 5 : 3;
             const diff = Math.abs(countA - countB) - NgamThem;
             if (diff > 0) {
               const val = countA > countB ? Dep : Xau;
