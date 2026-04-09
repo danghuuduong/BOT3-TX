@@ -1,14 +1,14 @@
-soDuTaiKhoan=4355.2400000000025
-soDuLonNhat=4355.2400000000025
+soDuTaiKhoan=4596
+soDuLonNhat=4596
 phanTramGiaoDich=2.22
-profitAll=17447
+profitAll=17535.32
 nguongTienDat=7380
 soTienMuonRut=2780
 tongTienDaRut=13940
 soLanChoDoi=8
 
-ArrayKQ=T,X,T,X,X,X,T,X,X,T,T,X,T,X,T
-ArrayKQ_XAU=A
+ArrayKQ=X,T,T,X,T,X,T,T,X,T,X,X,X,T,T,T,T,T,X,X,T,T,T,X,T,T,X,T,X,X,T,X,X,T,T,X,T,X,T,T,T,X,T,X,T,T,T,T,T,T,T,T,X,T,X,T,X,X,X,X,T,X,T,T,T,T,T,T,X,T,T,T,T,X,X,X,T,T,X,T,X,X,T,T,T,T,T,T,T,X,X,X,X,T,T,T,X,T,T,T,T,T,T,T,T,X,X,X,X,X,T,T,T,X,X,T,T,T,T,T,T,T,T,T,T,T,X,T,T,X,T,X,T,T,X,T,X,X,T,T,X,T,X,X,T,T,X,X,T,X,T,X,T,X,X,T,X,X,X,X,X,T,T,X,T,T,T,T,X,X,T,T,T,T,T,T,T,X,X,X,X,X,T,X,X,X,X,X,T,X,X,X,T,X,T,X,T,X,T,T,T,T,T,X,X,X,X,X,X,X,T,X,X,T,T,X,X,X,T,T,X,X,T,T,T,T,T,X,X,T,T,X,T,T,T,X,T,T,X,T,X,T,X,X,X,X,T,X,X,T,T,X,T,T,T,T,T,X,X,T,X,X,X,T,X,X,T,T,X,X,T,X,T,T,T,T,T,X,T,X,X,T,T,T,T,X,T,T,X,X,X,X,X,T,T,X,X,T,X,X,X,T,T,X,T,T,T,T,X,X,X,X,T,X,T,X,X,T,X,X,X,X,X,T,T,X,X,T,T,X,T,X,X,X,X,X,T,T,X,T,T,T,X,T,X,X,X,T,T,T,T,X,T,X,T,X,X,T,X,T,T,X,T,T,T,T,T,T,X,X,T,T,T,T,T,X,X,X,T,T,T,T,X,T,T,X,X,T,T,T,X,X,X,X,X,T,X,X,T,T,X,X,T,T,T,X,T,X,T,X,X,T,X,T,T,T,T,T,X,X,X,T,T,X,T,T,T,X,X,X,X,X,X,T,X,X,X,T,X,T,T,X,X,X,T,X,T,X,X,T,T,X,T,T,X,T,T,X,T,T,T,T,T,X,X,T,X,T,X,T,T,T,X,X,X,T,X,X,T,T,T,X,T,X,T,X,T,X,X,T,T,X,T,T,T,X,X,T,X,T,T,X,X,X,T,T,T,X,T,X,X,T,X,X,T,X,T,X,T,X,X,X,T,X,T,T,X,T,X,T,T,T,X,T,X,T,X,X,T,T,T,T,X,T,T,X,T,X,X,X,T,X,X,T,X,T,T,T,X,T,X,X,X,X,X,T,X,T,T,T,X,T,T,X,X,T,T,T,X,X,X,T,X,T,T,X,T,T,X,X,T
+ArrayKQ_XAU=B,B,B,B,B,B,A,A,A,A,A,A,A,B,A,B,B,B,B,B,A,B,A,B,A,B,A,A,B,A,A,A,B,B,A,B,A,A,A,B,B,B,B,B,A,A,B,A,A,A,A,B,A,B,A,A,B,B,B,B,B,B,B,A,A,B,A,B,A
 
 LuutruLongmach=
 [
@@ -16,13 +16,13 @@ LuutruLongmach=
     "id": 1,
     "isTrading": false,
     "huong": "null",
-    "profit": 10202.130000000003,
+    "profit": 10290.450000000003,
     "thepChoNgam": 0,
     "isNgamDone": false,
     "ngam": 0,
     "vol": 0,
-    "win": 307,
-    "lost": 248,
+    "win": 309,
+    "lost": 251,
     "A": 0,
     "B": 0,
     "C": 0,

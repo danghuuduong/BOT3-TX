@@ -136,7 +136,7 @@ let soDuLonNhat = 1000;
 let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
 let phanTramGiaoDich = 1;
-let soLanChoDoi = 7; // mặc định giống logic cũ
+let soLanChoDoi = 8; // mặc định giống logic cũ
 let profitAll = 0;
 
 
@@ -202,11 +202,11 @@ async function UI_Reset(page) {
     const wrap = document.createElement("div");
     Object.assign(wrap.style, {
       position: "fixed",
-      top: "10px",
+      top: "5px",
       left: "10px",
       zIndex: 9999,
       background: "#fff",
-      padding: "4px",
+      padding: "2px",
       border: "1px solid #ccc",
       borderRadius: "6px",
       fontSize: "11px",
@@ -216,15 +216,15 @@ async function UI_Reset(page) {
     });
 
     wrap.innerHTML = `
-      <div style="margin-bottom:2px">Hàng 1 ( Kết quả TX)</div>
-      <input id="inp-arraykq" style="width:110px;height:18px;margin-bottom:4px"/>
+      <div style="margin-bottom:1px">Hàng 1 ( Kết quả TX)</div>
+      <input id="inp-arraykq" style="width:100px;height:18px;margin-bottom:2px"/>
 
-      <div style="margin-bottom:2px">Hàng 2(no ❌)</div>
-      <input id="inp-arraykqxau" style="width:110px;height:18px;margin-bottom:4px"/>
+      <div style="margin-bottom:1px">Hàng 2(no ❌)</div>
+      <input id="inp-arraykqxau" style="width:110px;height:18px;margin-bottom:2px"/>
 
       <button id="reset-btn" style="
         width:100%;
-        padding:3px;
+        padding:2px;
         background:#dc3545;
         color:#fff;
         border:none;
