@@ -763,6 +763,29 @@ async function ThucHienGiaoDich() {
       phanTramGiaoDich,
       soLanChoDoi
     );
+
+    // Ghi nhận thu nhập tự động sau khi rút tiền thành công
+    try {
+      if (typeof fetch !== "undefined") {
+        await fetch("http://localhost:6969/in-come", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            type: "Sun",
+            transactionType: "INCOME",
+            amount: soTienMuonRut,
+            date: new Date().toISOString()
+          })
+        });
+        console.log("✅ Đã ghi nhận thu nhập từ lệnh rút tiền:", soTienMuonRut);
+      } else {
+        console.warn("⚠️ Môi trường không hỗ trợ fetch, vui lòng nâng cấp Node.js hoặc cấu hình axios.");
+      }
+    } catch (err) {
+      console.error("❌ Lỗi khi gửi dữ liệu thu nhập:", err);
+    }
   }
 }
 
