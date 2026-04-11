@@ -32,16 +32,25 @@ async function UI_Table_LuuTru(page) {
     if (!document.getElementById("longmach-table-container")) {
       const container = document.createElement("div");
       container.id = "longmach-table-container";
-      Object.assign(container.style, {
+      // Wrapper
+      const wrapper = document.createElement("div");
+      wrapper.id = "ui-wrapper-longmach";
+      Object.assign(wrapper.style, {
         position: "fixed",
         bottom: "10px",
         left: "50%",
-        transform: "translateX(-70%)",
+        transform: "translateX(-50%)",
+        zIndex: 9999,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      });
+
+      Object.assign(container.style, {
         maxHeight: "200px",
         maxWidth: "95vw",
         overflowY: "auto",
         overflowX: "auto",
-        zIndex: 9999,
         background: "#fff",
       });
 
@@ -50,10 +59,6 @@ async function UI_Table_LuuTru(page) {
       toggleBtn.id = "longmach-toggle";
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
-        position: "fixed",          // luôn nằm ngoài table
-        bottom: `75px`, // 10px trên table
-        left: "50%",
-        transform: "translateX(-50%)",
         fontSize: "14px",
         padding: "2px 6px",
         cursor: "pointer",
@@ -62,6 +67,7 @@ async function UI_Table_LuuTru(page) {
         borderRadius: "3px",
         userSelect: "none",
         zIndex: 10000,
+        marginBottom: "2px",
       });
 
       let isHidden = false;
@@ -72,19 +78,16 @@ async function UI_Table_LuuTru(page) {
         if (isHidden) {
           if (box) box.style.display = "none";
           container.style.display = "none";
-          toggleBtn.style.bottom = "10px";  // xuống dưới màn hình
-          toggleBtn.style.top = "auto";     // reset top
           toggleBtn.innerText = "▲";
         } else {
           container.style.display = "block";
           if (box) box.style.display = "block";
-          // toggleBtn.style.top = `${container.getBoundingClientRect().top - 10}px`;
-          toggleBtn.style.bottom = `75px`;
           toggleBtn.innerText = "▼";
         }
       };
 
-      document.body.appendChild(toggleBtn);
+      wrapper.appendChild(toggleBtn);
+      wrapper.appendChild(container);
 
       // ===== TABLE =====
       const table = document.createElement("table");
@@ -98,32 +101,16 @@ async function UI_Table_LuuTru(page) {
       });
 
       const headers = [
-        "ID", "Type", "Bên", "Vô",
-        "Số Tiền", "Win", "Lost", "Lãi",
-        "MIN",
-        // "1", "2", "3", "4", "5",
-
-        // // ✅ BỔ SUNG
-        // "A1", "A2", "A3", "A4", "A5",
-        // "6", "7", "8",
-
-        // "Cháy",
-        "STOP"
+        "ID", "Bên", "Lực", "Ăn", "x2",
+        "Giao dịch", "Vol", "W/L", "Lãi",
+        "MIN", "STOP"
       ];
 
 
       const widths = [
-        "30px", "70px", "50px", "60px",
-        "50px", "45px", "45px", "65px",
-        "50px",
-        // "35px", "35px", "35px", "35px", "35px",
-
-        // // ✅ BỔ SUNG
-        // "35px", "35px", "35px", "35px", "35px",
-        // "35px", "35px", "35px",
-
-        // "35px",
-        "40px",
+        "20px", "40px", "65px", "45px", "25px",
+        "60px", "45px", "80px", "60px",
+        "30px", "30px"
       ];
 
 
@@ -152,53 +139,63 @@ async function UI_Table_LuuTru(page) {
       table.appendChild(tbody);
 
       container.appendChild(table);
-      document.body.appendChild(container);
+      document.body.appendChild(wrapper);
     }
   });
 }
 
 
 
-async function UI_Update_Table(page, data) {
-  await page.evaluate((rows) => {
+async function UI_Update_Table(page, data, ArrayKQ_XAU) {
+  await page.evaluate(({ rows, arrayKQ }) => {
     const tbody = document.getElementById("longmach-body");
     if (!tbody) return;
 
     tbody.innerHTML = "";
 
+    const countA = arrayKQ?.filter(v => v === "A").length || 0;
+    const countB = arrayKQ?.filter(v => v === "B").length || 0;
+
     rows.forEach(item => {
       const tr = document.createElement("tr");
-      const icon = item.isNgamDone ? '✅' : '';
+
+      let countVal = 0;
+      if (item.type === "A") {
+        countVal = countB - countA > 0 ? countB - countA : 0;
+      } else if (item.type === "B") {
+        countVal = countA - countB > 0 ? countA - countB : 0;
+      }
+
+      const lucStrInput = `<span style="display:inline-block; min-width:12px; text-align:right">${countVal}</span>/<input type="number" data-id="${item.id}" value="${item.soLanChoDoi}" style="width:25px; height:18px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;"> ${item.isReady ? '✅' : ''}`;
 
       // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
         item.id,
-        item.type,
         item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Xấu🔥",
-        item.isTrading ? item.huong === "T" ? "⚫" : "⚪" : "Chưa",
-        item.vol.toFixed(2),
-        item.win,
-        item.lost,
+        "LUC_COLUMN",
+        `${item.AnNumber}/${item.soLanMuonAn}${item.hoanthanh ? '😍' : ''}`,
+        item.isNhandoi ? "✅" : " ",
+        item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
+        item.vol,
+        `${item.win}/${item.lost}`,
         item.profit.toFixed(2),
         item.minAnNumber
-
-        // item.A, item.B, item.C, item.D, item.E,
-
-
-        // // ✅ BỔ SUNG
-        // item.A1,
-        // item.A2,
-        // item.A3,
-        // item.A4,
-        // item.A5,
-
-        // item.deal ? `${item.deal} 🐤` : "-",
       ];
 
 
       cols.forEach(v => {
         const td = document.createElement("td");
-        td.innerText = v;
+        if (v === "LUC_COLUMN") {
+          td.innerHTML = lucStrInput;
+          const inp = td.querySelector("input");
+          if (inp) {
+            inp.addEventListener("change", (e) => {
+              window.postMessage({ type: "UPDATE_SOLAN", stopId: item.id, value: e.target.value }, "*");
+            });
+          }
+        } else {
+          td.innerText = v;
+        }
         Object.assign(td.style, {
           border: "1px solid #000",  // màu đen
           padding: "2px 4px",
@@ -232,7 +229,7 @@ async function UI_Update_Table(page, data) {
 
       tbody.appendChild(tr);
     });
-  }, data);
+  }, { rows: data, arrayKQ: ArrayKQ_XAU });
 }
 
 

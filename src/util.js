@@ -537,16 +537,16 @@ async function updateButton(page, text, color) {
 }
 
 // ================= COLOR =================
-function handleGetColor_TX(r, g, b) {
-  const avg = (r + g + b) / (3 * 255);
-  if (avg > 0.85) return "white";
-  if (avg < 0.2) return "black";
-  return "null";
-}
-
 // function handleGetColor_TX(r, g, b) {
-//   return Math.random() < 0.5 ? "white" : "black";
+//   const avg = (r + g + b) / (3 * 255);
+//   if (avg > 0.85) return "white";
+//   if (avg < 0.2) return "black";
+//   return "null";
 // }
+
+function handleGetColor_TX(r, g, b) {
+  return Math.random() < 0.5 ? "white" : "black";
+}
 
 function getHuongForItem(tinHieuAINew, huongGoc) {
   if (huongGoc == "null") return "null"
@@ -560,8 +560,8 @@ function checkABTrongDoXanh(arr, number) {
   const countA = arr.filter(v => v === Dep).length || 0;
   const countB = arr.filter(v => v === Xau).length || 0;
 
-  if (countB - countA >= number) return Xau;
-  if (countA - countB >= number) return Dep;
+  if (countB - countA >= number) return Dep;
+  if (countA - countB >= number) return Xau;
 
   return "null";
 }
