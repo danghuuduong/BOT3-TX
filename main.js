@@ -113,10 +113,6 @@ const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
 
-
-
-
-
 let soDuTaiKhoan = 1000;
 let soDuLonNhat = 1000;
 let nguongTienDat = 6000;
@@ -128,24 +124,102 @@ let profitAll = 0;
 const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isDaoNguoc: "null", isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 2
+    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isDaoNguoc: "null", isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 2
+    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7
   },
   {
     id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isDaoNguoc: "null", isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 3
+    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 9
   },
   {
     id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isDaoNguoc: "null", isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 4
-  }
+    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 9
+  },
+  {
+    id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 11
+  },
+  {
+    id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 11
+  },
+
+  {
+    id: 7, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13
+  },
+  {
+    id: 8, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13
+  },
+
+  {
+    id: 9, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 15
+  },
+  {
+    id: 10, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 15
+  },
+
+  {
+    id: 11, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 17
+  },
+  {
+    id: 12, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 17
+  },
+
+  {
+    id: 13, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 19
+  },
+  {
+    id: 14, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 19
+  },
+
+  {
+    id: 15, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 21
+  },
+  {
+    id: 16, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 21
+  },
+
+  {
+    id: 17, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23
+  },
+  {
+    id: 18, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23
+  },
+
+
 ];
 
 loadStateTXT();
@@ -268,6 +342,8 @@ async function UI_Reset(page) {
 
       await UI_Update_ArrayKQ(page, ArrayKQ);
       await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
+      await UI_Update_Table(page, LuutruLongmach, ArrayKQ_XAU);
+
 
       saveStateTXT();
     });
@@ -340,6 +416,8 @@ async function UI_Reset(page) {
         soDuLonNhat,
         phanTramGiaoDich
       );
+      await UI_Update_Table(page, LuutruLongmach, ArrayKQ_XAU);
+
     }
   );
 
@@ -634,7 +712,7 @@ async function ThucHienGiaoDich() {
 
       await clickTheoTinhVol(page, tinhVolNew, "🎯")
 
-      const delay = 500 + Math.floor(Math.random() * 1501); // 500 → 2000
+      const delay = 200 + Math.floor(Math.random() * 500); // 500 → 2000
       await page.waitForTimeout(delay);
 
       await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
@@ -680,7 +758,7 @@ async function ThucHienGiaoDich() {
 
 
     // 2. Click tab Rút
-    const delay = 2000 + Math.floor(Math.random() * 2001);
+    const delay = 1000 + Math.floor(Math.random() * 1500);
     await page.waitForTimeout(delay);
     await UI_MouseClick(page, X_BtnTabRut, Y_BtnTabRut, "🎯");
     await page.mouse.click(X_BtnTabRut, Y_BtnTabRut);
@@ -704,7 +782,7 @@ async function ThucHienGiaoDich() {
     await page.keyboard.type(`${soTienMuonRut}000`, { delay: 40 });
 
     // 7. Submit
-    const delay2 = 1000 + Math.floor(Math.random() * 2001);
+    const delay2 = 1000 + Math.floor(Math.random() * 1500);
     await page.waitForTimeout(delay2);
     await UI_MouseClick(page, X_BtnSumitRutTien, Y_BtnSumitRutTien, "✅");
     await page.mouse.click(X_BtnSumitRutTien, Y_BtnSumitRutTien);
@@ -993,7 +1071,7 @@ async function clickN(page, x, y, n, icon = "🖱️") {
     await page.mouse.move(x, y);
     await page.mouse.click(x, y);
 
-    const delay = 30 + Math.floor(Math.random() * 121);
+    const delay = 15 + Math.floor(Math.random() * 80);
     await page.waitForTimeout(delay);
   }
 }
