@@ -749,7 +749,7 @@ async function ThucHienGiaoDich() {
           body: JSON.stringify({
             type: "Sun",
             transactionType: "INCOME",
-            amount: soTienMuonRut,
+            amount: soTienMuonRut / 27,
             date: new Date().toISOString()
           })
         });
