@@ -27,7 +27,7 @@ async function UI_TieuDiem(page, X, Y, width, height, id, color = "red") {
   }, { X, Y, width, height, id, color });
 }
 
-async function UI_Table_LuuTru(page) {
+async function TableChinh_Create(page) {
   await page.evaluate(() => {
     if (!document.getElementById("longmach-table-container")) {
       const container = document.createElement("div");
@@ -144,9 +144,7 @@ async function UI_Table_LuuTru(page) {
   });
 }
 
-
-
-async function UI_Update_Table(page, data, ArrayKQ_XAU) {
+async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
   await page.evaluate(({ rows, arrayKQ }) => {
     const tbody = document.getElementById("longmach-body");
     if (!tbody) return;
@@ -158,15 +156,7 @@ async function UI_Update_Table(page, data, ArrayKQ_XAU) {
 
     rows.forEach(item => {
       const tr = document.createElement("tr");
-
-      let countVal = 0;
-      if (item.type === "A") {
-        countVal = countB - countA > 0 ? countB - countA : 0;
-      } else if (item.type === "B") {
-        countVal = countA - countB > 0 ? countA - countB : 0;
-      }
-
-      const lucStrInput = `<span style="display:inline-block; min-width:12px; text-align:right">${countVal}</span>/<input type="number" data-id="${item.id}" value="${item.soLanChoDoi}" style="width:25px; height:18px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;"> ${item.isReady ? '✅' : ''}`;
+      const lucStrInput = `<span style="display:inline-block; min-width:12px; text-align:right">${item.tiso}</span>/<input type="number" data-id="${item.id}" value="${item.soLanChoDoi}" style="width:25px; height:18px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;"> ${item.isReady ? '✅' : ''}`;
 
       // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
@@ -232,7 +222,6 @@ async function UI_Update_Table(page, data, ArrayKQ_XAU) {
   }, { rows: data, arrayKQ: ArrayKQ_XAU });
 }
 
-
 async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 2000) {
   await page.evaluate(({ x, y, size, icon, id, timeoutMs }) => {
     // xóa cũ nếu còn
@@ -279,4 +268,4 @@ async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeo
   }, { x, y, size, icon, id, timeoutMs });
 }
 
-module.exports = { UI_MouseClick, UI_Update_Table, UI_Table_LuuTru, UI_TieuDiem };
+module.exports = { UI_MouseClick, TableChinh_Update_UI, TableChinh_Create, UI_TieuDiem };

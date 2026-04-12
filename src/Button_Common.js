@@ -138,7 +138,7 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
 }
 
 
-async function UI_ArrayKQ(page) {
+async function KetquaTXList_Create(page) {
   await page.evaluate(() => {
     if (document.getElementById("ui-array-kq")) return;
 
@@ -163,8 +163,7 @@ async function UI_ArrayKQ(page) {
   });
 }
 
-
-async function UI_Update_ArrayKQ(page, ArrayKQ) {
+async function KetquaTXList_Update_UI(page, ArrayKQ) {
   await page.evaluate((ArrayKQ) => {
     const box = document.getElementById("ui-array-kq");
     if (!box) return;
@@ -189,7 +188,7 @@ async function UI_Update_ArrayKQ(page, ArrayKQ) {
   }, ArrayKQ);
 }
 
-async function UI_ArrayKQ2(page) {
+async function LongMachList_create(page) {
   await page.evaluate(() => {
     if (document.getElementById("ui-array-kq2")) return;
 
@@ -214,7 +213,7 @@ async function UI_ArrayKQ2(page) {
   });
 }
 
-async function UI_Update_KetQua_XauDep_Array(page, ArrayKQ) {
+async function LongMachList_Update_UI(page, ArrayKQ) {
   await page.evaluate((ArrayKQ) => {
     const box = document.getElementById("ui-array-kq2");
     if (!box) return;
@@ -238,4 +237,4 @@ async function UI_Update_KetQua_XauDep_Array(page, ArrayKQ) {
     });
   }, ArrayKQ);
 }
-module.exports = { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_ArrayKQ, UI_Update_ArrayKQ, UI_ArrayKQ2, UI_Update_KetQua_XauDep_Array, };
+module.exports = { UI_Btn_Show_TieuDiem, UI_Show_SoDu, KetquaTXList_Create, KetquaTXList_Update_UI, LongMachList_create, LongMachList_Update_UI, };

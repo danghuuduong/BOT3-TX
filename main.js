@@ -1,5 +1,5 @@
-const { UI_Btn_Show_TieuDiem, UI_Show_SoDu, UI_Update_KetQua_XauDep_Array, UI_ArrayKQ, UI_ArrayKQ2, UI_Update_ArrayKQ } = require("./src/Button_Common");
-const { UI_TieuDiem, UI_Update_Table, UI_Table_LuuTru, UI_MouseClick } = require("./src/UI_tieudiem");
+const { UI_Btn_Show_TieuDiem, UI_Show_SoDu, LongMachList_Update_UI, KetquaTXList_Create, LongMachList_create, KetquaTXList_Update_UI } = require("./src/Button_Common");
+const { UI_TieuDiem, TableChinh_Update_UI, TableChinh_Create, UI_MouseClick } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan, T, X, Dep,
   Xau, maxThep, checkABTrongDoXanh
@@ -20,8 +20,10 @@ const STATE_FILE = path.join(__dirname, "state.txt");
 
 
 // Đây chỉ là nơi xác định tiêu điểm thôi k dùng lmj cả
-let startX = 708;
-let startY = 519;
+// let startX = 708;
+let startX = 455
+// let startY = 519;
+let startY = 326;
 
 // 1. ______________________TÌM KẾT QUẢ Chính__________________
 let X_Ketqua = startX + 33; //488
@@ -83,8 +85,10 @@ let X_BtnCLose = 1040; //488
 let Y_BtnCLose = 145; //326
 
 // 9. Click lại Menu kết quả TX   .
-let X_MenuTX = 545; //488
-let Y_MenuTX = 400; //326
+// let X_MenuTX = 545; //488 chỗ mmowis , chỗ mặc định của game
+// let Y_MenuTX = 400; //326
+let X_MenuTX = 288; //488
+let Y_MenuTX = 200; //326
 
 let tongTienDaRut = 0;
 
@@ -125,101 +129,88 @@ const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7, tiso: 0
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7, tiso: 0
   },
   {
     id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 9
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 10, tiso: 0
   },
   {
     id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 9
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 10, tiso: 0
   },
   {
     id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 11
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
   },
   {
     id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 11
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
   },
 
   {
     id: 7, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 16, tiso: 0
   },
   {
     id: 8, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 16, tiso: 0
   },
 
   {
     id: 9, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 15
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 19, tiso: 0
   },
   {
     id: 10, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 15
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 19, tiso: 0
   },
 
   {
     id: 11, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 17
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 22, tiso: 0
   },
   {
     id: 12, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 17
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 22, tiso: 0
   },
 
   {
     id: 13, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 19
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 25, tiso: 0
   },
   {
     id: 14, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 19
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 25, tiso: 0
   },
 
   {
     id: 15, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 21
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
   },
   {
     id: 16, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 21
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
   },
-
-  {
-    id: 17, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23
-  },
-  {
-    id: 18, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23
-  },
-
-
 ];
 
 loadStateTXT();
@@ -322,27 +313,27 @@ async function UI_Reset(page) {
         ArrayKQ_XAU.push(...arrKQXau.split(",").map(s => s.trim()).filter(Boolean));
       }
 
+      const countA = ArrayKQ_XAU.filter(v => v === Dep).length;
+      const countB = ArrayKQ_XAU.filter(v => v === Xau).length;
+
       LuutruLongmach.forEach(item => {
         item.isReady = false;
         item.AnNumber = 0;
-        item.soLanMuonAn = 2;
+        item.soLanMuonAn = item.id === 1 || item.id === 2 ? 2 : 1;
         item.isNhandoi = false;
         item.hoanthanh = false;
+        item.tiso = item.type === Dep ? (countB - countA) : (countA - countB);
       });
 
       for (const item of LuutruLongmach) {
-        if (!item.isReady) {
-          const checkStatus = checkABTrongDoXanh(ArrayKQ_XAU, item.soLanChoDoi);
-          if (checkStatus !== "null") {
-            if (item.type === Dep && checkStatus === Dep) item.isReady = true;
-            if (item.type === Xau && checkStatus === Xau) item.isReady = true;
-          }
+        if (!item.isReady && item.tiso >= item.soLanChoDoi) {
+          item.isReady = true;
         }
       }
 
-      await UI_Update_ArrayKQ(page, ArrayKQ);
-      await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
-      await UI_Update_Table(page, LuutruLongmach, ArrayKQ_XAU);
+      await KetquaTXList_Update_UI(page, ArrayKQ);
+      await LongMachList_Update_UI(page, ArrayKQ_XAU);
+      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
 
 
       saveStateTXT();
@@ -416,7 +407,7 @@ async function UI_Reset(page) {
         soDuLonNhat,
         phanTramGiaoDich
       );
-      await UI_Update_Table(page, LuutruLongmach, ArrayKQ_XAU);
+      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
 
     }
   );
@@ -426,15 +417,15 @@ async function UI_Reset(page) {
     if (type === "STOP_CLICK") {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
-      updateAray(stopId, { isStop: !item.isStop });
-      await UI_Update_Table(page, LuutruLongmach, ArrayKQ_XAU);
+      handleUpdate_LongMachList(stopId, { isStop: !item.isStop });
+      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
     }
     if (type === "UPDATE_SOLAN") {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
-      updateAray(stopId, { soLanChoDoi: Number(value) });
+      handleUpdate_LongMachList(stopId, { soLanChoDoi: Number(value) });
       saveStateTXT();
-      await UI_Update_Table(page, LuutruLongmach, ArrayKQ_XAU);
+      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
     }
   });
 
@@ -470,8 +461,8 @@ async function UI_Reset(page) {
   await UI_DieuKhien(page);//điều khiển 
   await UI_Start(page);//Bắt đầu
 
-  await UI_Table_LuuTru(page);//Bắt đầu
-  await UI_Update_Table(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
+  await TableChinh_Create(page);//Bắt đầu
+  await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
   await UI_Show_SoDu(page, soDuTaiKhoan, profitAll)
   await UI_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
 
@@ -511,13 +502,13 @@ async function UI_Reset(page) {
   // GỌI SAU page.goto
   await injectMouseTracker(page);
 
-  await UI_ArrayKQ(page);
-  await UI_ArrayKQ2(page);
+  await KetquaTXList_Create(page);
+  await LongMachList_create(page);
 
   await UI_Reset(page);
 
-  await UI_Update_ArrayKQ(page, ArrayKQ);
-  await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
+  await KetquaTXList_Update_UI(page, ArrayKQ);
+  await LongMachList_Update_UI(page, ArrayKQ_XAU);
 })();
 
 // ================================================== HANDLE LOGIC ===========================================
@@ -551,7 +542,7 @@ async function CheckColor_X_Y() {
       if (ketqua !== "null") {
         ArrayKQ.push(ketqua === "black" ? T : X);
         if (ArrayKQ.length > MAX_LENGTH) { ArrayKQ.shift() }
-        await UI_Update_ArrayKQ(page, ArrayKQ);
+        await KetquaTXList_Update_UI(page, ArrayKQ);
         ThucHienGiaoDich();
       }
     }
@@ -561,7 +552,7 @@ async function CheckColor_X_Y() {
   }
 }
 
-function updateAray(id, updates) {
+function handleUpdate_LongMachList(id, updates) {
   const item = LuutruLongmach.find(i => i.id === id);
   if (!item) return;
   Object.assign(item, updates);
@@ -578,15 +569,33 @@ async function ThucHienGiaoDich() {
     const isWin = resultNew === muaGiaLap
     if (isWin) {
       ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
-      muaGiaLap = "null"
+      LuutruLongmach.forEach(item => {
+        if (item.type === Dep) item.tiso += 1;
+        if (item.type === Xau) item.tiso -= 1;
+      });
 
-      await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
+      LuutruLongmach.forEach(item => {
+        if (item.tiso >= item.soLanChoDoi) item.isReady = true;
+      });
+
+      muaGiaLap = "null"
+      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
+      await LongMachList_Update_UI(page, ArrayKQ_XAU);
 
     } else {
       ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
+      LuutruLongmach.forEach(item => {
+        if (item.type === Dep) item.tiso -= 1;
+        if (item.type === Xau) item.tiso += 1;
+      });
+
+      LuutruLongmach.forEach(item => {
+        if (item.tiso >= item.soLanChoDoi) item.isReady = true;
+      });
 
       muaGiaLap = "null"
-      await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
+      await LongMachList_Update_UI(page, ArrayKQ_XAU);
+      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
 
     }
   }
@@ -595,15 +604,12 @@ async function ThucHienGiaoDich() {
   }
 
   for (const item of LuutruLongmach) {
-    if (!item.isReady) {
-      const checkStatus = checkABTrongDoXanh(ArrayKQ_XAU, item.soLanChoDoi);
-      if (checkStatus !== "null") {
-        if (item.type === Dep && checkStatus === Dep) item.isReady = true;
-        if (item.type === Xau && checkStatus === Xau) item.isReady = true;
-      }
+    if (!item.isReady && item.tiso >= item.soLanChoDoi) {
+      item.isReady = true;
     }
   }
-
+  await LongMachList_Update_UI(page, ArrayKQ_XAU);
+  await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
 
   // ========================== TP / SL ==========================
   for (const item of LuutruLongmach) {
@@ -613,15 +619,16 @@ async function ThucHienGiaoDich() {
         soDuTaiKhoan += (item.vol * 0.98);
         profitAll += (item.vol * 0.98);
 
-        if (item.isReady) {
-          item.AnNumber = item.isNhandoi ? item.AnNumber + 2 : item.AnNumber + 1;
+        item.AnNumber = item.isNhandoi ? item.AnNumber + 2 : item.AnNumber + 1;
+        if (item.AnNumber >= item.soLanMuonAn) {
+          if (item.id === 1 || item.id === 2) {
 
-          if (item.AnNumber >= item.soLanMuonAn) {
             const countA = ArrayKQ_XAU.filter(v => v === Dep).length;
             const countB = ArrayKQ_XAU.filter(v => v === Xau).length;
 
             ArrayKQ_XAU.length = 0;
             const NgamThem = item.isNhandoi ? 5 : 3;
+
             const diff = Math.abs(countA - countB) - NgamThem;
             if (diff > 0) {
               const val = countA > countB ? Dep : Xau;
@@ -629,34 +636,45 @@ async function ThucHienGiaoDich() {
                 ArrayKQ_XAU.push(val);
               }
             }
+            const countAA = ArrayKQ_XAU.filter(v => v === Dep).length;
+            const countBB = ArrayKQ_XAU.filter(v => v === Xau).length;
+
+            LuutruLongmach.forEach(item => {
+              item.isReady = false;
+              item.AnNumber = 0;
+              item.soLanMuonAn = item.id === 1 || item.id === 2 ? 2 : 1;
+              item.isNhandoi = false;
+              item.hoanthanh = true;
+              item.tiso = item.type === Dep ? (countBB - countAA) : (countAA - countBB);
+            });
+          } else {
             item.hoanthanh = true;
             item.isReady = false;
             item.AnNumber = 0;
             item.isNhandoi = false;
-            item.soLanMuonAn = 2;
-            await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
+            item.soLanMuonAn = 1;
           }
+
+          await LongMachList_Update_UI(page, ArrayKQ_XAU);
         }
-        updateAray(item.id, {
+        handleUpdate_LongMachList(item.id, {
           isTrading: false,
           huong: "null",
           profit: item.profit + (item.vol * 0.98),
           win: item.win + 1,
           vol: 0,
         });
+        await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
       } else {
         soDuTaiKhoan -= item.vol;
         profitAll -= item.vol;
-        if (item.isReady) {
-          item.AnNumber = item.isNhandoi ? item.AnNumber - 2 : item.AnNumber - 1;
-
-          if (item.AnNumber <= -3) {
-            item.isNhandoi = true;
-            item.soLanMuonAn = 1;
-          }
+        item.AnNumber = item.isNhandoi ? item.AnNumber - 2 : item.AnNumber - 1;
+        if (item.AnNumber <= -3) {
+          item.isNhandoi = true;
+          item.soLanMuonAn = 1;
         }
 
-        updateAray(item.id, {
+        handleUpdate_LongMachList(item.id, {
           isTrading: false,
           huong: "null",
           vol: 0,
@@ -664,6 +682,7 @@ async function ThucHienGiaoDich() {
           lost: item.lost + 1,
           minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber
         });
+        await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
       }
     }
   }
@@ -672,7 +691,7 @@ async function ThucHienGiaoDich() {
     soDuLonNhat = soDuTaiKhoan
   }
 
-  await UI_Update_Table(page, LuutruLongmach, ArrayKQ_XAU);
+  await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
   await UI_Show_SoDu(page, soDuTaiKhoan, profitAll)
   await UI_Update_CaiDatVon(
     page,
@@ -686,17 +705,19 @@ async function ThucHienGiaoDich() {
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
 
-  for (const item of LuutruLongmach) {
-    if (tinHieuAI.huong === "null" && item.hoanthanh) {
-      item.hoanthanh = false;
-    }
-  }
+
 
   if (tinHieuAI.huong !== "null" && arrayNew.length > 0) {
+    for (const item of LuutruLongmach) {
+      if (item.hoanthanh) {
+        item.hoanthanh = false;
+      }
+    }
+
     for (const item of arrayNew) {
       const isBenDep = item.type === Dep;
       const huongDanhNew = isBenDep ? (tinHieuAI.huong === T ? X : T) : tinHieuAI.huong;
-      const tinhVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
+      const tinhVol = handleGetTien(soDuLonNhat, item.id === 1 || item.id === 2 ? phanTramGiaoDich : phanTramGiaoDich / 2);
       const tinhVolNew = item.isNhandoi ? tinhVol * 2 : tinhVol;
 
       // =======================HandlClick=========================
@@ -718,15 +739,12 @@ async function ThucHienGiaoDich() {
       await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
       await page.mouse.click(X_Submit, Y_Submit);
       // =======================End HandlClick=========================
-
-
-
-      updateAray(item.id, {
+      handleUpdate_LongMachList(item.id, {
         isTrading: true,
         huong: huongDanhNew,
         vol: tinhVolNew,
       });
-      await UI_Update_Table(page, LuutruLongmach, ArrayKQ_XAU);
+      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
       saveStateTXT();
     }
   }
@@ -838,6 +856,8 @@ async function ThucHienGiaoDich() {
     } catch (err) {
       console.error("❌ Lỗi khi gửi dữ liệu thu nhập:", err);
     }
+    await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
+
   }
 }
 
@@ -938,7 +958,7 @@ async function ShowTime70() {
 
 async function toggleCapture() {
   isRunning ? await handleStop() : await handleStart();
-  await UI_Update_KetQua_XauDep_Array(page, ArrayKQ_XAU);
+  await LongMachList_Update_UI(page, ArrayKQ_XAU);
 }
 
 async function UI_DieuKhien(page) {
@@ -1322,7 +1342,7 @@ function loadStateTXT() {
           ...i,
           isReady: i.isReady ?? false,
           AnNumber: i.AnNumber ?? 0,
-          soLanMuonAn: i.soLanMuonAn ?? 2,
+          soLanMuonAn: i.soLanMuonAn ?? ((i.id === 1 || i.id === 2) ? 2 : 1),
           isNhandoi: i.isNhandoi ?? false,
           hoanthanh: i.hoanthanh ?? false,
           soLanChoDoi: i.soLanChoDoi ?? (i.type === "A" && i.id === 1 ? 8 : i.type === "B" && i.id === 2 ? 8 : 10)
