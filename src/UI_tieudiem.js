@@ -151,9 +151,6 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
 
     tbody.innerHTML = "";
 
-    const countA = arrayKQ?.filter(v => v === "A").length || 0;
-    const countB = arrayKQ?.filter(v => v === "B").length || 0;
-
     rows.forEach(item => {
       const tr = document.createElement("tr");
       const lucStrInput = `<span style="display:inline-block; min-width:12px; text-align:right">${item.tiso}</span>/<input type="number" data-id="${item.id}" value="${item.soLanChoDoi}" style="width:25px; height:18px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;"> ${item.isReady ? '✅' : ''}`;
@@ -176,6 +173,13 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
       cols.forEach(v => {
         const td = document.createElement("td");
         if (v === "LUC_COLUMN") {
+          // ✅ Nếu tỉ số > 0 thì tô xanh
+          if (item.tiso > 0) {
+            td.style.backgroundColor = "#b6fcb6"; // xanh nhạt
+            td.style.fontWeight = "bold";
+          }
+
+
           td.innerHTML = lucStrInput;
           const inp = td.querySelector("input");
           if (inp) {
