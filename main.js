@@ -129,87 +129,65 @@ const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 8, tiso: 0
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 8, tiso: 0
   },
   {
     id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 10, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
   },
   {
     id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 10, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
   },
   {
     id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 18, tiso: 0
   },
   {
     id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 18, tiso: 0
   },
 
   {
     id: 7, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 16, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23, tiso: 0
   },
   {
     id: 8, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 16, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23, tiso: 0
   },
 
   {
     id: 9, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 19, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
   },
   {
     id: 10, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 19, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
   },
 
   {
     id: 11, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 22, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 33, tiso: 0
   },
   {
     id: 12, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 22, tiso: 0
-  },
-
-  {
-    id: 13, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 25, tiso: 0
-  },
-  {
-    id: 14, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 25, tiso: 0
-  },
-
-  {
-    id: 15, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
-  },
-  {
-    id: 16, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 33, tiso: 0
   },
 ];
 
@@ -232,7 +210,7 @@ async function handleStart() {
   intervalId = setInterval(async () => {
     if (!isRunning) return;
     await CheckColor_X_Y();
-  }, (INTERVAL_MS * 1000) - 20);
+  }, (INTERVAL_MS * 1000) - 15);
 
   // timer 70s
   await ShowTime70();
@@ -263,8 +241,8 @@ async function UI_Reset(page) {
     const wrap = document.createElement("div");
     Object.assign(wrap.style, {
       position: "fixed",
-      top: "5px",
-      left: "10px",
+      top: "500px",
+      right: "5px",
       zIndex: 9999,
       background: "#fff",
       padding: "2px",
