@@ -1,32 +1,63 @@
 
-// function handleGetTien(thep, monyTong, phantram) {
-//   const tienPhanTram = monyTong * (phantram / 100);
-//   const level = Math.floor(tienPhanTram / 439);
-//   if (level === 0) return 0;
-
-//   const base = level * 439;
-
-//   switch (thep) {
-//     case 1: return Math.floor(base / 439);              // 1
-//     case 2: return Math.floor(base / 146.333333333);    // 3
-//     case 3: return Math.floor(base / 73.1666666667);   // 6
-//     case 4: return Math.floor(base / 33.7692307692);   // 13
-//     case 5: return Math.floor(base / 16.2592592593);   // 27
-//     case 6: return Math.floor(base / 7.98181818182);   // 55
-//     case 7: return Math.floor(base / 3.95495495495);   // 111
-//     case 8: return Math.floor(base / 1.969507489);     // 223
-//     default:
-//       return 0;
-//   }
-// }
-
 function handleGetTien(monyTong, phantram) {
   const tienPhanTram = monyTong * phantram / 100;
   return Math.floor(tienPhanTram); // làm tròn xuống
 }
 
+async function ghiNhanThuNhap(soTienMuonRut) {
+  try {
+    if (typeof fetch !== "undefined") {
+      await fetch("http://localhost:7070/in-come", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          type: "Sun",
+          transactionType: "INCOME",
+          amount: soTienMuonRut / 27,
+          date: new Date().toISOString()
+        })
+      });
+      console.log("✅ Đã ghi nhận thu nhập từ lệnh rút tiền:", soTienMuonRut);
+    } else {
+      console.warn("⚠️ Môi trường không hỗ trợ fetch, vui lòng nâng cấp Node.js hoặc cấu hình axios.");
+    }
+  } catch (err) {
+    console.error("❌ Lỗi khi gửi dữ liệu thu nhập:", err);
+  }
+}
 
+async function luuTruTrangThai(data) {
+  try {
+    // Đảm bảo stateId luôn tồn tại để NestJS thực hiện logic Upsert (Update hoặc Insert)
+    const payload = {
+      stateId: "main_state_tx", // Định danh duy nhất cho trạng thái này
+      ...data
+    };
 
-module.exports = { handleGetTien };
+    if (typeof fetch !== "undefined") {
+      // Sửa lại URL: Thêm /update (hoặc /sync tùy theo Controller của bạn)
+      const response = await fetch("http://localhost:7070/state-tx/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server response error: ${errorText}`);
+      }
 
+      const result = await response.json();
+      console.log("✅ Đã đồng bộ trạng thái State-TX thành công");
+      return result;
+    }
+  } catch (err) {
+    console.error("❌ Lỗi khi gọi api lưu trạng thái:", err.message);
+  }
+}
+
+module.exports = { handleGetTien, ghiNhanThuNhap, luuTruTrangThai };

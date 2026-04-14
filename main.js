@@ -5,7 +5,7 @@ const {
   Xau, maxThep, checkABTrongDoXanh
 } = require('./src/util');
 
-const { handleGetTien } = require('./src/util2');
+const { handleGetTien, ghiNhanThuNhap, luuTruTrangThai } = require('./src/util2');
 // const player = require("play-sound")();
 const path = require("path");
 const { chromium } = require("playwright");
@@ -813,27 +813,7 @@ async function ThucHienGiaoDich() {
     );
 
     // Ghi nhận thu nhập tự động sau khi rút tiền thành công
-    try {
-      if (typeof fetch !== "undefined") {
-        await fetch("http://localhost:6969/in-come", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            type: "Sun",
-            transactionType: "INCOME",
-            amount: soTienMuonRut / 27,
-            date: new Date().toISOString()
-          })
-        });
-        console.log("✅ Đã ghi nhận thu nhập từ lệnh rút tiền:", soTienMuonRut);
-      } else {
-        console.warn("⚠️ Môi trường không hỗ trợ fetch, vui lòng nâng cấp Node.js hoặc cấu hình axios.");
-      }
-    } catch (err) {
-      console.error("❌ Lỗi khi gửi dữ liệu thu nhập:", err);
-    }
+    await ghiNhanThuNhap(soTienMuonRut);
     await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
 
   }
@@ -1267,6 +1247,20 @@ function saveStateTXT() {
     lines.push(JSON.stringify(LuutruLongmach, null, 2));
 
     fs.writeFileSync(STATE_FILE, lines.join("\n"), "utf8");
+
+    // LƯU TRẠNG THÁI LÊN BACKEND
+    luuTruTrangThai({
+      soDuTaiKhoan,
+      soDuLonNhat,
+      phanTramGiaoDich,
+      profitAll,
+      nguongTienDat,
+      soTienMuonRut,
+      tongTienDaRut,
+      ArrayKQ,
+      ArrayKQ_XAU,
+      LuutruLongmach
+    });
   } catch (err) {
     console.error("❌ Save TXT lỗi:", err.message);
   }
