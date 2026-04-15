@@ -129,12 +129,12 @@ const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 8, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 8, tiso: 0
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 8, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 8, tiso: 0
   },
   {
     id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
@@ -297,7 +297,7 @@ async function UI_Reset(page) {
       LuutruLongmach.forEach(item => {
         item.isReady = false;
         item.AnNumber = 0;
-        item.soLanMuonAn = item.id === 1 || item.id === 2 ? 2 : 1;
+        item.soLanMuonAn = 1;
         item.isNhandoi = false;
         item.hoanthanh = false;
         item.tiso = item.type === Dep ? (countB - countA) : (countA - countB);
@@ -605,7 +605,7 @@ async function ThucHienGiaoDich() {
             const countB = ArrayKQ_XAU.filter(v => v === Xau).length;
 
             ArrayKQ_XAU.length = 0;
-            const NgamThem = item.isNhandoi ? 5 : 3;
+            const NgamThem = item.isNhandoi ? 4 : 2;
 
             const diff = Math.abs(countA - countB) - NgamThem;
             if (diff > 0) {
@@ -620,17 +620,19 @@ async function ThucHienGiaoDich() {
             LuutruLongmach.forEach(item => {
               item.isReady = false;
               item.AnNumber = 0;
-              item.soLanMuonAn = item.id === 1 || item.id === 2 ? 2 : 1;
+              item.soLanMuonAn = 1;
               item.isNhandoi = false;
               item.hoanthanh = true;
               item.tiso = item.type === Dep ? (countBB - countAA) : (countAA - countBB);
             });
           } else {
-            item.hoanthanh = true;
+            const NgamThem = item.isNhandoi ? 4 : 2;
+            item.tiso = item.tiso - NgamThem
             item.isReady = false;
             item.AnNumber = 0;
-            item.isNhandoi = false;
             item.soLanMuonAn = 1;
+            item.hoanthanh = true;
+            item.isNhandoi = false;
           }
 
           await LongMachList_Update_UI(page, ArrayKQ_XAU);
@@ -647,9 +649,9 @@ async function ThucHienGiaoDich() {
         soDuTaiKhoan -= item.vol;
         profitAll -= item.vol;
         item.AnNumber = item.isNhandoi ? item.AnNumber - 2 : item.AnNumber - 1;
-        if (item.AnNumber <= -3) {
+        if (item.AnNumber <= -5) {
           item.isNhandoi = true;
-          item.soLanMuonAn = 1;
+          // item.soLanMuonAn = 1;
         }
 
         handleUpdate_LongMachList(item.id, {
@@ -682,8 +684,6 @@ async function ThucHienGiaoDich() {
 
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
-
-
 
   if (tinHieuAI.huong !== "null" && arrayNew.length > 0) {
     for (const item of LuutruLongmach) {
@@ -818,6 +818,18 @@ async function ThucHienGiaoDich() {
 
   }
 }
+// luuTruTrangThai({
+//   soDuTaiKhoan,
+//   soDuLonNhat,
+//   phanTramGiaoDich,
+//   profitAll,
+//   nguongTienDat,
+//   soTienMuonRut,
+//   tongTienDaRut,
+//   ArrayKQ,
+//   ArrayKQ_XAU,
+//   LuutruLongmach
+// });
 
 async function UI_Start(page) {
   // Tạo button trong browser
@@ -1248,19 +1260,7 @@ function saveStateTXT() {
 
     fs.writeFileSync(STATE_FILE, lines.join("\n"), "utf8");
 
-    // LƯU TRẠNG THÁI LÊN BACKEND
-    luuTruTrangThai({
-      soDuTaiKhoan,
-      soDuLonNhat,
-      phanTramGiaoDich,
-      profitAll,
-      nguongTienDat,
-      soTienMuonRut,
-      tongTienDaRut,
-      ArrayKQ,
-      ArrayKQ_XAU,
-      LuutruLongmach
-    });
+
   } catch (err) {
     console.error("❌ Save TXT lỗi:", err.message);
   }
@@ -1314,10 +1314,10 @@ function loadStateTXT() {
           ...i,
           isReady: i.isReady ?? false,
           AnNumber: i.AnNumber ?? 0,
-          soLanMuonAn: i.soLanMuonAn ?? ((i.id === 1 || i.id === 2) ? 2 : 1),
+          soLanMuonAn: i.soLanMuonAn ?? 1,
           isNhandoi: i.isNhandoi ?? false,
           hoanthanh: i.hoanthanh ?? false,
-          soLanChoDoi: i.soLanChoDoi ?? (i.type === "A" && i.id === 1 ? 8 : i.type === "B" && i.id === 2 ? 8 : 10)
+          soLanChoDoi: i.soLanChoDoi ?? 20
         }));
         LuutruLongmach.push(...mappedArr);
       }

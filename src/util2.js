@@ -46,13 +46,13 @@ async function luuTruTrangThai(data) {
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Server response error: ${errorText}`);
-      }
+      // if (!response.ok) {
+      //   const errorText = await response.text();
+      //   throw new Error(`Server response error: ${errorText}`);
+      // }
 
       const result = await response.json();
-      console.log("✅ Đã đồng bộ trạng thái State-TX thành công");
+      // console.log("✅ Đã đồng bộ trạng thái State-TX thành công");
       return result;
     }
   } catch (err) {
