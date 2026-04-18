@@ -9,6 +9,7 @@ const { handleGetTien, ghiNhanThuNhap, luuTruTrangThai } = require('./src/util2'
 // const player = require("play-sound")();
 const path = require("path");
 const { chromium } = require("playwright");
+require('dotenv').config();
 // const LOCK_SOUND = path.join(__dirname, "tinh.mp3");
 
 // pngjs dùng để đọc pixel từ ảnh screenshot
@@ -64,8 +65,7 @@ let Y_BtnTabRut = 327; //326
 let X_InpVi = 830; //488
 let Y_InpVi = 255; //326
 // 4. Nhập Địa chỉ Ví 
-// let Diachivi = "TG7KWfmgdFDFgX91Q2MBPGYebkqLH5osKa" OKX
-let Diachivi = "TRoDmJWchuBpK8jBbPLWqhWAVNau63dsZx"
+let Diachivi = process.env.DIACHIVI;
 
 
 // 5. Click vào INput Nhập Số tiền.
