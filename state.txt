@@ -6,8 +6,8 @@ nguongTienDat=10000
 soTienMuonRut=2700
 tongTienDaRut=27000
 
-ArrayKQ=X,T,T,X,X,X,X,X,X,T,T,X,T,X,X,T,T,X,T,T,X,X,X,X,T,T,T,X,T,T,X,T,X,X,X,X,X,X,T,X,T,T,T,T,X,X,X,X,T,X,T,X,X,X,X,X,T,T,X,T,T,X,T,X,X,T,X,T,X,X,X,T,T,X,X,X,X,X,T,T,T,T,T,X,X,T,X,X,X,X,X,X,X,X,X,X,T,T,X,X,T,X,T,T,X,T,T,X,X,X,T,X,X,X,X,T,T,X,T,X,T,X,T,X,X,X,X,T,T,T,T,T,T,X,T,T,T,T,X,X,X,T,X,T,T,X,X,T,X,X,T,X,T,T,T,T,X,X,X,T,X,T,X,T,T,X,T,X,X,T,T,X,X,X,X,X,T,X,X,X,T,T,T,T,X,X,T,T,X,X,X,T,X,T,X,T,T,T,T,T
-ArrayKQ_XAU=B,B,B,B,B,B,A,A,B,A,A,B,A,A,A
+ArrayKQ=X,X,X,T,T,X,T,T,X,T,X,X,T,X,T,X,X,X,T,T,X,X,X,X,X,T,T,T,T,T,X,X,T,X,X,X,X,X,X,X,X,X,X,T,T,X,X,T,X,T,T,X,T,T,X,X,X,T,X,X,X,X,T,T,X,T,X,T,X,T,X,X,X,X,T,T,T,T,T,T,X,T,T,T,T,X,X,X,T,X,T,T,X,X,T,X,X,T,X,T,T,T,T,X,X,X,T,X,T,X,T,T,X,T,X,X,T,T,X,X,X,X,X,T,X,X,X,T,T,T,T,X,X,T,T,X,X,X,T,X,T,X,T,T,T,T,T,X,T,T,X,X,X,X,T,T,X,X,X,T,X,X,T,T,T,X,T,T,T,T,X,X,X,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,X,T,X,T,T,T,X,X,X,T,T
+ArrayKQ_XAU=B,B,B,B,B,B,A,A,B,A,A,B,A,A,A,B,B,A,B,A,B,B,A,A,B,A,A
 
 LuutruLongmach=
 [
