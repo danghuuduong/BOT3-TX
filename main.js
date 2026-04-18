@@ -352,7 +352,7 @@ async function UI_Reset(page) {
   // Tạo tab mới
   page = await browser.newPage();
 
-  await page.goto("https://web.sunwin.ec", {
+  await page.goto(process.env.X_URL, {
     waitUntil: "networkidle",
     timeout: 15 * 60 * 1000,
   });
