@@ -112,7 +112,7 @@ let page;
 let countdown = 70;
 let countdownInterval;
 
-const MAX_LENGTH = 1000;
+const MAX_LENGTH = 500;
 const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
@@ -210,7 +210,7 @@ async function handleStart() {
   intervalId = setInterval(async () => {
     if (!isRunning) return;
     await CheckColor_X_Y();
-  }, (INTERVAL_MS * 1000) - 23);
+  }, (INTERVAL_MS * 1000) - 8);
 
   // timer 70s
   await ShowTime70();
