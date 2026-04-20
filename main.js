@@ -112,7 +112,7 @@ let page;
 let countdown = 70;
 let countdownInterval;
 
-const MAX_LENGTH = 500;
+const MAX_LENGTH = 1000;
 const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
@@ -210,7 +210,7 @@ async function handleStart() {
   intervalId = setInterval(async () => {
     if (!isRunning) return;
     await CheckColor_X_Y();
-  }, (INTERVAL_MS * 1000) - 8);
+  }, (INTERVAL_MS * 1000) - 9);
 
   // timer 70s
   await ShowTime70();
@@ -519,7 +519,7 @@ async function CheckColor_X_Y() {
       const ketqua = handleGetColor_TX(r, g, b)
       if (ketqua !== "null") {
         ArrayKQ.push(ketqua === "black" ? T : X);
-        if (ArrayKQ.length > MAX_LENGTH) { ArrayKQ.shift() }
+        if (ArrayKQ.length > 100) { ArrayKQ.shift() }
         await KetquaTXList_Update_UI(page, ArrayKQ);
         ThucHienGiaoDich();
       }
