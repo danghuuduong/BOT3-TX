@@ -129,65 +129,65 @@ const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 8, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7, tiso: 0
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 8, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7, tiso: 0
   },
   {
     id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 10, tiso: 0
   },
   {
     id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 10, tiso: 0
   },
   {
     id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 18, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
   },
   {
     id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 18, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
   },
 
   {
     id: 7, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 18, tiso: 0
   },
   {
     id: 8, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 18, tiso: 0
   },
 
   {
     id: 9, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23, tiso: 0
   },
   {
     id: 10, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23, tiso: 0
   },
 
   {
     id: 11, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 33, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
   },
   {
     id: 12, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 33, tiso: 0
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
   },
 ];
 
@@ -297,7 +297,7 @@ async function UI_Reset(page) {
       LuutruLongmach.forEach(item => {
         item.isReady = false;
         item.AnNumber = 0;
-        item.soLanMuonAn = 1;
+        item.soLanMuonAn = item.id === 1 || item.id === 2 ? 2 : 1;
         item.isNhandoi = false;
         item.hoanthanh = false;
         item.tiso = item.type === Dep ? (countB - countA) : (countA - countB);
@@ -605,7 +605,7 @@ async function ThucHienGiaoDich() {
             const countB = ArrayKQ_XAU.filter(v => v === Xau).length;
 
             ArrayKQ_XAU.length = 0;
-            const NgamThem = item.isNhandoi ? 4 : 2;
+            const NgamThem = item.isNhandoi ? 5 : 3;
 
             const diff = Math.abs(countA - countB) - NgamThem;
             if (diff > 0) {
@@ -620,7 +620,7 @@ async function ThucHienGiaoDich() {
             LuutruLongmach.forEach(item => {
               item.isReady = false;
               item.AnNumber = 0;
-              item.soLanMuonAn = 1;
+              item.soLanMuonAn = item.id === 1 || item.id === 2 ? 2 : 1;
               item.isNhandoi = false;
               item.hoanthanh = true;
               item.tiso = item.type === Dep ? (countBB - countAA) : (countAA - countBB);
@@ -649,9 +649,9 @@ async function ThucHienGiaoDich() {
         soDuTaiKhoan -= item.vol;
         profitAll -= item.vol;
         item.AnNumber = item.isNhandoi ? item.AnNumber - 2 : item.AnNumber - 1;
-        if (item.AnNumber <= -5) {
+        if (item.AnNumber <= -4 && (item.id === 1 || item.id === 2)) {
           item.isNhandoi = true;
-          // item.soLanMuonAn = 1;
+          item.soLanMuonAn = 1;
         }
 
         handleUpdate_LongMachList(item.id, {
@@ -685,6 +685,8 @@ async function ThucHienGiaoDich() {
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
 
+
+
   if (tinHieuAI.huong !== "null" && arrayNew.length > 0) {
     for (const item of LuutruLongmach) {
       if (item.hoanthanh) {
@@ -695,7 +697,7 @@ async function ThucHienGiaoDich() {
     for (const item of arrayNew) {
       const isBenDep = item.type === Dep;
       const huongDanhNew = isBenDep ? (tinHieuAI.huong === T ? X : T) : tinHieuAI.huong;
-      const tinhVol = handleGetTien(soDuLonNhat, item.id === 1 || item.id === 2 ? phanTramGiaoDich : phanTramGiaoDich / 2);
+      const tinhVol = handleGetTien(soDuLonNhat, item.id === 1 || item.id === 2 ? phanTramGiaoDich : phanTramGiaoDich / 4);
       const tinhVolNew = item.isNhandoi ? tinhVol * 2 : tinhVol;
 
       // =======================HandlClick=========================
@@ -1314,10 +1316,10 @@ function loadStateTXT() {
           ...i,
           isReady: i.isReady ?? false,
           AnNumber: i.AnNumber ?? 0,
-          soLanMuonAn: i.soLanMuonAn ?? 1,
+          soLanMuonAn: i.soLanMuonAn ?? ((i.id === 1 || i.id === 2) ? 2 : 1),
           isNhandoi: i.isNhandoi ?? false,
           hoanthanh: i.hoanthanh ?? false,
-          soLanChoDoi: i.soLanChoDoi ?? 20
+          soLanChoDoi: i.soLanChoDoi ?? (i.type === "A" && i.id === 1 ? 7 : i.type === "B" && i.id === 2 ? 7 : 10)
         }));
         LuutruLongmach.push(...mappedArr);
       }
