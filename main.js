@@ -19,6 +19,64 @@ const fs = require("fs");
 
 const STATE_FILE = path.join(__dirname, "state.txt");
 
+const axios = require('axios');
+const API_URL = process.env.VITE_API_BASE_URL || 'http://localhost:3000';
+let currentUsername = "";
+let currentPassword = "";
+let reLoginInterval = null;
+let currentToken = null;
+let profitAll = 0;
+
+async function doLoginAPI(username, password) {
+  try {
+    const res = await axios.post(`${API_URL}/auth/login`, { username, password, profitX: profitAll });
+    if (res.data && res.data.access_token) {
+      currentUsername = username;
+      currentPassword = password;
+      currentToken = res.data.access_token;
+      // Thiết lập auto-relogin mỗi 20h
+      if (reLoginInterval) clearInterval(reLoginInterval);
+      reLoginInterval = setInterval(async () => {
+        try {
+          const reRes = await axios.post(`${API_URL}/auth/login`, {
+            username: currentUsername,
+            password: currentPassword,
+            profitX: profitAll
+          });
+          if (reRes.data && reRes.data.access_token) {
+            currentToken = reRes.data.access_token;
+            console.clear()
+            console.log('✅ Auto-relogin thành công.');
+          } else {
+            throw new Error('No token');
+          }
+        } catch (e) {
+          console.error('❌ Auto-relogin thất bại:', e.message);
+          await handleStop();
+          if (page) {
+            await page.evaluate(() => {
+              const startBtn = document.getElementById("start-button");
+              if (startBtn) startBtn.style.display = "none";
+              const loginWrap = document.getElementById("login-form-wrap");
+              if (loginWrap) loginWrap.style.display = "flex";
+              const errDiv = document.getElementById("login-error");
+              if (errDiv) {
+                errDiv.innerText = "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!";
+                errDiv.style.display = "block";
+              }
+            });
+          }
+        }
+      }, 22 * 60 * 60 * 1000); // 20 hours
+      return { success: true };
+    }
+    return { success: false, message: 'Không có token' };
+  } catch (error) {
+    console.error('❌ Lỗi đăng nhập:', error.response?.data || error.message);
+    return { success: false, message: error.response?.data?.message || error.message };
+  }
+}
+
 
 // Đây chỉ là nơi xác định tiêu điểm thôi k dùng lmj cả
 // let startX = 708;
@@ -122,7 +180,6 @@ let soDuLonNhat = 1000;
 let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
 let phanTramGiaoDich = 1;
-let profitAll = 0;
 
 
 const LuutruLongmach = [
@@ -193,6 +250,48 @@ const LuutruLongmach = [
 
 loadStateTXT();
 
+async function UI_LockMouse(page, lock) {
+  if (!page) return;
+  await page.evaluate((lock) => {
+    let shield = document.getElementById("ui-mouse-shield");
+    if (lock) {
+      if (!shield) {
+        shield = document.createElement("div");
+        shield.id = "ui-mouse-shield";
+        Object.assign(shield.style, {
+          position: "fixed",
+          top: "0",
+          left: "0",
+          width: "100%",
+          height: "100%",
+          zIndex: "9980",
+          backgroundColor: "transparent",
+          pointerEvents: "auto",
+          cursor: "not-allowed"
+        });
+        shield.oncontextmenu = (e) => e.preventDefault();
+        document.body.appendChild(shield);
+      }
+    } else {
+      if (shield) shield.remove();
+    }
+  }, lock);
+}
+
+async function masterClick(page, x, y) {
+  await page.evaluate(() => {
+    const shield = document.getElementById("ui-mouse-shield");
+    if (shield) shield.style.pointerEvents = "none";
+  });
+
+  await page.mouse.click(x, y);
+
+  await page.evaluate(() => {
+    const shield = document.getElementById("ui-mouse-shield");
+    if (shield) shield.style.pointerEvents = "auto";
+  });
+}
+
 async function handleStart() {
   clearAllInterval();
 
@@ -202,6 +301,7 @@ async function handleStart() {
   countdown = 70;
 
   await updateButton(page, "⏹ Dừng...", "#e23a10ff");
+  await UI_LockMouse(page, true);
 
   // chạy 1 lần ngay
   await CheckColor_X_Y();
@@ -706,7 +806,7 @@ async function ThucHienGiaoDich() {
       await UI_MouseClick(page,
         isTai ? X_DatTai : X_DatXiu,
         isTai ? Y_DatTai : Y_DatXiu, "👈");
-      await page.mouse.click(
+      await masterClick(page,
         isTai ? X_DatTai : X_DatXiu,
         isTai ? Y_DatTai : Y_DatXiu);
 
@@ -717,7 +817,7 @@ async function ThucHienGiaoDich() {
       await page.waitForTimeout(delay);
 
       await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-      await page.mouse.click(X_Submit, Y_Submit);
+      await masterClick(page, X_Submit, Y_Submit);
       // =======================End HandlClick=========================
       handleUpdate_LongMachList(item.id, {
         isTrading: true,
@@ -737,7 +837,7 @@ async function ThucHienGiaoDich() {
     allNotTrading
   ) {
     await UI_MouseClick(page, X_HuyDatCuoc, Y_HuyDatCuoc, "🎯");
-    await page.mouse.click(X_HuyDatCuoc, Y_HuyDatCuoc);
+    await masterClick(page, X_HuyDatCuoc, Y_HuyDatCuoc);
 
 
     await page.evaluate(() => {
@@ -749,9 +849,9 @@ async function ThucHienGiaoDich() {
 
     // 1. Click vào button crypto / rút tiền (2 lần)
     await UI_MouseClick(page, X_ButtonRutTien, Y_ButtonRutTien, "🎯");
-    await page.mouse.click(X_ButtonRutTien, Y_ButtonRutTien);
+    await masterClick(page, X_ButtonRutTien, Y_ButtonRutTien);
     await page.waitForTimeout(100);
-    await page.mouse.click(X_ButtonRutTien, Y_ButtonRutTien);
+    await masterClick(page, X_ButtonRutTien, Y_ButtonRutTien);
 
 
 
@@ -759,13 +859,13 @@ async function ThucHienGiaoDich() {
     const delay = 1000 + Math.floor(Math.random() * 1500);
     await page.waitForTimeout(delay);
     await UI_MouseClick(page, X_BtnTabRut, Y_BtnTabRut, "🎯");
-    await page.mouse.click(X_BtnTabRut, Y_BtnTabRut);
+    await masterClick(page, X_BtnTabRut, Y_BtnTabRut);
 
     // 3. Click input ví
     const delay1 = 30 + Math.floor(Math.random() * 121);
     await page.waitForTimeout(delay1);
     await UI_MouseClick(page, X_InpVi, Y_InpVi, "🎯");
-    await page.mouse.click(X_InpVi, Y_InpVi);
+    await masterClick(page, X_InpVi, Y_InpVi);
 
     // 4. Nhập địa chỉ ví
     await page.keyboard.type(Diachivi, { delay: 30 });
@@ -773,7 +873,7 @@ async function ThucHienGiaoDich() {
     // 5. Click input số tiền
     await page.waitForTimeout(delay1);
     await UI_MouseClick(page, X_InpNhapSoTien, Y_InpNhapSoTien, "🎯");
-    await page.mouse.click(X_InpNhapSoTien, Y_InpNhapSoTien);
+    await masterClick(page, X_InpNhapSoTien, Y_InpNhapSoTien);
 
     // 6. Nhập số tiền rút
     await page.waitForTimeout(delay1);
@@ -783,21 +883,21 @@ async function ThucHienGiaoDich() {
     const delay2 = 1000 + Math.floor(Math.random() * 1500);
     await page.waitForTimeout(delay2);
     await UI_MouseClick(page, X_BtnSumitRutTien, Y_BtnSumitRutTien, "✅");
-    await page.mouse.click(X_BtnSumitRutTien, Y_BtnSumitRutTien);
+    await masterClick(page, X_BtnSumitRutTien, Y_BtnSumitRutTien);
 
     // 8. Đóng rút tiền
     await page.waitForTimeout(delay2);
     await UI_MouseClick(page, X_BtnCLose, Y_BtnCLose, "🔴");
-    await page.mouse.click(X_BtnCLose, Y_BtnCLose);
+    await masterClick(page, X_BtnCLose, Y_BtnCLose);
     await page.waitForTimeout(200);
-    await page.mouse.click(X_BtnCLose, X_BtnCLose);
+    await masterClick(page, X_BtnCLose, X_BtnCLose);
     await page.waitForTimeout(200);
-    await page.mouse.click(X_BtnCLose, X_BtnCLose);
+    await masterClick(page, X_BtnCLose, X_BtnCLose);
 
     // 9. Click lại menu TX
     await page.waitForTimeout(delay2);
     await UI_MouseClick(page, X_MenuTX, Y_MenuTX, "🔴");
-    await page.mouse.click(X_MenuTX, Y_MenuTX);
+    await masterClick(page, X_MenuTX, Y_MenuTX);
 
     // Cập nhật số dư
     soDuTaiKhoan = soDuLonNhat - soTienMuonRut;
@@ -834,8 +934,18 @@ async function ThucHienGiaoDich() {
 // });
 
 async function UI_Start(page) {
-  // Tạo button trong browser
+  // Expose nodejs login logic
+  if (!page._loginExposed) {
+    await page.exposeFunction("performLoginAPI", async (username, password) => {
+      return await doLoginAPI(username, password);
+    });
+    page._loginExposed = true;
+  }
+  await page.exposeFunction("toggleCapture", toggleCapture);
+
+  // Tạo UI Login Form & Button trong browser
   await page.evaluate(() => {
+    // ---- 1. Nút Bắt đầu (Ban đầu Ẩn) ----
     const btn = document.createElement("button");
     btn.id = "start-button";
     btn.innerText = "▶ Bắt đầu";
@@ -850,19 +960,61 @@ async function UI_Start(page) {
       border: "none",
       borderRadius: "5px",
       cursor: "pointer",
+      display: "none" // Ẩn đến khi login
     });
     document.body.appendChild(btn);
-  });
 
-  await page.exposeFunction("toggleCapture", toggleCapture);
+    // ---- 2. UI Đăng Nhập ----
+    const loginWrap = document.createElement("div");
+    loginWrap.id = "login-form-wrap";
+    Object.assign(loginWrap.style, {
+      position: "fixed", top: "50%", left: "50%",
+      transform: "translate(-50%, -50%)",
+      backgroundColor: "#fff", padding: "20px",
+      borderRadius: "8px", boxShadow: "0 0 15px rgba(0,0,0,0.5)",
+      zIndex: 10000, display: "flex", flexDirection: "column",
+      gap: "10px", width: "250px", fontFamily: "sans-serif"
+    });
 
-  // Gắn sự kiện click cho button
-  await page.evaluate(() => {
-    document
-      .getElementById("start-button")
-      .addEventListener("click", () => {
-        window.toggleCapture();
-      });
+    loginWrap.innerHTML = `
+      <h3 style="margin: 0 0 10px;text-align:center;">Vui lòng đăng nhập</h3>
+      <input id="login-user" type="text" placeholder="Tên đăng nhập" style="padding:8px;" />
+      <input id="login-pass" type="password" placeholder="Mật khẩu" style="padding:8px;" />
+      <button id="login-btn-submit" style="padding:8px;background:#007bff;color:#fff;border:none;cursor:pointer;border-radius:4px;font-weight:bold;">ĐĂNG NHẬP</button>
+      <div id="login-error" style="color:red;font-size:12px;text-align:center;display:none;"></div>
+    `;
+    document.body.appendChild(loginWrap);
+
+    // Xử lý nút Đăng nhập
+    const btnSubmit = document.getElementById("login-btn-submit");
+    btnSubmit.addEventListener("click", async () => {
+      const user = document.getElementById("login-user").value;
+      const pass = document.getElementById("login-pass").value;
+      const errDiv = document.getElementById("login-error");
+      if (!user || !pass) { errDiv.innerText = "Vui lòng nhập đủ thông tin"; errDiv.style.display = "block"; return; }
+
+      btnSubmit.innerText = "Đang đăng nhập...";
+      try {
+        const res = await window.performLoginAPI(user, pass);
+        if (res.success) {
+          alert("✅ Đăng nhập BOT thành công!");
+          document.getElementById("login-form-wrap").style.display = "none";
+          document.getElementById("start-button").style.display = "block";
+        } else {
+          errDiv.innerText = res.message || "Đăng nhập thất bại";
+          errDiv.style.display = "block";
+        }
+      } catch (e) {
+        errDiv.innerText = "Lỗi kết nối";
+        errDiv.style.display = "block";
+      }
+      btnSubmit.innerText = "ĐĂNG NHẬP";
+    });
+
+    // Gắn sự kiện click cho button Bắt đầu
+    btn.addEventListener("click", () => {
+      window.toggleCapture();
+    });
   });
 }
 
@@ -1061,7 +1213,7 @@ async function clickN(page, x, y, n, icon = "🖱️") {
     await UI_MouseClick(page, x, y, icon, 18, "ui-mouse-click", 1000);
 
     await page.mouse.move(x, y);
-    await page.mouse.click(x, y);
+    await masterClick(page, x, y);
 
     const delay = 15 + Math.floor(Math.random() * 80);
     await page.waitForTimeout(delay);
