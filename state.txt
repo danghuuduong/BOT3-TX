@@ -1,16 +1,16 @@
-soDuTaiKhoan=3260.684036967897
+soDuTaiKhoan=3428.464591560775
 soDuLonNhat=4307.035158333394
 phanTramGiaoDich=0.1
-profitAll=-739.3159630321107
+profitAll=-571.5354084392332
 nguongTienDat=6000
 soTienMuonRut=2000
 tongTienDaRut=0
 maxDrawdown=168.92699999999994
-taiCount=217
+taiCount=218
 xiuCount=243
 
-ArrayKQ=X,T,T,X,X,T,T,T,T,X,T,T,T,T,T,T,X,X,T,X,X,T,T,T,X,T,T,T,T,T,T,X,X,T,T,X,T,T,T,T,T,X,X,X,T,T,T,T,T,T,X,X,T,X,X,T,X,T,X,T,T,T,T,T,X,T,T,X,X,T,T,X,X,T,X,T,T,T,T,X,X,X,T,T,X,X,X,X,X,T,X,X,T,T,T,X,X,X,T,T
-ArrayKQ=X,T,T,X,X,T,T,T,T,X,T,T,T,T,T,T,X,X,T,X,X,T,T,T,X,T,T,T,T,T,T,X,X,T,T,X,T,T,T,T,T,X,X,X,T,T,T,T,T,T,X,X,T,X,X,T,X,T,X,T,T,T,T,T,X,T,T,X,X,T,T,X,X,T,X,T,T,T,T,X,X,X,T,T,X,X,X,X,X,T,X,X,T,T,T,X,X,X,T,T
+ArrayKQ=T,T,X,X,T,T,T,T,X,T,T,T,T,T,T,X,X,T,X,X,T,T,T,X,T,T,T,T,T,T,X,X,T,T,X,T,T,T,T,T,X,X,X,T,T,T,T,T,T,X,X,T,X,X,T,X,T,X,T,T,T,T,T,X,T,T,X,X,T,T,X,X,T,X,T,T,T,T,X,X,X,T,T,X,X,X,X,X,T,X,X,T,T,T,X,X,X,T,T,T
+ArrayKQ=T,T,X,X,T,T,T,T,X,T,T,T,T,T,T,X,X,T,X,X,T,T,T,X,T,T,T,T,T,T,X,X,T,T,X,T,T,T,T,T,X,X,X,T,T,T,T,T,T,X,X,T,X,X,T,X,T,X,T,T,T,T,T,X,T,T,X,X,T,T,X,X,T,X,T,T,T,T,X,X,X,T,T,X,X,X,X,X,T,X,X,T,T,T,X,X,X,T,T,T
 
 LuutruLongmach=
 [
@@ -18,19 +18,19 @@ LuutruLongmach=
     "id": 1,
     "isTrading": true,
     "huong": "T",
-    "profit": -88.19386579411643,
+    "profit": -83.9729713389497,
     "vol": 4.307035158333394,
-    "win": 171,
+    "win": 172,
     "lost": 188,
     "isStop": false,
     "type": "T",
     "minAnNumber": -41,
     "isReady": true,
-    "AnNumber": -20,
+    "AnNumber": -19,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 1,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 2,
@@ -48,25 +48,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 1,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 3,
     "isTrading": true,
     "huong": "T",
-    "profit": -88.19386579411643,
+    "profit": -83.9729713389497,
     "vol": 4.307035158333394,
-    "win": 171,
+    "win": 172,
     "lost": 188,
     "isStop": false,
     "type": "T",
     "minAnNumber": -41,
     "isReady": true,
-    "AnNumber": -20,
+    "AnNumber": -19,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 2,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 4,
@@ -84,25 +84,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 2,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 5,
     "isTrading": true,
     "huong": "T",
-    "profit": -88.19386579411643,
+    "profit": -83.9729713389497,
     "vol": 4.307035158333394,
-    "win": 171,
+    "win": 172,
     "lost": 188,
     "isStop": false,
     "type": "T",
     "minAnNumber": -41,
     "isReady": true,
-    "AnNumber": -20,
+    "AnNumber": -19,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 3,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 6,
@@ -120,25 +120,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 3,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 7,
     "isTrading": true,
     "huong": "T",
-    "profit": -88.19386579411643,
+    "profit": -83.9729713389497,
     "vol": 4.307035158333394,
-    "win": 171,
+    "win": 172,
     "lost": 188,
     "isStop": false,
     "type": "T",
     "minAnNumber": -41,
     "isReady": true,
-    "AnNumber": -20,
+    "AnNumber": -19,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 4,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 8,
@@ -156,25 +156,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 4,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 9,
     "isTrading": true,
     "huong": "T",
-    "profit": -88.19386579411643,
+    "profit": -83.9729713389497,
     "vol": 4.307035158333394,
-    "win": 171,
+    "win": 172,
     "lost": 188,
     "isStop": false,
     "type": "T",
     "minAnNumber": -41,
     "isReady": true,
-    "AnNumber": -20,
+    "AnNumber": -19,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 5,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 10,
@@ -192,25 +192,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 5,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 11,
     "isTrading": true,
     "huong": "T",
-    "profit": -110.24233224264538,
+    "profit": -104.96621417368696,
     "vol": 5.383793947916743,
-    "win": 171,
+    "win": 172,
     "lost": 188,
     "isStop": false,
     "type": "T",
     "minAnNumber": -41,
     "isReady": true,
-    "AnNumber": -20,
+    "AnNumber": -19,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 6,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 12,
@@ -228,25 +228,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 6,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 13,
     "isTrading": true,
     "huong": "T",
-    "profit": -94.1086908971425,
+    "profit": -88.83257282818408,
     "vol": 5.383793947916743,
-    "win": 171,
+    "win": 172,
     "lost": 185,
     "isStop": false,
     "type": "T",
     "minAnNumber": -40,
     "isReady": true,
-    "AnNumber": -19,
+    "AnNumber": -18,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 7,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 14,
@@ -264,25 +264,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 7,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 15,
     "isTrading": true,
     "huong": "T",
-    "profit": -99.20795829828702,
+    "profit": -93.93184022932861,
     "vol": 5.383793947916743,
-    "win": 168,
+    "win": 169,
     "lost": 183,
     "isStop": false,
     "type": "T",
     "minAnNumber": -39,
     "isReady": true,
-    "AnNumber": -18,
+    "AnNumber": -17,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 8,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 16,
@@ -300,25 +300,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 8,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 17,
     "isTrading": true,
     "huong": "T",
-    "profit": -83.5019625201119,
+    "profit": -78.22584445115349,
     "vol": 5.383793947916743,
-    "win": 166,
+    "win": 167,
     "lost": 178,
     "isStop": false,
     "type": "T",
     "minAnNumber": -38,
     "isReady": true,
-    "AnNumber": -17,
+    "AnNumber": -16,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 9,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 18,
@@ -336,25 +336,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 9,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 19,
     "isTrading": true,
     "huong": "T",
-    "profit": -72.34801296355482,
+    "profit": -67.07189489459641,
     "vol": 5.383793947916743,
-    "win": 161,
+    "win": 162,
     "lost": 171,
     "isStop": false,
     "type": "T",
     "minAnNumber": -37,
     "isReady": true,
-    "AnNumber": -16,
+    "AnNumber": -15,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 10,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 20,
@@ -372,25 +372,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 10,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 21,
     "isTrading": true,
     "huong": "T",
-    "profit": -73.5553502387345,
+    "profit": -67.22400855598441,
     "vol": 6.460552737500091,
-    "win": 155,
+    "win": 156,
     "lost": 163,
     "isStop": false,
     "type": "T",
     "minAnNumber": -36,
     "isReady": true,
-    "AnNumber": -15,
+    "AnNumber": -14,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 11,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 22,
@@ -408,25 +408,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 11,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 23,
     "isTrading": true,
     "huong": "T",
-    "profit": -53.55083244980078,
+    "profit": -47.21949076705069,
     "vol": 6.460552737500091,
-    "win": 148,
+    "win": 149,
     "lost": 153,
     "isStop": false,
     "type": "T",
     "minAnNumber": -35,
     "isReady": true,
-    "AnNumber": -14,
+    "AnNumber": -13,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 12,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 24,
@@ -444,25 +444,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 12,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 25,
     "isTrading": true,
     "huong": "T",
-    "profit": -21.195611373606518,
+    "profit": -14.864269690856428,
     "vol": 6.460552737500091,
-    "win": 139,
+    "win": 140,
     "lost": 139,
     "isStop": false,
     "type": "T",
     "minAnNumber": -34,
     "isReady": true,
-    "AnNumber": -13,
+    "AnNumber": -12,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 13,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 26,
@@ -480,25 +480,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 13,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 27,
     "isTrading": true,
     "huong": "T",
-    "profit": -62.28386237175057,
+    "profit": -55.95252068900048,
     "vol": 6.460552737500091,
-    "win": 126,
+    "win": 127,
     "lost": 133,
     "isStop": false,
     "type": "T",
     "minAnNumber": -33,
     "isReady": true,
-    "AnNumber": -12,
+    "AnNumber": -11,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 14,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 28,
@@ -516,25 +516,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 14,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 29,
     "isTrading": true,
     "huong": "T",
-    "profit": -61.25212447000048,
+    "profit": -54.92078278725039,
     "vol": 6.460552737500091,
-    "win": 121,
+    "win": 122,
     "lost": 128,
     "isStop": false,
     "type": "T",
     "minAnNumber": -32,
     "isReady": true,
-    "AnNumber": -11,
+    "AnNumber": -10,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 15,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 30,
@@ -552,25 +552,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 15,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 31,
     "isTrading": true,
     "huong": "T",
-    "profit": -85.47311271712645,
+    "profit": -78.08654742058468,
     "vol": 7.53731152708344,
-    "win": 117,
+    "win": 118,
     "lost": 126,
     "isStop": false,
     "type": "T",
     "minAnNumber": -31,
     "isReady": true,
-    "AnNumber": -10,
+    "AnNumber": -9,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 16,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 32,
@@ -588,25 +588,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 16,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 33,
     "isTrading": true,
     "huong": "T",
-    "profit": -77.78505495950131,
+    "profit": -70.39848966295953,
     "vol": 7.53731152708344,
-    "win": 116,
+    "win": 117,
     "lost": 124,
     "isStop": false,
     "type": "T",
     "minAnNumber": -30,
     "isReady": true,
-    "AnNumber": -9,
+    "AnNumber": -8,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 17,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 34,
@@ -624,25 +624,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 17,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 35,
     "isTrading": true,
     "huong": "T",
-    "profit": -70.09699720187619,
+    "profit": -62.710431905334424,
     "vol": 7.53731152708344,
-    "win": 115,
+    "win": 116,
     "lost": 122,
     "isStop": false,
     "type": "T",
     "minAnNumber": -29,
     "isReady": true,
-    "AnNumber": -8,
+    "AnNumber": -7,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 18,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 36,
@@ -660,25 +660,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 18,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 37,
     "isTrading": true,
     "huong": "T",
-    "profit": -62.408939444251054,
+    "profit": -55.022374147709286,
     "vol": 7.53731152708344,
-    "win": 114,
+    "win": 115,
     "lost": 120,
     "isStop": false,
     "type": "T",
     "minAnNumber": -28,
     "isReady": true,
-    "AnNumber": -7,
+    "AnNumber": -6,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 19,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 38,
@@ -696,25 +696,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 19,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 39,
     "isTrading": true,
     "huong": "T",
-    "profit": -54.72088168662593,
+    "profit": -47.33431639008416,
     "vol": 7.53731152708344,
-    "win": 113,
+    "win": 114,
     "lost": 118,
     "isStop": false,
     "type": "T",
     "minAnNumber": -27,
     "isReady": true,
-    "AnNumber": -6,
+    "AnNumber": -5,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 20,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 40,
@@ -732,25 +732,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 20,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 41,
     "isTrading": true,
     "huong": "T",
-    "profit": -19.29551750933338,
+    "profit": -10.853728598999927,
     "vol": 8.614070316666789,
-    "win": 112,
+    "win": 113,
     "lost": 112,
     "isStop": false,
     "type": "T",
     "minAnNumber": -26,
     "isReady": true,
-    "AnNumber": -5,
+    "AnNumber": -4,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 21,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 42,
@@ -768,25 +768,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 21,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 43,
     "isTrading": true,
     "huong": "T",
-    "profit": -9.820040160999865,
+    "profit": -1.3782512506664126,
     "vol": 8.614070316666789,
-    "win": 107,
+    "win": 108,
     "lost": 106,
     "isStop": false,
     "type": "T",
     "minAnNumber": -25,
     "isReady": true,
-    "AnNumber": -4,
+    "AnNumber": -3,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 22,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 44,
@@ -804,25 +804,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 22,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 45,
     "isTrading": true,
     "huong": "T",
-    "profit": 34.11171845400057,
+    "profit": 42.55350736433402,
     "vol": 8.614070316666789,
-    "win": 102,
+    "win": 103,
     "lost": 96,
     "isStop": false,
     "type": "T",
     "minAnNumber": -24,
     "isReady": true,
-    "AnNumber": -3,
+    "AnNumber": -2,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 23,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 46,
@@ -840,25 +840,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 23,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 47,
     "isTrading": true,
     "huong": "T",
-    "profit": 61.504462061001,
+    "profit": 69.94625097133445,
     "vol": 8.614070316666789,
-    "win": 93,
+    "win": 94,
     "lost": 84,
     "isStop": false,
     "type": "T",
     "minAnNumber": -23,
     "isReady": true,
-    "AnNumber": -2,
+    "AnNumber": -1,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 24,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 48,
@@ -876,25 +876,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 24,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 49,
     "isTrading": true,
     "huong": "T",
-    "profit": 46.17141689733418,
+    "profit": 54.61320580766763,
     "vol": 8.614070316666789,
-    "win": 82,
+    "win": 83,
     "lost": 75,
     "isStop": false,
     "type": "T",
     "minAnNumber": -22,
     "isReady": true,
-    "AnNumber": -1,
+    "AnNumber": 0,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 25,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 50,
@@ -912,25 +912,25 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 25,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 51,
-    "isTrading": true,
-    "huong": "T",
-    "profit": 14.73006024150017,
-    "vol": 9.690829106250137,
-    "win": 74,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 24.2270727656253,
+    "vol": 0,
+    "win": 75,
     "lost": 71,
     "isStop": false,
     "type": "T",
     "minAnNumber": -21,
-    "isReady": true,
+    "isReady": false,
     "AnNumber": 0,
     "soLanMuonAn": 1,
-    "hoanthanh": false,
+    "hoanthanh": true,
     "soLanChoDoi": 26,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 52,
@@ -948,7 +948,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 26,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 53,
@@ -966,7 +966,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 27,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 54,
@@ -984,7 +984,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 27,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 55,
@@ -1002,7 +1002,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 28,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 56,
@@ -1020,7 +1020,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 28,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 57,
@@ -1038,7 +1038,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 29,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 58,
@@ -1056,7 +1056,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 29,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 59,
@@ -1074,7 +1074,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 30,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 60,
@@ -1092,7 +1092,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 30,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 61,
@@ -1110,7 +1110,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 31,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 62,
@@ -1128,7 +1128,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 31,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 63,
@@ -1146,7 +1146,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 32,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 64,
@@ -1164,7 +1164,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 32,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 65,
@@ -1182,7 +1182,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 33,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 66,
@@ -1200,7 +1200,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 33,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 67,
@@ -1218,7 +1218,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 34,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 68,
@@ -1236,7 +1236,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 34,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 69,
@@ -1254,7 +1254,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 35,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 70,
@@ -1272,7 +1272,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 35,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 71,
@@ -1290,7 +1290,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 36,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 72,
@@ -1308,7 +1308,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 36,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 73,
@@ -1326,7 +1326,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 37,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 74,
@@ -1344,7 +1344,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 37,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 75,
@@ -1362,7 +1362,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 38,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 76,
@@ -1380,7 +1380,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 38,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 77,
@@ -1398,7 +1398,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 39,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 78,
@@ -1416,7 +1416,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 39,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 79,
@@ -1434,7 +1434,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 40,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 80,
@@ -1452,7 +1452,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 40,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 81,
@@ -1470,7 +1470,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 41,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 82,
@@ -1488,7 +1488,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 41,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 83,
@@ -1506,7 +1506,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 42,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 84,
@@ -1524,7 +1524,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 42,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 85,
@@ -1542,7 +1542,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 43,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 86,
@@ -1560,7 +1560,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 43,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 87,
@@ -1578,7 +1578,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 44,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 88,
@@ -1596,7 +1596,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 44,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 89,
@@ -1614,7 +1614,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 45,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 90,
@@ -1632,7 +1632,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 45,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 91,
@@ -1650,7 +1650,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 46,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 92,
@@ -1668,7 +1668,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 46,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 93,
@@ -1686,7 +1686,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 47,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 94,
@@ -1704,7 +1704,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 47,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 95,
@@ -1722,7 +1722,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 48,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 96,
@@ -1740,7 +1740,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 48,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 97,
@@ -1758,7 +1758,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 49,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 98,
@@ -1776,7 +1776,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 49,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 99,
@@ -1794,7 +1794,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 50,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 100,
@@ -1812,7 +1812,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 50,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 101,
@@ -1830,7 +1830,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 51,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 102,
@@ -1848,7 +1848,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 51,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 103,
@@ -1866,7 +1866,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 52,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 104,
@@ -1884,7 +1884,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 52,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 105,
@@ -1902,7 +1902,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 53,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 106,
@@ -1920,7 +1920,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 53,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 107,
@@ -1938,7 +1938,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 54,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 108,
@@ -1956,7 +1956,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 54,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 109,
@@ -1974,7 +1974,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 55,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 110,
@@ -1992,7 +1992,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 55,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 111,
@@ -2010,7 +2010,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 56,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 112,
@@ -2028,7 +2028,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 56,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 113,
@@ -2046,7 +2046,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 57,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 114,
@@ -2064,7 +2064,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 57,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 115,
@@ -2082,7 +2082,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 58,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 116,
@@ -2100,7 +2100,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 58,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 117,
@@ -2118,7 +2118,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 59,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 118,
@@ -2136,7 +2136,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 59,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 119,
@@ -2154,7 +2154,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 60,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 120,
@@ -2172,7 +2172,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 60,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 121,
@@ -2190,7 +2190,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 61,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 122,
@@ -2208,7 +2208,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 61,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 123,
@@ -2226,7 +2226,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 62,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 124,
@@ -2244,7 +2244,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 62,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 125,
@@ -2262,7 +2262,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 63,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 126,
@@ -2280,7 +2280,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 63,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 127,
@@ -2298,7 +2298,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 64,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 128,
@@ -2316,7 +2316,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 64,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 129,
@@ -2334,7 +2334,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 65,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 130,
@@ -2352,7 +2352,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 65,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 131,
@@ -2370,7 +2370,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 66,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 132,
@@ -2388,7 +2388,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 66,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 133,
@@ -2406,7 +2406,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 67,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 134,
@@ -2424,7 +2424,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 67,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 135,
@@ -2442,7 +2442,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 68,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 136,
@@ -2460,7 +2460,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 68,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 137,
@@ -2478,7 +2478,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 69,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 138,
@@ -2496,7 +2496,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 69,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 139,
@@ -2514,7 +2514,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 70,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 140,
@@ -2532,7 +2532,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 70,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 141,
@@ -2550,7 +2550,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 71,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 142,
@@ -2568,7 +2568,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 71,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 143,
@@ -2586,7 +2586,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 72,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 144,
@@ -2604,7 +2604,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 72,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 145,
@@ -2622,7 +2622,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 73,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 146,
@@ -2640,7 +2640,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 73,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 147,
@@ -2658,7 +2658,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 74,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 148,
@@ -2676,7 +2676,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 74,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 149,
@@ -2694,7 +2694,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 75,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 150,
@@ -2712,7 +2712,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 75,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 151,
@@ -2730,7 +2730,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 76,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 152,
@@ -2748,7 +2748,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 76,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 153,
@@ -2766,7 +2766,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 77,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 154,
@@ -2784,7 +2784,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 77,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 155,
@@ -2802,7 +2802,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 78,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 156,
@@ -2820,7 +2820,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 78,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 157,
@@ -2838,7 +2838,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 79,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 158,
@@ -2856,7 +2856,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 79,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 159,
@@ -2874,7 +2874,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 80,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 160,
@@ -2892,7 +2892,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 80,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 161,
@@ -2910,7 +2910,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 81,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 162,
@@ -2928,7 +2928,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 81,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 163,
@@ -2946,7 +2946,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 82,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 164,
@@ -2964,7 +2964,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 82,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 165,
@@ -2982,7 +2982,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 83,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 166,
@@ -3000,7 +3000,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 83,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 167,
@@ -3018,7 +3018,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 84,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 168,
@@ -3036,7 +3036,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 84,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 169,
@@ -3054,7 +3054,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 85,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 170,
@@ -3072,7 +3072,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 85,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 171,
@@ -3090,7 +3090,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 86,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 172,
@@ -3108,7 +3108,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 86,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 173,
@@ -3126,7 +3126,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 87,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 174,
@@ -3144,7 +3144,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 87,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 175,
@@ -3162,7 +3162,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 88,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 176,
@@ -3180,7 +3180,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 88,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 177,
@@ -3198,7 +3198,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 89,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 178,
@@ -3216,7 +3216,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 89,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 179,
@@ -3234,7 +3234,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 90,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 180,
@@ -3252,7 +3252,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 90,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 181,
@@ -3270,7 +3270,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 91,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 182,
@@ -3288,7 +3288,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 91,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 183,
@@ -3306,7 +3306,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 92,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 184,
@@ -3324,7 +3324,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 92,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 185,
@@ -3342,7 +3342,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 93,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 186,
@@ -3360,7 +3360,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 93,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 187,
@@ -3378,7 +3378,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 94,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 188,
@@ -3396,7 +3396,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 94,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 189,
@@ -3414,7 +3414,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 95,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 190,
@@ -3432,7 +3432,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 95,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 191,
@@ -3450,7 +3450,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 96,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 192,
@@ -3468,7 +3468,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 96,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 193,
@@ -3486,7 +3486,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 97,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 194,
@@ -3504,7 +3504,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 97,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 195,
@@ -3522,7 +3522,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 98,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 196,
@@ -3540,7 +3540,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 98,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 197,
@@ -3558,7 +3558,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 99,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 198,
@@ -3576,7 +3576,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 99,
-    "tiso": -26
+    "tiso": -25
   },
   {
     "id": 199,
@@ -3594,7 +3594,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 100,
-    "tiso": 26
+    "tiso": 25
   },
   {
     "id": 200,
@@ -3612,6 +3612,6 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 100,
-    "tiso": -26
+    "tiso": -25
   }
 ]
