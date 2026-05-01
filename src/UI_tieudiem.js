@@ -1,5 +1,4 @@
 
-
 async function UI_TieuDiem(page, X, Y, width, height, id, color = "red") {
   await page.evaluate(({ X, Y, width, height, id, color }) => {
     let div = document.getElementById(id);
@@ -101,15 +100,15 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Bên", "Lực", "Ăn", "x2",
-        "Giao dịch", "Vol", "W/L", "Lãi",
+        "ID", "Bên", "Lực", "Ăn",
+        "Giao dịch", "Vol", "W/L", "Lãi", "Phí",
         "MIN", "STOP"
       ];
 
 
       const widths = [
-        "20px", "40px", "65px", "45px", "25px",
-        "60px", "45px", "80px", "60px",
+        "20px", "40px", "65px", "45px",
+        "60px", "45px", "80px", "60px", "60px",
         "30px", "30px"
       ];
 
@@ -144,8 +143,8 @@ async function TableChinh_Create(page) {
   });
 }
 
-async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
-  await page.evaluate(({ rows, arrayKQ }) => {
+async function TableChinh_Update_UI(page, data) {
+  await page.evaluate(({ rows }) => {
     const tbody = document.getElementById("longmach-body");
     if (!tbody) return;
 
@@ -158,14 +157,14 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
       // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
         item.id,
-        item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Xấu🔥",
+        item.type,
         "LUC_COLUMN",
         `${item.AnNumber}/${item.soLanMuonAn}${item.hoanthanh ? '😍' : ''}`,
-        item.isNhandoi ? "✅" : " ",
         item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
-        item.vol,
+        item.vol.toFixed(1),
         `${item.win}/${item.lost}`,
-        item.profit.toFixed(2),
+        item.profit.toFixed(1),
+        item.phiGD.toFixed(1),
         item.minAnNumber
       ];
 
@@ -173,10 +172,13 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
       cols.forEach(v => {
         const td = document.createElement("td");
         if (v === "LUC_COLUMN") {
-          // ✅ Nếu tỉ số > 0 thì tô xanh
-          if (item.tiso > 0) {
+          // ✅ Highlight nếu đạt đủ số lần chờ, ngược lại làm mờ hết
+          if (item.tiso >= item.soLanChoDoi) {
             td.style.backgroundColor = "#b6fcb6"; // xanh nhạt
             td.style.fontWeight = "bold";
+            td.style.color = "#000";
+          } else {
+            td.style.color = "#999"; // mờ đi
           }
 
 
@@ -223,10 +225,10 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
 
       tbody.appendChild(tr);
     });
-  }, { rows: data, arrayKQ: ArrayKQ_XAU });
+  }, { rows: data });
 }
 
-async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 2000) {
+async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 500) {
   await page.evaluate(({ x, y, size, icon, id, timeoutMs }) => {
     // xóa cũ nếu còn
     const old = document.getElementById(id);

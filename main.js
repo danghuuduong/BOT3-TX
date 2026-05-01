@@ -1,8 +1,8 @@
-const { UI_Btn_Show_TieuDiem, UI_Show_SoDu, LongMachList_Update_UI, KetquaTXList_Create, LongMachList_create, KetquaTXList_Update_UI } = require("./src/Button_Common");
+const { UI_Btn_Show_TieuDiem, UI_Show_SoDu, KetquaTXList_Create, LongMachList_create, KetquaTXList_Update_UI } = require("./src/Button_Common");
 const { UI_TieuDiem, TableChinh_Update_UI, TableChinh_Create, UI_MouseClick } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan, T, X, Dep,
-  Xau, maxThep, checkABTrongDoXanh
+  Xau,
 } = require('./src/util');
 
 const { handleGetTien, ghiNhanThuNhap, luuTruTrangThai } = require('./src/util2');
@@ -26,6 +26,8 @@ let currentPassword = "";
 let reLoginInterval = null;
 let currentToken = null;
 let profitAll = 0;
+let taiCount = 0;
+let xiuCount = 0;
 
 async function doLoginAPI(username, password) {
   try {
@@ -172,81 +174,26 @@ let countdownInterval;
 
 const MAX_LENGTH = 1000;
 const ArrayKQ = [];
-const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
 
 let soDuTaiKhoan = 1000;
 let soDuLonNhat = 1000;
+let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
-let phanTramGiaoDich = 1;
+let phanTramGiaoDich = 0.05;
 
 
-const LuutruLongmach = [
-  {
-    id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7, tiso: 0
-  },
-  {
-    id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, isNhandoi: false, hoanthanh: false, soLanChoDoi: 7, tiso: 0
-  },
-  {
-    id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 10, tiso: 0
-  },
-  {
-    id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 10, tiso: 0
-  },
-  {
-    id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
-  },
-  {
-    id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 13, tiso: 0
-  },
+const LuutruLongmach = [];
+for (let i = 1; i <= 200; i++) {
+  LuutruLongmach.push({
+    id: i, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: (i % 2 !== 0) ? T : X, minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: Math.ceil(i / 2), tiso: 0,
+    phiGD: 0
+  });
+}
 
-  {
-    id: 7, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 18, tiso: 0
-  },
-  {
-    id: 8, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 18, tiso: 0
-  },
-
-  {
-    id: 9, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23, tiso: 0
-  },
-  {
-    id: 10, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 23, tiso: 0
-  },
-
-  {
-    id: 11, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
-  },
-  {
-    id: 12, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, isNhandoi: false, hoanthanh: false, soLanChoDoi: 28, tiso: 0
-  },
-];
 
 loadStateTXT();
 
@@ -333,6 +280,15 @@ async function handleStop() {
   });
 }
 
+async function toggleCapture() {
+  if (isRunning) {
+    await handleStop();
+  } else {
+    await handleStart();
+  }
+}
+
+
 
 async function UI_Reset(page) {
   await page.evaluate(() => {
@@ -342,7 +298,7 @@ async function UI_Reset(page) {
     Object.assign(wrap.style, {
       position: "fixed",
       top: "500px",
-      right: "5px",
+      right: "15px",
       zIndex: 9999,
       background: "#fff",
       padding: "2px",
@@ -355,11 +311,11 @@ async function UI_Reset(page) {
     });
 
     wrap.innerHTML = `
-      <div style="margin-bottom:1px">Hàng 1 ( Kết quả TX)</div>
-      <input id="inp-arraykq" style="width:100px;height:18px;margin-bottom:2px"/>
+      <div style="margin-bottom:1px">Tài:</div>
+      <input id="inp-tai" type="number" style="width:100px;height:18px;margin-bottom:2px"/>
 
-      <div style="margin-bottom:1px">Hàng 2(no ❌)</div>
-      <input id="inp-arraykqxau" style="width:110px;height:18px;margin-bottom:2px"/>
+      <div style="margin-bottom:1px">Xỉu:</div>
+      <input id="inp-xiu" type="number" style="width:110px;height:18px;margin-bottom:2px"/>
 
       <button id="reset-btn" style="
         width:100%;
@@ -378,41 +334,45 @@ async function UI_Reset(page) {
 
   // expose function (Node side)
   if (!page._resetExposed) {
-    await page.exposeFunction("resetAll", async ({ arrKQ, arrKQXau }) => {
+    await page.exposeFunction("resetAll", async ({ valTai, valXiu }) => {
 
-      if (arrKQ && arrKQ.trim() !== "") {
-        ArrayKQ.length = 0;
-        ArrayKQ.push(...arrKQ.split(",").map(s => s.trim()).filter(Boolean));
+      let scoreTai = parseInt(valTai) || 0;
+      let scoreXiu = parseInt(valXiu) || 0;
+
+      let disadvantageType = null;
+      let difference = Math.abs(scoreTai - scoreXiu);
+
+      if (scoreTai > scoreXiu) {
+        disadvantageType = X; // Xỉu đang thất thế
+      } else if (scoreXiu > scoreTai) {
+        disadvantageType = T; // Tài đang thất thế
       }
-
-      // luôn reset
-      ArrayKQ_XAU.length = 0;
-      if (arrKQXau && arrKQXau.trim() !== "") {
-        ArrayKQ_XAU.push(...arrKQXau.split(",").map(s => s.trim()).filter(Boolean));
-      }
-
-      const countA = ArrayKQ_XAU.filter(v => v === Dep).length;
-      const countB = ArrayKQ_XAU.filter(v => v === Xau).length;
 
       LuutruLongmach.forEach(item => {
         item.isReady = false;
         item.AnNumber = 0;
-        item.soLanMuonAn = item.id === 1 || item.id === 2 ? 2 : 1;
-        item.isNhandoi = false;
+        item.soLanMuonAn = 1;
         item.hoanthanh = false;
-        item.tiso = item.type === Dep ? (countB - countA) : (countA - countB);
+        item.tiso = 0;
+        item.isTrading = false;
+
+        if (disadvantageType !== null) {
+          if (item.type === disadvantageType) {
+            item.tiso = difference;
+            if (item.tiso >= item.soLanChoDoi) {
+              item.isReady = true; // Kích hoạt nếu đạt đủ số lần chờ
+            }
+          } else if (item.type === (disadvantageType === T ? X : T)) {
+            item.tiso = -difference; // Bên chiếm ưu thế sẽ bị trừ tỉ số
+          }
+        }
       });
 
-      for (const item of LuutruLongmach) {
-        if (!item.isReady && item.tiso >= item.soLanChoDoi) {
-          item.isReady = true;
-        }
-      }
+      taiCount = scoreTai;
+      xiuCount = scoreXiu;
+      await UI_Show_TiSo_TX(page, taiCount, xiuCount);
 
-      await KetquaTXList_Update_UI(page, ArrayKQ);
-      await LongMachList_Update_UI(page, ArrayKQ_XAU);
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
-
+      await TableChinh_Update_UI(page, LuutruLongmach);
 
       saveStateTXT();
     });
@@ -428,18 +388,18 @@ async function UI_Reset(page) {
       btn.dataset.bound = "true";
 
       btn.addEventListener("click", async () => {
-        const inpKQ = document.getElementById("inp-arraykq");
-        const inpKQXau = document.getElementById("inp-arraykqxau");
+        const inpTai = document.getElementById("inp-tai");
+        const inpXiu = document.getElementById("inp-xiu");
 
-        const arrKQ = inpKQ.value;
-        const arrKQXau = inpKQXau.value;
+        const valTai = inpTai.value;
+        const valXiu = inpXiu.value;
 
         // ✅ đợi chạy xong toàn bộ logic backend
-        await window.resetAll({ arrKQ, arrKQXau });
+        await window.resetAll({ valTai, valXiu });
 
         // ✅ clear input SAU CÙNG (chuẩn)
-        inpKQ.value = "";
-        inpKQXau.value = "";
+        inpTai.value = "";
+        inpXiu.value = "";
       });
     }
   });
@@ -475,7 +435,7 @@ async function UI_Reset(page) {
       nguongTienDat = nguongRut;
       soTienMuonRut = soTienRut;
 
-      await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);
+      await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
       saveStateTXT();
 
       // ===== UPDATE UI =====
@@ -485,7 +445,7 @@ async function UI_Reset(page) {
         soDuLonNhat,
         phanTramGiaoDich
       );
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
+      await TableChinh_Update_UI(page, LuutruLongmach);
 
     }
   );
@@ -496,14 +456,14 @@ async function UI_Reset(page) {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { isStop: !item.isStop });
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
+      await TableChinh_Update_UI(page, LuutruLongmach);
     }
     if (type === "UPDATE_SOLAN") {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { soLanChoDoi: Number(value) });
       saveStateTXT();
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
+      await TableChinh_Update_UI(page, LuutruLongmach);
     }
   });
 
@@ -536,12 +496,12 @@ async function UI_Reset(page) {
 
 
   await UI_Btn_Show_TieuDiem(page);
-  await UI_DieuKhien(page);//điều khiển 
+  await UI_Show_TiSo_TX(page, taiCount, xiuCount);
   await UI_Start(page);//Bắt đầu
 
   await TableChinh_Create(page);//Bắt đầu
-  await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
-  await UI_Show_SoDu(page, soDuTaiKhoan, profitAll)
+  await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
+  await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown)
   await UI_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
 
   async function injectMouseTracker(page) {
@@ -586,7 +546,6 @@ async function UI_Reset(page) {
   await UI_Reset(page);
 
   await KetquaTXList_Update_UI(page, ArrayKQ);
-  await LongMachList_Update_UI(page, ArrayKQ_XAU);
 })();
 
 // ================================================== HANDLE LOGIC ===========================================
@@ -621,7 +580,7 @@ async function CheckColor_X_Y() {
         ArrayKQ.push(ketqua === "black" ? T : X);
         if (ArrayKQ.length > 100) { ArrayKQ.shift() }
         await KetquaTXList_Update_UI(page, ArrayKQ);
-        ThucHienGiaoDich();
+        await ThucHienGiaoDich();
       }
     }
     countdown = 70;
@@ -643,51 +602,26 @@ async function ThucHienGiaoDich() {
 
   if (resultNew === "null") { console.log("Bị vấn đề về kết quả"); return };
 
-  if (muaGiaLap !== "null") {
-    const isWin = resultNew === muaGiaLap
-    if (isWin) {
-      ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
-      LuutruLongmach.forEach(item => {
-        if (item.type === Dep) item.tiso += 1;
-        if (item.type === Xau) item.tiso -= 1;
-      });
-
-      LuutruLongmach.forEach(item => {
-        if (item.tiso >= item.soLanChoDoi) item.isReady = true;
-      });
-
-      muaGiaLap = "null"
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
-      await LongMachList_Update_UI(page, ArrayKQ_XAU);
-
-    } else {
-      ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
-      LuutruLongmach.forEach(item => {
-        if (item.type === Dep) item.tiso -= 1;
-        if (item.type === Xau) item.tiso += 1;
-      });
-
-      LuutruLongmach.forEach(item => {
-        if (item.tiso >= item.soLanChoDoi) item.isReady = true;
-      });
-
-      muaGiaLap = "null"
-      await LongMachList_Update_UI(page, ArrayKQ_XAU);
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
-
-    }
-  }
-  if (muaGiaLap === "null" && tinHieuAI.huong !== "null") {
-    muaGiaLap = tinHieuAI.huong
+  // Cập nhật tiso dựa trên resultNew
+  if (resultNew === T) {
+    taiCount++;
+    LuutruLongmach.forEach(item => {
+      if (item.type === X) item.tiso += 1;
+      if (item.type === T) item.tiso -= 1;
+    });
+  } else if (resultNew === X) {
+    xiuCount++;
+    LuutruLongmach.forEach(item => {
+      if (item.type === T) item.tiso += 1;
+      if (item.type === X) item.tiso -= 1;
+    });
   }
 
-  for (const item of LuutruLongmach) {
-    if (!item.isReady && item.tiso >= item.soLanChoDoi) {
-      item.isReady = true;
-    }
-  }
-  await LongMachList_Update_UI(page, ArrayKQ_XAU);
-  await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
+  await UI_Show_TiSo_TX(page, taiCount, xiuCount);
+
+
+
+  await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
 
   // ========================== TP / SL ==========================
   for (const item of LuutruLongmach) {
@@ -696,46 +630,12 @@ async function ThucHienGiaoDich() {
       if (isWin) {
         soDuTaiKhoan += (item.vol * 0.98);
         profitAll += (item.vol * 0.98);
+        item.phiGD += (item.vol * 0.02);
 
-        item.AnNumber = item.isNhandoi ? item.AnNumber + 2 : item.AnNumber + 1;
+        item.AnNumber += 1;
         if (item.AnNumber >= item.soLanMuonAn) {
-          if (item.id === 1 || item.id === 2) {
-
-            const countA = ArrayKQ_XAU.filter(v => v === Dep).length;
-            const countB = ArrayKQ_XAU.filter(v => v === Xau).length;
-
-            ArrayKQ_XAU.length = 0;
-            const NgamThem = item.isNhandoi ? 5 : 3;
-
-            const diff = Math.abs(countA - countB) - NgamThem;
-            if (diff > 0) {
-              const val = countA > countB ? Dep : Xau;
-              for (let i = 0; i < diff; i++) {
-                ArrayKQ_XAU.push(val);
-              }
-            }
-            const countAA = ArrayKQ_XAU.filter(v => v === Dep).length;
-            const countBB = ArrayKQ_XAU.filter(v => v === Xau).length;
-
-            LuutruLongmach.forEach(item => {
-              item.isReady = false;
-              item.AnNumber = 0;
-              item.soLanMuonAn = item.id === 1 || item.id === 2 ? 2 : 1;
-              item.isNhandoi = false;
-              item.hoanthanh = true;
-              item.tiso = item.type === Dep ? (countBB - countAA) : (countAA - countBB);
-            });
-          } else {
-            const NgamThem = item.isNhandoi ? 4 : 2;
-            item.tiso = item.tiso - NgamThem
-            item.isReady = false;
-            item.AnNumber = 0;
-            item.soLanMuonAn = 1;
-            item.hoanthanh = true;
-            item.isNhandoi = false;
-          }
-
-          await LongMachList_Update_UI(page, ArrayKQ_XAU);
+          item.AnNumber = 0;
+          item.hoanthanh = true;
         }
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
@@ -743,16 +643,13 @@ async function ThucHienGiaoDich() {
           profit: item.profit + (item.vol * 0.98),
           win: item.win + 1,
           vol: 0,
+          phiGD: item.phiGD
         });
-        await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
+        await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       } else {
         soDuTaiKhoan -= item.vol;
         profitAll -= item.vol;
-        item.AnNumber = item.isNhandoi ? item.AnNumber - 2 : item.AnNumber - 1;
-        if (item.AnNumber <= -4 && (item.id === 1 || item.id === 2)) {
-          item.isNhandoi = true;
-          item.soLanMuonAn = 1;
-        }
+        item.AnNumber -= 1;
 
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
@@ -762,17 +659,32 @@ async function ThucHienGiaoDich() {
           lost: item.lost + 1,
           minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber
         });
-        await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);//Bắt đầu
+        await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       }
     }
   }
 
-  if (soDuTaiKhoan > soDuLonNhat) {
-    soDuLonNhat = soDuTaiKhoan
+  // Cập nhật lại isReady sau khi đã xử lý TP/SL (để reset tiso có hiệu lực ngay)
+  for (const item of LuutruLongmach) {
+    if (item.tiso >= item.soLanChoDoi) {
+      item.isReady = true;
+    } else {
+      item.isReady = false;
+    }
   }
 
-  await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
-  await UI_Show_SoDu(page, soDuTaiKhoan, profitAll)
+  // Tính Drawdown (chỉ tính khi số dư hiện tại thấp hơn đỉnh)
+  if (soDuTaiKhoan > soDuLonNhat) {
+    soDuLonNhat = soDuTaiKhoan;
+  } else if (soDuLonNhat > 0) {
+    const currentDrawdown = ((soDuLonNhat - soDuTaiKhoan) / soDuLonNhat) * 100;
+    if (currentDrawdown > maxDrawdown) {
+      maxDrawdown = currentDrawdown;
+    }
+  }
+
+  await TableChinh_Update_UI(page, LuutruLongmach);
+  await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown)
   await UI_Update_CaiDatVon(
     page,
     soDuTaiKhoan,
@@ -782,51 +694,56 @@ async function ThucHienGiaoDich() {
   saveStateTXT();
   // ========================== ĐẶT LỆNH ==========================
 
-
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
 
-
-
-  if (tinHieuAI.huong !== "null" && arrayNew.length > 0) {
-    for (const item of LuutruLongmach) {
-      if (item.hoanthanh) {
-        item.hoanthanh = false;
-      }
-    }
+  if (arrayNew.length > 0) {
 
     for (const item of arrayNew) {
-      const isBenDep = item.type === Dep;
-      const huongDanhNew = isBenDep ? (tinHieuAI.huong === T ? X : T) : tinHieuAI.huong;
-      const tinhVol = handleGetTien(soDuLonNhat, item.id === 1 || item.id === 2 ? phanTramGiaoDich : phanTramGiaoDich / 4);
-      const tinhVolNew = item.isNhandoi ? tinhVol * 2 : tinhVol;
+      if (item.hoanthanh) {
+        if (item.id === 1 || item.id === 2) {
+          for (const item of LuutruLongmach) {
+            if (item.hoanthanh) {
+              item.hoanthanh = false;
+            }
+          }
+        } else {
+          item.hoanthanh = false;
+        }
+      }
+      const huongDanhNew = item.type; // Đánh thẳng theo type (T hoặc X)
+      const group = Math.ceil(item.id / 10);
+      const tinhVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
+      const tinhVolNew = Math.floor(tinhVol * (1 + (group - 1) * 0.25));
+
 
       // =======================HandlClick=========================
-      const isTai = huongDanhNew === T;
+      // const isTai = huongDanhNew === T;
 
-      await UI_MouseClick(page,
-        isTai ? X_DatTai : X_DatXiu,
-        isTai ? Y_DatTai : Y_DatXiu, "👈");
-      await masterClick(page,
-        isTai ? X_DatTai : X_DatXiu,
-        isTai ? Y_DatTai : Y_DatXiu);
+      // await UI_MouseClick(page,
+      //   isTai ? X_DatTai : X_DatXiu,
+      //   isTai ? Y_DatTai : Y_DatXiu, "👈");
+      // await masterClick(page,
+      //   isTai ? X_DatTai : X_DatXiu,
+      //   isTai ? Y_DatTai : Y_DatXiu);
 
 
-      await clickTheoTinhVol(page, tinhVolNew, "🎯")
+      // // await clickTheoTinhVol(page, tinhVolNew, "🎯")
 
-      const delay = 200 + Math.floor(Math.random() * 500); // 500 → 2000
-      await page.waitForTimeout(delay);
+      // const delay = 10 + Math.floor(Math.random() * 30); // 500 → 2000
+      // await page.waitForTimeout(delay);
 
-      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-      await masterClick(page, X_Submit, Y_Submit);
+      // await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      // await masterClick(page, X_Submit, Y_Submit);
+
       // =======================End HandlClick=========================
       handleUpdate_LongMachList(item.id, {
         isTrading: true,
         huong: huongDanhNew,
         vol: tinhVolNew,
       });
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
-      saveStateTXT();
     }
+    await TableChinh_Update_UI(page, LuutruLongmach);
+    saveStateTXT();
   }
 
   const allNotTrading = LuutruLongmach.every(item => !item.isTrading);
@@ -845,18 +762,18 @@ async function ThucHienGiaoDich() {
       if (btn && btn.innerText === "▼") btn.click();
     });
 
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(10);
 
     // 1. Click vào button crypto / rút tiền (2 lần)
     await UI_MouseClick(page, X_ButtonRutTien, Y_ButtonRutTien, "🎯");
     await masterClick(page, X_ButtonRutTien, Y_ButtonRutTien);
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(10);
     await masterClick(page, X_ButtonRutTien, Y_ButtonRutTien);
 
 
 
     // 2. Click tab Rút
-    const delay = 1000 + Math.floor(Math.random() * 1500);
+    const delay = 300 + Math.floor(Math.random() * 500);
     await page.waitForTimeout(delay);
     await UI_MouseClick(page, X_BtnTabRut, Y_BtnTabRut, "🎯");
     await masterClick(page, X_BtnTabRut, Y_BtnTabRut);
@@ -904,7 +821,7 @@ async function ThucHienGiaoDich() {
     soDuLonNhat = soDuLonNhat - soTienMuonRut;
     tongTienDaRut += soTienMuonRut;
 
-    await UI_Show_SoDu(page, soDuTaiKhoan, profitAll);
+    await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
     saveStateTXT();
 
     await UI_Update_CaiDatVon(
@@ -916,7 +833,7 @@ async function ThucHienGiaoDich() {
 
     // Ghi nhận thu nhập tự động sau khi rút tiền thành công
     await ghiNhanThuNhap(soTienMuonRut);
-    await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU);
+    await TableChinh_Update_UI(page, LuutruLongmach);
 
   }
 }
@@ -929,7 +846,7 @@ async function ThucHienGiaoDich() {
 //   soTienMuonRut,
 //   tongTienDaRut,
 //   ArrayKQ,
-//   ArrayKQ_XAU,
+//   ArrayKQ,
 //   LuutruLongmach
 // });
 
@@ -1063,124 +980,77 @@ async function ShowTime70() {
       return;
     }
 
-    // Hiển thị countdown
+    // Đếm ngược 70s
+    countdown--;
+    if (countdown < 0) {
+      countdown = 70;
+    }
+
     await page.evaluate((c) => {
       const timerDiv = document.getElementById("timer-display");
       if (timerDiv) {
-        timerDiv.style.display = "block";
         timerDiv.innerText = c;
+        timerDiv.style.display = "block";
       }
     }, countdown);
-
-    countdown--;
-
-    // Khi countdown < 0 thì reset về 70
-    if (countdown < 0) countdown = 70;
-
   }, 1000);
 }
 
-async function toggleCapture() {
-  isRunning ? await handleStop() : await handleStart();
-  await LongMachList_Update_UI(page, ArrayKQ_XAU);
-}
+/**
+ * Hiển thị tỉ số Tài/Xỉu
+ */
+async function UI_Show_TiSo_TX(page, t = 0, x = 0) {
+  const totalPhi = LuutruLongmach.reduce((acc, item) => acc + (item.phiGD || 0), 0);
+  const totalLai = LuutruLongmach.reduce((acc, item) => acc + (item.profit > 0 ? item.profit : 0), 0);
+  const totalLo = LuutruLongmach.reduce((acc, item) => acc + (item.profit < 0 ? item.profit : 0), 0);
 
-async function UI_DieuKhien(page) {
-  await page.evaluate(() => {
-    let container = document.getElementById("adjust-buttons");
-    if (!container) {
-      container = document.createElement("div");
-      container.id = "adjust-buttons";
-      Object.assign(container.style, {
+  await page.evaluate(({ tai, xiu, phi, lai, lo }) => {
+    let box = document.getElementById("ui-tiso-tx");
+    if (!box) {
+      box = document.createElement("div");
+      box.id = "ui-tiso-tx";
+      Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
         left: "10px",
-        zIndex: 9999,
-        display: "grid",
-        gridTemplateColumns: "25px 25px 25px",
-        gridTemplateRows: "25px 25px",
-        gap: "1px", // siêu sát
+        zIndex: 10000,
+        background: "rgba(0,0,0,0.75)",
+        backdropFilter: "blur(4px)",
+        color: "white",
+        padding: "8px 12px",
+        borderRadius: "6px",
+        fontSize: "14px",
+        fontWeight: "600",
+        pointerEvents: "none",
+        boxShadow: "0 0 10px rgba(0,0,0,0.5)",
+        fontFamily: "Arial, sans-serif",
+        display: "flex",
+        flexDirection: "column",
+        gap: "4px"
       });
-      document.body.appendChild(container);
-
-      // Layout 4 nút bàn phím thật
-      const layout = [
-        { id: "up-btn", text: "⬆️", col: 2, row: 1 },
-        { id: "left-btn", text: "⬅️", col: 1, row: 2 },
-        { id: "down-btn", text: "⬇️", col: 2, row: 2 },
-        { id: "right-btn", text: "➡️", col: 3, row: 2 },
-      ];
-
-      layout.forEach(btnInfo => {
-        const btn = document.createElement("button");
-        btn.id = btnInfo.id;
-        btn.innerText = btnInfo.text;
-        Object.assign(btn.style, {
-          width: "25px",
-          height: "25px",
-          fontSize: "16px",
-          borderRadius: "3px",
-          border: "1px solid black",
-          cursor: "pointer",
-          backgroundColor: "black",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gridColumn: btnInfo.col,
-          gridRow: btnInfo.row,
-          padding: "0",
-          margin: "0",
-        });
-        container.appendChild(btn);
-      });
+      document.body.appendChild(box);
     }
-  });
-
-  // Expose Node.js function để update startX/startY
-  await page.exposeFunction("adjustStartXY", async (dx, dy) => {
-    startX += dx;
-    startY += dy;
-
-    X_Ketqua += dx;
-    Y_Ketqua += dy;
-
-    X_DatTai += dx;
-    Y_DatTai += dy;
-
-    X_DatXiu += dx;
-    Y_DatXiu += dy;
-
-    X_cuoc1 += dx;
-    Y_cuoc1 += dy;
-
-    X_cuoc10 += dx;
-    Y_cuoc10 += dy;
-
-    X_cuoc100 += dx;
-    Y_cuoc100 += dy;
-
-    X_Submit += dx;
-    Y_Submit += dy;
-
-    // console.log(`🖌 startX=${startX}, startY=${startY}`);
-    await UI_TieuDiem(page, startX, startY, width, height, "control", "#ff0000");   // đỏ
-    await UI_TieuDiem(page, X_Ketqua, Y_Ketqua, width, height, "tieudiem-2", "#007bff"); // xanh dương
-    await UI_TieuDiem(page, X_DatTai, Y_DatTai, width, height, "tieudiem-3", "#28a745"); // xanh lá
-    await UI_TieuDiem(page, X_DatXiu, Y_DatXiu, width, height, "tieudiem-4", "#ffc107"); // vàng
-    await UI_TieuDiem(page, X_cuoc1, Y_cuoc1, width, height, "tieudiem-5", "#6f42c1"); // tím
-    await UI_TieuDiem(page, X_cuoc10, Y_cuoc10, width, height, "tieudiem-6", "#fd7e14"); // cam
-    await UI_TieuDiem(page, X_cuoc100, Y_cuoc100, width, height, "tieudiem-7", "#2bf011"); // cam
-    await UI_TieuDiem(page, X_Submit, Y_Submit, width, height, "tieudiem-8", "#e83e8c"); // hồng
-
-  });
-
-  // Gắn sự kiện click cho 4 nút
-  await page.evaluate(() => {
-    document.getElementById("up-btn").addEventListener("click", () => window.adjustStartXY(0, -1));
-    document.getElementById("down-btn").addEventListener("click", () => window.adjustStartXY(0, 1));
-    document.getElementById("left-btn").addEventListener("click", () => window.adjustStartXY(-1, 0));
-    document.getElementById("right-btn").addEventListener("click", () => window.adjustStartXY(1, 0));
-  });
+    box.innerHTML = `
+      <div style="display:flex; gap:15px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 4px;">
+        <span style="color:#ff4d4d; font-size:18px; font-weight:800;">⚫: ${tai}</span>
+        <span style="color:#4da6ff; font-size:18px; font-weight:800;">⚪: ${xiu}</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:2px; padding-top: 2px;">
+        <div style="display:flex; justify-content: space-between; gap: 10px;">
+          <span style="color:#ccc">Phí:</span>
+          <span style="color:#ffcc00">${phi.toFixed(1)}</span>
+        </div>
+        <div style="display:flex; justify-content: space-between; gap: 10px;">
+          <span style="color:#ccc">Lãi:</span>
+          <span style="color:#00ff00">${lai.toFixed(1)}</span>
+        </div>
+        <div style="display:flex; justify-content: space-between; gap: 10px;">
+          <span style="color:#ccc">Lỗ:</span>
+          <span style="color:#ff4d4d">${lo.toFixed(1)}</span>
+        </div>
+      </div>
+    `;
+  }, { tai: t, xiu: x, phi: totalPhi, lai: totalLai, lo: totalLo });
 }
 
 async function clickTheoTinhVol(page, tinhVol, icon) {
@@ -1210,12 +1080,12 @@ async function clickTheoTinhVol(page, tinhVol, icon) {
 
 async function clickN(page, x, y, n, icon = "🖱️") {
   for (let i = 0; i < n; i++) {
-    await UI_MouseClick(page, x, y, icon, 18, "ui-mouse-click", 1000);
+    await UI_MouseClick(page, x, y, icon, 18, "ui-mouse-click", 100);
 
     await page.mouse.move(x, y);
     await masterClick(page, x, y);
 
-    const delay = 15 + Math.floor(Math.random() * 80);
+    const delay = 3 + Math.floor(Math.random() * 6);
     await page.waitForTimeout(delay);
   }
 }
@@ -1401,11 +1271,14 @@ function saveStateTXT() {
     lines.push(`nguongTienDat=${nguongTienDat}`);
     lines.push(`soTienMuonRut=${soTienMuonRut}`);
     lines.push(`tongTienDaRut=${tongTienDaRut}`);
+    lines.push(`maxDrawdown=${maxDrawdown}`);
+    lines.push(`taiCount=${taiCount}`);
+    lines.push(`xiuCount=${xiuCount}`);
 
     lines.push("");
 
     lines.push(`ArrayKQ=${ArrayKQ.join(",")}`);
-    lines.push(`ArrayKQ_XAU=${ArrayKQ_XAU.join(",")}`);
+    lines.push(`ArrayKQ=${ArrayKQ.join(",")}`);
     lines.push("");
 
     // ✅ GHI DẠNG JSON NHIỀU DÒNG
@@ -1441,6 +1314,9 @@ function loadStateTXT() {
     nguongTienDat = Number(getVal("nguongTienDat")) || nguongTienDat;
     soTienMuonRut = Number(getVal("soTienMuonRut")) || soTienMuonRut;
     tongTienDaRut = Number(getVal("tongTienDaRut")) || tongTienDaRut;
+    maxDrawdown = Number(getVal("maxDrawdown")) || maxDrawdown;
+    taiCount = Number(getVal("taiCount")) || 0;
+    xiuCount = Number(getVal("xiuCount")) || 0;
 
     const arrKQ = getVal("ArrayKQ");
     if (arrKQ) {
@@ -1448,11 +1324,6 @@ function loadStateTXT() {
       ArrayKQ.push(...arrKQ.split(","));
     }
 
-    const arrXAU = getVal("ArrayKQ_XAU");
-    if (arrXAU) {
-      ArrayKQ_XAU.length = 0;
-      ArrayKQ_XAU.push(...arrXAU.split(","));
-    }
 
     // ===== LUUTRU LONGMACH MULTI LINE JSON =====
     const lmIndex = content.indexOf("LuutruLongmach=");
@@ -1469,7 +1340,8 @@ function loadStateTXT() {
           isReady: i.isReady ?? false,
           AnNumber: i.AnNumber ?? 0,
           soLanMuonAn: i.soLanMuonAn ?? ((i.id === 1 || i.id === 2) ? 2 : 1),
-          isNhandoi: i.isNhandoi ?? false,
+          phiGD: i.phiGD ?? 0,
+
           hoanthanh: i.hoanthanh ?? false,
           soLanChoDoi: i.soLanChoDoi ?? (i.type === "A" && i.id === 1 ? 7 : i.type === "B" && i.id === 2 ? 7 : 10)
         }));

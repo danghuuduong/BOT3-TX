@@ -470,57 +470,6 @@ function TinHieuMuaBan(ArrayKQ) {
   return { huong: "null", type: "null" };
 }
 
-function TinHieuMuaBanNew(ArrayKQ_XAU) {
-  if (!Array.isArray(ArrayKQ_XAU) || ArrayKQ_XAU.length < 2) {
-    return { huong: "null", type: "null" };
-  }
-
-  const s2 = getLastTX(ArrayKQ_XAU, 2);
-  const s3 = getLastTX(ArrayKQ_XAU, 3);
-
-  // if (lockState_NEW[TYPES2.type_2_2_NEW]) {
-  //   if (!isValid_2_2NEW(s2)) lockState_NEW[TYPES2.type_2_2_NEW] = false;
-  // } else {
-  //   if (s3 === "BAA" || s3 === "ABB") {
-  //     lockState_NEW[TYPES2.type_2_2_NEW] = true;
-  //     return {
-  //       isPheDep: s3 === "BAA" ? false : true,
-  //       type: TYPES2.type_2_2_NEW,
-  //     };
-  //   }
-  // }
-
-
-  if (s3 === "BAA" || s3 === "ABB") {
-    return {
-      isPheDep: s3 === "BAA" ? false : true,
-      type: TYPES2.type_2_2_NEW,
-    };
-  }
-
-
-  if (s3 === "AAA" || s3 === "BBB") {
-    return {
-      isPheDep: s3 === "AAA" ? false : true,
-      type: s3 === "AAA" ? TYPES2.typeBeThangDep : TYPES2.typeBeThangXau,
-    };
-  }
-
-  if (!Array.isArray(ArrayKQ_XAU) || ArrayKQ_XAU.length < 4) {
-    return { huong: "null", type: "null" };
-  }
-  const s4 = getLastTX(ArrayKQ_XAU, 4);
-
-
-  if (s4 === "ABAB" || s4 === "BABA") {
-    return {
-      isPheDep: s4 === "BABA" ? true : false,
-      type: TYPES2.typeSenke
-    };
-  }
-  return { huong: "null", type: "null" };
-}
-
 
 
 
@@ -556,27 +505,18 @@ function getHuongForItem(tinHieuAINew, huongGoc) {
   return huongGoc;
 }
 
-function checkABTrongDoXanh(arr, number) {
-  const countA = arr.filter(v => v === Dep).length || 0;
-  const countB = arr.filter(v => v === Xau).length || 0;
 
-  if (countB - countA >= number) return Dep;
-  if (countA - countB >= number) return Xau;
-
-  return "null";
-}
 // ================= EXPORT =================
 module.exports = {
   TinHieuMuaBan,
-  TinHieuMuaBanNew,
   updateButton,
   handleGetColor_TX,
   getHuongForItem,
-  checkABTrongDoXanh,
   TYPES,
   T,
   X,
   Dep,
+
   Xau,
   maxThep,
 };

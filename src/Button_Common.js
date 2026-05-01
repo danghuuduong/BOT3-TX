@@ -59,8 +59,8 @@ async function UI_Btn_Show_TieuDiem(page) {
   });
 }
 
-async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
-  await page.evaluate(({ balance, pnl }) => {
+async function UI_Show_SoDu(page, soDu = 0, profit = 0, mdd = 0) {
+  await page.evaluate(({ balance, pnl, mddValue }) => {
     let box = document.getElementById("ui-so-du");
 
     if (!box) {
@@ -73,7 +73,7 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
         zIndex: 10000,
 
         /* ===== NỀN & TÁCH MÀU ===== */
-        background: "rgba(255,255,255,0.55)",
+        background: "rgba(255,255,255,0.5)",
         backdropFilter: "blur(4px)",
         WebkitBackdropFilter: "blur(4px)",
         padding: "4px 8px",
@@ -94,8 +94,9 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
         userSelect: "none",
         pointerEvents: "none",
         display: "flex",
-        gap: "6px",
-        alignItems: "center",
+        flexDirection: "column",
+        gap: "2px",
+        alignItems: "flex-end",
       });
 
       document.body.appendChild(box);
@@ -109,22 +110,17 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
     else if (pnl < 0) profitColor = "#d00000";
 
     box.innerHTML = `
-      <span style="
-        color:#111;
-        text-shadow:
-          0 0 2px #fff,
-          0 0 4px rgba(0,0,0,0.6);
-      ">
-        💰 ${fmtBalance}
-      </span>
-      <span style="
-        color:${profitColor};
-        text-shadow:
-          0 0 2px #fff,
-          0 0 4px rgba(0,0,0,0.6);
-      ">
-        (${pnl > 0 ? "+" : ""}${fmtProfit})
-      </span>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <span style="color:#111; text-shadow:0 0 2px #fff, 0 0 4px rgba(0,0,0,0.6);">
+          💰 ${fmtBalance}
+        </span>
+        <span style="color:${profitColor}; text-shadow:0 0 2px #fff, 0 0 4px rgba(0,0,0,0.6);">
+          (${pnl > 0 ? "+" : ""}${fmtProfit})
+        </span>
+      </div>
+      <div style="color:#666; font-size:13px; font-weight:800; text-shadow:0 0 1px #fff;">
+        Tổn Thất : ${Number(mddValue).toFixed(1)}%
+      </div>
     `;
 
     /* ===== NHẤP NHÁY NHẸ ===== */
@@ -134,7 +130,7 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0) {
       box.style.transform = "scale(1)";
     }, 200);
 
-  }, { balance: soDu, pnl: profit });
+  }, { balance: soDu, pnl: profit, mddValue: mdd });
 }
 
 
