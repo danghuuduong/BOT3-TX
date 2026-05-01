@@ -617,10 +617,6 @@ async function ThucHienGiaoDich() {
     });
   }
 
-  await UI_Show_TiSo_TX(page, taiCount, xiuCount);
-
-
-
   await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
 
   // ========================== TP / SL ==========================
@@ -664,6 +660,8 @@ async function ThucHienGiaoDich() {
     }
   }
 
+  await UI_Show_TiSo_TX(page, taiCount, xiuCount);
+
   // Cập nhật lại isReady sau khi đã xử lý TP/SL (để reset tiso có hiệu lực ngay)
   for (const item of LuutruLongmach) {
     if (item.tiso >= item.soLanChoDoi) {
@@ -684,6 +682,7 @@ async function ThucHienGiaoDich() {
   }
 
   await TableChinh_Update_UI(page, LuutruLongmach);
+  await UI_Show_TiSo_TX(page, taiCount, xiuCount);
   await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown)
   await UI_Update_CaiDatVon(
     page,
@@ -743,6 +742,7 @@ async function ThucHienGiaoDich() {
       });
     }
     await TableChinh_Update_UI(page, LuutruLongmach);
+    await UI_Show_TiSo_TX(page, taiCount, xiuCount);
     saveStateTXT();
   }
 
@@ -1001,10 +1001,13 @@ async function ShowTime70() {
  */
 async function UI_Show_TiSo_TX(page, t = 0, x = 0) {
   const totalPhi = LuutruLongmach.reduce((acc, item) => acc + (item.phiGD || 0), 0);
-  const totalLai = LuutruLongmach.reduce((acc, item) => acc + (item.profit > 0 ? item.profit : 0), 0);
-  const totalLo = LuutruLongmach.reduce((acc, item) => acc + (item.profit < 0 ? item.profit : 0), 0);
+  const totalLai = LuutruLongmach.filter(item => item.profit > 0).reduce((acc, item) => acc + item.profit, 0);
+  const totalLo = LuutruLongmach.filter(item => item.profit < 0).reduce((acc, item) => acc + item.profit, 0);
 
-  await page.evaluate(({ tai, xiu, phi, lai, lo }) => {
+  const totalVolUocTinh = LuutruLongmach.filter(item => item.isTrading).reduce((acc, item) => acc + (item.vol || 0), 0);
+  const totalPhiUocTinh = totalVolUocTinh * 0.02;
+
+  await page.evaluate(({ tai, xiu, phi, lai, lo, volUT, phiUT }) => {
     let box = document.getElementById("ui-tiso-tx");
     if (!box) {
       box = document.createElement("div");
@@ -1037,20 +1040,28 @@ async function UI_Show_TiSo_TX(page, t = 0, x = 0) {
       </div>
       <div style="display:flex; flex-direction:column; gap:2px; padding-top: 2px;">
         <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Phí:</span>
+          <span style="color:#ccc">Tổng Phí:</span>
           <span style="color:#ffcc00">${phi.toFixed(1)}</span>
         </div>
         <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Lãi:</span>
+          <span style="color:#ccc">Item Lãi:</span>
           <span style="color:#00ff00">${lai.toFixed(1)}</span>
         </div>
         <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Lỗ:</span>
+          <span style="color:#ccc">Item Lỗ:</span>
           <span style="color:#ff4d4d">${lo.toFixed(1)}</span>
+        </div>
+        <div style="display:flex; justify-content: space-between; gap: 10px; border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 2px; padding-top: 2px;">
+          <span style="color:#ccc">Vol ước tính :</span>
+          <span style="color:#fff">${volUT.toFixed(1)}</span>
+        </div>
+        <div style="display:flex; justify-content: space-between; gap: 10px;">
+          <span style="color:#ccc">Phí ước tính:</span>
+          <span style="color:#ffcc00">${phiUT.toFixed(2)}</span>
         </div>
       </div>
     `;
-  }, { tai: t, xiu: x, phi: totalPhi, lai: totalLai, lo: totalLo });
+  }, { tai: t, xiu: x, phi: totalPhi, lai: totalLai, lo: totalLo, volUT: totalVolUocTinh, phiUT: totalPhiUocTinh });
 }
 
 async function clickTheoTinhVol(page, tinhVol, icon) {
