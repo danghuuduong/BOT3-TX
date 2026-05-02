@@ -1,16 +1,16 @@
-soDuTaiKhoan=3743.66800000014
+soDuTaiKhoan=3754.988000000148
 soDuLonNhat=4093.188000000005
 phanTramGiaoDich=0.05
-profitAll=-362.2999999997912
+profitAll=-350.97999999979123
 nguongTienDat=13400
 soTienMuonRut=5400
 tongTienDaRut=0
 maxDrawdown=54.6713222065521
-taiCount=300
-xiuCount=272
+taiCount=305
+xiuCount=277
 
-ArrayKQ=X,T,X,X,T,X,T,T,T,X,T,T,T,T,X,X,X,X,T,T,T,T,X,T,X,X,T,T,T,X,X,T,X,X,T,T,X,X,T,X,X,T,X,T,X,T,T,X,T,T,T,T,X,X,X,X,T,X,X,X,X,X,T,X,X,X,T,X,X,X,T,X,X,X,X,T,X,X,T,T,X,T,X,X,X,T,T,X,X,T,X,T,X,X,T,T,T,T,X,X
-ArrayKQ=X,T,X,X,T,X,T,T,T,X,T,T,T,T,X,X,X,X,T,T,T,T,X,T,X,X,T,T,T,X,X,T,X,X,T,T,X,X,T,X,X,T,X,T,X,T,T,X,T,T,T,T,X,X,X,X,T,X,X,X,X,X,T,X,X,X,T,X,X,X,T,X,X,X,X,T,X,X,T,T,X,T,X,X,X,T,T,X,X,T,X,T,X,X,T,T,T,T,X,X
+ArrayKQ=T,T,T,T,X,X,X,X,T,T,T,T,X,T,X,X,T,T,T,X,X,T,X,X,T,T,X,X,T,X,X,T,X,T,X,T,T,X,T,T,T,T,X,X,X,X,T,X,X,X,X,X,T,X,X,X,T,X,X,X,T,X,X,X,X,T,X,X,T,T,X,T,X,X,X,T,T,X,X,T,X,T,X,X,T,T,T,T,X,X,T,T,X,X,X,T,T,T,X,X
+ArrayKQ=T,T,T,T,X,X,X,X,T,T,T,T,X,T,X,X,T,T,T,X,X,T,X,X,T,T,X,X,T,X,X,T,X,T,X,T,T,X,T,T,T,T,X,X,X,X,T,X,X,X,X,X,T,X,X,X,T,X,X,X,T,X,X,X,X,T,X,X,T,T,X,T,X,X,X,T,T,X,X,T,X,T,X,X,T,T,T,T,X,X,T,T,X,X,X,T,T,T,X,X
 
 LuutruLongmach=
 [
@@ -37,10 +37,10 @@ LuutruLongmach=
     "id": 2,
     "isTrading": true,
     "huong": "X",
-    "profit": -69.08000000000075,
+    "profit": -69.28000000000078,
     "vol": 2,
-    "win": 227,
-    "lost": 253,
+    "win": 232,
+    "lost": 258,
     "isStop": false,
     "type": "X",
     "minAnNumber": -43,
@@ -50,7 +50,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 1,
     "tiso": 28,
-    "phiGD": 9.079999999999982
+    "phiGD": 9.279999999999978
   },
   {
     "id": 3,
@@ -75,10 +75,10 @@ LuutruLongmach=
     "id": 4,
     "isTrading": true,
     "huong": "X",
-    "profit": -65.04000000000059,
+    "profit": -65.2400000000006,
     "vol": 2,
-    "win": 226,
-    "lost": 250,
+    "win": 231,
+    "lost": 255,
     "isStop": false,
     "type": "X",
     "minAnNumber": -42,
@@ -88,7 +88,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 2,
     "tiso": 28,
-    "phiGD": 9.039999999999983
+    "phiGD": 9.239999999999979
   },
   {
     "id": 5,
@@ -113,10 +113,10 @@ LuutruLongmach=
     "id": 6,
     "isTrading": true,
     "huong": "X",
-    "profit": -62.96000000000047,
+    "profit": -63.16000000000046,
     "vol": 2,
-    "win": 224,
-    "lost": 247,
+    "win": 229,
+    "lost": 252,
     "isStop": false,
     "type": "X",
     "minAnNumber": -41,
@@ -126,7 +126,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 3,
     "tiso": 28,
-    "phiGD": 8.959999999999985
+    "phiGD": 9.15999999999998
   },
   {
     "id": 7,
@@ -151,10 +151,10 @@ LuutruLongmach=
     "id": 8,
     "isTrading": true,
     "huong": "X",
-    "profit": -62.88000000000046,
+    "profit": -63.080000000000446,
     "vol": 2,
-    "win": 222,
-    "lost": 246,
+    "win": 227,
+    "lost": 251,
     "isStop": false,
     "type": "X",
     "minAnNumber": -40,
@@ -164,7 +164,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 4,
     "tiso": 28,
-    "phiGD": 8.879999999999987
+    "phiGD": 9.079999999999982
   },
   {
     "id": 9,
@@ -189,10 +189,10 @@ LuutruLongmach=
     "id": 10,
     "isTrading": true,
     "huong": "X",
-    "profit": -60.88000000000038,
+    "profit": -61.08000000000037,
     "vol": 2,
-    "win": 222,
-    "lost": 245,
+    "win": 227,
+    "lost": 250,
     "isStop": false,
     "type": "X",
     "minAnNumber": -39,
@@ -202,7 +202,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 5,
     "tiso": 28,
-    "phiGD": 8.879999999999987
+    "phiGD": 9.079999999999982
   },
   {
     "id": 11,
@@ -227,10 +227,10 @@ LuutruLongmach=
     "id": 12,
     "isTrading": true,
     "huong": "X",
-    "profit": -58.88000000000027,
+    "profit": -59.08000000000027,
     "vol": 2,
-    "win": 222,
-    "lost": 244,
+    "win": 227,
+    "lost": 249,
     "isStop": false,
     "type": "X",
     "minAnNumber": -38,
@@ -240,7 +240,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 6,
     "tiso": 28,
-    "phiGD": 8.879999999999987
+    "phiGD": 9.079999999999982
   },
   {
     "id": 13,
@@ -265,10 +265,10 @@ LuutruLongmach=
     "id": 14,
     "isTrading": true,
     "huong": "X",
-    "profit": -54.88,
+    "profit": -55.08,
     "vol": 2,
-    "win": 222,
-    "lost": 242,
+    "win": 227,
+    "lost": 247,
     "isStop": false,
     "type": "X",
     "minAnNumber": -37,
@@ -278,7 +278,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 7,
     "tiso": 28,
-    "phiGD": 8.879999999999987
+    "phiGD": 9.079999999999982
   },
   {
     "id": 15,
@@ -303,10 +303,10 @@ LuutruLongmach=
     "id": 16,
     "isTrading": true,
     "huong": "X",
-    "profit": -52.840000000000025,
+    "profit": -53.04000000000002,
     "vol": 2,
-    "win": 221,
-    "lost": 241,
+    "win": 226,
+    "lost": 246,
     "isStop": false,
     "type": "X",
     "minAnNumber": -36,
@@ -316,7 +316,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 8,
     "tiso": 28,
-    "phiGD": 8.839999999999987
+    "phiGD": 9.039999999999983
   },
   {
     "id": 17,
@@ -341,10 +341,10 @@ LuutruLongmach=
     "id": 18,
     "isTrading": true,
     "huong": "X",
-    "profit": -44.83999999999993,
+    "profit": -45.03999999999993,
     "vol": 2,
-    "win": 221,
-    "lost": 237,
+    "win": 226,
+    "lost": 242,
     "isStop": false,
     "type": "X",
     "minAnNumber": -35,
@@ -354,7 +354,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 9,
     "tiso": 28,
-    "phiGD": 8.839999999999987
+    "phiGD": 9.039999999999983
   },
   {
     "id": 19,
@@ -379,10 +379,10 @@ LuutruLongmach=
     "id": 20,
     "isTrading": true,
     "huong": "X",
-    "profit": -32.71999999999984,
+    "profit": -32.91999999999984,
     "vol": 2,
-    "win": 218,
-    "lost": 229,
+    "win": 223,
+    "lost": 234,
     "isStop": false,
     "type": "X",
     "minAnNumber": -34,
@@ -392,7 +392,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 10,
     "tiso": 28,
-    "phiGD": 8.71999999999999
+    "phiGD": 8.919999999999986
   },
   {
     "id": 21,
@@ -417,10 +417,10 @@ LuutruLongmach=
     "id": 22,
     "isTrading": true,
     "huong": "X",
-    "profit": -48.66000000000038,
+    "profit": -48.96000000000039,
     "vol": 3,
-    "win": 211,
-    "lost": 222,
+    "win": 216,
+    "lost": 227,
     "isStop": false,
     "type": "X",
     "minAnNumber": -33,
@@ -430,7 +430,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 11,
     "tiso": 28,
-    "phiGD": 12.660000000000016
+    "phiGD": 12.960000000000019
   },
   {
     "id": 23,
@@ -455,10 +455,10 @@ LuutruLongmach=
     "id": 24,
     "isTrading": true,
     "huong": "X",
-    "profit": -33.30000000000038,
+    "profit": -33.60000000000039,
     "vol": 3,
-    "win": 205,
-    "lost": 211,
+    "win": 210,
+    "lost": 216,
     "isStop": false,
     "type": "X",
     "minAnNumber": -32,
@@ -468,7 +468,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 12,
     "tiso": 28,
-    "phiGD": 12.300000000000013
+    "phiGD": 12.600000000000016
   },
   {
     "id": 25,
@@ -493,10 +493,10 @@ LuutruLongmach=
     "id": 26,
     "isTrading": true,
     "huong": "X",
-    "profit": -41.70000000000036,
+    "profit": -42.00000000000037,
     "vol": 3,
-    "win": 195,
-    "lost": 204,
+    "win": 200,
+    "lost": 209,
     "isStop": false,
     "type": "X",
     "minAnNumber": -31,
@@ -506,7 +506,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 13,
     "tiso": 28,
-    "phiGD": 11.700000000000008
+    "phiGD": 12.00000000000001
   },
   {
     "id": 27,
@@ -531,10 +531,10 @@ LuutruLongmach=
     "id": 28,
     "isTrading": true,
     "huong": "X",
-    "profit": -44.34000000000036,
+    "profit": -44.64000000000037,
     "vol": 3,
-    "win": 189,
-    "lost": 199,
+    "win": 194,
+    "lost": 204,
     "isStop": false,
     "type": "X",
     "minAnNumber": -30,
@@ -544,7 +544,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 14,
     "tiso": 28,
-    "phiGD": 11.340000000000005
+    "phiGD": 11.640000000000008
   },
   {
     "id": 29,
@@ -569,10 +569,10 @@ LuutruLongmach=
     "id": 30,
     "isTrading": true,
     "huong": "X",
-    "profit": -41.100000000000364,
+    "profit": -41.400000000000375,
     "vol": 3,
-    "win": 185,
-    "lost": 194,
+    "win": 190,
+    "lost": 199,
     "isStop": false,
     "type": "X",
     "minAnNumber": -29,
@@ -582,7 +582,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 15,
     "tiso": 28,
-    "phiGD": 11.100000000000003
+    "phiGD": 11.400000000000006
   },
   {
     "id": 31,
@@ -607,10 +607,10 @@ LuutruLongmach=
     "id": 32,
     "isTrading": true,
     "huong": "X",
-    "profit": -43.860000000000355,
+    "profit": -44.160000000000366,
     "vol": 3,
-    "win": 181,
-    "lost": 191,
+    "win": 186,
+    "lost": 196,
     "isStop": false,
     "type": "X",
     "minAnNumber": -28,
@@ -620,7 +620,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 16,
     "tiso": 28,
-    "phiGD": 10.860000000000001
+    "phiGD": 11.160000000000004
   },
   {
     "id": 33,
@@ -645,10 +645,10 @@ LuutruLongmach=
     "id": 34,
     "isTrading": true,
     "huong": "X",
-    "profit": -43.74000000000035,
+    "profit": -44.04000000000036,
     "vol": 3,
-    "win": 179,
-    "lost": 189,
+    "win": 184,
+    "lost": 194,
     "isStop": false,
     "type": "X",
     "minAnNumber": -27,
@@ -658,7 +658,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 17,
     "tiso": 28,
-    "phiGD": 10.74
+    "phiGD": 11.040000000000003
   },
   {
     "id": 35,
@@ -683,10 +683,10 @@ LuutruLongmach=
     "id": 36,
     "isTrading": true,
     "huong": "X",
-    "profit": -31.680000000000348,
+    "profit": -31.98000000000036,
     "vol": 3,
-    "win": 178,
-    "lost": 184,
+    "win": 183,
+    "lost": 189,
     "isStop": false,
     "type": "X",
     "minAnNumber": -26,
@@ -696,7 +696,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 18,
     "tiso": 28,
-    "phiGD": 10.68
+    "phiGD": 10.980000000000002
   },
   {
     "id": 37,
@@ -721,10 +721,10 @@ LuutruLongmach=
     "id": 38,
     "isTrading": true,
     "huong": "X",
-    "profit": -13.440000000000301,
+    "profit": -13.740000000000306,
     "vol": 3,
-    "win": 174,
-    "lost": 174,
+    "win": 179,
+    "lost": 179,
     "isStop": false,
     "type": "X",
     "minAnNumber": -25,
@@ -734,7 +734,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 19,
     "tiso": 28,
-    "phiGD": 10.439999999999998
+    "phiGD": 10.74
   },
   {
     "id": 39,
@@ -759,10 +759,10 @@ LuutruLongmach=
     "id": 40,
     "isTrading": true,
     "huong": "X",
-    "profit": -9.900000000000256,
+    "profit": -10.200000000000259,
     "vol": 3,
-    "win": 165,
-    "lost": 164,
+    "win": 170,
+    "lost": 169,
     "isStop": false,
     "type": "X",
     "minAnNumber": -24,
@@ -772,7 +772,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 20,
     "tiso": 28,
-    "phiGD": 9.899999999999993
+    "phiGD": 10.199999999999996
   },
   {
     "id": 41,
@@ -797,10 +797,10 @@ LuutruLongmach=
     "id": 42,
     "isTrading": true,
     "huong": "X",
-    "profit": -20.479999999999762,
+    "profit": -20.879999999999754,
     "vol": 4,
-    "win": 156,
-    "lost": 157,
+    "win": 161,
+    "lost": 162,
     "isStop": false,
     "type": "X",
     "minAnNumber": -23,
@@ -810,7 +810,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 21,
     "tiso": 28,
-    "phiGD": 12.48000000000001
+    "phiGD": 12.88000000000001
   },
   {
     "id": 43,
@@ -835,10 +835,10 @@ LuutruLongmach=
     "id": 44,
     "isTrading": true,
     "huong": "X",
-    "profit": -31.99999999999976,
+    "profit": -32.39999999999975,
     "vol": 4,
-    "win": 150,
-    "lost": 154,
+    "win": 155,
+    "lost": 159,
     "isStop": false,
     "type": "X",
     "minAnNumber": -22,
@@ -848,7 +848,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 22,
     "tiso": 28,
-    "phiGD": 12.000000000000009
+    "phiGD": 12.40000000000001
   },
   {
     "id": 45,
@@ -873,10 +873,10 @@ LuutruLongmach=
     "id": 46,
     "isTrading": true,
     "huong": "X",
-    "profit": -35.83999999999975,
+    "profit": -36.23999999999974,
     "vol": 4,
-    "win": 148,
-    "lost": 153,
+    "win": 153,
+    "lost": 158,
     "isStop": false,
     "type": "X",
     "minAnNumber": -21,
@@ -886,7 +886,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 23,
     "tiso": 28,
-    "phiGD": 11.840000000000009
+    "phiGD": 12.240000000000009
   },
   {
     "id": 47,
@@ -911,10 +911,10 @@ LuutruLongmach=
     "id": 48,
     "isTrading": true,
     "huong": "X",
-    "profit": -31.839999999999748,
+    "profit": -32.23999999999974,
     "vol": 4,
-    "win": 148,
-    "lost": 152,
+    "win": 153,
+    "lost": 157,
     "isStop": false,
     "type": "X",
     "minAnNumber": -20,
@@ -924,7 +924,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 24,
     "tiso": 28,
-    "phiGD": 11.840000000000009
+    "phiGD": 12.240000000000009
   },
   {
     "id": 49,
@@ -949,10 +949,10 @@ LuutruLongmach=
     "id": 50,
     "isTrading": true,
     "huong": "X",
-    "profit": -27.839999999999762,
+    "profit": -28.239999999999753,
     "vol": 4,
-    "win": 148,
-    "lost": 151,
+    "win": 153,
+    "lost": 156,
     "isStop": false,
     "type": "X",
     "minAnNumber": -19,
@@ -962,7 +962,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 25,
     "tiso": 28,
-    "phiGD": 11.840000000000009
+    "phiGD": 12.240000000000009
   },
   {
     "id": 51,
@@ -987,10 +987,10 @@ LuutruLongmach=
     "id": 52,
     "isTrading": true,
     "huong": "X",
-    "profit": -19.83999999999977,
+    "profit": -20.23999999999976,
     "vol": 4,
-    "win": 148,
-    "lost": 149,
+    "win": 153,
+    "lost": 154,
     "isStop": false,
     "type": "X",
     "minAnNumber": -18,
@@ -1000,7 +1000,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 26,
     "tiso": 28,
-    "phiGD": 11.840000000000009
+    "phiGD": 12.240000000000009
   },
   {
     "id": 53,
@@ -1025,10 +1025,10 @@ LuutruLongmach=
     "id": 54,
     "isTrading": true,
     "huong": "X",
-    "profit": -3.7599999999998186,
+    "profit": -4.159999999999819,
     "vol": 4,
-    "win": 147,
-    "lost": 144,
+    "win": 152,
+    "lost": 149,
     "isStop": false,
     "type": "X",
     "minAnNumber": -17,
@@ -1038,7 +1038,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 27,
     "tiso": 28,
-    "phiGD": 11.760000000000009
+    "phiGD": 12.160000000000009
   },
   {
     "id": 55,
@@ -1063,10 +1063,10 @@ LuutruLongmach=
     "id": 56,
     "isTrading": true,
     "huong": "X",
-    "profit": 8.560000000000148,
+    "profit": 12.16000000000015,
     "vol": 4,
-    "win": 143,
-    "lost": 137,
+    "win": 148,
+    "lost": 141,
     "isStop": false,
     "type": "X",
     "minAnNumber": -16,
@@ -1076,7 +1076,7 @@ LuutruLongmach=
     "hoanthanh": false,
     "soLanChoDoi": 28,
     "tiso": 28,
-    "phiGD": 11.440000000000008
+    "phiGD": 11.840000000000009
   },
   {
     "id": 57,
@@ -1101,10 +1101,10 @@ LuutruLongmach=
     "id": 58,
     "isTrading": false,
     "huong": "null",
-    "profit": 21.04000000000014,
+    "profit": 28.720000000000148,
     "vol": 0,
-    "win": 137,
-    "lost": 129,
+    "win": 141,
+    "lost": 131,
     "isStop": false,
     "type": "X",
     "minAnNumber": -15,
@@ -1114,7 +1114,7 @@ LuutruLongmach=
     "hoanthanh": true,
     "soLanChoDoi": 29,
     "tiso": 28,
-    "phiGD": 10.960000000000008
+    "phiGD": 11.280000000000008
   },
   {
     "id": 59,
@@ -1139,9 +1139,9 @@ LuutruLongmach=
     "id": 60,
     "isTrading": false,
     "huong": "null",
-    "profit": 25.680000000000092,
+    "profit": 33.520000000000095,
     "vol": 0,
-    "win": 129,
+    "win": 131,
     "lost": 120,
     "isStop": false,
     "type": "X",
@@ -1152,7 +1152,7 @@ LuutruLongmach=
     "hoanthanh": true,
     "soLanChoDoi": 30,
     "tiso": 28,
-    "phiGD": 10.320000000000007
+    "phiGD": 10.480000000000008
   },
   {
     "id": 61,

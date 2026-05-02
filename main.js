@@ -257,7 +257,7 @@ async function handleStart() {
   intervalId = setInterval(async () => {
     if (!isRunning) return;
     await CheckColor_X_Y();
-  }, (INTERVAL_MS * 1000) - 12);
+  }, (INTERVAL_MS * 1000) - 10);
 
   // timer 70s
   await ShowTime70();
