@@ -427,7 +427,7 @@ async function UI_Reset(page) {
     ) => {
       soDuTaiKhoan = soDu;
       soDuLonNhat = soDuMax;
-      phanTramGiaoDich = percent;
+      phanTramGiaoDich = percent > 1 ? 1 : percent;
 
       // ✅ GẮN VÀO BIẾN GLOBAL (KHÔNG LOGIC)
       nguongTienDat = nguongRut;
@@ -1247,13 +1247,19 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
       document.body.appendChild(container);
 
       document.getElementById("btn-apply").onclick = () => {
+        let pVal = Number(document.getElementById("inp-percent").value || 0);
+        if (pVal > 1) {
+          pVal = 1;
+          document.getElementById("inp-percent").value = 1;
+        }
+
         nguongTienDat = Number(document.getElementById("inp-nguong-rut").value || nguongTienDat);
         soTienMuonRut = Number(document.getElementById("inp-so-tien-rut").value || soTienMuonRut);
 
         window.applyCaiDatVon(
           Number(document.getElementById("inp-sodu").value || 0),
           Number(document.getElementById("inp-max").value || 0),
-          Number(document.getElementById("inp-percent").value || 0),
+          pVal,
           nguongTienDat,
           soTienMuonRut
         );
