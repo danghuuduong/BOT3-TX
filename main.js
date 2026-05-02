@@ -621,9 +621,13 @@ async function ThucHienGiaoDich() {
     if (item.isTrading && item.huong) {
       const isWin = resultNew === item.huong
       if (isWin) {
-        soDuTaiKhoan += (item.vol * 0.98);
-        profitAll += (item.vol * 0.98);
-        item.phiGD += (item.vol * 0.02);
+        // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 2 * 0.98)
+        const winAmount = item.vol * 0.98;
+        const feeAmount = item.vol * 0.02;
+
+        soDuTaiKhoan += winAmount;
+        profitAll += winAmount;
+        item.phiGD += feeAmount;
 
         item.AnNumber += 1;
         if (item.AnNumber >= item.soLanMuonAn) {
@@ -633,26 +637,25 @@ async function ThucHienGiaoDich() {
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
           huong: "null",
-          profit: item.profit + (item.vol * 0.98),
+          profit: item.profit + winAmount,
           win: item.win + 1,
           vol: 0,
           phiGD: item.phiGD
         });
-        await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
+        await TableChinh_Update_UI(page, LuutruLongmach);
       } else {
-        soDuTaiKhoan -= item.vol;
-        profitAll -= item.vol;
+        // SL: Không trừ nữa vì đã trừ khi vào lệnh
         item.AnNumber -= 1;
 
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
           huong: "null",
           vol: 0,
-          profit: item.profit - item.vol,
+          // profit: item.profit - item.vol, // Đã trừ khi vào lệnh
           lost: item.lost + 1,
           minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber
         });
-        await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
+        await TableChinh_Update_UI(page, LuutruLongmach);
       }
     }
   }
@@ -742,15 +745,24 @@ async function ThucHienGiaoDich() {
       await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
       await masterClick(page, X_Submit, Y_Submit);
 
+      // Trừ luôn số dư và lợi nhuận khi vào lệnh
+      soDuTaiKhoan -= totalVol;
+      profitAll -= totalVol;
+
       // Cập nhật trạng thái giao dịch cho từng item trong nhóm
       for (const item of items) {
         handleUpdate_LongMachList(item.id, {
           isTrading: true,
           huong: item.type,
           vol: item.tempVol,
+          profit: item.profit - item.tempVol // Trừ luôn vào profit của từng item
         });
         delete item.tempVol;
       }
+
+      // Cập nhật UI ngay lập tức
+      await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
+      await TableChinh_Update_UI(page, LuutruLongmach);
     };
 
     // Thực hiện đặt cược cho nhóm Tài và nhóm Xỉu

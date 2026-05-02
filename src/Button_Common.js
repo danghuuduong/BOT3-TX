@@ -145,7 +145,7 @@ async function KetquaTXList_Create(page) {
       position: "fixed",
       top: "10px",              // cách top 10px
       left: "50%",              // căn giữa ngang
-      transform: "translateX(15px)",
+      transform: "translateX(105px)",
       display: "flex",
       gap: "1px",               // sát nhau
       zIndex: 9999,
