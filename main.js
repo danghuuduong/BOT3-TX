@@ -257,7 +257,7 @@ async function handleStart() {
   intervalId = setInterval(async () => {
     if (!isRunning) return;
     await CheckColor_X_Y();
-  }, (INTERVAL_MS * 1000) - 8.9);
+  }, (INTERVAL_MS * 1000) - 9);
 
   // timer 70s
   await ShowTime70();
@@ -622,8 +622,8 @@ async function ThucHienGiaoDich() {
       const isWin = resultNew === item.huong
       if (isWin) {
         // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 2 * 0.98)
-        const winAmount = item.vol * 0.98;
-        const feeAmount = item.vol * 0.02;
+        const winAmount = item.vol * 2 * 0.99;
+        const feeAmount = item.vol * 2 * 0.01;
 
         soDuTaiKhoan += winAmount;
         profitAll += winAmount;
