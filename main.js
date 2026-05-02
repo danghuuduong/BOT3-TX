@@ -257,7 +257,7 @@ async function handleStart() {
   intervalId = setInterval(async () => {
     if (!isRunning) return;
     await CheckColor_X_Y();
-  }, (INTERVAL_MS * 1000) - 9);
+  }, (INTERVAL_MS * 1000) - 8.9);
 
   // timer 70s
   await ShowTime70();
@@ -287,8 +287,6 @@ async function toggleCapture() {
     await handleStart();
   }
 }
-
-
 
 async function UI_Reset(page) {
   await page.evaluate(() => {
@@ -596,7 +594,6 @@ function handleUpdate_LongMachList(id, updates) {
 }
 
 async function ThucHienGiaoDich() {
-
   const tinHieuAI = TinHieuMuaBan(ArrayKQ);
   const resultNew = ArrayKQ.at(-1); // kết quả cuối cùng trong array
 
@@ -696,51 +693,70 @@ async function ThucHienGiaoDich() {
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
 
   if (arrayNew.length > 0) {
-
+    // 1. Reset hoanthanh logic
     for (const item of arrayNew) {
       if (item.hoanthanh) {
         if (item.id === 1 || item.id === 2) {
-          for (const item of LuutruLongmach) {
-            if (item.hoanthanh) {
-              item.hoanthanh = false;
-            }
+          for (const itm of LuutruLongmach) {
+            itm.hoanthanh = false;
           }
+          break; // Đã reset toàn bộ thì thoát loop
         } else {
           item.hoanthanh = false;
         }
       }
-      const huongDanhNew = item.type; // Đánh thẳng theo type (T hoặc X)
-      const group = Math.ceil(item.id / 10);
-      const tinhVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
-      const tinhVolNew = Math.floor(tinhVol * (1 + (group - 1) * 0.25));
-
-
-      // =======================HandlClick=========================
-      // const isTai = huongDanhNew === T;
-
-      // await UI_MouseClick(page,
-      //   isTai ? X_DatTai : X_DatXiu,
-      //   isTai ? Y_DatTai : Y_DatXiu, "👈");
-      // await masterClick(page,
-      //   isTai ? X_DatTai : X_DatXiu,
-      //   isTai ? Y_DatTai : Y_DatXiu);
-
-
-      // // await clickTheoTinhVol(page, tinhVolNew, "🎯")
-
-      // const delay = 10 + Math.floor(Math.random() * 30); // 500 → 2000
-      // await page.waitForTimeout(delay);
-
-      // await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-      // await masterClick(page, X_Submit, Y_Submit);
-
-      // =======================End HandlClick=========================
-      handleUpdate_LongMachList(item.id, {
-        isTrading: true,
-        huong: huongDanhNew,
-        vol: tinhVolNew,
-      });
     }
+
+    // 2. Phân loại theo hướng Tài/Xỉu
+    const taiItems = arrayNew.filter(item => item.type === T);
+    const xiuItems = arrayNew.filter(item => item.type === X);
+
+    const processBatch = async (items, isTai) => {
+      if (items.length === 0) return;
+
+      // Click chọn hướng (Tài hoặc Xỉu)
+      await UI_MouseClick(page,
+        isTai ? X_DatTai : X_DatXiu,
+        isTai ? Y_DatTai : Y_DatXiu, "👈");
+      await masterClick(page,
+        isTai ? X_DatTai : X_DatXiu,
+        isTai ? Y_DatTai : Y_DatXiu);
+
+      // Tính tổng Volume và gán cho từng item
+      let totalVol = 0;
+      for (const item of items) {
+        const group = Math.ceil(item.id / 10);
+        const baseVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
+        const itemVol = Math.floor(baseVol * (1 + (group - 1) * 0.25));
+        item.tempVol = itemVol; // Lưu tạm volume để update state sau batch submit
+        totalVol += itemVol;
+      }
+
+      // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
+      await clickTheoTinhVol(page, totalVol, "🎯");
+
+      const delay = 20 + Math.floor(Math.random() * 50);
+      await page.waitForTimeout(delay);
+
+      // Click Submit 1 lần duy nhất cho cả batch
+      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      await masterClick(page, X_Submit, Y_Submit);
+
+      // Cập nhật trạng thái giao dịch cho từng item trong nhóm
+      for (const item of items) {
+        handleUpdate_LongMachList(item.id, {
+          isTrading: true,
+          huong: item.type,
+          vol: item.tempVol,
+        });
+        delete item.tempVol;
+      }
+    };
+
+    // Thực hiện đặt cược cho nhóm Tài và nhóm Xỉu
+    await processBatch(taiItems, true);
+    await processBatch(xiuItems, false);
+
     await TableChinh_Update_UI(page, LuutruLongmach);
     await UI_Show_TiSo_TX(page, taiCount, xiuCount);
     saveStateTXT();
@@ -1052,11 +1068,11 @@ async function UI_Show_TiSo_TX(page, t = 0, x = 0) {
           <span style="color:#ff4d4d">${lo.toFixed(1)}</span>
         </div>
         <div style="display:flex; justify-content: space-between; gap: 10px; border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 2px; padding-top: 2px;">
-          <span style="color:#ccc">Vol ước tính :</span>
+          <span style="color:#ccc">Vol đánh :</span>
           <span style="color:#fff">${volUT.toFixed(1)}</span>
         </div>
         <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Phí ước tính:</span>
+          <span style="color:#ccc">Phí chịu:</span>
           <span style="color:#ffcc00">${phiUT.toFixed(2)}</span>
         </div>
       </div>
