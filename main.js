@@ -257,7 +257,7 @@ async function handleStart() {
   intervalId = setInterval(async () => {
     if (!isRunning) return;
     await CheckColor_X_Y();
-  }, (INTERVAL_MS * 1000) - 9);
+  }, (INTERVAL_MS * 1000) - 10);
 
   // timer 70s
   await ShowTime70();
@@ -549,15 +549,19 @@ async function UI_Reset(page) {
 // ================================================== HANDLE LOGIC ===========================================
 async function CheckColor_X_Y() {
   if (!isRunning) return;
+  countdown = 70; // Reset timer ngay khi bắt đầu để đồng bộ
 
   try {
-    const buffer = await page.screenshot({ fullPage: true });
+    // Chỉ chụp vùng chứa kết quả để tối ưu tốc độ (nhanh hơn chụp toàn màn hình)
+    const buffer = await page.screenshot({
+      clip: { x: X_Ketqua, y: startY, width: width, height: height }
+    });
     const png = PNG.sync.read(buffer);
 
     let r = 0, g = 0, b = 0, count = 0;
 
-    for (let y = startY; y < startY + height; y++) {
-      for (let x = X_Ketqua; x < X_Ketqua + width; x++) {
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
         const idx = (png.width * y + x) << 2;
         r += png.data[idx];
         g += png.data[idx + 1];
@@ -581,7 +585,6 @@ async function CheckColor_X_Y() {
         await ThucHienGiaoDich();
       }
     }
-    countdown = 70;
   } catch (err) {
     console.error("❌ Capture error:", err);
   }
@@ -614,7 +617,7 @@ async function ThucHienGiaoDich() {
     });
   }
 
-  await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
+
 
   // ======================================================================= TP / SL =======================================================================
   for (const item of LuutruLongmach) {
@@ -642,7 +645,6 @@ async function ThucHienGiaoDich() {
           vol: 0,
           phiGD: item.phiGD
         });
-        await TableChinh_Update_UI(page, LuutruLongmach);
       } else {
         // SL: Không trừ nữa vì đã trừ khi vào lệnh
         item.AnNumber -= 1;
@@ -651,16 +653,12 @@ async function ThucHienGiaoDich() {
           isTrading: false,
           huong: "null",
           vol: 0,
-          // profit: item.profit - item.vol, // Đã trừ khi vào lệnh
           lost: item.lost + 1,
           minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber
         });
-        await TableChinh_Update_UI(page, LuutruLongmach);
       }
     }
   }
-
-  await UI_Show_TiSo_TX(page, taiCount, xiuCount);
 
   // Cập nhật lại isReady sau khi đã xử lý TP/SL (để reset tiso có hiệu lực ngay)
   for (const item of LuutruLongmach) {
@@ -681,20 +679,9 @@ async function ThucHienGiaoDich() {
     }
   }
 
-  await TableChinh_Update_UI(page, LuutruLongmach);
-  await UI_Show_TiSo_TX(page, taiCount, xiuCount);
-  await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown)
-  await UI_Update_CaiDatVon(
-    page,
-    soDuTaiKhoan,
-    soDuLonNhat,
-    phanTramGiaoDich
-  );
-  saveStateTXT();
   // =========================================================================== ĐẶT LỆNH ================================================================
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
-
   if (arrayNew.length > 0) {
     // 1. Reset hoanthanh logic
     for (const item of arrayNew) {
@@ -760,19 +747,22 @@ async function ThucHienGiaoDich() {
         delete item.tempVol;
       }
 
-      // Cập nhật UI ngay lập tức
-      await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
-      await TableChinh_Update_UI(page, LuutruLongmach);
+
     };
 
     // Thực hiện đặt cược cho nhóm Tài và nhóm Xỉu
     await processBatch(taiItems, true);
     await processBatch(xiuItems, false);
 
-    await TableChinh_Update_UI(page, LuutruLongmach);
-    await UI_Show_TiSo_TX(page, taiCount, xiuCount);
-    saveStateTXT();
+
   }
+
+  // Cập nhật UI sau khi đã xong phần giao dịch (TP/SL + Đặt lệnh mới)
+  UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
+  TableChinh_Update_UI(page, LuutruLongmach);
+  UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
+  UI_Show_TiSo_TX(page, taiCount, xiuCount);
+  saveStateTXT();
 
   const allNotTrading = LuutruLongmach.every(item => !item.isTrading);
   if (
@@ -849,21 +839,15 @@ async function ThucHienGiaoDich() {
     soDuLonNhat = soDuLonNhat - soTienMuonRut;
     tongTienDaRut += soTienMuonRut;
 
-    await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
-    saveStateTXT();
-
-    await UI_Update_CaiDatVon(
-      page,
-      soDuTaiKhoan,
-      soDuLonNhat,
-      phanTramGiaoDich
-    );
-
     // Ghi nhận thu nhập tự động sau khi rút tiền thành công
     await ghiNhanThuNhap(soTienMuonRut);
-    await TableChinh_Update_UI(page, LuutruLongmach);
 
+    // Cập nhật lại UI sau khi rút tiền
+    UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
+    UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
+    saveStateTXT();
   }
+
 }
 // luuTruTrangThai({
 //   soDuTaiKhoan,
