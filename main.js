@@ -616,7 +616,7 @@ async function ThucHienGiaoDich() {
 
   await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
 
-  // ========================== TP / SL ==========================
+  // ======================================================================= TP / SL =======================================================================
   for (const item of LuutruLongmach) {
     if (item.isTrading && item.huong) {
       const isWin = resultNew === item.huong
@@ -688,7 +688,7 @@ async function ThucHienGiaoDich() {
     phanTramGiaoDich
   );
   saveStateTXT();
-  // ========================== ĐẶT LỆNH ==========================
+  // =========================================================================== ĐẶT LỆNH ================================================================
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
 
@@ -735,7 +735,7 @@ async function ThucHienGiaoDich() {
       // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
       await clickTheoTinhVol(page, totalVol, "🎯");
 
-      const delay = 20 + Math.floor(Math.random() * 50);
+      const delay = 50 + Math.floor(Math.random() * 200);
       await page.waitForTimeout(delay);
 
       // Click Submit 1 lần duy nhất cho cả batch
@@ -1112,7 +1112,7 @@ async function clickN(page, x, y, n, icon = "🖱️") {
     await page.mouse.move(x, y);
     await masterClick(page, x, y);
 
-    const delay = 3 + Math.floor(Math.random() * 6);
+    const delay = 30 + Math.floor(Math.random() * 100);
     await page.waitForTimeout(delay);
   }
 }
