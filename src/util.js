@@ -7,25 +7,21 @@ const maxThep = 1;
 // ================= TYPES =================
 
 const TYPES = {
-  TYPE_1_create: "1_CREATE", // new
 
   TYPE_1_1: "1-1",
   TYPE_1_1_PLUS: "1-1 Plus",
 
 
-  TYPE_2_create: "2_CREATE", // new
   TYPE_2_2: "2-2",
   TYPE_2_2_PLUS: "2-2 Plus",
 
 
-  TYPE_3_create: "3_CREATE", // new
   TYPE_3_3: "3-3",
   TYPE_3_3_PLUS: "3-3 Plus",
 
 
   TYPE_4_4: "4-4",
-
-
+  TYPE_4_4_PLUS: "4-4 Plus",
 
   TYPE_2_1: "2-1",
   TYPE_2_1_PLUS: "2-1 Plus",
@@ -40,35 +36,25 @@ const TYPES = {
   TYPE_123: "123",
   TYPE_123_PLUS: "123 Plus",
 
-  TYPE_4: "4",
-  TYPE_5: "5",
-
   TYPE_KHOI_CHAN: "KHOI_CHAN"
 
 };
-const TYPES2 = {
-  type_2_2_NEW: "2_NEW",
-  typeBeThangDep: "Bên Xấu",
-  typeBeThangXau: "Bên Đẹp",
-  typeSenke: "Sen Kẽ",
-};
+
 // ================= LOCK STATE =================
 const lockState = {
-  [TYPES.TYPE_1_create]: false,
   [TYPES.TYPE_1_1]: false,
   [TYPES.TYPE_1_1_PLUS]: false,
 
-  [TYPES.TYPE_2_create]: false,
   [TYPES.TYPE_2_2]: false,
   [TYPES.TYPE_2_2_PLUS]: false,
 
 
-  [TYPES.TYPE_3_create]: false,
   [TYPES.TYPE_3_3]: false,
   [TYPES.TYPE_3_3_PLUS]: false,
 
-
   [TYPES.TYPE_4_4]: false,
+  [TYPES.TYPE_4_4_PLUS]: false,
+
 
   [TYPES.TYPE_2_1]: false,
   [TYPES.TYPE_2_1_PLUS]: false,
@@ -84,13 +70,8 @@ const lockState = {
   [TYPES.TYPE_123]: false,
   [TYPES.TYPE_123_PLUS]: false,
 
-  [TYPES.TYPE_4]: false,
-  [TYPES.TYPE_5]: false,
   [TYPES.TYPE_KHOI_CHAN]: false
 
-};
-const lockState_NEW = {
-  [TYPES2.type_2_2_NEW]: false,
 };
 
 
@@ -139,9 +120,6 @@ function detectKhoiChanEarly_TX(str) {
   return null;
 }
 
-// ================= VALID STRUCTURE =================
-function isValid_1_Create(s3) { return s3 === "TXT" || s3 === "XTX"; }
-function isValid_2_Create(s5) { return s5 === "XTXXT" || s5 === "TXTTX"; }
 
 // function isValid_4(s4) { return s4 === "TTTT" || s4 === "XXXX"; }
 // function isValid_5(s5) { return s5 === "TTTTT" || s5 === "XXXXX"; }
@@ -220,8 +198,6 @@ function isValid_123(s6, s7) {
 }
 
 
-function isValid_2_2NEW(s2) { return s2 === "AA" || s2 === "BB" }
-
 
 
 
@@ -244,284 +220,172 @@ function TinHieuMuaBan(ArrayKQ) {
   const s13 = getLastTX(ArrayKQ, 13);
 
   // ==================================================================== 1-1 =============================================
-
   if (lockState[TYPES.TYPE_1_1]) {
     if (!isValid_1_1(s4)) lockState[TYPES.TYPE_1_1] = false;
   } else {
     if (s4 === "XTXT" || s4 === "TXTX") {
       lockState[TYPES.TYPE_1_1] = true;
-      return {
-        huong: s4 === "XTXT" ? T : X,
-        type: TYPES.TYPE_1_1
-      };
+      return { huong: s4 === "XTXT" ? T : X, type: TYPES.TYPE_1_1 };
     }
   }
-  //             1-1 Plus
+  // 1-1 Plus
   if (lockState[TYPES.TYPE_1_1_PLUS]) {
     if (!isValid_1_1(s4)) {
-      lockState[TYPES.TYPE_1_1] = false
-      lockState[TYPES.TYPE_1_1_PLUS] = false
-    };
+      lockState[TYPES.TYPE_1_1] = false;
+      lockState[TYPES.TYPE_1_1_PLUS] = false;
+    }
   } else {
     if (s5 === "TXTXT" || s5 === "XTXTX") {
       lockState[TYPES.TYPE_1_1_PLUS] = true;
-      return {
-        huong: s5 === "TXTXT" ? T : X,
-        type: TYPES.TYPE_1_1_PLUS
-      };
+      return { huong: s5 === "TXTXT" ? T : X, type: TYPES.TYPE_1_1_PLUS };
     }
   }
 
-  // ==================================================================== 2- 2 =============================================
-
-
+  // ==================================================================== 2-2 =============================================
   if (lockState[TYPES.TYPE_2_2]) {
     if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2] = false;
   } else {
     if (s6 === "XTXXTT" || s6 === "TXTTXX") {
       lockState[TYPES.TYPE_2_2] = true;
-      return {
-        huong: s6 === "XTXXTT" ? T : X,
-        type: TYPES.TYPE_2_2
-      };
+      return { huong: s6 === "XTXXTT" ? T : X, type: TYPES.TYPE_2_2 };
     }
   }
-  // // Plus
-  // if (lockState[TYPES.TYPE_2_2_PLUS]) {
-  //   if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2_PLUS] = false;
-  // } else {
-  //   if (s6 === "TXXTTX" || s6 === "XTTXXT") {
-  //     lockState[TYPES.TYPE_2_2_PLUS] = true;
-  //     return {
-  //       huong: s6 === "TXXTTX" ? T : X,
-  //       type: TYPES.TYPE_2_2_PLUS
-  //     };
-  //   }
-  // }
+  // 2-2 Plus
+  if (lockState[TYPES.TYPE_2_2_PLUS]) {
+    if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2_PLUS] = false;
+  } else {
+    if (s6 === "TXXTTX" || s6 === "XTTXXT") {
+      lockState[TYPES.TYPE_2_2_PLUS] = true;
+      return { huong: s6 === "TXXTTX" ? T : X, type: TYPES.TYPE_2_2_PLUS };
+    }
+  }
 
-  // ==================================================================== 3- 3 =============================================
+  // ==================================================================== 3-3 =============================================
   if (lockState[TYPES.TYPE_3_3]) {
     if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3] = false;
   } else {
     if (s8 === "XTXXXTTT" || s8 === "TXTTTXXX") {
       lockState[TYPES.TYPE_3_3] = true;
-      return {
-        huong: s8 === "XTXXXTTT" ? T : X,
-        type: TYPES.TYPE_3_3
-      };
+      return { huong: s8 === "XTXXXTTT" ? T : X, type: TYPES.TYPE_3_3 };
+    }
+  }
+  // 3-3 Plus
+  if (lockState[TYPES.TYPE_3_3_PLUS]) {
+    if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3_PLUS] = false;
+  } else {
+    if (s9 === "XTXXXTTTX" || s9 === "TXTTTXXXT") {
+      lockState[TYPES.TYPE_3_3_PLUS] = true;
+      return { huong: s9 === "XTXXXTTTX" ? T : X, type: TYPES.TYPE_3_3_PLUS };
     }
   }
 
-
-
-
-  // if (lockState[TYPES.TYPE_3_3_PLUS]) {
-  //   if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3_PLUS] = false;
-  // } else {
-  //   if (s9 === "XTXXXTTTX" || s9 === "TXTTTXXXT") {
-  //     lockState[TYPES.TYPE_3_3_PLUS] = true;
-  //     return {
-  //       huong: s9 === "XTXXXTTTX" ? T : X,
-  //       type: TYPES.TYPE_3_3_PLUS
-  //     };
-  //   }
-  // }
-  // ==========================================================================4-4==============================
-
-
+  // ==================================================================== 4-4 =============================================
   if (lockState[TYPES.TYPE_4_4]) {
     if (!isValid_4_4(s8, s9, s10, s11)) lockState[TYPES.TYPE_4_4] = false;
   } else {
     if (s10 === "XTXXXXTTTT" || s10 === "TXTTTTXXXX") {
       lockState[TYPES.TYPE_4_4] = true;
-      return {
-        huong: s10 === "XTXXXXTTTT" ? T : X,
-        type: TYPES.TYPE_4_4
-      };
+      return { huong: s10 === "XTXXXXTTTT" ? T : X, type: TYPES.TYPE_4_4 };
     }
   }
-
-  // ==================================================================== 2- 1 2 =============================================
+  // ==================================================================== 4-4 4-4 Plus
+  if (lockState[TYPES.TYPE_4_4_PLUS]) {
+    if (!isValid_4_4(s8, s9, s10, s11)) lockState[TYPES.TYPE_4_4_PLUS] = false;
+  } else {
+    if (s11 === "XTXXXXTTTTX" || s11 === "TXTTTTXXXXT") {
+      lockState[TYPES.TYPE_4_4_PLUS] = true;
+      return { huong: s11 === "XTXXXXTTTTX" ? T : X, type: TYPES.TYPE_4_4_PLUS };
+    }
+  }
 
   if (lockState[TYPES.TYPE_2_1]) {
     if (!isValid_2_1_2(s5, s6, s7)) lockState[TYPES.TYPE_2_1] = false;
   } else {
     if (s6 === "TXXTXX" || s6 === "XTTXTT") {
       lockState[TYPES.TYPE_2_1] = true;
-      return {
-        huong: s6 === "TXXTXX" ? X : T,
-        type: TYPES.TYPE_2_1
-      };
+      return { huong: s6 === "TXXTXX" ? X : T, type: TYPES.TYPE_2_1 };
     }
   }
-
   if (lockState[TYPES.TYPE_2_1_PLUS]) {
     if (!isValid_2_1_2(s5, s6, s7)) lockState[TYPES.TYPE_2_1_PLUS] = false;
   } else {
     if (s7 === "TXXTXXT" || s7 === "XTTXTTX") {
       lockState[TYPES.TYPE_2_1_PLUS] = true;
-      return {
-        huong: s7 === "TXXTXXT" ? T : X,
-        type: TYPES.TYPE_2_1_PLUS
-      };
+      return { huong: s7 === "TXXTXXT" ? T : X, type: TYPES.TYPE_2_1_PLUS };
     }
   }
 
-  // ==================================================================== 3- 1 3=============================================
-
-
+  // ==================================================================== 3-1-3 =============================================
   if (lockState[TYPES.TYPE_3_1]) {
     if (!isValid_3_1_3(s7, s8, s9, s10)) lockState[TYPES.TYPE_3_1] = false;
   } else {
     if (s8 === "TXXXTXXX" || s8 === "XTTTXTTT") {
       lockState[TYPES.TYPE_3_1] = true;
-      return {
-        huong: s8 === "TXXXTXXX" ? X : T,
-        type: TYPES.TYPE_3_1
-      };
+      return { huong: s8 === "TXXXTXXX" ? X : T, type: TYPES.TYPE_3_1 };
     }
   }
-
   if (lockState[TYPES.TYPE_3_1_PLUS]) {
     if (!isValid_3_1_3(s7, s8, s9, s10)) lockState[TYPES.TYPE_3_1_PLUS] = false;
   } else {
     if (s9 === "TXXXTXXXT" || s9 === "XTTTXTTTX") {
       lockState[TYPES.TYPE_3_1_PLUS] = true;
-      return {
-        huong: s9 === "TXXXTXXXT" ? T : X,
-        type: TYPES.TYPE_3_1_PLUS
-      };
+      return { huong: s9 === "TXXXTXXXT" ? T : X, type: TYPES.TYPE_3_1_PLUS };
     }
   }
 
-  // ==================================================================== 4- 1 4=============================================
-
+  // ==================================================================== 4-1-4 =============================================
   if (lockState[TYPES.TYPE_4_1]) {
     if (!isValid_4_1_4(s9, s10, s11, s12, s13)) lockState[TYPES.TYPE_4_1] = false;
   } else {
     if (s10 === "TXXXXTXXXX" || s10 === "XTTTTXTTTT") {
       lockState[TYPES.TYPE_4_1] = true;
-      return {
-        huong: s10 === "TXXXXTXXXX" ? X : T,
-        type: TYPES.TYPE_4_1
-      };
+      return { huong: s10 === "TXXXXTXXXX" ? X : T, type: TYPES.TYPE_4_1 };
     }
   }
-
   if (lockState[TYPES.TYPE_4_1_PLUS]) {
     if (!isValid_4_1_4(s9, s10, s11, s12, s13)) lockState[TYPES.TYPE_4_1_PLUS] = false;
   } else {
     if (s11 === "TXXXXTXXXXT" || s11 === "XTTTTXTTTTX") {
       lockState[TYPES.TYPE_4_1_PLUS] = true;
-      return {
-        huong: s11 === "TXXXXTXXXXT" ? T : X,
-        type: TYPES.TYPE_4_1_PLUS
-      };
+      return { huong: s11 === "TXXXXTXXXXT" ? T : X, type: TYPES.TYPE_4_1_PLUS };
     }
   }
 
   // ==================================================================== 123 =============================================
-
   if (lockState[TYPES.TYPE_123]) {
     if (!isValid_123(s6, s7)) lockState[TYPES.TYPE_123] = false;
   } else {
     if (s7 === "TXTTXXX" || s7 === "XTXXTTT") {
       lockState[TYPES.TYPE_123] = true;
-      return {
-        huong: s7 === "TXTTXXX" ? X : T,
-        type: TYPES.TYPE_123
-      };
+      return { huong: s7 === "TXTTXXX" ? X : T, type: TYPES.TYPE_123 };
+    }
+  }
+  if (lockState[TYPES.TYPE_123_PLUS]) {
+    if (!isValid_123(s6, s7)) lockState[TYPES.TYPE_123_PLUS] = false;
+  } else {
+    if (s8 === "TXTTXXXT" || s8 === "XTXXTTTX") {
+      lockState[TYPES.TYPE_123_PLUS] = true;
+      return { huong: s8 === "TXTTXXXT" ? X : T, type: TYPES.TYPE_123_PLUS };
     }
   }
 
-  // if (lockState[TYPES.TYPE_123_PLUS]) {
-  //   if (!isValid_123(s6, s7)) lockState[TYPES.TYPE_123_PLUS] = false;
-  // } else {
-  //   if (s8 === "TXTTXXXT" || s8 === "XTXXTTTX") {
-  //     lockState[TYPES.TYPE_123_PLUS] = true;
-  //     return {
-  //       huong: s8 === "TXTTXXXT" ? X : T,
-  //       type: TYPES.TYPE_123_PLUS
-  //     };
-  //   }
-  // }
-
-
-
-
   // ==================================================================== KHOI CHAN =============================================
-
+  // Lưu ý: nếu TYPE_4_4, TYPE_3_3_PLUS hoặc TYPE_2_2_PLUS đã return ở trên thì không bao giờ chạy đến đây
   const sKC = ArrayKQ.slice(-25).join("");
-
   if (lockState[TYPES.TYPE_KHOI_CHAN]) {
-    if (!isStillInKhoiChan_TX(sKC) || isValid_1_Create(s3)) {
+    if (!isStillInKhoiChan_TX(sKC)) {
       lockState[TYPES.TYPE_KHOI_CHAN] = false;
     }
   } else {
     const signal = detectKhoiChanEarly_TX(sKC);
     if (signal) {
       lockState[TYPES.TYPE_KHOI_CHAN] = true;
-      return {
-        huong: signal.huong,
-        type: TYPES.TYPE_KHOI_CHAN
-      };
+      return { huong: signal.huong, type: TYPES.TYPE_KHOI_CHAN };
     }
   }
+
   return { huong: "null", type: "null" };
 }
-
-function TinHieuMuaBanNew(ArrayKQ_XAU) {
-  if (!Array.isArray(ArrayKQ_XAU) || ArrayKQ_XAU.length < 2) {
-    return { huong: "null", type: "null" };
-  }
-
-  const s2 = getLastTX(ArrayKQ_XAU, 2);
-  const s3 = getLastTX(ArrayKQ_XAU, 3);
-
-  // if (lockState_NEW[TYPES2.type_2_2_NEW]) {
-  //   if (!isValid_2_2NEW(s2)) lockState_NEW[TYPES2.type_2_2_NEW] = false;
-  // } else {
-  //   if (s3 === "BAA" || s3 === "ABB") {
-  //     lockState_NEW[TYPES2.type_2_2_NEW] = true;
-  //     return {
-  //       isPheDep: s3 === "BAA" ? false : true,
-  //       type: TYPES2.type_2_2_NEW,
-  //     };
-  //   }
-  // }
-
-
-  if (s3 === "BAA" || s3 === "ABB") {
-    return {
-      isPheDep: s3 === "BAA" ? false : true,
-      type: TYPES2.type_2_2_NEW,
-    };
-  }
-
-
-  if (s3 === "AAA" || s3 === "BBB") {
-    return {
-      isPheDep: s3 === "AAA" ? false : true,
-      type: s3 === "AAA" ? TYPES2.typeBeThangDep : TYPES2.typeBeThangXau,
-    };
-  }
-
-  if (!Array.isArray(ArrayKQ_XAU) || ArrayKQ_XAU.length < 4) {
-    return { huong: "null", type: "null" };
-  }
-  const s4 = getLastTX(ArrayKQ_XAU, 4);
-
-
-  if (s4 === "ABAB" || s4 === "BABA") {
-    return {
-      isPheDep: s4 === "BABA" ? true : false,
-      type: TYPES2.typeSenke
-    };
-  }
-  return { huong: "null", type: "null" };
-}
-
-
 
 
 // ================= UI =================
@@ -548,31 +412,12 @@ function handleGetColor_TX(r, g, b) {
 //   return Math.random() < 0.5 ? "white" : "black";
 // }
 
-function getHuongForItem(tinHieuAINew, huongGoc) {
-  if (huongGoc == "null") return "null"
-  if (tinHieuAINew.isPheDep) {
-    return huongGoc === T ? X : T;
-  }
-  return huongGoc;
-}
 
-function checkABTrongDoXanh(arr, number) {
-  const countA = arr.filter(v => v === Dep).length || 0;
-  const countB = arr.filter(v => v === Xau).length || 0;
-
-  if (countB - countA >= number) return Dep;
-  if (countA - countB >= number) return Xau;
-
-  return "null";
-}
 // ================= EXPORT =================
 module.exports = {
   TinHieuMuaBan,
-  TinHieuMuaBanNew,
   updateButton,
   handleGetColor_TX,
-  getHuongForItem,
-  checkABTrongDoXanh,
   TYPES,
   T,
   X,

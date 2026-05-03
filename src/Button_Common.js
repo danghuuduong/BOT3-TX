@@ -233,4 +233,83 @@ async function LongMachList_Update_UI(page, ArrayKQ) {
     });
   }, ArrayKQ);
 }
-module.exports = { UI_Btn_Show_TieuDiem, UI_Show_SoDu, KetquaTXList_Create, KetquaTXList_Update_UI, LongMachList_create, LongMachList_Update_UI, };
+
+async function SignalIndicator_Create(page) {
+  await page.evaluate(() => {
+    if (document.getElementById("ui-active-signals")) return;
+
+    // Inject animation
+    if (!document.getElementById("signal-style")) {
+      const style = document.createElement("style");
+      style.id = "signal-style";
+      style.innerHTML = `
+        @keyframes signalPulse {
+          0%   { box-shadow: 0 0 6px 2px rgba(255,220,0,0.7); }
+          50%  { box-shadow: 0 0 18px 6px rgba(255,220,0,1); }
+          100% { box-shadow: 0 0 6px 2px rgba(255,220,0,0.7); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    const box = document.createElement("div");
+    box.id = "ui-active-signals";
+    Object.assign(box.style, {
+      position: "fixed",
+      top: "105px",
+      left: "285px",
+      transform: "translate(-50%, -50%)",
+      zIndex: 9999,
+      background: "rgba(30,30,30,0.92)",
+      color: "#aaa",
+      padding: "6px 14px",
+      borderRadius: "8px",
+      fontSize: "18px",
+      fontWeight: "bold",
+      fontFamily: "monospace",
+      border: "2px solid #555",
+      minWidth: "200px",
+      textAlign: "center",
+      letterSpacing: "1px",
+      userSelect: "none",
+      pointerEvents: "none",
+    });
+    box.innerText = "⏳ Chờ tín hiệu...";
+    document.body.appendChild(box);
+  });
+}
+
+async function SignalIndicator_Update(page, signals = []) {
+  await page.evaluate((sigs) => {
+    const box = document.getElementById("ui-active-signals");
+    if (!box) return;
+    if (sigs.length === 0) {
+      box.innerText = "⏳ Chờ tín hiệu...";
+      box.style.color = "#888";
+      box.style.background = "rgba(30,30,30,0.92)";
+      box.style.border = "2px solid #555";
+      box.style.animation = "";
+    } else {
+      const s = sigs[0];
+      const isTai = s.huong === "T";
+      box.style.color = "#fff";
+      box.style.background = isTai
+        ? "linear-gradient(135deg, #c0392b, #e74c3c)"
+        : "linear-gradient(135deg, #1565c0, #1976d2)";
+      box.style.border = isTai ? "2px solid #ff6b6b" : "2px solid #64b5f6";
+      box.style.animation = "signalPulse 1s ease-in-out infinite";
+      box.innerText = (isTai ? "⚫ TÀI" : "⚪ XỄU") + "  |  " + s.type;
+    }
+  }, signals);
+}
+
+module.exports = { 
+  UI_Btn_Show_TieuDiem, 
+  UI_Show_SoDu, 
+  KetquaTXList_Create, 
+  KetquaTXList_Update_UI, 
+  LongMachList_create, 
+  LongMachList_Update_UI,
+  SignalIndicator_Create,
+  SignalIndicator_Update
+};

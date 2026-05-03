@@ -101,14 +101,14 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Bên", "Lực", "Ăn",
+        "ID", "Type", "Bên", "Lực", "Ăn",
         "Giao dịch", "Vol", "W/L", "Lãi", "Phí",
         "MIN", "STOP"
       ];
 
 
       const widths = [
-        "20px", "40px", "65px", "45px",
+        "20px", "70px", "40px", "65px", "45px",
         "60px", "45px", "80px", "60px", "60px",
         "30px", "30px"
       ];
@@ -144,8 +144,21 @@ async function TableChinh_Create(page) {
   });
 }
 
-async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
-  await page.evaluate(({ rows, arrayKQ }) => {
+async function TableChinh_Update_UI(page, data, ArrayKQ_XAU, tinHieu = null) {
+  // Chỉ render items đang active (isReady hoặc isTrading) để giảm lag DOM
+  const active = data.filter(i => i.isReady || i.isTrading);
+
+  // Sort: items khớp cả strategyType + huong lên đầu, rồi khớp strategyType, rồi còn lại
+  const sorted = tinHieu
+    ? [...active].sort((a, b) => {
+        const aFull = (a.strategyType === tinHieu.type && a.huong === tinHieu.huong) ? 2 : (a.strategyType === tinHieu.type ? 1 : 0);
+        const bFull = (b.strategyType === tinHieu.type && b.huong === tinHieu.huong) ? 2 : (b.strategyType === tinHieu.type ? 1 : 0);
+        return bFull - aFull;
+      })
+    : active;
+
+
+  await page.evaluate(({ rows, arrayKQ, signalType, signalHuong }) => {
     const tbody = document.getElementById("longmach-body");
     if (!tbody) return;
 
@@ -153,7 +166,14 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
 
     rows.forEach(item => {
       const tr = document.createElement("tr");
-      if (item.isReady) {
+      const isFullMatch = signalType && item.strategyType === signalType && item.huong === signalHuong;
+      const isTypeMatch = signalType && item.strategyType === signalType;
+
+      if (isFullMatch) {
+        tr.style.backgroundColor = "#fff176"; // vàng nổi bật - khớp cả type + huong
+        tr.style.fontWeight = "bold";
+        tr.style.color = "#000000ff";
+      } else if (item.isReady) {
         tr.style.backgroundColor = "#a4c2f4"; // xanh nhạt
         tr.style.fontWeight = "bold";
         tr.style.color = "#000000ff";
@@ -167,6 +187,7 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
       // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
         item.id,
+        item.strategyType ?? "-",
         item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Xấu🔥",
         "LUC_COLUMN",
         `${item.AnNumber}/${item.soLanMuonAn}${item.hoanthanh ? '😍' : ''}`,
@@ -206,8 +227,15 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
           color: "inherit" // ✅ Kế thừa màu từ tr
         });
 
-        // ✅ Màu sắc cho cột Lãi (Index 7)
-        if (idx === 7) {
+        // ✅ Màu sắc cho cột Type (Index 1)
+        if (idx === 1) {
+          td.style.fontSize = "10px";
+          td.style.fontWeight = "bold";
+          td.style.color = "#5500aaff";
+        }
+
+        // ✅ Màu sắc cho cột Lãi (Index 8)
+        if (idx === 8) {
           if (item.profit > 0) {
             td.style.color = "#0cb30cff"; // xanh lá
             td.style.fontWeight = "bold";
@@ -244,7 +272,8 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
 
       tbody.appendChild(tr);
     });
-  }, { rows: data, arrayKQ: ArrayKQ_XAU });
+  }, { rows: sorted, arrayKQ: ArrayKQ_XAU, signalType: tinHieu?.type ?? null, signalHuong: tinHieu?.huong ?? null });
+
 }
 
 async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 2000) {
