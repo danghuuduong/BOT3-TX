@@ -144,21 +144,21 @@ async function TableChinh_Create(page) {
   });
 }
 
-async function TableChinh_Update_UI(page, data, ArrayKQ_XAU, tinHieu = null) {
+async function TableChinh_Update_UI(page, data) {
   // Chỉ render items đang active (isReady hoặc isTrading) để giảm lag DOM
   const active = data.filter(i => i.isReady || i.isTrading);
 
-  // Sort: items khớp cả strategyType + huong lên đầu, rồi khớp strategyType, rồi còn lại
-  const sorted = tinHieu
-    ? [...active].sort((a, b) => {
-        const aFull = (a.strategyType === tinHieu.type && a.huong === tinHieu.huong) ? 2 : (a.strategyType === tinHieu.type ? 1 : 0);
-        const bFull = (b.strategyType === tinHieu.type && b.huong === tinHieu.huong) ? 2 : (b.strategyType === tinHieu.type ? 1 : 0);
-        return bFull - aFull;
-      })
-    : active;
+  // Sort: Ưu tiên các item đang giao dịch (isTrading) lên đầu, sau đó đến các item đang sẵn sàng (isReady)
+  const sorted = [...active].sort((a, b) => {
+    if (a.isTrading && !b.isTrading) return -1;
+    if (!a.isTrading && b.isTrading) return 1;
+    if (a.isReady && !b.isReady) return -1;
+    if (!a.isReady && b.isReady) return 1;
+    return 0;
+  });
 
 
-  await page.evaluate(({ rows, arrayKQ, signalType, signalHuong }) => {
+  await page.evaluate(({ rows }) => {
     const tbody = document.getElementById("longmach-body");
     if (!tbody) return;
 
@@ -166,8 +166,9 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU, tinHieu = null) {
 
     rows.forEach(item => {
       const tr = document.createElement("tr");
-      const isFullMatch = signalType && item.strategyType === signalType && item.huong === signalHuong;
-      const isTypeMatch = signalType && item.strategyType === signalType;
+      // Đơn giản hóa: Cứ đang giao dịch là sáng vàng
+      const isFullMatch = item.isTrading;
+      // Vẫn giữ isTypeMatch để nếu cần dùng logic khác liên quan tới signalType
 
       if (isFullMatch) {
         tr.style.backgroundColor = "#fff176"; // vàng nổi bật - khớp cả type + huong
@@ -188,7 +189,7 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU, tinHieu = null) {
       const cols = [
         item.id,
         item.strategyType ?? "-",
-        item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Xấu🔥",
+        item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Bẻ🔥",
         "LUC_COLUMN",
         `${item.AnNumber}/${item.soLanMuonAn}${item.hoanthanh ? '😍' : ''}`,
         item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
@@ -272,8 +273,7 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU, tinHieu = null) {
 
       tbody.appendChild(tr);
     });
-  }, { rows: sorted, arrayKQ: ArrayKQ_XAU, signalType: tinHieu?.type ?? null, signalHuong: tinHieu?.huong ?? null });
-
+  }, { rows: sorted });
 }
 
 async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 2000) {

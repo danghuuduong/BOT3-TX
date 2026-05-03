@@ -360,7 +360,7 @@ async function UI_Reset(page) {
 
       await KetquaTXList_Update_UI(page, ArrayKQ);
       await LongMachList_Update_UI(page, ArrayKQ_XAU);
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU, lastTinHieu);
+      await TableChinh_Update_UI(page, LuutruLongmach);
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
 
       saveStateTXT();
@@ -418,7 +418,7 @@ async function UI_Reset(page) {
     ) => {
       soDuTaiKhoan = soDu;
       soDuLonNhat = soDuMax;
-      phanTramGiaoDich = Math.min(percent, 0.05);
+      phanTramGiaoDich = percent;
 
       // ✅ GẮN VÀO BIẾN GLOBAL (KHÔNG LOGIC)
       nguongTienDat = nguongRut;
@@ -434,7 +434,7 @@ async function UI_Reset(page) {
         soDuLonNhat,
         phanTramGiaoDich
       );
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU, lastTinHieu);
+      await TableChinh_Update_UI(page, LuutruLongmach);
 
     }
   );
@@ -445,14 +445,14 @@ async function UI_Reset(page) {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { isStop: !item.isStop });
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU, lastTinHieu);
+      await TableChinh_Update_UI(page, LuutruLongmach);
     }
     if (type === "UPDATE_SOLAN") {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { soLanChoDoi: Number(value) });
       saveStateTXT();
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU, lastTinHieu);
+      await TableChinh_Update_UI(page, LuutruLongmach);
     }
   });
 
@@ -631,12 +631,10 @@ async function ThucHienGiaoDich() {
     muaGiaLapMap[tinHieuAI.type] = tinHieuAI.huong;
   }
 
-  // Cập nhật UI chỉ báo tín hiệu
-  await SignalIndicator_Update(page, tinHieuAI.huong !== "null" ? [tinHieuAI] : []);
+
 
   if (updatedAny) {
     await LongMachList_Update_UI(page, ArrayKQ_XAU);
-    await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU, tinHieuAI);
   }
 
   // ====================================================================================== TP / SL =======================================================================
@@ -665,7 +663,7 @@ async function ThucHienGiaoDich() {
           win: item.win + 1,
           vol: 0,
         });
-        await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU, lastTinHieu);//Bắt đầu
+        await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       } else {
         // SL: Không trừ nữa vì đã trừ khi vào lệnh
         item.AnNumber -= 1;
@@ -677,7 +675,7 @@ async function ThucHienGiaoDich() {
           lost: item.lost + 1,
           minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber
         });
-        await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU, lastTinHieu);//Bắt đầu
+        await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       }
     }
   }
@@ -731,6 +729,23 @@ async function ThucHienGiaoDich() {
           totalVol += itemVol;
         }
 
+
+        // Click chọn hướng (Tài hoặc Xỉu)
+        // await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
+        // await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
+
+        // // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
+        // await clickTheoTinhVol(page, totalVol, "🎯");
+
+        // const delay = 50 + Math.floor(Math.random() * 200);
+        // await page.waitForTimeout(delay);
+
+        // // Click Submit 1 lần duy nhất cho cả batch
+        // await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+        // await masterClick(page, X_Submit, Y_Submit);
+
+        // Trừ luôn số dư và lợi nhuận khi vào lệnh
+
         soDuTaiKhoan -= totalVol;
         profitAll -= totalVol;
 
@@ -751,8 +766,10 @@ async function ThucHienGiaoDich() {
   }
 
   // Cập nhật UI sau khi đã xong phần giao dịch (TP/SL + Đặt lệnh mới)
+  // Cập nhật UI chỉ báo tín hiệu
+  SignalIndicator_Update(page, tinHieuAI.huong !== "null" ? [tinHieuAI] : []);
   UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
-  TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU, tinHieuAI);
+  TableChinh_Update_UI(page, LuutruLongmach);
   UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
   UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
   saveStateTXT();
@@ -845,7 +862,7 @@ async function ThucHienGiaoDich() {
 
     // Ghi nhận thu nhập tự động sau khi rút tiền thành công
     await ghiNhanThuNhap(soTienMuonRut);
-    await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU, lastTinHieu);
+    await TableChinh_Update_UI(page, LuutruLongmach);
 
   }
 }
@@ -1033,6 +1050,35 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
   const totalVolUocTinh = LuutruLongmach.filter(item => item.isTrading).reduce((acc, item) => acc + (item.vol || 0), 0);
   const totalPhiUocTinh = totalVolUocTinh * 0.02;
 
+  // Thống kê theo sType, gộp cả Dep và Xau vào cùng 1 đối tượng
+  const typeStatsMap = {};
+  LuutruLongmach.forEach(item => {
+    const sType = item.strategyType || "null";
+    if (!typeStatsMap[sType]) {
+      typeStatsMap[sType] = {
+        sType,
+        depProfit: 0,
+        depMinAn: 0,
+        xauProfit: 0,
+        xauMinAn: 0
+      };
+    }
+    if (item.type === Dep) {
+      typeStatsMap[sType].depProfit += (item.profit || 0);
+      if ((item.minAnNumber || 0) < typeStatsMap[sType].depMinAn) {
+        typeStatsMap[sType].depMinAn = item.minAnNumber;
+      }
+    } else {
+      typeStatsMap[sType].xauProfit += (item.profit || 0);
+      if ((item.minAnNumber || 0) < typeStatsMap[sType].xauMinAn) {
+        typeStatsMap[sType].xauMinAn = item.minAnNumber;
+      }
+    }
+  });
+
+  const statsList = Object.values(typeStatsMap)
+    .sort((a, b) => a.sType.localeCompare(b.sType, undefined, { numeric: true }));
+
   // Expose function to Node side
   if (!page._resetTiSoExposed) {
     await page.exposeFunction("resetTiSo", async () => {
@@ -1048,13 +1094,13 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
 
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
       await LongMachList_Update_UI(page, ArrayKQ_XAU);
-      await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU, lastTinHieu);
+      await TableChinh_Update_UI(page, LuutruLongmach);
       saveStateTXT();
     });
     page._resetTiSoExposed = true;
   }
 
-  await page.evaluate(({ depCount, xauCount, phi, lai, lo, volUT, phiUT }) => {
+  await page.evaluate(({ depCount, xauCount, phi, lai, lo, volUT, phiUT, statsList }) => {
     let box = document.getElementById("ui-tiso-tx");
     if (!box) {
       box = document.createElement("div");
@@ -1062,54 +1108,73 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
-        left: "10px",
+        left: "3px",
         zIndex: 10000,
-        background: "rgba(0,0,0,0.75)",
-        backdropFilter: "blur(4px)",
+        background: "rgba(0,0,0,0.8)",
+        backdropFilter: "blur(6px)",
         color: "white",
-        padding: "8px 12px",
+        padding: "6px 12px", // Tăng padding ngang
         borderRadius: "6px",
-        fontSize: "14px",
+        fontSize: "10px",
         fontWeight: "600",
         pointerEvents: "none",
-        boxShadow: "0 0 10px rgba(0,0,0,0.5)",
+        boxShadow: "0 4px 15px rgba(0,0,0,0.6)",
         fontFamily: "Arial, sans-serif",
         display: "flex",
         flexDirection: "column",
-        gap: "4px"
+        gap: "3px",
+        border: "1px solid rgba(255,255,255,0.1)",
+        minWidth: "185px" // Thêm min-width để tăng chiều rộng tổng thể
       });
       document.body.appendChild(box);
     }
+
+    const statsRows = statsList.map(s => `
+      <tr style="font-size: 9px; line-height: 1.0;">
+        <td style="text-align: left; color: #eee; padding-right: 4px; white-space: nowrap; width: 38px;">${s.sType}:</td>
+        <td style="text-align: left; color: #bbb; white-space: nowrap; width: 35px;">Đẹp <b style="color: ${s.depProfit >= 0 ? '#00ff00' : '#ff4d4d'}">${s.depProfit.toFixed(0)}</b></td>
+        <td style="text-align: left; color: #ffcc00; padding-left: 6px; white-space: nowrap; width: 25px;">min ${s.depMinAn}</td>
+        <td style="text-align: left; color: #ffccbc; padding-left: 6px; border-left: 1px solid rgba(255,255,255,0.15); white-space: nowrap; width: 40px;">Bẻ🔥 <b style="color: ${s.xauProfit >= 0 ? '#00ff00' : '#ff4d4d'}">${s.xauProfit.toFixed(0)}</b></td>
+        <td style="text-align: left; color: #ffcc00; padding-left: 6px; white-space: nowrap; width: 25px;">min ${s.xauMinAn}</td>
+      </tr>
+    `).join("");
+
     box.innerHTML = `
-      <div style="display:flex; gap:15px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 4px; align-items: center;">
-        <span style="color:#00ff00; font-size:18px; font-weight:800;">Đẹp: ${depCount}</span>
-        <span style="color:#ff4d4d; font-size:18px; font-weight:800;">Xấu: ${xauCount}</span>
+      <div style="display:flex; gap:10px; border-bottom: 1px solid rgba(255,255,255,0.25); padding-bottom: 3px; align-items: center;">
+        <span style="color:#00ff00; font-size:12px; font-weight:800;">Đẹp: ${depCount}</span>
+        <span style="color:#ff4d4d; font-size:12px; font-weight:800;">Xấu: ${xauCount}</span>
       </div>
-      <div style="display:flex; flex-direction:column; gap:2px; padding-top: 2px;">
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
+      <div style="display:flex; flex-direction:column; gap:1px; padding-top: 2px;">
+        <div style="display:flex; justify-content: space-between; gap: 6px;">
           <span style="color:#ccc">Tổng Phí:</span>
           <span style="color:#ffcc00">${phi.toFixed(1)}</span>
         </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
+        <div style="display:flex; justify-content: space-between; gap: 6px;">
           <span style="color:#ccc">Item Lãi:</span>
           <span style="color:#00ff00">${lai.toFixed(1)}</span>
         </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
+        <div style="display:flex; justify-content: space-between; gap: 6px;">
           <span style="color:#ccc">Item Lỗ:</span>
           <span style="color:#ff4d4d">${lo.toFixed(1)}</span>
         </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px; border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 2px; padding-top: 2px;">
+        <div style="display:flex; justify-content: space-between; gap: 6px; border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 1px; padding-top: 1px;">
           <span style="color:#ccc">Vol đánh :</span>
           <span style="color:#fff">${volUT.toFixed(1)}</span>
         </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
+        <div style="display:flex; justify-content: space-between; gap: 6px;">
           <span style="color:#ccc">Phí chịu:</span>
           <span style="color:#ffcc00">${phiUT.toFixed(2)}</span>
         </div>
       </div>
+      <div style="margin-top: 4px; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.15);">
+        <table style="width: 100%; border-collapse: collapse;">
+          ${statsRows}
+        </table>
+      </div>
     `;
-  }, { depCount: depCount, xauCount: xauCount, phi: totalPhi, lai: totalLai, lo: totalLo, volUT: totalVolUocTinh, phiUT: totalPhiUocTinh });
+  }, { depCount: depCount, xauCount: xauCount, phi: totalPhi, lai: totalLai, lo: totalLo, volUT: totalVolUocTinh, phiUT: totalPhiUocTinh, statsList });
 }
+
 
 
 async function clickTheoTinhVol(page, tinhVol, icon) {
@@ -1206,7 +1271,7 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
           % giao dịch
           <input id="inp-percent" type="number"
             style="width:100%;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
-            max="0.05" step="0.01"
+            step="0.01"
             value="${percent}" />
         </div>
 

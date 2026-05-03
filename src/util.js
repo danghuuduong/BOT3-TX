@@ -34,10 +34,7 @@ const TYPES = {
 
 
   TYPE_123: "123",
-  TYPE_123_PLUS: "123 Plus",
-
-  TYPE_KHOI_CHAN: "KHOI_CHAN"
-
+  TYPE_123_PLUS: "123 Plus"
 };
 
 // ================= LOCK STATE =================
@@ -68,10 +65,7 @@ const lockState = {
 
 
   [TYPES.TYPE_123]: false,
-  [TYPES.TYPE_123_PLUS]: false,
-
-  [TYPES.TYPE_KHOI_CHAN]: false
-
+  [TYPES.TYPE_123_PLUS]: false
 };
 
 
@@ -81,6 +75,8 @@ function getLastTX(array, n) {
   return array.slice(-n).join("");
 }
 
+
+// Hàm nhận diện sớm tín hiệu Khối Chẵn (Dấu hiệu: 2 khối chẵn liên tiếp + 1 đơn bẻ)
 function detectKhoiChanEarly_TX(str) {
   if (!str || str.length < 5) return null;
 
@@ -120,9 +116,8 @@ function detectKhoiChanEarly_TX(str) {
   return null;
 }
 
-
-// function isValid_4(s4) { return s4 === "TTTT" || s4 === "XXXX"; }
-// function isValid_5(s5) { return s5 === "TTTTT" || s5 === "XXXXX"; }
+// ================= VALID STRUCTURE =================
+// Hàm kiểm tra xem vẫn còn đang trong chu kỳ Khối Chẵn hay đã thoát (Exit)
 function isStillInKhoiChan_TX(str) {
   if (!str || str.length < 4) return true;
 
@@ -218,6 +213,7 @@ function TinHieuMuaBan(ArrayKQ) {
   const s11 = getLastTX(ArrayKQ, 11);
   const s12 = getLastTX(ArrayKQ, 12);
   const s13 = getLastTX(ArrayKQ, 13);
+  const sKC = ArrayKQ.slice(-25).join("");
 
   // ==================================================================== 1-1 =============================================
   if (lockState[TYPES.TYPE_1_1]) {
@@ -243,16 +239,16 @@ function TinHieuMuaBan(ArrayKQ) {
 
   // ==================================================================== 2-2 =============================================
   if (lockState[TYPES.TYPE_2_2]) {
-    if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2] = false;
+    if (!isValid_2_2(s4, s5) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_2_2] = false;
   } else {
-    if (s6 === "XTXXTT" || s6 === "TXTTXX") {
+    if (s5 === "TXXTT" || s5 === "XTTXX") {
       lockState[TYPES.TYPE_2_2] = true;
-      return { huong: s6 === "XTXXTT" ? T : X, type: TYPES.TYPE_2_2 };
+      return { huong: s5 === "TXXTT" ? T : X, type: TYPES.TYPE_2_2 };
     }
   }
   // 2-2 Plus
   if (lockState[TYPES.TYPE_2_2_PLUS]) {
-    if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2_PLUS] = false;
+    if (!isValid_2_2(s4, s5) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_2_2_PLUS] = false;
   } else {
     if (s6 === "TXXTTX" || s6 === "XTTXXT") {
       lockState[TYPES.TYPE_2_2_PLUS] = true;
@@ -262,41 +258,44 @@ function TinHieuMuaBan(ArrayKQ) {
 
   // ==================================================================== 3-3 =============================================
   if (lockState[TYPES.TYPE_3_3]) {
-    if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3] = false;
+    if (!isValid_3_3(s6, s7, s8) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_3_3] = false;
   } else {
-    if (s8 === "XTXXXTTT" || s8 === "TXTTTXXX") {
+    if (s7 === "TXXXTTT" || s7 === "XTTTXXX") {
       lockState[TYPES.TYPE_3_3] = true;
-      return { huong: s8 === "XTXXXTTT" ? T : X, type: TYPES.TYPE_3_3 };
+      return { huong: s7 === "TXXXTTT" ? T : X, type: TYPES.TYPE_3_3 };
     }
   }
   // 3-3 Plus
   if (lockState[TYPES.TYPE_3_3_PLUS]) {
-    if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3_PLUS] = false;
+    if (!isValid_3_3(s6, s7, s8) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_3_3_PLUS] = false;
   } else {
-    if (s9 === "XTXXXTTTX" || s9 === "TXTTTXXXT") {
+    if (s8 === "TXXXTTTX" || s8 === "XTTTXXXT") {
       lockState[TYPES.TYPE_3_3_PLUS] = true;
-      return { huong: s9 === "XTXXXTTTX" ? T : X, type: TYPES.TYPE_3_3_PLUS };
+      return { huong: s8 === "TXXXTTTX" ? T : X, type: TYPES.TYPE_3_3_PLUS };
     }
   }
 
   // ==================================================================== 4-4 =============================================
   if (lockState[TYPES.TYPE_4_4]) {
-    if (!isValid_4_4(s8, s9, s10, s11)) lockState[TYPES.TYPE_4_4] = false;
+    if (!isValid_4_4(s8, s9, s10, s11) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_4_4] = false;
   } else {
-    if (s10 === "XTXXXXTTTT" || s10 === "TXTTTTXXXX") {
+    if (s9 === "TXXXXTTTT" || s9 === "XTTTTXXXX") {
       lockState[TYPES.TYPE_4_4] = true;
-      return { huong: s10 === "XTXXXXTTTT" ? T : X, type: TYPES.TYPE_4_4 };
+      return { huong: s9 === "TXXXXTTTT" ? T : X, type: TYPES.TYPE_4_4 };
     }
   }
   // ==================================================================== 4-4 4-4 Plus
   if (lockState[TYPES.TYPE_4_4_PLUS]) {
-    if (!isValid_4_4(s8, s9, s10, s11)) lockState[TYPES.TYPE_4_4_PLUS] = false;
+    if (!isValid_4_4(s8, s9, s10, s11) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_4_4_PLUS] = false;
   } else {
-    if (s11 === "XTXXXXTTTTX" || s11 === "TXTTTTXXXXT") {
+    if (s10 === "TXXXXTTTTX" || s10 === "XTTTTXXXXT") {
       lockState[TYPES.TYPE_4_4_PLUS] = true;
-      return { huong: s11 === "XTXXXXTTTTX" ? T : X, type: TYPES.TYPE_4_4_PLUS };
+      return { huong: s10 === "TXXXXTTTTX" ? T : X, type: TYPES.TYPE_4_4_PLUS };
     }
   }
+
+  // ==================================================================== 2 _ 1 +====================================
+
 
   if (lockState[TYPES.TYPE_2_1]) {
     if (!isValid_2_1_2(s5, s6, s7)) lockState[TYPES.TYPE_2_1] = false;
@@ -369,24 +368,11 @@ function TinHieuMuaBan(ArrayKQ) {
     }
   }
 
+
   // ==================================================================== KHOI CHAN =============================================
-  // Lưu ý: nếu TYPE_4_4, TYPE_3_3_PLUS hoặc TYPE_2_2_PLUS đã return ở trên thì không bao giờ chạy đến đây
-  const sKC = ArrayKQ.slice(-25).join("");
-  if (lockState[TYPES.TYPE_KHOI_CHAN]) {
-    if (!isStillInKhoiChan_TX(sKC)) {
-      lockState[TYPES.TYPE_KHOI_CHAN] = false;
-    }
-  } else {
-    const signal = detectKhoiChanEarly_TX(sKC);
-    if (signal) {
-      lockState[TYPES.TYPE_KHOI_CHAN] = true;
-      return { huong: signal.huong, type: TYPES.TYPE_KHOI_CHAN };
-    }
-  }
 
   return { huong: "null", type: "null" };
 }
-
 
 // ================= UI =================
 async function updateButton(page, text, color) {
@@ -407,6 +393,9 @@ function handleGetColor_TX(r, g, b) {
   if (avg < 0.2) return "black";
   return "null";
 }
+
+
+
 
 // function handleGetColor_TX(r, g, b) {
 //   return Math.random() < 0.5 ? "white" : "black";
