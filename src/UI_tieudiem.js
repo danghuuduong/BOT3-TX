@@ -101,15 +101,15 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Bên", "Lực", "Ăn", "x2",
-        "Giao dịch", "Vol", "W/L", "Lãi",
+        "ID", "Bên", "Lực", "Ăn",
+        "Giao dịch", "Vol", "W/L", "Lãi", "Phí",
         "MIN", "STOP"
       ];
 
 
       const widths = [
-        "20px", "40px", "65px", "45px", "25px",
-        "60px", "45px", "80px", "60px",
+        "20px", "40px", "65px", "45px",
+        "60px", "45px", "80px", "60px", "60px",
         "30px", "30px"
       ];
 
@@ -153,6 +153,15 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
 
     rows.forEach(item => {
       const tr = document.createElement("tr");
+      if (item.isReady) {
+        tr.style.backgroundColor = "#a4c2f4"; // xanh nhạt
+        tr.style.fontWeight = "bold";
+        tr.style.color = "#000000ff";
+      } else {
+        tr.style.color = "gray";
+        tr.style.opacity = "0.5";
+      }
+
       const lucStrInput = `<span style="display:inline-block; min-width:12px; text-align:right">${item.tiso}</span>/<input type="number" data-id="${item.id}" value="${item.soLanChoDoi}" style="width:25px; height:18px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;"> ${item.isReady ? '✅' : ''}`;
 
       // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
@@ -161,21 +170,20 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
         item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Xấu🔥",
         "LUC_COLUMN",
         `${item.AnNumber}/${item.soLanMuonAn}${item.hoanthanh ? '😍' : ''}`,
-        item.isNhandoi ? "✅" : " ",
         item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
         item.vol,
         `${item.win}/${item.lost}`,
-        item.profit.toFixed(2),
+        item.profit.toFixed(1),
+        item.phiGD.toFixed(1),
         item.minAnNumber
       ];
 
 
-      cols.forEach(v => {
+      cols.forEach((v, idx) => {
         const td = document.createElement("td");
         if (v === "LUC_COLUMN") {
           // ✅ Nếu tỉ số > 0 thì tô xanh
           if (item.tiso > 0) {
-            td.style.backgroundColor = "#b6fcb6"; // xanh nhạt
             td.style.fontWeight = "bold";
           }
 
@@ -190,12 +198,25 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
         } else {
           td.innerText = v;
         }
+
         Object.assign(td.style, {
           border: "1px solid #000",  // màu đen
           padding: "2px 4px",
-          color: "#000",              // text màu đen
           textAlign: "center",
+          color: "inherit" // ✅ Kế thừa màu từ tr
         });
+
+        // ✅ Màu sắc cho cột Lãi (Index 7)
+        if (idx === 7) {
+          if (item.profit > 0) {
+            td.style.color = "#0cb30cff"; // xanh lá
+            td.style.fontWeight = "bold";
+          } else if (item.profit < 0) {
+            td.style.color = "#d81515ff"; // đỏ
+            td.style.fontWeight = "bold";
+          }
+        }
+
         tr.appendChild(td);
       });
 
