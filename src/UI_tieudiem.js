@@ -144,17 +144,19 @@ async function TableChinh_Create(page) {
   });
 }
 
-async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
-  await page.evaluate(({ rows, arrayKQ }) => {
+async function TableChinh_Update_UI(page, data) {
+  await page.evaluate(({ rows }) => {
     const tbody = document.getElementById("longmach-body");
     if (!tbody) return;
 
     tbody.innerHTML = "";
 
+
+
     rows.forEach(item => {
       const tr = document.createElement("tr");
       if (item.isReady) {
-        tr.style.backgroundColor = "#a4c2f4"; // xanh nhạt
+        tr.style.backgroundColor = item.isTrading ? "#fff176" : "#a4c2f4";
         tr.style.fontWeight = "bold";
         tr.style.color = "#000000ff";
       } else {
@@ -167,7 +169,7 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
       // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
         item.id,
-        item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Xấu🔥",
+        item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Bẻ🔥",
         "LUC_COLUMN",
         `${item.AnNumber}/${item.soLanMuonAn}${item.hoanthanh ? '😍' : ''}`,
         item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
@@ -244,7 +246,7 @@ async function TableChinh_Update_UI(page, data, ArrayKQ_XAU) {
 
       tbody.appendChild(tr);
     });
-  }, { rows: data, arrayKQ: ArrayKQ_XAU });
+  }, { rows: data });
 }
 
 async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 2000) {
