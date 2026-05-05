@@ -190,20 +190,19 @@ let phanTramGiaoDich = 1;
 let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
 
+const LuutruLongmach = [
+  {
+    id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
+    isReady: false, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 2, tiso: 0, phiGD: 0
+  },
+  {
+    id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
+    isReady: false, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 2, tiso: 0, phiGD: 0
+  },
+];
 
-
-const LuutruLongmach = [];
-for (let i = 1; i <= 80; i++) {
-  LuutruLongmach.push({
-    id: i, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false,
-    type: (i % 2 !== 0) ? Dep : Xau,
-    isFomo: (i % 2 !== 0) ? true : false,
-    minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: Math.ceil(i / 2), tiso: 0,
-    phiGD: 0
-  });
-}
 
 loadStateTXT();
 
@@ -325,7 +324,6 @@ async function UI_Reset(page) {
 
       LuutruLongmach.forEach(item => {
         item.isReady = false;
-        item.AnNumber = 0;
         item.soLanMuonAn = 1;
         item.hoanthanh = false;
         item.tiso = item.type === Dep ? (countB - countA) : (countA - countB);
@@ -578,11 +576,7 @@ async function ThucHienGiaoDich() {
       ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       LuutruLongmach.forEach(item => {
         if (item.type === Dep) item.tiso += 1;
-        if (item.type === Xau) item.tiso -= 1;
-      });
-
-      LuutruLongmach.forEach(item => {
-        if (item.tiso >= item.soLanChoDoi) item.isReady = true;
+        if (item.type === Xau && item.tiso !== 0) item.tiso -= 1;
       });
 
       muaGiaLap = "null"
@@ -590,22 +584,27 @@ async function ThucHienGiaoDich() {
       CauDepCount++;
       ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       LuutruLongmach.forEach(item => {
-        if (item.type === Dep) item.tiso -= 1;
+        if (item.type === Dep && item.tiso !== 0) item.tiso -= 1;
         if (item.type === Xau) item.tiso += 1;
       });
-
-      LuutruLongmach.forEach(item => {
-        if (item.tiso >= item.soLanChoDoi) item.isReady = true;
-      });
-
       muaGiaLap = "null"
-
-
     }
   }
   if (muaGiaLap === "null" && tinHieuAI.huong !== "null") {
     muaGiaLap = tinHieuAI.huong
   }
+
+  LuutruLongmach.forEach(item => {
+    if (item.tiso >= item.soLanChoDoi) {
+      item.isReady = true;
+      if (item.id === 1) {
+        LuutruLongmach.find(cac => cac.id === 2).tiso = 0;
+      }
+      if (item.id === 2) {
+        LuutruLongmach.find(cac => cac.id === 1).tiso = 0;
+      }
+    }
+  });
 
   // Cập nhật UI chỉ báo tín hiệu
 
@@ -624,17 +623,20 @@ async function ThucHienGiaoDich() {
       const isWin = resultNew === item.huong
       if (isWin) {
         // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 2 * 0.98)
-        const winAmount = item.vol * 2 * 0.99;
-        const feeAmount = item.vol * 2 * 0.01;
+        const winAmount = item.vol * 0.98;
+        const feeAmount = item.vol * 0.02;
 
         soDuTaiKhoan += winAmount;
         profitAll += winAmount;
         item.phiGD += feeAmount;
+        item.tiso = 0
+        item.hoanthanh = true;
 
-        item.AnNumber += 1;
-        if (item.AnNumber >= item.soLanMuonAn) {
-          item.AnNumber = 0;
-          item.hoanthanh = true;
+        if (item.id === 1) {
+          LuutruLongmach.find(cac => cac.id === 2).tiso = 1;
+        }
+        if (item.id === 2) {
+          LuutruLongmach.find(cac => cac.id === 1).tiso = 1;
         }
 
         handleUpdate_LongMachList(item.id, {
@@ -644,17 +646,24 @@ async function ThucHienGiaoDich() {
           win: item.win + 1,
           vol: 0,
         });
+
         await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       } else {
-        // SL: Không trừ nữa vì đã trừ khi vào lệnh
-        item.AnNumber -= 1;
 
+        soDuTaiKhoan -= item.vol;
+        profitAll -= item.vol;
+
+        if (item.tiso === 5) {
+          item.minAnNumber += 1;
+          item.tiso = 2
+          item.isReady = true
+        }
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
           huong: "null",
           vol: 0,
           lost: item.lost + 1,
-          minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber
+          profit: item.profit - item.vol
         });
         await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       }
@@ -707,11 +716,17 @@ async function ThucHienGiaoDich() {
       // Tính tổng Volume và gán cho từng item
       let totalVol = 0;
       for (const item of ListProp) {
-        const group = Math.ceil(item.id / 10);
+        // const group = Math.ceil(item.id / 10);
         const baseVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
-        const itemVol = Math.floor(baseVol * (1 + (group - 1) * 0.25));
-        item.tempVol = itemVol; // Lưu tạm volume để update state sau batch submit
-        totalVol += itemVol;
+
+        const heSoMap = {
+          2: 1,
+          3: 3,
+          4: 7
+        };
+        const volThep = baseVol * (heSoMap[item.tiso] || 1);
+        item.tempVol = volThep; // Lưu tạm volume để update state sau batch submit
+        totalVol += volThep;
       }
 
 
@@ -730,8 +745,8 @@ async function ThucHienGiaoDich() {
       await masterClick(page, X_Submit, Y_Submit);
 
       // Trừ luôn số dư và lợi nhuận khi vào lệnh
-      soDuTaiKhoan -= totalVol;
-      profitAll -= totalVol;
+      // soDuTaiKhoan -= totalVol;
+      // profitAll -= totalVol;
 
       // Cập nhật trạng thái giao dịch cho từng item trong nhóm
       for (const item of ListProp) {
@@ -739,7 +754,7 @@ async function ThucHienGiaoDich() {
           isTrading: true,
           huong: huongDanhNew,
           vol: item.tempVol,
-          profit: item.profit - item.tempVol
+          // profit: item.profit - item.tempVol
         });
         delete item.tempVol;
       }
@@ -1411,7 +1426,6 @@ function loadStateTXT() {
         const mappedArr = arr.map(i => ({
           ...i,
           isReady: i.isReady ?? false,
-          AnNumber: i.AnNumber ?? 0,
           soLanMuonAn: i.soLanMuonAn,
           hoanthanh: i.hoanthanh ?? false,
           soLanChoDoi: i.soLanChoDoi ?? (i.type === "A" && i.id === 1 ? 7 : i.type === "B" && i.id === 2 ? 7 : 10)
