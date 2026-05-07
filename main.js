@@ -32,9 +32,9 @@ let currentToken = null;
 let profitAll = 0;
 let CauDepCount = 0;
 let CauXauCount = 0;
-let CapSoNhan = 1
+// CapSoNhan đã được chuyển vào từng item trong LuutruLongmach
 let MaxCapSoNhan = 0
-let isChanVaoLenh = false
+// Đã chuyển isChanVaoLenh và CauDangChay vào từng item trong LuutruLongmach
 
 async function doLoginAPI(username, password) {
   try {
@@ -197,7 +197,32 @@ const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, isFomo: true, minAnNumber: 0, type: null,
-    isReady: false, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 2, phiGD: 0, thep: 1
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+  },
+  {
+    id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, isFomo: true, minAnNumber: 0, type: null,
+    isReady: false, hoanthanh: false, soLanChoDoi: 2, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+  },
+  {
+    id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, isFomo: true, minAnNumber: 0, type: null,
+    isReady: false, hoanthanh: false, soLanChoDoi: 3, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+  },
+  {
+    id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, isFomo: true, minAnNumber: 0, type: null,
+    isReady: false, hoanthanh: false, soLanChoDoi: 4, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+  },
+  {
+    id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, isFomo: true, minAnNumber: 0, type: null,
+    isReady: false, hoanthanh: false, soLanChoDoi: 5, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+  },
+  {
+    id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, isFomo: true, minAnNumber: 0, type: null,
+    isReady: false, hoanthanh: false, soLanChoDoi: 6, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
   },
 ];
 
@@ -602,32 +627,39 @@ async function ThucHienGiaoDich() {
   }
 
 
-  // 1. Lấy ra 2 phần tử cuối cùng
-  const lastTwo = ArrayKQ_XAU.slice(-2);
-  // 2. Kiểm tra điều kiện và update
-  if (lastTwo.length === 2) {
-    const isAA = lastTwo.every(item => item === "A");
-    const isBB = lastTwo.every(item => item === "B");
+  // // 1. Kiểm tra điều kiện vào lệnh và mở khóa cho từng item
+  // LuutruLongmach.forEach(item => {
+  //   const n = item.soLanChoDoi;
+  //   if (ArrayKQ_XAU.length < n) return;
 
-    // isChanVaoLenh default false
-    if (isChanVaoLenh) {
-      if (CauDangChay === Dep && !isAA) {
-        CauDangChay = null;
-        isChanVaoLenh = false
-      }
-    }
-    if (isChanVaoLenh === false) {
-      if (isAA) {
-        LuutruLongmach.forEach(item => { item.isReady = true; item.type = Xau });
-        CauDangChay = Dep
-      }
-      if (isBB) {
-        LuutruLongmach.forEach(item => { item.isReady = true; item.type = Dep });
-        CauDangChay = Xau
+  //   const lastN = ArrayKQ_XAU.slice(-n);
+  //   const isAA = lastN.every(x => x === "A");
+  //   const isBB = lastN.every(x => x === "B");
+  //   const ketquaGannhat = ArrayKQ_XAU.at(-1);
 
-      }
-    }
-  }
+  //   // Xử lý mở khóa (Unlock) khi kết quả thay đổi so với lúc bị cháy
+  //   if (item.isChanVaoLenh) {
+  //     if (item.lockType !== ketquaGannhat) {
+  //       item.isChanVaoLenh = false;
+  //       item.lockType = null;
+  //     }
+  //   }
+
+  //   // Xử lý vào lệnh (Ready)
+  //   if (!item.isChanVaoLenh && !item.isReady && !item.isTrading) {
+  //     if (isAA) {
+  //       item.isReady = true;
+  //       item.type = Xau;
+  //       item.hoanthanh = false;
+  //       item.lockType = Dep; // Ghi nhận đang chạy theo cầu A
+  //     } else if (isBB) {
+  //       item.isReady = true;
+  //       item.type = Dep;
+  //       item.hoanthanh = false;
+  //       item.lockType = Xau; // Ghi nhận đang chạy theo cầu B
+  //     }
+  //   }
+  // });
 
 
 
@@ -649,37 +681,40 @@ async function ThucHienGiaoDich() {
         item.hoanthanh = true;
         item.thep = 1
         item.isReady = false
+        item.lockType = null
 
-        CauDangChay = null
-
-        if (soDuTaiKhoan + (soDuLonNhat * 0.002) >= soDuLonNhat) {
-          CapSoNhan = 1
+        const newProfit = item.profit + winAmount;
+        if (newProfit > (item.profitMax || 0)) {
+          item.capSoNhan = 1;
+          item.profitMax = newProfit;
         }
 
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
           huong: "null",
-          profit: item.profit + winAmount,
+          profit: newProfit,
           win: item.win + 1,
           vol: 0,
         });
 
-        await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       } else {
         soDuTaiKhoan -= item.vol;
         profitAll -= item.vol;
+        item.thep += 1
 
-        if (item.thep >= 3) {
+        if (item.thep >= 4) {
           item.minAnNumber += 1;
-          CapSoNhan += 1;
-          item.thep = 1
+          item.capSoNhan += 1;
+          item.thep = 1;
+          item.isChanVaoLenh = true;
+          item.isReady = false;
         }
-        if (CapSoNhan > MaxCapSoNhan) {
-          MaxCapSoNhan = CapSoNhan
+        if (item.capSoNhan > item.maxCapSoNhan) {
+          item.maxCapSoNhan = item.capSoNhan;
         }
-        if (CapSoNhan >= 7) {
-          CapSoNhan = 1
-          console.log("Cháy TK 7 lần, 2730k", CapSoNhan)
+        if (item.capSoNhan >= 7) {
+          item.capSoNhan = 1
+          console.log(`Item ${item.id} cháy 7 lần, reset capSoNhan`, item.capSoNhan)
         }
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
@@ -687,9 +722,8 @@ async function ThucHienGiaoDich() {
           vol: 0,
           lost: item.lost + 1,
           profit: item.profit - item.vol,
-          isReady: false
         });
-        await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
+        TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       }
     }
   }
@@ -704,7 +738,41 @@ async function ThucHienGiaoDich() {
     }
   }
 
+  // 1. Kiểm tra điều kiện vào lệnh và mở khóa cho từng item (Đặt sau TP/SL để có thể vào lệnh lại ngay nếu soLanChoDoi thấp)
+  LuutruLongmach.forEach(item => {
+    const n = item.soLanChoDoi;
+    if (ArrayKQ_XAU.length < n) return;
 
+    const lastN = ArrayKQ_XAU.slice(-n);
+    const isAA = lastN.every(x => x === "A");
+    const isBB = lastN.every(x => x === "B");
+    const ketquaGannhat = ArrayKQ_XAU.at(-1);
+
+    // Xử lý mở khóa (Unlock) khi kết quả thay đổi so với lúc bị cháy
+    if (item.isChanVaoLenh) {
+      if (item.lockType !== ketquaGannhat) {
+        item.isChanVaoLenh = false;
+        item.lockType = null;
+      }
+    }
+
+    // Xử lý vào lệnh (Ready)
+    if (!item.isChanVaoLenh && !item.isReady && !item.isTrading) {
+      if (isAA) {
+        item.isReady = true;
+        item.type = Xau;
+        item.hoanthanh = false;
+        item.lockType = Dep; // Ghi nhận đang chạy theo cầu A
+      } else if (isBB) {
+        item.isReady = true;
+        item.type = Dep;
+        item.hoanthanh = false;
+        item.lockType = Xau; // Ghi nhận đang chạy theo cầu B
+      }
+    }
+  });
+
+  TableChinh_Update_UI(page, LuutruLongmach);
   // =========================================================================== ĐẶT LỆNH ================================================================
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
@@ -735,13 +803,14 @@ async function ThucHienGiaoDich() {
         const baseVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
 
         const heSoMap = {
-          2: 1,
-          3: 3,
-          4: 7
+          1: 1,
+          2: 3,
+          3: 7
         };
         const volThep = baseVol * (heSoMap[item.thep] || 1);
-        item.tempVol = volThep * CapSoNhan; // Lưu tạm volume để update state sau batch submit
-        totalVol += volThep * CapSoNhan;
+        const volReal = volThep * Math.pow(2, item.capSoNhan - 1);
+        item.tempVol = volReal; // Lưu tạm volume để update state sau batch submit
+        totalVol += volReal;
       }
 
 
@@ -1079,10 +1148,16 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
   // Expose resetMaxNhan function to Node side
   if (!page._resetMaxNhanExposed) {
     await page.exposeFunction("resetMaxNhan", async () => {
-      MaxCapSoNhan = 0;
       maxDrawdown = 0;
 
+      // Reset thống kê từng item
+      LuutruLongmach.forEach(item => {
+        item.capSoNhan = 1;
+        item.maxCapSoNhan = 1;
+      });
+
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
+      await TableChinh_Update_UI(page, LuutruLongmach);
       saveStateTXT();
     });
     page._resetMaxNhanExposed = true;
@@ -1152,7 +1227,16 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
         </div>
       </div>
     `;
-  }, { depCount: depCount, xauCount: xauCount, phi: totalPhi, lai: totalLai, lo: totalLo, volUT: totalVolUocTinh, phiUT: totalPhiUocTinh, maxNhan: MaxCapSoNhan });
+  }, {
+    depCount: depCount,
+    xauCount: xauCount,
+    phi: totalPhi,
+    lai: totalLai,
+    lo: totalLo,
+    volUT: totalVolUocTinh,
+    phiUT: totalPhiUocTinh,
+    maxNhan: Math.max(...LuutruLongmach.map(item => item.maxCapSoNhan || 1))
+  });
 }
 
 
@@ -1381,7 +1465,6 @@ function saveStateTXT() {
 
     lines.push(`CauDepCount=${CauDepCount}`);
     lines.push(`CauXauCount=${CauXauCount}`);
-    lines.push(`MaxCapSoNhan=${MaxCapSoNhan}`);
 
     lines.push("");
 
@@ -1427,7 +1510,6 @@ function loadStateTXT() {
 
     CauDepCount = Number(getVal("CauDepCount")) || 0;
     CauXauCount = Number(getVal("CauXauCount")) || 0;
-    MaxCapSoNhan = Number(getVal("MaxCapSoNhan")) || 0;
 
     const arrKQ = getVal("ArrayKQ");
     if (arrKQ) {
@@ -1454,7 +1536,6 @@ function loadStateTXT() {
         const mappedArr = arr.map(i => ({
           ...i,
           isReady: i.isReady ?? false,
-          soLanMuonAn: i.soLanMuonAn,
           hoanthanh: i.hoanthanh ?? false,
           soLanChoDoi: i.soLanChoDoi
         }));
