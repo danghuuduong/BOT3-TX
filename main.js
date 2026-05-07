@@ -34,6 +34,7 @@ let CauDepCount = 0;
 let CauXauCount = 0;
 let CapSoNhan = 1
 let MaxCapSoNhan = 0
+let isChanVaoLenh = false
 
 async function doLoginAPI(username, password) {
   try {
@@ -178,16 +179,16 @@ let page;
 let countdown = 70;
 let countdownInterval;
 
-const MAX_LENGTH = 1000;
+const MAX_LENGTH = 100;
 const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
 
-let soDuTaiKhoan = 1000;
-let soDuLonNhat = 1000;
+let soDuTaiKhoan = 2730;
+let soDuLonNhat = 2730;
 let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
-let phanTramGiaoDich = 1;
+let phanTramGiaoDich = 0.0735;
 
 let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
@@ -195,13 +196,8 @@ let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Dep, isFomo: true, minAnNumber: 0,
-    isReady: false, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 2, tiso: 0, phiGD: 0
-  },
-  {
-    id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, type: Xau, isFomo: false, minAnNumber: 0,
-    isReady: false, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 2, tiso: 0, phiGD: 0
+    isStop: false, isFomo: true, minAnNumber: 0, type: null,
+    isReady: false, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 2, phiGD: 0, thep: 1
   },
 ];
 
@@ -324,17 +320,34 @@ async function UI_Reset(page) {
         CauXauCount = countB;
       }
 
-      LuutruLongmach.forEach(item => {
-        item.isReady = false;
-        item.soLanMuonAn = 1;
-        item.hoanthanh = false;
-        item.tiso = item.type === Dep ? (countB - countA) : (countA - countB);
-      });
+      // 1. Lấy ra 2 phần tử cuối cùng
+      const lastTwo = ArrayKQ_XAU.slice(-2);
+      // 2. Kiểm tra điều kiện và update
+      if (lastTwo.length === 2) {
+        const isAA = lastTwo.every(item => item === "A");
+        const isBB = lastTwo.every(item => item === "B");
 
-      for (const item of LuutruLongmach) {
-        if (!item.isReady && item.tiso >= item.soLanChoDoi) {
-          item.isReady = true;
-          item.hoanthanh = false;
+        if (isAA && CauDangChay !== Xau) {
+          // Cập nhật id 2 khi là "A","A"
+
+          LuutruLongmach.forEach(item => {
+            if (item.type === Xau) {
+              item.isReady = true;
+            }
+          });
+
+          CauDangChay = Xau
+        }
+        else if (isBB && CauDangChay !== Dep) {
+          // Cập nhật id 1 khi là "B","B" (theo logic type: Dep)
+
+          LuutruLongmach.forEach(item => {
+            if (item.type === Dep) {
+              item.isReady = true;
+            }
+          });
+
+          CauDangChay = Dep
         }
       }
 
@@ -571,24 +584,16 @@ async function ThucHienGiaoDich() {
 
   if (resultNew === "null") { console.log("Bị vấn đề về kết quả"); return };
 
+
   if (muaGiaLap !== "null") {
     const isWin = resultNew === muaGiaLap
     if (isWin) {
       CauXauCount++;
       ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
-      LuutruLongmach.forEach(item => {
-        if (item.type === Dep) item.tiso += 1;
-        if (item.type === Xau && item.tiso !== 0) item.tiso -= 1;
-      });
-
       muaGiaLap = "null"
     } else {
       CauDepCount++;
       ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
-      LuutruLongmach.forEach(item => {
-        if (item.type === Dep && item.tiso !== 0) item.tiso -= 1;
-        if (item.type === Xau) item.tiso += 1;
-      });
       muaGiaLap = "null"
     }
   }
@@ -596,27 +601,37 @@ async function ThucHienGiaoDich() {
     muaGiaLap = tinHieuAI.huong
   }
 
-  LuutruLongmach.forEach(item => {
-    if (item.tiso >= item.soLanChoDoi) {
-      item.isReady = true;
-      if (item.id === 1) {
-        LuutruLongmach.find(cac => cac.id === 2).tiso = 0;
-      }
-      if (item.id === 2) {
-        LuutruLongmach.find(cac => cac.id === 1).tiso = 0;
+
+  // 1. Lấy ra 2 phần tử cuối cùng
+  const lastTwo = ArrayKQ_XAU.slice(-2);
+  // 2. Kiểm tra điều kiện và update
+  if (lastTwo.length === 2) {
+    const isAA = lastTwo.every(item => item === "A");
+    const isBB = lastTwo.every(item => item === "B");
+
+    // isChanVaoLenh default false
+    if (isChanVaoLenh) {
+      if (CauDangChay === Dep && !isAA) {
+        CauDangChay = null;
+        isChanVaoLenh = false
       }
     }
-  });
+    if (isChanVaoLenh === false) {
+      if (isAA) {
+        LuutruLongmach.forEach(item => { item.isReady = true; item.type = Xau });
+        CauDangChay = Dep
+      }
+      if (isBB) {
+        LuutruLongmach.forEach(item => { item.isReady = true; item.type = Dep });
+        CauDangChay = Xau
 
-  // Cập nhật UI chỉ báo tín hiệu
-
-
-
-  for (const item of LuutruLongmach) {
-    if (!item.isReady && item.tiso >= item.soLanChoDoi) {
-      item.isReady = true;
+      }
     }
   }
+
+
+
+
   await LongMachList_Update_UI(page, ArrayKQ_XAU);
 
   // ====================================================================================== TP / SL =======================================================================
@@ -631,17 +646,14 @@ async function ThucHienGiaoDich() {
         soDuTaiKhoan += winAmount;
         profitAll += winAmount;
         item.phiGD += feeAmount;
-        item.tiso = 0
         item.hoanthanh = true;
+        item.thep = 1
+        item.isReady = false
+
+        CauDangChay = null
 
         if (soDuTaiKhoan + (soDuLonNhat * 0.002) >= soDuLonNhat) {
           CapSoNhan = 1
-        }
-        if (item.id === 1) {
-          LuutruLongmach.find(cac => cac.id === 2).tiso = 1;
-        }
-        if (item.id === 2) {
-          LuutruLongmach.find(cac => cac.id === 1).tiso = 1;
         }
 
         handleUpdate_LongMachList(item.id, {
@@ -654,40 +666,31 @@ async function ThucHienGiaoDich() {
 
         await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       } else {
-
         soDuTaiKhoan -= item.vol;
         profitAll -= item.vol;
 
-        if (item.tiso === 5) {
+        if (item.thep >= 3) {
           item.minAnNumber += 1;
-          item.tiso = 2
-          item.isReady = true
-          CapSoNhan += 1
+          CapSoNhan += 1;
+          item.thep = 1
         }
         if (CapSoNhan > MaxCapSoNhan) {
           MaxCapSoNhan = CapSoNhan
         }
         if (CapSoNhan >= 7) {
           CapSoNhan = 1
+          console.log("Cháy TK 7 lần, 2730k", CapSoNhan)
         }
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
           huong: "null",
           vol: 0,
           lost: item.lost + 1,
-          profit: item.profit - item.vol
+          profit: item.profit - item.vol,
+          isReady: false
         });
         await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       }
-    }
-  }
-
-  // Cập nhật lại isReady sau khi đã xử lý TP/SL (để reset tiso có hiệu lực ngay)
-  for (const item of LuutruLongmach) {
-    if (item.tiso >= item.soLanChoDoi) {
-      item.isReady = true;
-    } else {
-      item.isReady = false;
     }
   }
 
@@ -736,7 +739,7 @@ async function ThucHienGiaoDich() {
           3: 3,
           4: 7
         };
-        const volThep = baseVol * (heSoMap[item.tiso] || 1);
+        const volThep = baseVol * (heSoMap[item.thep] || 1);
         item.tempVol = volThep * CapSoNhan; // Lưu tạm volume để update state sau batch submit
         totalVol += volThep * CapSoNhan;
       }
@@ -1063,15 +1066,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
   if (!page._resetTiSoExposed) {
     await page.exposeFunction("resetTiSo", async () => {
       ArrayKQ_XAU.length = 0;
-      CauDepCount = 0;
-      CauXauCount = 0;
       MaxCapSoNhan = 0;
-
-      LuutruLongmach.forEach(item => {
-        item.tiso = 0;
-        item.isReady = false;
-        // Có thể reset thêm profit/phi nếu cần, nhưng tạm thời theo yêu cầu là reset TiSo
-      });
 
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
       await LongMachList_Update_UI(page, ArrayKQ_XAU);
@@ -1461,7 +1456,7 @@ function loadStateTXT() {
           isReady: i.isReady ?? false,
           soLanMuonAn: i.soLanMuonAn,
           hoanthanh: i.hoanthanh ?? false,
-          soLanChoDoi: i.soLanChoDoi ?? (i.type === "A" && i.id === 1 ? 7 : i.type === "B" && i.id === 2 ? 7 : 10)
+          soLanChoDoi: i.soLanChoDoi
         }));
         LuutruLongmach.push(...mappedArr);
       }

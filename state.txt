@@ -1,17 +1,17 @@
-soDuTaiKhoan=2646.620000000002
-soDuLonNhat=2646.620000000002
-phanTramGiaoDich=0.077
-profitAll=46.63999999999999
-maxDrawdown=8.271701198325502
-nguongTienDat=60000
+soDuTaiKhoan=2733.94
+soDuLonNhat=2735.94
+phanTramGiaoDich=0.0733
+profitAll=3.9399999999999995
+maxDrawdown=0.07310101829718488
+nguongTienDat=6000
 soTienMuonRut=2000
 tongTienDaRut=0
-CauDepCount=117
-CauXauCount=93
-MaxCapSoNhan=6
+CauDepCount=9
+CauXauCount=13
+MaxCapSoNhan=1
 
-ArrayKQ=T,T,T,X,T,X,X,T,X,T,X,X,T,T,T,X,T,X,T,X,X,X,X,X,T,X,X,X,T,X,X,X,T,T,X,X,T,T,T,X,T,T,T,X,X,T,T,X,T,T,T,T,T,X,T,X,T,X,X,X,T,T,X,X,T,X,X,T,X,T,X,T,X,T,X,X,T,T,T,X,X,X,T,X,X,X,X,X,X,X,T,T,T,T,X,X,T,X,X,T
-ArrayKQ_XAU=A,A,B,A,B,A,A,A,B,B,A,B,B,A,B,A,A,B,A,B,B,A,B,A,B,A,A,A,B,A,A,B,A,B,B,B,A,B,B,A,B,A,B,B,A,B,A,A,A,A,A,A,B,B,B,A,B,B,A,B,B,B,B,A,A,B,A,B,A,B,B,B,B,B,B,A,A,A,A,A,B,B,B,B,A,B,A,B,A,B,A,B,B,A,A,B,A,A,A,B,A,B,A,B,A,A,A,B,A,B,B,B,A,A,B,B,A,A,A,A,A,B,A,B,A,A,A,A,A,B,A,B,A,A,A,B,A,A,A,B,B,B,B,B,A,A,A,A,A,A,A,B,A,A,A,A,B,B,A,B,A,A,B,B,B,B,B,A,A,A,B,A,A,B,B,A,B,A,B,B,A,B,A,A,A,B,A,A,A,B,A,B,B,A,A,A,B,A,A,A,A,B,A,A,A,B,B,A
+ArrayKQ=T,T,T,T,T,T,X,T,X,T,X,T,T,X,T,X,X,X,X,X,T,X,T,X,X,T,T,X,T,T,X,X,T,X,X,X,T,T,X,T,T,X,T,T,T,T,X,X,T,X,X,T,T,T,T,T,T,T,X,T,T,X,X,T,X,X,T,T,T
+ArrayKQ_XAU=B,A,B,A,B,A,B,A,B,B,A,A,B,A,B,B,B,A,B,A,B,B
 
 LuutruLongmach=
 [
@@ -19,38 +19,38 @@ LuutruLongmach=
     "id": 1,
     "isTrading": false,
     "huong": "null",
-    "profit": -61.82000000000003,
+    "profit": 1.96,
     "vol": 0,
-    "win": 21,
-    "lost": 17,
+    "win": 2,
+    "lost": 1,
     "isStop": false,
     "type": "A",
     "isFomo": true,
-    "minAnNumber": 3,
+    "minAnNumber": 0,
     "isReady": false,
     "soLanMuonAn": 1,
-    "hoanthanh": true,
+    "hoanthanh": false,
     "soLanChoDoi": 2,
-    "tiso": 0,
-    "phiGD": 1.8200000000000007
+    "phiGD": 0.04,
+    "thep": 1
   },
   {
     "id": 2,
     "isTrading": false,
     "huong": "null",
-    "profit": 108.45999999999997,
+    "profit": 1.98,
     "vol": 0,
-    "win": 26,
-    "lost": 33,
+    "win": 1,
+    "lost": 0,
     "isStop": false,
     "type": "B",
     "isFomo": false,
-    "minAnNumber": 5,
+    "minAnNumber": 0,
     "isReady": false,
     "soLanMuonAn": 1,
-    "hoanthanh": true,
+    "hoanthanh": false,
     "soLanChoDoi": 2,
-    "tiso": 1,
-    "phiGD": 5.5600000000000005
+    "phiGD": 0.02,
+    "thep": 1
   }
 ]
