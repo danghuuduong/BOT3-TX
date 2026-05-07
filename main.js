@@ -626,44 +626,6 @@ async function ThucHienGiaoDich() {
     muaGiaLap = tinHieuAI.huong
   }
 
-
-  // // 1. Kiểm tra điều kiện vào lệnh và mở khóa cho từng item
-  // LuutruLongmach.forEach(item => {
-  //   const n = item.soLanChoDoi;
-  //   if (ArrayKQ_XAU.length < n) return;
-
-  //   const lastN = ArrayKQ_XAU.slice(-n);
-  //   const isAA = lastN.every(x => x === "A");
-  //   const isBB = lastN.every(x => x === "B");
-  //   const ketquaGannhat = ArrayKQ_XAU.at(-1);
-
-  //   // Xử lý mở khóa (Unlock) khi kết quả thay đổi so với lúc bị cháy
-  //   if (item.isChanVaoLenh) {
-  //     if (item.lockType !== ketquaGannhat) {
-  //       item.isChanVaoLenh = false;
-  //       item.lockType = null;
-  //     }
-  //   }
-
-  //   // Xử lý vào lệnh (Ready)
-  //   if (!item.isChanVaoLenh && !item.isReady && !item.isTrading) {
-  //     if (isAA) {
-  //       item.isReady = true;
-  //       item.type = Xau;
-  //       item.hoanthanh = false;
-  //       item.lockType = Dep; // Ghi nhận đang chạy theo cầu A
-  //     } else if (isBB) {
-  //       item.isReady = true;
-  //       item.type = Dep;
-  //       item.hoanthanh = false;
-  //       item.lockType = Xau; // Ghi nhận đang chạy theo cầu B
-  //     }
-  //   }
-  // });
-
-
-
-
   await LongMachList_Update_UI(page, ArrayKQ_XAU);
 
   // ====================================================================================== TP / SL =======================================================================
@@ -700,14 +662,16 @@ async function ThucHienGiaoDich() {
       } else {
         soDuTaiKhoan -= item.vol;
         profitAll -= item.vol;
-        item.thep += 1
+        item.thep += 1;
+
+        // Chặn luôn sau mỗi lệnh thua để đợi tín hiệu mới
+        item.isChanVaoLenh = true;
+        item.isReady = false;
 
         if (item.thep >= 4) {
           item.minAnNumber += 1;
           item.capSoNhan += 1;
           item.thep = 1;
-          item.isChanVaoLenh = true;
-          item.isReady = false;
         }
         if (item.capSoNhan > item.maxCapSoNhan) {
           item.maxCapSoNhan = item.capSoNhan;
