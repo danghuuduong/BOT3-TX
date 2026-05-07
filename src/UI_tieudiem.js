@@ -101,14 +101,14 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Bên", "Lực", "Ăn",
+        "ID", "Bên", "Lực", 
         "Giao dịch", "Vol", "W/L", "Lãi", "Phí",
         "MIN", "STOP"
       ];
 
 
       const widths = [
-        "20px", "40px", "65px", "45px",
+        "20px", "40px", "65px", 
         "60px", "45px", "80px", "60px", "60px",
         "30px", "30px"
       ];
@@ -169,9 +169,8 @@ async function TableChinh_Update_UI(page, data) {
       // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
         item.id,
-        item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Bẻ🔥",
+        item.isFomo === "null" ? " " : item.isFomo ? `Đẹp ${item.hoanthanh ? ' 😍' : ''}   ` :  `Bẻ🔥${item.hoanthanh ? ' 😍' : ''}`,
         "LUC_COLUMN",
-        `${item.AnNumber}/${item.soLanMuonAn}${item.hoanthanh ? '😍' : ''}`,
         item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
         item.vol,
         `${item.win}/${item.lost}`,

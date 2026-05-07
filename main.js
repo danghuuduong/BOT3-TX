@@ -32,6 +32,8 @@ let currentToken = null;
 let profitAll = 0;
 let CauDepCount = 0;
 let CauXauCount = 0;
+let CapSoNhan = 1
+let MaxCapSoNhan = 0
 
 async function doLoginAPI(username, password) {
   try {
@@ -623,8 +625,8 @@ async function ThucHienGiaoDich() {
       const isWin = resultNew === item.huong
       if (isWin) {
         // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 2 * 0.98)
-        const winAmount = item.vol * 0.98;
-        const feeAmount = item.vol * 0.02;
+        const winAmount = item.vol * 0.99;
+        const feeAmount = item.vol * 0.01;
 
         soDuTaiKhoan += winAmount;
         profitAll += winAmount;
@@ -632,6 +634,9 @@ async function ThucHienGiaoDich() {
         item.tiso = 0
         item.hoanthanh = true;
 
+        if (soDuTaiKhoan + (soDuLonNhat * 0.002) >= soDuLonNhat) {
+          CapSoNhan = 1
+        }
         if (item.id === 1) {
           LuutruLongmach.find(cac => cac.id === 2).tiso = 1;
         }
@@ -657,6 +662,13 @@ async function ThucHienGiaoDich() {
           item.minAnNumber += 1;
           item.tiso = 2
           item.isReady = true
+          CapSoNhan += 1
+        }
+        if (CapSoNhan > MaxCapSoNhan) {
+          MaxCapSoNhan = CapSoNhan
+        }
+        if (CapSoNhan >= 7) {
+          CapSoNhan = 1
         }
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
@@ -725,28 +737,24 @@ async function ThucHienGiaoDich() {
           4: 7
         };
         const volThep = baseVol * (heSoMap[item.tiso] || 1);
-        item.tempVol = volThep; // Lưu tạm volume để update state sau batch submit
-        totalVol += volThep;
+        item.tempVol = volThep * CapSoNhan; // Lưu tạm volume để update state sau batch submit
+        totalVol += volThep * CapSoNhan;
       }
 
 
-      // Click chọn hướng (Tài hoặc Xỉu)
-      await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
-      await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
+      // // Click chọn hướng (Tài hoặc Xỉu)
+      // await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
+      // await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
 
-      // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
-      await clickTheoTinhVol(page, totalVol, "🎯");
+      // // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
+      // await clickTheoTinhVol(page, totalVol, "🎯");
 
-      const delay = 50 + Math.floor(Math.random() * 200);
-      await page.waitForTimeout(delay);
+      // const delay = 50 + Math.floor(Math.random() * 200);
+      // await page.waitForTimeout(delay);
 
-      // Click Submit 1 lần duy nhất cho cả batch
-      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-      await masterClick(page, X_Submit, Y_Submit);
-
-      // Trừ luôn số dư và lợi nhuận khi vào lệnh
-      // soDuTaiKhoan -= totalVol;
-      // profitAll -= totalVol;
+      // // Click Submit 1 lần duy nhất cho cả batch
+      // await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      // await masterClick(page, X_Submit, Y_Submit);
 
       // Cập nhật trạng thái giao dịch cho từng item trong nhóm
       for (const item of ListProp) {
@@ -754,7 +762,6 @@ async function ThucHienGiaoDich() {
           isTrading: true,
           huong: huongDanhNew,
           vol: item.tempVol,
-          // profit: item.profit - item.tempVol
         });
         delete item.tempVol;
       }
@@ -1058,6 +1065,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       ArrayKQ_XAU.length = 0;
       CauDepCount = 0;
       CauXauCount = 0;
+      MaxCapSoNhan = 0;
 
       LuutruLongmach.forEach(item => {
         item.tiso = 0;
@@ -1073,7 +1081,19 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
     page._resetTiSoExposed = true;
   }
 
-  await page.evaluate(({ depCount, xauCount, phi, lai, lo, volUT, phiUT }) => {
+  // Expose resetMaxNhan function to Node side
+  if (!page._resetMaxNhanExposed) {
+    await page.exposeFunction("resetMaxNhan", async () => {
+      MaxCapSoNhan = 0;
+      maxDrawdown = 0;
+
+      await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
+      saveStateTXT();
+    });
+    page._resetMaxNhanExposed = true;
+  }
+
+  await page.evaluate(({ depCount, xauCount, phi, lai, lo, volUT, phiUT, maxNhan }) => {
     let box = document.getElementById("ui-tiso-tx");
     if (!box) {
       box = document.createElement("div");
@@ -1083,52 +1103,63 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
         bottom: "10px",
         left: "10px",
         zIndex: 10000,
-        background: "rgba(0,0,0,0.75)",
+        background: "rgba(0,0,0,0.85)",
         backdropFilter: "blur(4px)",
         color: "white",
         padding: "8px 12px",
-        borderRadius: "6px",
+        borderRadius: "8px",
         fontSize: "14px",
         fontWeight: "600",
-        pointerEvents: "none",
-        boxShadow: "0 0 10px rgba(0,0,0,0.5)",
-        fontFamily: "Arial, sans-serif",
+        boxShadow: "0 4px 15px rgba(0,0,0,0.5)",
+        fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
         display: "flex",
         flexDirection: "column",
-        gap: "4px"
+        gap: "6px",
+        minWidth: "160px",
+        pointerEvents: "auto" // Cho phép click vào nút reset
       });
       document.body.appendChild(box);
     }
     box.innerHTML = `
-      <div style="display:flex; gap:15px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 4px; align-items: center;">
-        <span style="color:#00ff00; font-size:18px; font-weight:800;">Đẹp: ${depCount}</span>
-        <span style="color:#ff4d4d; font-size:18px; font-weight:800;">Xấu: ${xauCount}</span>
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 6px; margin-bottom: 2px;">
+        <span style="color:#00ff00; font-size:16px; font-weight:800;">Đẹp: ${depCount}</span>
+        <span style="color:#ff4d4d; font-size:16px; font-weight:800;">Xấu: ${xauCount}</span>
       </div>
-      <div style="display:flex; flex-direction:column; gap:2px; padding-top: 2px;">
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Tổng Phí:</span>
-          <span style="color:#ffcc00">${phi.toFixed(1)}</span>
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <div style="display:flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 4px 8px; borderRadius: 4px;">
+          <div style="display:flex; align-items: center; gap: 8px;">
+            <span style="color:#ccc; font-size:12px;">Max Nhân:</span>
+            <span style="color:#00ffff; font-size:15px; font-weight:bold;">${maxNhan}</span>
+          </div>
+          <button onclick="window.resetMaxNhan()" style="background: #ff4d4d; color: white; border: none; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 10px; font-weight: bold; transition: all 0.2s;">
+            RESET
+          </button>
         </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Item Lãi:</span>
-          <span style="color:#00ff00">${lai.toFixed(1)}</span>
+        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
+          <span style="color:#aaa; font-size:12px;">Tổng Phí:</span>
+          <span style="color:#ffcc00; font-size:13px;">${phi.toFixed(1)}</span>
         </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Item Lỗ:</span>
-          <span style="color:#ff4d4d">${lo.toFixed(1)}</span>
+        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
+          <span style="color:#aaa; font-size:12px;">Item Lãi:</span>
+          <span style="color:#00ff00; font-size:13px;">${lai.toFixed(1)}</span>
         </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px; border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 2px; padding-top: 2px;">
-          <span style="color:#ccc">Vol đánh :</span>
-          <span style="color:#fff">${volUT.toFixed(1)}</span>
+        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
+          <span style="color:#aaa; font-size:12px;">Item Lỗ:</span>
+          <span style="color:#ff4d4d; font-size:13px;">${lo.toFixed(1)}</span>
         </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Phí chịu:</span>
-          <span style="color:#ffcc00">${phiUT.toFixed(2)}</span>
+        <div style="display:flex; justify-content: space-between; gap: 10px; border-top: 1px dashed rgba(255,255,255,0.15); margin-top: 2px; padding: 4px 4px 0 4px;">
+          <span style="color:#aaa; font-size:12px;">Vol đánh:</span>
+          <span style="color:#fff; font-size:13px;">${volUT.toFixed(1)}</span>
+        </div>
+        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
+          <span style="color:#aaa; font-size:12px;">Phí chịu:</span>
+          <span style="color:#ffcc00; font-size:13px;">${phiUT.toFixed(2)}</span>
         </div>
       </div>
     `;
-  }, { depCount: depCount, xauCount: xauCount, phi: totalPhi, lai: totalLai, lo: totalLo, volUT: totalVolUocTinh, phiUT: totalPhiUocTinh });
+  }, { depCount: depCount, xauCount: xauCount, phi: totalPhi, lai: totalLai, lo: totalLo, volUT: totalVolUocTinh, phiUT: totalPhiUocTinh, maxNhan: MaxCapSoNhan });
 }
+
 
 
 async function clickTheoTinhVol(page, tinhVol, icon) {
@@ -1355,6 +1386,7 @@ function saveStateTXT() {
 
     lines.push(`CauDepCount=${CauDepCount}`);
     lines.push(`CauXauCount=${CauXauCount}`);
+    lines.push(`MaxCapSoNhan=${MaxCapSoNhan}`);
 
     lines.push("");
 
@@ -1400,6 +1432,7 @@ function loadStateTXT() {
 
     CauDepCount = Number(getVal("CauDepCount")) || 0;
     CauXauCount = Number(getVal("CauXauCount")) || 0;
+    MaxCapSoNhan = Number(getVal("MaxCapSoNhan")) || 0;
 
     const arrKQ = getVal("ArrayKQ");
     if (arrKQ) {
