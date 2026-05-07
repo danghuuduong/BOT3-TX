@@ -101,9 +101,9 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Bên", "Lực", "Nhân", "Max N",
-        "Giao dịch", "Vol", "W/L", "Lãi", "Phí",
-        "MIN", "STOP"
+        "ID", "Bên", "Lực", "Nhân", "Max Nhân",
+        "Giao dịch", "Vol", "W/L", "Lãi", "LãiMax",
+        "Phí", "STOP"
       ];
 
 
@@ -177,8 +177,8 @@ async function TableChinh_Update_UI(page, data) {
         item.vol,
         `${item.win}/${item.lost}`,
         item.profit.toFixed(1),
+        item.profitMax.toFixed(1),
         item.phiGD.toFixed(1),
-        item.minAnNumber
       ];
 
 
