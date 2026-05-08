@@ -714,7 +714,7 @@ async function ThucHienGiaoDich() {
           item.maxCapSoNhan = item.capSoNhan;
         }
         if (item.capSoNhan >= 5) {
-          item.capSoNhan = 15
+          item.capSoNhan = 5
           console.log(`Item ${item.id} cháy 7 lần, reset capSoNhan`, item.capSoNhan)
           console.log(`Dừng lại`, item.capSoNhan)
         }
