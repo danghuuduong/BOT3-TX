@@ -3,7 +3,7 @@ const {
   KetquaTXList_Create, LongMachList_create, KetquaTXList_Update_UI,
   SignalIndicator_Create, SignalIndicator_Update
 } = require("./src/Button_Common");
-const { UI_TieuDiem, TableChinh_Update_UI, TableChinh_Create, UI_MouseClick } = require("./src/UI_tieudiem");
+const { UI_TieuDiem, TableChinh_Update_UI, TableChinh_Create, UI_MouseClick, UI_ToolTitle_Create } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan, T, X, Dep,
   Xau, maxThep, checkABTrongDoXanh
@@ -502,6 +502,8 @@ async function UI_Reset(page) {
   await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
   await UI_Start(page);//Bắt đầu
 
+  await UI_ToolTitle_Create(page, "Tool 4 - 2xanh2đỏ-Block");
+
   await TableChinh_Create(page);//Bắt đầu
   await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
   await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
@@ -773,24 +775,24 @@ async function ThucHienGiaoDich() {
         };
         const volThep = baseVol * (heSoMap[item.thep] || 1);
         const volReal = volThep * Math.pow(2, item.capSoNhan - 1);
-        item.tempVol = volReal; // Lưu tạm volume để update state sau batch submit
-        totalVol += volReal;
+        item.tempVol = item.id === 1 ? volReal / 2 : volReal; // Lưu tạm volume để update state sau batch submit
+        totalVol += item.id === 1 ? volReal / 2 : volReal;
       }
 
 
-      // // Click chọn hướng (Tài hoặc Xỉu)
-      // await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
-      // await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
+      // Click chọn hướng (Tài hoặc Xỉu)
+      await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
+      await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
 
-      // // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
-      // await clickTheoTinhVol(page, totalVol, "🎯");
+      // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
+      await clickTheoTinhVol(page, totalVol, "🎯");
 
-      // const delay = 50 + Math.floor(Math.random() * 200);
-      // await page.waitForTimeout(delay);
+      const delay = 50 + Math.floor(Math.random() * 200);
+      await page.waitForTimeout(delay);
 
-      // // Click Submit 1 lần duy nhất cho cả batch
-      // await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-      // await masterClick(page, X_Submit, Y_Submit);
+      // Click Submit 1 lần duy nhất cho cả batch
+      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      await masterClick(page, X_Submit, Y_Submit);
 
       // Cập nhật trạng thái giao dịch cho từng item trong nhóm
       for (const item of ListProp) {
