@@ -101,14 +101,14 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Bên", "Lực", "Nhân", "Max Nhân",
+        "ID", "Bên", "Lực/Ngâm", "Thép",
         "Giao dịch", "Vol", "W/L", "Lãi", "LãiMax",
         "Phí", "STOP"
       ];
 
 
       const widths = [
-        "20px", "40px", "65px", "35px", "45px",
+        "20px", "40px", "65px", "35px",
         "60px", "45px", "80px", "60px", "60px",
         "30px", "30px"
       ];
@@ -164,17 +164,22 @@ async function TableChinh_Update_UI(page, data) {
         tr.style.opacity = "0.5";
       }
 
-      const lucStrInput = `<span style="display:inline-block; min-width:12px; text-align:right">${item.tiso}</span>/<input type="number" data-id="${item.id}" value="${item.soLanChoDoi}" style="width:25px; height:18px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;"> ${item.isReady ? '✅' : ''}`;
+      const lucStrInput = `
+        <input type="number" data-id="${item.id}" class="inp-solan" value="${item.soLanChoDoi}" style="width:22px; height:18px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;" title="Số lần chờ đợi (n)">
+        /
+        <input type="number" data-id="${item.id}" class="inp-ngam" value="${item.Ngam || 0}" style="width:22px; height:18px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;" title="Số lần ngâm">
+        <span style="font-size:10px; color:#666" title="Số lần đã thua giả lập">(${item.countNgam || 0})</span>
+        ${item.isReady ? '✅' : ''}
+      `;
 
-      // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
+      // ===== CÁC CỘT CHUẨN =====
       const cols = [
         item.id,
         item.type === "A" ? `Đẹp ${item.hoanthanh ? ' 😍' : ''}` : `Bẻ🔥${item.hoanthanh ? ' 😍' : ''}`,
-        `${item.thep} / 3  ${item.isReady ? ' ✅' : ''}`,
-        item.capSoNhan,
-        item.maxCapSoNhan,
+        "LUC_COLUMN",
+        `${item.thep}/5`,
         item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
-        item.vol,
+        item.vol.toFixed(1),
         `${item.win}/${item.lost}`,
         item.profit.toFixed(1),
         item.profitMax.toFixed(1),
@@ -185,17 +190,18 @@ async function TableChinh_Update_UI(page, data) {
       cols.forEach((v, idx) => {
         const td = document.createElement("td");
         if (v === "LUC_COLUMN") {
-          // ✅ Nếu tỉ số > 0 thì tô xanh
-          if (item.tiso > 0) {
-            td.style.fontWeight = "bold";
-          }
-
-
           td.innerHTML = lucStrInput;
-          const inp = td.querySelector("input");
-          if (inp) {
-            inp.addEventListener("change", (e) => {
+          const inpSoLan = td.querySelector(".inp-solan");
+          const inpNgam = td.querySelector(".inp-ngam");
+          
+          if (inpSoLan) {
+            inpSoLan.addEventListener("change", (e) => {
               window.postMessage({ type: "UPDATE_SOLAN", stopId: item.id, value: e.target.value }, "*");
+            });
+          }
+          if (inpNgam) {
+            inpNgam.addEventListener("change", (e) => {
+              window.postMessage({ type: "UPDATE_NGAM", stopId: item.id, value: e.target.value }, "*");
             });
           }
         } else {

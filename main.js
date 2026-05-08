@@ -197,18 +197,13 @@ const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, isFomo: true, minAnNumber: 0, type: null,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 3, countNgam: 0, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, isFomo: true, minAnNumber: 0, type: null,
-    isReady: false, hoanthanh: false, soLanChoDoi: 2, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
-  },
-  {
-    id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, isFomo: true, minAnNumber: 0, type: null,
-    isReady: false, hoanthanh: false, soLanChoDoi: 3, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
-  },
+    isReady: false, hoanthanh: false, soLanChoDoi: 2, Ngam: 2, countNgam: 0, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+  }
 ];
 
 
@@ -457,6 +452,13 @@ async function UI_Reset(page) {
       saveStateTXT();
       await TableChinh_Update_UI(page, LuutruLongmach);
     }
+    if (type === "UPDATE_NGAM") {
+      const item = LuutruLongmach.find(i => i.id === stopId);
+      if (!item) return;
+      handleUpdate_LongMachList(stopId, { Ngam: Number(value) });
+      saveStateTXT();
+      await TableChinh_Update_UI(page, LuutruLongmach);
+    }
   });
 
   // ===== BẮT MESSAGE TỪ UI =====
@@ -618,64 +620,66 @@ async function ThucHienGiaoDich() {
   // ====================================================================================== TP / SL =======================================================================
   for (const item of LuutruLongmach) {
     if (item.isTrading && item.huong) {
-      const isWin = resultNew === item.huong
+      const isWin = resultNew === item.huong;
+      const isVirtual = (item.countNgam || 0) < (item.Ngam || 0);
+
       if (isWin) {
-        // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 2 * 0.98)
-        const winAmount = item.vol * 0.99;
-        const feeAmount = item.vol * 0.01;
+        item.countNgam = 0; // Reset khi thắng
 
-        soDuTaiKhoan += winAmount;
-        profitAll += winAmount;
-        item.phiGD += feeAmount;
+        if (!isVirtual) {
+          const winAmount = item.vol * 0.99;
+          const feeAmount = item.vol * 0.01;
+          soDuTaiKhoan += winAmount;
+          profitAll += winAmount;
+          item.phiGD += feeAmount;
+          item.profit += winAmount;
+
+          item.win = (item.win || 0) + 1; // Chỉ tăng win khi là lệnh thật
+        }
+
         item.hoanthanh = true;
-        item.thep = 1
-        item.isReady = false
-        item.lockType = null
+        item.thep = 1;
+        item.isReady = false;
+        item.lockType = null;
 
-        const newProfit = item.profit + winAmount;
-        if (newProfit > (item.profitMax || 0)) {
-          item.capSoNhan = 1;
-          item.profitMax = newProfit;
+        if (!isVirtual && item.profit > (item.profitMax || 0)) {
+          item.profitMax = item.profit;
         }
 
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
           huong: "null",
-          profit: newProfit,
-          win: item.win + 1,
           vol: 0,
         });
 
       } else {
-        soDuTaiKhoan -= item.vol;
-        profitAll -= item.vol;
-        item.thep += 1;
+        if (!isVirtual) {
+          soDuTaiKhoan -= item.vol;
+          profitAll -= item.vol;
+          item.profit -= item.vol;
+          item.lost = (item.lost || 0) + 1;
 
-        // Chặn luôn sau mỗi lệnh thua để đợi tín hiệu mới
+          // ✅ Chỉ tăng thép khi là lệnh THẬT
+          item.thep += 1;
+          if (item.thep >= 5) {
+            console.log(`Item ${item.id} CHÁY (thep >= 5)`);
+            item.thep = 1;
+            item.minAnNumber += 1;
+          }
+        } else {
+          item.countNgam = (item.countNgam || 0) + 1;
+        }
+
+        // Logic block: Cả lệnh giả và thật đều block
         item.isChanVaoLenh = true;
         item.isReady = false;
 
-        if (item.thep >= 4) {
-          item.minAnNumber += 1;
-          item.capSoNhan += 1;
-          item.thep = 1;
-        }
-        if (item.capSoNhan > item.maxCapSoNhan) {
-          item.maxCapSoNhan = item.capSoNhan;
-        }
-        if (item.capSoNhan >= 5) {
-          item.capSoNhan = 5
-          console.log(`Item ${item.id} cháy 7 lần, reset capSoNhan`, item.capSoNhan)
-          console.log(`Dừng lại`, item.capSoNhan)
-        }
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
           huong: "null",
           vol: 0,
-          lost: item.lost + 1,
-          profit: item.profit - item.vol,
         });
-        TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
+        TableChinh_Update_UI(page, LuutruLongmach);
       }
     }
   }
@@ -751,36 +755,39 @@ async function ThucHienGiaoDich() {
       // Tính tổng Volume và gán cho từng item
       let totalVol = 0;
       for (const item of ListProp) {
-        // const group = Math.ceil(item.id / 10);
         const baseVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
+        const heSoMap = { 1: 1, 2: 3, 3: 7, 4: 14, 5: 30 };
+        const volReal = baseVol * (heSoMap[item.thep] || 1);
 
-        const heSoMap = {
-          1: 1,
-          2: 3,
-          3: 7
-        };
-        const volThep = baseVol * (heSoMap[item.thep] || 1);
-        const volReal = volThep * Math.pow(2, item.capSoNhan - 1);
-        item.tempVol = item.id === 1 ? volReal / 2 : volReal; // Lưu tạm volume để update state sau batch submit
-        totalVol += item.id === 1 ? volReal / 2 : volReal;
+        item.tempVol = item.id === 1 ? volReal / 2 : volReal;
+
+        // Chỉ cộng dồn Volume nếu đã qua thời gian "ngâm"
+        if ((item.countNgam || 0) >= (item.Ngam || 0)) {
+          totalVol += item.tempVol;
+        }
       }
 
 
-      // Click chọn hướng (Tài hoặc Xỉu)
-      await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
-      await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
+      // Chỉ thực hiện click nếu có lệnh thật
+      if (totalVol > 0) {
+        // Click chọn hướng (Tài hoặc Xỉu)
+        await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
+        await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
 
-      // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
-      await clickTheoTinhVol(page, totalVol, "🎯");
+        // Click volume
+        await clickTheoTinhVol(page, totalVol, "🎯");
 
-      const delay = 50 + Math.floor(Math.random() * 200);
-      await page.waitForTimeout(delay);
+        const delay = 50 + Math.floor(Math.random() * 200);
+        await page.waitForTimeout(delay);
 
-      // Click Submit 1 lần duy nhất cho cả batch
-      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-      await masterClick(page, X_Submit, Y_Submit);
+        // Click Submit
+        await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+        await masterClick(page, X_Submit, Y_Submit);
+      } else {
+        console.log(`[Virtual] Đang ngâm lệnh hướng ${huongDanhNew}...`);
+      }
 
-      // Cập nhật trạng thái giao dịch cho từng item trong nhóm
+      // Vẫn cập nhật trạng thái Trading cho tất cả (để track virtual loss/win)
       for (const item of ListProp) {
         handleUpdate_LongMachList(item.id, {
           isTrading: true,
@@ -789,8 +796,6 @@ async function ThucHienGiaoDich() {
         });
         delete item.tempVol;
       }
-
-
     };
 
     // Thực hiện đặt cược cho nhóm Tài và nhóm Xỉu
@@ -1489,7 +1494,9 @@ function loadStateTXT() {
           ...i,
           isReady: i.isReady ?? false,
           hoanthanh: i.hoanthanh ?? false,
-          soLanChoDoi: i.soLanChoDoi
+          soLanChoDoi: i.soLanChoDoi,
+          Ngam: i.Ngam ?? 0,
+          countNgam: i.countNgam ?? 0
         }));
         LuutruLongmach.push(...mappedArr);
       }
