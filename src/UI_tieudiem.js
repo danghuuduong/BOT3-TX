@@ -304,8 +304,8 @@ async function UI_ToolTitle_Create(page, titleText) {
       titleDiv.id = "ui-tool-title";
       Object.assign(titleDiv.style, {
         position: "fixed",
-        top: "0px",
-        right: "0px",
+        top: "3px",
+        left: "3px",
         zIndex: 10000,
         background: "rgba(0, 0, 0, 0.7)",
         color: "#00ff00",
