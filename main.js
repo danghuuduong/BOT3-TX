@@ -3,7 +3,7 @@ const {
   KetquaTXList_Create, LongMachList_create, KetquaTXList_Update_UI,
   SignalIndicator_Create, SignalIndicator_Update
 } = require("./src/Button_Common");
-const { UI_TieuDiem, TableChinh_Update_UI, TableChinh_Create, UI_MouseClick } = require("./src/UI_tieudiem");
+const { UI_TieuDiem, TableChinh_Update_UI, TableChinh_Create, UI_MouseClick, UI_ToolTitle_Create } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan, T, X, Dep,
   Xau, maxThep, checkABTrongDoXanh
@@ -503,6 +503,7 @@ async function UI_Reset(page) {
   await UI_Start(page);//Bắt đầu
 
   await TableChinh_Create(page);//Bắt đầu
+  await UI_ToolTitle_Create(page, "Tool 3 - 2xanh2đỏ");
   await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
   await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
   await UI_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
