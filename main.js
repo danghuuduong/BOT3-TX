@@ -197,12 +197,12 @@ const LuutruLongmach = [
   {
     id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, isFomo: true, minAnNumber: 0, type: null,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 3, countNgam: 0, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 3, countNgam: 0, phiGD: 0, thep: 1, maxThep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, isFomo: true, minAnNumber: 0, type: null,
-    isReady: false, hoanthanh: false, soLanChoDoi: 2, Ngam: 1, countNgam: 0, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+    isReady: false, hoanthanh: false, soLanChoDoi: 2, Ngam: 1, countNgam: 0, phiGD: 0, thep: 1, maxThep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
   }
 ];
 
@@ -661,6 +661,8 @@ async function ThucHienGiaoDich() {
 
           // ✅ Chỉ tăng thép khi là lệnh THẬT
           item.thep += 1;
+          item.maxThep = Math.max(item.maxThep || 1, item.thep);
+
           if (item.thep >= 5) {
             console.log(`Item ${item.id} CHÁY (thep >= 5)`);
             item.thep = 1;
@@ -784,7 +786,7 @@ async function ThucHienGiaoDich() {
         await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
         await masterClick(page, X_Submit, Y_Submit);
       } else {
-        console.log(`[Virtual] Đang ngâm lệnh hướng ${huongDanhNew}...`);
+        // console.log(`[Virtual] Đang ngâm lệnh hướng ${huongDanhNew}...`);
       }
 
       // Vẫn cập nhật trạng thái Trading cho tất cả (để track virtual loss/win)
@@ -1128,7 +1130,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
-        left: "10px",
+        left: "450px",
         zIndex: 10000,
         background: "rgba(0,0,0,0.85)",
         backdropFilter: "blur(4px)",

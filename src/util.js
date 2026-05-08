@@ -387,17 +387,17 @@ async function updateButton(page, text, color) {
 }
 
 // ================= COLOR =================
-function handleGetColor_TX(r, g, b) {
-  const avg = (r + g + b) / (3 * 255);
-  if (avg > 0.85) return "white";
-  if (avg < 0.2) return "black";
-  return "null";
-}
-
-
 // function handleGetColor_TX(r, g, b) {
-//   return Math.random() < 0.5 ? "white" : "black";
+//   const avg = (r + g + b) / (3 * 255);
+//   if (avg > 0.85) return "white";
+//   if (avg < 0.2) return "black";
+//   return "null";
 // }
+
+
+function handleGetColor_TX(r, g, b) {
+  return Math.random() < 0.5 ? "white" : "black";
+}
 
 
 // ================= EXPORT =================

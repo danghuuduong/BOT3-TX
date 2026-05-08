@@ -38,16 +38,18 @@ async function TableChinh_Create(page) {
       Object.assign(wrapper.style, {
         position: "fixed",
         bottom: "10px",
-        left: "50%",
-        transform: "translateX(-50%)",
+        left: "10px",
+        transform: "none",
         zIndex: 9999,
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+        alignItems: "flex-start",
+        width: "fit-content",
       });
 
       Object.assign(container.style, {
         maxHeight: "200px",
+        width: "fit-content",
         maxWidth: "95vw",
         overflowY: "auto",
         overflowX: "auto",
@@ -59,8 +61,8 @@ async function TableChinh_Create(page) {
       toggleBtn.id = "longmach-toggle";
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
-        fontSize: "14px",
-        padding: "2px 6px",
+        fontSize: "12px",
+        padding: "1px 4px",
         cursor: "pointer",
         background: "#FFFFFF",     // xanh dương nhạt
         border: "1px solid #000",
@@ -93,24 +95,24 @@ async function TableChinh_Create(page) {
       const table = document.createElement("table");
       table.id = "longmach-table";
       Object.assign(table.style, {
-        width: "100%",
+        width: "auto",
         background: "#fff",
         borderCollapse: "collapse",
-        fontSize: "12px",
+        fontSize: "10px",
         tableLayout: "fixed",
       });
 
       const headers = [
-        "ID", "Bên", "Lực/Ngâm", "Thép",
+        "ID", "Bên", "Ngầm", "Thép", "MaxT",
         "Giao dịch", "Vol", "W/L", "Lãi", "LãiMax",
         "Phí", "STOP"
       ];
 
 
       const widths = [
-        "20px", "40px", "65px", "35px",
-        "60px", "45px", "80px", "60px", "60px",
-        "30px", "30px"
+        "18px", "35px", "50px", "30px", "30px",
+        "40px", "35px", "50px", "40px", "40px",
+        "25px", "25px"
       ];
 
 
@@ -122,7 +124,7 @@ async function TableChinh_Create(page) {
         th.innerText = h;
         Object.assign(th.style, {
           border: "1px solid #000",
-          padding: "4px 6px",
+          padding: "2px 2px",
           background: "#eee",
           textAlign: "center",
           whiteSpace: "nowrap",
@@ -164,20 +166,17 @@ async function TableChinh_Update_UI(page, data) {
         tr.style.opacity = "0.5";
       }
 
-      const lucStrInput = `
-        <input type="number" data-id="${item.id}" class="inp-solan" value="${item.soLanChoDoi}" style="width:22px; height:18px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;" title="Số lần chờ đợi (n)">
-        /
-        <input type="number" data-id="${item.id}" class="inp-ngam" value="${item.Ngam || 0}" style="width:22px; height:18px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;" title="Số lần ngâm">
-        <span style="font-size:10px; color:#666" title="Số lần đã thua giả lập">(${item.countNgam || 0})</span>
-        ${item.isReady ? '✅' : ''}
+      const ngamStrInput = `
+        ${item.countNgam || 0}/<input type="number" data-id="${item.id}" class="inp-ngam" value="${item.Ngam || 0}" style="width:22px; height:16px; font-size:10px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;">
       `;
 
       // ===== CÁC CỘT CHUẨN =====
       const cols = [
         item.id,
         item.type === "A" ? `Đẹp ${item.hoanthanh ? ' 😍' : ''}` : `Bẻ🔥${item.hoanthanh ? ' 😍' : ''}`,
-        "LUC_COLUMN",
+        "NGAM_COLUMN",
         `${item.thep}/5`,
+        item.maxThep || 1,
         item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
         item.vol.toFixed(1),
         `${item.win}/${item.lost}`,
@@ -189,16 +188,9 @@ async function TableChinh_Update_UI(page, data) {
 
       cols.forEach((v, idx) => {
         const td = document.createElement("td");
-        if (v === "LUC_COLUMN") {
-          td.innerHTML = lucStrInput;
-          const inpSoLan = td.querySelector(".inp-solan");
+        if (v === "NGAM_COLUMN") {
+          td.innerHTML = ngamStrInput;
           const inpNgam = td.querySelector(".inp-ngam");
-          
-          if (inpSoLan) {
-            inpSoLan.addEventListener("change", (e) => {
-              window.postMessage({ type: "UPDATE_SOLAN", stopId: item.id, value: e.target.value }, "*");
-            });
-          }
           if (inpNgam) {
             inpNgam.addEventListener("change", (e) => {
               window.postMessage({ type: "UPDATE_NGAM", stopId: item.id, value: e.target.value }, "*");
@@ -210,13 +202,13 @@ async function TableChinh_Update_UI(page, data) {
 
         Object.assign(td.style, {
           border: "1px solid #000",  // màu đen
-          padding: "2px 4px",
+          padding: "1px 2px",
           textAlign: "center",
           color: "inherit" // ✅ Kế thừa màu từ tr
         });
 
-        // ✅ Màu sắc cho cột Lãi (Index 7)
-        if (idx === 7) {
+        // ✅ Màu sắc cho cột Lãi (Index 8)
+        if (idx === 8) {
           if (item.profit > 0) {
             td.style.color = "#0cb30cff"; // xanh lá
             td.style.fontWeight = "bold";
