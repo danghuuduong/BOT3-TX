@@ -712,9 +712,10 @@ async function ThucHienGiaoDich() {
         if (item.capSoNhan > item.maxCapSoNhan) {
           item.maxCapSoNhan = item.capSoNhan;
         }
-        if (item.capSoNhan >= 7) {
-          item.capSoNhan = 1
+        if (item.capSoNhan >= 5) {
+          item.capSoNhan = 15
           console.log(`Item ${item.id} cháy 7 lần, reset capSoNhan`, item.capSoNhan)
+          console.log(`Dừng lại`, item.capSoNhan)
         }
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
@@ -809,24 +810,24 @@ async function ThucHienGiaoDich() {
         };
         const volThep = baseVol * (heSoMap[item.thep] || 1);
         const volReal = volThep * Math.pow(2, item.capSoNhan - 1);
-        item.tempVol = volReal; // Lưu tạm volume để update state sau batch submit
-        totalVol += volReal;
+        item.tempVol = item.id === 1 ? volReal / 2 : volReal; // Lưu tạm volume để update state sau batch submit
+        totalVol += item.id === 1 ? volReal / 2 : volReal;
       }
 
 
-      // // Click chọn hướng (Tài hoặc Xỉu)
-      // await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
-      // await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
+      // Click chọn hướng (Tài hoặc Xỉu)
+      await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
+      await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
 
-      // // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
-      // await clickTheoTinhVol(page, totalVol, "🎯");
+      // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
+      await clickTheoTinhVol(page, totalVol, "🎯");
 
-      // const delay = 50 + Math.floor(Math.random() * 200);
-      // await page.waitForTimeout(delay);
+      const delay = 50 + Math.floor(Math.random() * 200);
+      await page.waitForTimeout(delay);
 
-      // // Click Submit 1 lần duy nhất cho cả batch
-      // await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-      // await masterClick(page, X_Submit, Y_Submit);
+      // Click Submit 1 lần duy nhất cho cả batch
+      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      await masterClick(page, X_Submit, Y_Submit);
 
       // Cập nhật trạng thái giao dịch cho từng item trong nhóm
       for (const item of ListProp) {
