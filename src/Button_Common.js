@@ -143,9 +143,9 @@ async function KetquaTXList_Create(page) {
 
     Object.assign(box.style, {
       position: "fixed",
-      top: "10px",              // cách top 10px
-      left: "50%",              // căn giữa ngang
-      transform: "translateX(105px)",
+      top: "37px",              // cách top 10px
+      left: "289px",              // căn giữa ngang
+      transform: "translateX(-50%)",
       display: "flex",
       gap: "1px",               // sát nhau
       zIndex: 9999,
@@ -193,9 +193,9 @@ async function LongMachList_create(page) {
 
     Object.assign(box.style, {
       position: "fixed",
-      top: "43px",              // cách top 10px
-      left: "50%",              // căn giữa ngang
-      transform: "translateX(105px)",
+      top: "70px",              // cách top 10px
+      left: "289px",              // căn giữa ngang
+      transform: "translateX(-50%)",
       display: "flex",
       gap: "1px",               // sát nhau
       zIndex: 9999,
