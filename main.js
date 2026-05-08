@@ -1123,7 +1123,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
-        left: "10px",
+        left: "450px",
         zIndex: 10000,
         background: "rgba(0,0,0,0.85)",
         backdropFilter: "blur(4px)",

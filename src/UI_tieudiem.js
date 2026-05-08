@@ -38,16 +38,18 @@ async function TableChinh_Create(page) {
       Object.assign(wrapper.style, {
         position: "fixed",
         bottom: "10px",
-        left: "50%",
-        transform: "translateX(-50%)",
+        left: "10px",
+        transform: "none",
         zIndex: 9999,
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+        alignItems: "flex-start",
+        width: "fit-content",
       });
 
       Object.assign(container.style, {
         maxHeight: "200px",
+        width: "fit-content",
         maxWidth: "95vw",
         overflowY: "auto",
         overflowX: "auto",
@@ -59,8 +61,8 @@ async function TableChinh_Create(page) {
       toggleBtn.id = "longmach-toggle";
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
-        fontSize: "14px",
-        padding: "2px 6px",
+        fontSize: "12px",
+        padding: "1px 4px",
         cursor: "pointer",
         background: "#FFFFFF",     // xanh dương nhạt
         border: "1px solid #000",
@@ -93,24 +95,24 @@ async function TableChinh_Create(page) {
       const table = document.createElement("table");
       table.id = "longmach-table";
       Object.assign(table.style, {
-        width: "100%",
+        width: "auto",
         background: "#fff",
         borderCollapse: "collapse",
-        fontSize: "12px",
+        fontSize: "10px",
         tableLayout: "fixed",
       });
 
       const headers = [
-        "ID", "Bên", "Lực", "Nhân", "Max Nhân",
-        "Giao dịch", "Vol", "W/L", "Lãi", "LãiMax",
+        "ID", "Bên", "Thếp", "Thép", "Nhân", "Max Nhân",
+        "Giao dịch", "Vol", "W/L", "Chết", "Lãi", "LãiMax",
         "Phí", "STOP"
       ];
 
 
       const widths = [
-        "20px", "40px", "65px", "35px", "45px",
-        "60px", "45px", "80px", "60px", "60px",
-        "30px", "30px"
+        "18px", "35px", "35px", "30px", "30px", "35px",
+        "40px", "35px", "50px", "30px", "40px", "40px",
+        "25px", "25px"
       ];
 
 
@@ -122,7 +124,7 @@ async function TableChinh_Create(page) {
         th.innerText = h;
         Object.assign(th.style, {
           border: "1px solid #000",
-          padding: "4px 6px",
+          padding: "2px 2px",
           background: "#eee",
           textAlign: "center",
           whiteSpace: "nowrap",
@@ -164,18 +166,20 @@ async function TableChinh_Update_UI(page, data) {
         tr.style.opacity = "0.5";
       }
 
-      const lucStrInput = `<span style="display:inline-block; min-width:12px; text-align:right">${item.tiso}</span>/<input type="number" data-id="${item.id}" value="${item.soLanChoDoi}" style="width:25px; height:18px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;"> ${item.isReady ? '✅' : ''}`;
+      const lucStrInput = `<span style="display:inline-block; min-width:12px; text-align:right">${item.tiso}</span>/<input type="number" data-id="${item.id}" value="${item.soLanChoDoi}" style="width:20px; height:16px; font-size:10px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;"> ${item.isReady ? '✅' : ''}`;
 
-      // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
+      // ===== CÁC CỘT CHUẨN =====
       const cols = [
         item.id,
         item.type === "A" ? `Đẹp ${item.hoanthanh ? ' 😍' : ''}` : `Bẻ🔥${item.hoanthanh ? ' 😍' : ''}`,
-        `${item.thep} / 3  ${item.isReady ? ' ✅' : ''}`,
+        "LUC_COLUMN",
+        `${item.thep}/3`,
         item.capSoNhan,
         item.maxCapSoNhan,
         item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
         item.vol,
         `${item.win}/${item.lost}`,
+        item.minAnNumber,
         item.profit.toFixed(1),
         item.profitMax.toFixed(1),
         item.phiGD.toFixed(1),
@@ -204,13 +208,13 @@ async function TableChinh_Update_UI(page, data) {
 
         Object.assign(td.style, {
           border: "1px solid #000",  // màu đen
-          padding: "2px 4px",
+          padding: "1px 2px",
           textAlign: "center",
           color: "inherit" // ✅ Kế thừa màu từ tr
         });
 
-        // ✅ Màu sắc cho cột Lãi (Index 7)
-        if (idx === 7) {
+        // ✅ Màu sắc cho cột Lãi (Index 10)
+        if (idx === 10) {
           if (item.profit > 0) {
             td.style.color = "#0cb30cff"; // xanh lá
             td.style.fontWeight = "bold";
