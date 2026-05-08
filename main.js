@@ -209,6 +209,16 @@ const LuutruLongmach = [
     isStop: false, isFomo: true, minAnNumber: 0, type: null,
     isReady: false, hoanthanh: false, soLanChoDoi: 3, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
   },
+  {
+    id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, isFomo: true, minAnNumber: 0, type: null,
+    isReady: false, hoanthanh: false, soLanChoDoi: 4, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+  },
+  {
+    id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false, isFomo: true, minAnNumber: 0, type: null,
+    isReady: false, hoanthanh: false, soLanChoDoi: 5, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+  },
 ];
 
 
@@ -1158,7 +1168,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
-        left: "10px",
+        left: "450px",
         zIndex: 10000,
         background: "rgba(0,0,0,0.85)",
         backdropFilter: "blur(4px)",
