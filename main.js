@@ -202,7 +202,7 @@ const LuutruLongmach = [
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false, isFomo: true, minAnNumber: 0, type: null,
-    isReady: false, hoanthanh: false, soLanChoDoi: 2, Ngam: 2, countNgam: 0, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+    isReady: false, hoanthanh: false, soLanChoDoi: 2, Ngam: 1, countNgam: 0, phiGD: 0, thep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
   }
 ];
 
