@@ -484,6 +484,8 @@ async function UI_Reset(page) {
   await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
   await UI_Start(page);//Bắt đầu
 
+  await UI_ToolTitle_Create(page, " Tool 2 -RảiRác-Lẻ");
+
   await TableChinh_Create(page);//Bắt đầu
   await TableChinh_Update_UI(page, LuutruLongmach, ArrayKQ_XAU, lastTinHieu);//Bắt đầu
   await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);

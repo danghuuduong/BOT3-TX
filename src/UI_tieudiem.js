@@ -322,4 +322,32 @@ async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeo
   }, { x, y, size, icon, id, timeoutMs });
 }
 
-module.exports = { UI_MouseClick, TableChinh_Update_UI, TableChinh_Create, UI_TieuDiem };
+async function UI_ToolTitle_Create(page, titleText) {
+  await page.evaluate(({ titleText }) => {
+    let titleDiv = document.getElementById("ui-tool-title");
+    if (!titleDiv) {
+      titleDiv = document.createElement("div");
+      titleDiv.id = "ui-tool-title";
+      Object.assign(titleDiv.style, {
+        position: "fixed",
+        top: "0px",
+        right: "0px",
+        zIndex: 10000,
+        background: "rgba(0, 0, 0, 0.7)",
+        color: "#00ff00",
+        padding: "5px 15px",
+        fontSize: "18px",
+        fontWeight: "bold",
+        fontFamily: "Arial, sans-serif",
+        borderBottomLeftRadius: "10px",
+        borderLeft: "2px solid #00ff00",
+        borderBottom: "2px solid #00ff00",
+        pointerEvents: "none"
+      });
+      document.body.appendChild(titleDiv);
+    }
+    titleDiv.innerText = titleText;
+  }, { titleText });
+}
+
+module.exports = { UI_MouseClick, TableChinh_Update_UI, TableChinh_Create, UI_TieuDiem, UI_ToolTitle_Create };
