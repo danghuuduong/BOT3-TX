@@ -708,10 +708,9 @@ async function ThucHienGiaoDich() {
         if (item.capSoNhan > item.maxCapSoNhan) {
           item.maxCapSoNhan = item.capSoNhan;
         }
-        if (item.capSoNhan >= 5) {
-          item.capSoNhan = 5
-          console.log(`Item ${item.id} cháy 7 lần, reset capSoNhan`, item.capSoNhan)
-          console.log(`Dừng lại`, item.capSoNhan)
+        if (item.capSoNhan >= 4) {
+          item.capSoNhan = 4
+          console.log(`Item ${item.id} đạt giới hạn capSoNhan 4`, item.capSoNhan)
         }
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
@@ -1122,10 +1121,6 @@ async function toggleCapture() {
  * Hiển thị tỉ số Tài/Xỉu
  */
 async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
-  const totalPhi = LuutruLongmach.reduce((acc, item) => acc + (item.phiGD || 0), 0);
-  const totalLai = LuutruLongmach.filter(item => item.profit > 0).reduce((acc, item) => acc + item.profit, 0);
-  const totalLo = LuutruLongmach.filter(item => item.profit < 0).reduce((acc, item) => acc + item.profit, 0);
-
   const totalVolUocTinh = LuutruLongmach.filter(item => item.isTrading).reduce((acc, item) => acc + (item.vol || 0), 0);
   const totalPhiUocTinh = totalVolUocTinh * 0.02;
 
@@ -1147,13 +1142,10 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
   if (!page._resetMaxNhanExposed) {
     await page.exposeFunction("resetMaxNhan", async () => {
       maxDrawdown = 0;
-
-      // Reset thống kê từng item
       LuutruLongmach.forEach(item => {
         item.capSoNhan = 1;
         item.maxCapSoNhan = 1;
       });
-
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
       await TableChinh_Update_UI(page, LuutruLongmach);
       saveStateTXT();
@@ -1161,79 +1153,51 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
     page._resetMaxNhanExposed = true;
   }
 
-  await page.evaluate(({ depCount, xauCount, phi, lai, lo, volUT, phiUT, maxNhan }) => {
+  await page.evaluate(({ depCount, xauCount, volUT, phiUT }) => {
     let box = document.getElementById("ui-tiso-tx");
     if (!box) {
       box = document.createElement("div");
       box.id = "ui-tiso-tx";
-      Object.assign(box.style, {
-        position: "fixed",
-        bottom: "10px",
-        left: "666px",
-        zIndex: 10000,
-        background: "rgba(0,0,0,0.85)",
-        backdropFilter: "blur(4px)",
-        color: "white",
-        padding: "8px 12px",
-        borderRadius: "8px",
-        fontSize: "14px",
-        fontWeight: "600",
-        boxShadow: "0 4px 15px rgba(0,0,0,0.5)",
-        fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
-        display: "flex",
-        flexDirection: "column",
-        gap: "6px",
-        minWidth: "160px",
-        pointerEvents: "auto" // Cho phép click vào nút reset
-      });
-      document.body.appendChild(box);
+      const wrapper = document.getElementById("ui-wrapper-longmach");
+      if (wrapper) {
+        wrapper.prepend(box);
+      } else {
+        document.body.appendChild(box);
+        box.style.position = "fixed";
+        box.style.bottom = "155px";
+        box.style.left = "22px";
+      }
     }
+
+    Object.assign(box.style, {
+      background: "rgba(0,0,0,0.85)",
+      color: "white",
+      padding: "2px 8px",
+      borderRadius: "4px",
+      fontSize: "12px",
+      fontWeight: "bold",
+      fontFamily: "monospace",
+      display: "flex",
+      gap: "10px",
+      width: "fit-content",
+      marginBottom: "2px",
+      zIndex: 10001,
+      pointerEvents: "auto",
+      backdropFilter: "blur(4px)",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.5)",
+    });
+
     box.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 6px; margin-bottom: 2px;">
-        <span style="color:#00ff00; font-size:16px; font-weight:800;">Đẹp: ${depCount}</span>
-        <span style="color:#ff4d4d; font-size:16px; font-weight:800;">Xấu: ${xauCount}</span>
-      </div>
-      <div style="display:flex; flex-direction:column; gap:4px;">
-        <div style="display:flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 4px 8px; borderRadius: 4px;">
-          <div style="display:flex; align-items: center; gap: 8px;">
-            <span style="color:#ccc; font-size:12px;">Max Nhân:</span>
-            <span style="color:#00ffff; font-size:15px; font-weight:bold;">${maxNhan}</span>
-          </div>
-          <button onclick="window.resetMaxNhan()" style="background: #ff4d4d; color: white; border: none; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 10px; font-weight: bold; transition: all 0.2s;">
-            RESET
-          </button>
-        </div>
-        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
-          <span style="color:#aaa; font-size:12px;">Tổng Phí:</span>
-          <span style="color:#ffcc00; font-size:13px;">${phi.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
-          <span style="color:#aaa; font-size:12px;">Item Lãi:</span>
-          <span style="color:#00ff00; font-size:13px;">${lai.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
-          <span style="color:#aaa; font-size:12px;">Item Lỗ:</span>
-          <span style="color:#ff4d4d; font-size:13px;">${lo.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px; border-top: 1px dashed rgba(255,255,255,0.15); margin-top: 2px; padding: 4px 4px 0 4px;">
-          <span style="color:#aaa; font-size:12px;">Vol đánh:</span>
-          <span style="color:#fff; font-size:13px;">${volUT.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
-          <span style="color:#aaa; font-size:12px;">Phí chịu:</span>
-          <span style="color:#ffcc00; font-size:13px;">${phiUT.toFixed(2)}</span>
-        </div>
-      </div>
+      <span style="color:#00ff00;">Đẹp: ${depCount}</span>
+      <span style="color:#ff4d4d;">Xấu: ${xauCount}</span>
+      <span style="color:#aaa;">Vol: ${volUT.toFixed(1)}</span>
+      <span style="color:#ffcc00;">Phí: ${phiUT.toFixed(2)}</span>
     `;
   }, {
     depCount: depCount,
     xauCount: xauCount,
-    phi: totalPhi,
-    lai: totalLai,
-    lo: totalLo,
     volUT: totalVolUocTinh,
-    phiUT: totalPhiUocTinh,
-    maxNhan: Math.max(...LuutruLongmach.map(item => item.maxCapSoNhan || 1))
+    phiUT: totalPhiUocTinh
   });
 }
 
