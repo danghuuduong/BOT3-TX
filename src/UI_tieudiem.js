@@ -102,7 +102,7 @@ async function TableChinh_Create(page) {
         tableLayout: "fixed",
       });
 
-       const headers = [
+      const headers = [
         "ID", "Bên", "Thép", "Nhân", "Max N",
         "Lệnh", "Vol", "W/L", "Chết", "Lãi", "LãiMax",
         "Phí", "STOP"
@@ -110,7 +110,7 @@ async function TableChinh_Create(page) {
 
 
       const widths = [
-        "13px", "30px", "15px", "15px", "15px",
+        "13px", "35px", "15px", "15px", "15px",
         "20px", "25px", "50px", "30px", "40px", "40px",
         "25px", "13px"
       ];
@@ -166,7 +166,7 @@ async function TableChinh_Update_UI(page, data) {
       // ===== CÁC CỘT CHUẨN =====
       const cols = [
         item.id,
-        item.type === "A" ? `Đẹp ${item.hoanthanh ? ' 😍' : ''}` : `Bẻ🔥${item.hoanthanh ? ' 😍' : ''}`,
+        item.type === "A" ? `Đẹp ${item.hoanthanh ? '😍' : ''}` : `Bẻ🔥${item.hoanthanh ? '😍' : ''}`,
         `${item.thep}/3`,
         item.capSoNhan,
         item.maxCapSoNhan,

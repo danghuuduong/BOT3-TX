@@ -1,16 +1,16 @@
-soDuTaiKhoan=1190.397
-soDuLonNhat=1217.3570000000002
+soDuTaiKhoan=1318.7770000000003
+soDuLonNhat=1332.597000000002
 phanTramGiaoDich=0.2
-profitAll=140.24999999999991
-maxDrawdown=8.740803054811346
+profitAll=263.6699999999998
+maxDrawdown=12.961078968944745
 nguongTienDat=6000
 soTienMuonRut=2700
 tongTienDaRut=0
-CauDepCount=147
-CauXauCount=169
+CauDepCount=237
+CauXauCount=239
 
-ArrayKQ=T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,X,T,X,X,T,X,T,X,T,X,X,X
-ArrayKQ_XAU=A,A,B,A,A,B,A,B,A,A,A,B,B,B,A,B,A,B,B,B,B,B,B,A,B,B,B,B,B,B,A,B,A,A,B,A,A,A,A,B,A,B,B,A,A,B,A,A,A,B,B,A,A,A,A,A,B,A,B,A,B,A,A,A,B,B,B,A,B,B,A,B,B,B,B,A,A,B,B,B,B,A,B,B,A,B,A,A,A,B,B,B,A,B,B,B,A,B,A,A
+ArrayKQ=T,T,T,X,T,X,X,T,X,X,T,T,T,X,T,T,T,T,X,X,T,T,X,X,T,X,T,X,X,X,X,X,T,X,T,T,X,X,X,T,T,T,X,X,X,T,X,X,T,X,X,T,T,T,T,T,X,T,X,T,X,T,T,T,X,T,T,X,T,T,X,X,X,T,T,X,X,T,T,X,X,T,T,T,X,X,X,X,T,X,T,X,T,X,T,T,X,X,X,X
+ArrayKQ_XAU=A,A,B,A,A,A,B,A,A,B,B,A,A,B,A,A,B,A,A,A,B,B,A,A,B,B,A,A,A,A,B,B,A,A,B,A,B,A,A,A,A,A,B,A,A,A,A,A,B,B,A,A,B,B,A,A,B,A,B,B,B,A,A,A,A,B,A,B,B,A,B,B,A,A,A,B,B,B,A,A,A,A,A,B,B,B,A,A,A,B,B,A,A,A,B,A,A,A,B,B
 
 LuutruLongmach=
 [
@@ -18,68 +18,68 @@ LuutruLongmach=
     "id": 1,
     "isTrading": false,
     "huong": "null",
-    "profit": 77.78999999999998,
+    "profit": 76.92999999999998,
     "vol": 0,
-    "win": 82,
-    "lost": 80,
+    "win": 112,
+    "lost": 128,
     "isStop": false,
     "isFomo": true,
-    "minAnNumber": 12,
+    "minAnNumber": 20,
     "type": "A",
-    "isReady": true,
+    "isReady": false,
     "hoanthanh": false,
     "soLanChoDoi": 1,
-    "phiGD": 4.209999999999997,
-    "thep": 1,
-    "capSoNhan": 1,
-    "maxCapSoNhan": 4,
-    "profitMax": 77.78999999999998,
+    "phiGD": 13.069999999999997,
+    "thep": 3,
+    "capSoNhan": 3,
+    "maxCapSoNhan": 5,
+    "profitMax": 114.48999999999998,
     "lockType": "B",
-    "isChanVaoLenh": false
+    "isChanVaoLenh": true
   },
   {
     "id": 2,
     "isTrading": false,
     "huong": "null",
-    "profit": 24.07999999999997,
+    "profit": 121.6799999999999,
     "vol": 0,
-    "win": 37,
-    "lost": 43,
+    "win": 63,
+    "lost": 64,
     "isStop": false,
     "isFomo": true,
-    "minAnNumber": 7,
-    "type": "B",
+    "minAnNumber": 9,
+    "type": "A",
     "isReady": true,
     "hoanthanh": false,
     "soLanChoDoi": 2,
-    "phiGD": 3.9200000000000013,
+    "phiGD": 8.320000000000004,
     "thep": 1,
-    "capSoNhan": 3,
+    "capSoNhan": 2,
     "maxCapSoNhan": 3,
-    "profitMax": 70.35999999999997,
-    "lockType": "A",
+    "profitMax": 124.47999999999989,
+    "lockType": "B",
     "isChanVaoLenh": false
   },
   {
     "id": 3,
     "isTrading": false,
     "huong": "null",
-    "profit": 38.379999999999995,
+    "profit": 65.06,
     "vol": 0,
-    "win": 24,
-    "lost": 19,
+    "win": 37,
+    "lost": 28,
     "isStop": false,
     "isFomo": true,
-    "minAnNumber": 3,
-    "type": "A",
+    "minAnNumber": 4,
+    "type": "B",
     "isReady": false,
     "hoanthanh": true,
     "soLanChoDoi": 3,
-    "phiGD": 1.6200000000000008,
+    "phiGD": 2.9400000000000013,
     "thep": 1,
     "capSoNhan": 1,
     "maxCapSoNhan": 2,
-    "profitMax": 38.379999999999995,
+    "profitMax": 65.06,
     "lockType": null,
     "isChanVaoLenh": false
   }
