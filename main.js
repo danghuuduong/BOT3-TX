@@ -619,8 +619,8 @@ async function ThucHienGiaoDich() {
       const isWin = resultNew === item.huong
       if (isWin) {
         // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 2 * 0.98)
-        const winAmount = item.vol * 0.99;
-        const feeAmount = item.vol * 0.01;
+        const winAmount = item.vol * 0.98;
+        const feeAmount = item.vol * 0.02;
 
         soDuTaiKhoan += winAmount;
         profitAll += winAmount;
