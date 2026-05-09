@@ -68,9 +68,9 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0, mdd = 0) {
       box.id = "ui-so-du";
       Object.assign(box.style, {
         position: "fixed",
-        bottom: "58px",
-        right: "15px",
-        zIndex: 10000,
+        top: "145px",
+        left: "289px",
+        zIndex: 9000,
 
         /* ===== NỀN & TÁCH MÀU ===== */
         background: "rgba(255,255,255,0.5)",
@@ -124,15 +124,14 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0, mdd = 0) {
     `;
 
     /* ===== NHẤP NHÁY NHẸ ===== */
-    box.style.transform = "scale(1.4)";
     box.style.transition = "transform 0.2s ease";
+    box.style.transform = "translate(-50%,-50%) scale(1.4)";
     setTimeout(() => {
-      box.style.transform = "scale(1)";
+      box.style.transform = "translate(-50%,-50%) scale(1)";
     }, 200);
 
   }, { balance: soDu, pnl: profit, mddValue: mdd });
 }
-
 
 async function KetquaTXList_Create(page) {
   await page.evaluate(() => {
@@ -143,7 +142,7 @@ async function KetquaTXList_Create(page) {
 
     Object.assign(box.style, {
       position: "fixed",
-      top: "37px",              // cách top 10px
+      top: "30px",              // cách top 10px
       left: "289px",              // căn giữa ngang
       transform: "translateX(-50%)",
       display: "flex",
@@ -193,14 +192,14 @@ async function LongMachList_create(page) {
 
     Object.assign(box.style, {
       position: "fixed",
-      top: "70px",              // cách top 10px
+      top: "61px",              // cách top 10px
       left: "289px",              // căn giữa ngang
       transform: "translateX(-50%)",
       display: "flex",
       gap: "1px",               // sát nhau
-      zIndex: 9999,
+      zIndex: 9000,
       background: "rgba(255,255,255,0.9)",
-      padding: "6px 8px",
+      padding: "4px 8px",
       borderRadius: "6px",
       border: "1px solid #fff"
     });
