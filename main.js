@@ -976,9 +976,10 @@ async function UI_Start(page) {
     btn.innerText = "▶ Bắt đầu";
     Object.assign(btn.style, {
       position: "fixed",
-      bottom: "15px",
-      right: "15px",
+      top: "277px",
+      left: "289px",
       zIndex: 9999,
+      transform: "translateX(-50%)",
       padding: "10px 20px",
       backgroundColor: "#28a745",
       color: "#fff",
@@ -1168,7 +1169,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
-        left: "450px",
+        left: "666px",
         zIndex: 10000,
         background: "rgba(0,0,0,0.85)",
         backdropFilter: "blur(4px)",
@@ -1283,8 +1284,8 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
       container.id = "ui-caidat-von";
       Object.assign(container.style, {
         position: "fixed",
-        top: "33px",
-        right: "5px",
+        top: "53px",
+        left: "5px",
         width: "180px",
         backgroundColor: "#fff",
         border: "1px solid #000",
@@ -1292,7 +1293,7 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
         padding: "10px 16px 14px 16px",
         fontSize: "12px",
         fontFamily: "monospace",
-        zIndex: 9999,
+        zIndex: 10000,
         boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
       });
 
@@ -1372,8 +1373,8 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
         position: "fixed",
-        top: "10px",
-        right: "5px",
+        top: "30px",
+        left: "5px",
         padding: "3px 7px",
         background: "#fff",
         border: "1px solid #999",

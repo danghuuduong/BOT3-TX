@@ -38,7 +38,7 @@ async function TableChinh_Create(page) {
       Object.assign(wrapper.style, {
         position: "fixed",
         bottom: "10px",
-        left: "10px",
+        left: "1px",
         transform: "none",
         zIndex: 9999,
         display: "flex",
@@ -61,8 +61,8 @@ async function TableChinh_Create(page) {
       toggleBtn.id = "longmach-toggle";
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
-        fontSize: "14px",
-        padding: "2px 6px",
+        fontSize: "12px",
+        padding: "1px 4px",
         cursor: "pointer",
         background: "#FFFFFF",     // xanh dương nhạt
         border: "1px solid #000",
@@ -98,21 +98,21 @@ async function TableChinh_Create(page) {
         width: "auto",
         background: "#fff",
         borderCollapse: "collapse",
-        fontSize: "11px",
+        fontSize: "10px",
         tableLayout: "fixed",
       });
 
-      const headers = [
-        "ID", "Bên", "Thếp", "Thép", "Nhân", "Max Nhân",
-        "Giao dịch", "Vol", "W/L", "Chết", "Lãi", "LãiMax",
+       const headers = [
+        "ID", "Bên", "Thép", "Nhân", "Max N",
+        "Lệnh", "Vol", "W/L", "Chết", "Lãi", "LãiMax",
         "Phí", "STOP"
       ];
 
 
       const widths = [
-        "18px", "35px", "35px", "30px", "30px", "35px",
-        "40px", "35px", "50px", "30px", "40px", "40px",
-        "25px", "25px"
+        "13px", "30px", "15px", "15px", "15px",
+        "20px", "25px", "50px", "30px", "40px", "40px",
+        "25px", "13px"
       ];
 
 
@@ -124,7 +124,7 @@ async function TableChinh_Create(page) {
         th.innerText = h;
         Object.assign(th.style, {
           border: "1px solid #000",
-          padding: "4px 6px",
+          padding: "2px 2px",
           background: "#eee",
           textAlign: "center",
           whiteSpace: "nowrap",
@@ -152,9 +152,6 @@ async function TableChinh_Update_UI(page, data) {
     if (!tbody) return;
 
     tbody.innerHTML = "";
-
-
-
     rows.forEach(item => {
       const tr = document.createElement("tr");
       if (item.isReady) {
@@ -166,13 +163,10 @@ async function TableChinh_Update_UI(page, data) {
         tr.style.opacity = "0.5";
       }
 
-      const lucStrInput = `<span style="display:inline-block; min-width:12px; text-align:right">${item.tiso}</span>/<input type="number" data-id="${item.id}" value="${item.soLanChoDoi}" style="width:20px; height:16px; font-size:10px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;"> ${item.isReady ? '✅' : ''}`;
-
-      // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
+      // ===== CÁC CỘT CHUẨN =====
       const cols = [
         item.id,
         item.type === "A" ? `Đẹp ${item.hoanthanh ? ' 😍' : ''}` : `Bẻ🔥${item.hoanthanh ? ' 😍' : ''}`,
-        "LUC_COLUMN",
         `${item.thep}/3`,
         item.capSoNhan,
         item.maxCapSoNhan,
@@ -188,27 +182,11 @@ async function TableChinh_Update_UI(page, data) {
 
       cols.forEach((v, idx) => {
         const td = document.createElement("td");
-        if (v === "LUC_COLUMN") {
-          // ✅ Nếu tỉ số > 0 thì tô xanh
-          if (item.tiso > 0) {
-            td.style.fontWeight = "bold";
-          }
-
-
-          td.innerHTML = lucStrInput;
-          const inp = td.querySelector("input");
-          if (inp) {
-            inp.addEventListener("change", (e) => {
-              window.postMessage({ type: "UPDATE_SOLAN", stopId: item.id, value: e.target.value }, "*");
-            });
-          }
-        } else {
-          td.innerText = v;
-        }
+        td.innerText = v;
 
         Object.assign(td.style, {
           border: "1px solid #000",  // màu đen
-          padding: "2px 4px",
+          padding: "1px 2px",
           textAlign: "center",
           color: "inherit" // ✅ Kế thừa màu từ tr
         });
@@ -308,18 +286,18 @@ async function UI_ToolTitle_Create(page, titleText) {
       titleDiv.id = "ui-tool-title";
       Object.assign(titleDiv.style, {
         position: "fixed",
-        top: "3px",
-        left: "3px",
+        top: "0px",
+        left: "2px",
         zIndex: 10000,
         background: "rgba(0, 0, 0, 0.7)",
         color: "#00ff00",
-        padding: "5px 15px",
+        padding: "4px 15px",
         fontSize: "18px",
         fontWeight: "bold",
         fontFamily: "Arial, sans-serif",
         borderBottomLeftRadius: "10px",
-        borderLeft: "2px solid #00ff00",
-        borderBottom: "2px solid #00ff00",
+        borderRight: "3px solid #00ff00",
+        borderBottom: "3px solid #00ff00",
         pointerEvents: "none"
       });
       document.body.appendChild(titleDiv);
