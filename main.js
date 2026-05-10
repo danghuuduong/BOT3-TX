@@ -1118,7 +1118,7 @@ async function toggleCapture() {
 }
 
 /**
- * Hiển thị tỉ số Tài/Xỉu
+ * Hiển thị tỉ số Tài/Xỉu`
  */
 async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
   const totalVolUocTinh = LuutruLongmach.filter(item => item.isTrading).reduce((acc, item) => acc + (item.vol || 0), 0);
