@@ -3,7 +3,7 @@ const {
   KetquaTXList_Create, LongMachList_create, KetquaTXList_Update_UI,
   SignalIndicator_Create, SignalIndicator_Update
 } = require("./src/Button_Common");
-const { UI_TieuDiem, TableChinh_Update_UI, TableChinh_Create, UI_MouseClick } = require("./src/UI_tieudiem");
+const { UI_TieuDiem, TableChinh_Update_UI, TableChinh_Create, UI_MouseClick, UI_ToolTitle_Create } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan, T, X, Dep,
   Xau, TYPES
@@ -197,9 +197,14 @@ const LuutruLongmach = [];
 // Initialize strategies for each signal type
 let itemId = 1;
 Object.values(TYPES).forEach(typeKey => {
-  // 75 Dep (Side A) and 75 Xau (Side B) for each signal type
-  for (let i = 1; i <= 150; i++) {
-    const isDep = (i % 2 !== 0);
+  // Mỗi loại tín hiệu chỉ tạo 2 item: 1 Dep (Side A) và 1 Xau (Side B)
+  [true, false].forEach(isDep => {
+    // Vẫn giữ logic chặn như yêu cầu:
+    // 1. TYPE_123: Chỉ giữ Dep (bỏ qua Xau)
+    // 2. TYPE_1_1_PLUS: Chỉ giữ Xau (bỏ qua Dep)
+    if (typeKey === TYPES.TYPE_123 && !isDep) return;
+    if (typeKey === TYPES.TYPE_1_1_PLUS && isDep) return;
+
     LuutruLongmach.push({
       id: itemId++,
       isTrading: false,
@@ -217,11 +222,11 @@ Object.values(TYPES).forEach(typeKey => {
       AnNumber: 0,
       soLanMuonAn: 1,
       hoanthanh: false,
-      soLanChoDoi: Math.ceil(i / 2),
+      soLanChoDoi: 1,
       tiso: 0,
       phiGD: 0
     });
-  }
+  });
   muaGiaLapMap[typeKey] = "null"; // Initialize dummy trade state for this type
 });
 
@@ -723,28 +728,27 @@ async function ThucHienGiaoDich() {
 
         let totalVol = 0;
         for (const item of ListProp) {
-          const indexInGroup = ListProp.indexOf(item) + 1;
-          const group = Math.ceil(indexInGroup / 10);
-          const baseVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
-          const itemVol = Math.floor(baseVol * (1 + (group - 1) * 0.25));
+          // Logic: Tỉ số từ 1-45 vào 1k (đơn vị 1), từ 46 trở lên vào 2k (đơn vị 2)
+          let itemVol = (item.tiso < 46) ? item.tiso : (45 + (item.tiso - 45) * 2);
+
           item.tempVol = itemVol;
           totalVol += itemVol;
         }
 
 
         // Click chọn hướng (Tài hoặc Xỉu)
-        // await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
-        // await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
+        await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
+        await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
 
-        // // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
-        // await clickTheoTinhVol(page, totalVol, "🎯");
+        // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
+        await clickTheoTinhVol(page, totalVol, "🎯");
 
-        // const delay = 50 + Math.floor(Math.random() * 200);
-        // await page.waitForTimeout(delay);
+        const delay = 50 + Math.floor(Math.random() * 200);
+        await page.waitForTimeout(delay);
 
-        // // Click Submit 1 lần duy nhất cho cả batch
-        // await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-        // await masterClick(page, X_Submit, Y_Submit);
+        // Click Submit 1 lần duy nhất cho cả batch
+        await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+        await masterClick(page, X_Submit, Y_Submit);
 
         // Trừ luôn số dư và lợi nhuận khi vào lệnh
 
@@ -900,9 +904,10 @@ async function UI_Start(page) {
     btn.innerText = "▶ Bắt đầu";
     Object.assign(btn.style, {
       position: "fixed",
-      bottom: "15px",
-      right: "15px",
+      top: "277px",
+      left: "289px",
       zIndex: 9999,
+      transform: "translateX(-50%)",
       padding: "10px 20px",
       backgroundColor: "#28a745",
       color: "#fff",
@@ -1110,7 +1115,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
-        left: "3px",
+        left: "475px",
         zIndex: 10000,
         background: "rgba(0,0,0,0.8)",
         backdropFilter: "blur(6px)",
@@ -1224,8 +1229,8 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
       container.id = "ui-caidat-von";
       Object.assign(container.style, {
         position: "fixed",
-        top: "33px",
-        right: "5px",
+        top: "53px",
+        left: "5px",
         width: "180px",
         backgroundColor: "#fff",
         border: "1px solid #000",
@@ -1233,7 +1238,7 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
         padding: "10px 16px 14px 16px",
         fontSize: "12px",
         fontFamily: "monospace",
-        zIndex: 9999,
+        zIndex: 10000,
         boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
       });
 
@@ -1313,8 +1318,8 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
         position: "fixed",
-        top: "10px",
-        right: "5px",
+        top: "30px",
+        left: "5px",
         padding: "3px 7px",
         background: "#fff",
         border: "1px solid #999",
@@ -1479,7 +1484,15 @@ function loadStateTXT() {
           hoanthanh: i.hoanthanh ?? false,
           soLanChoDoi: i.soLanChoDoi ?? (i.type === "A" && i.id === 1 ? 7 : i.type === "B" && i.id === 2 ? 7 : 10)
         }));
-        LuutruLongmach.push(...mappedArr);
+
+        // Filter out excluded strategies to stay consistent with new initialization
+        const filteredArr = mappedArr.filter(item => {
+          if (item.strategyType === TYPES.TYPE_123 && item.type === Xau) return false;
+          if (item.strategyType === TYPES.TYPE_1_1_PLUS && item.type === Dep) return false;
+          return true;
+        });
+
+        LuutruLongmach.push(...filteredArr);
       }
     }
 
