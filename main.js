@@ -193,7 +193,7 @@ let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
 
 const LuutruLongmach = [];
-for (let i = 1; i <= 80; i++) {
+for (let i = 1; i <= 120; i++) {
   LuutruLongmach.push({
     id: i, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false,
@@ -708,7 +708,7 @@ async function ThucHienGiaoDich() {
       // Tính tổng Volume và gán cho từng item
       let totalVol = 0;
       for (const item of ListProp) {
-        const group = Math.ceil(item.id / 10);
+        const group = Math.ceil(item.id / 45);
         const baseVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
         const itemVol = Math.floor(baseVol * (1 + (group - 1) * 0.25));
         item.tempVol = itemVol; // Lưu tạm volume để update state sau batch submit
@@ -1067,7 +1067,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
-        left: "10px",
+        left: "555px",
         zIndex: 10000,
         background: "rgba(0,0,0,0.75)",
         backdropFilter: "blur(4px)",
@@ -1321,7 +1321,6 @@ async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
     }
   );
 }
-
 function saveStateTXT() {
   try {
     let lines = [];
