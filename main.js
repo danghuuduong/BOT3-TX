@@ -9,7 +9,7 @@ const {
   Xau, TYPES
 } = require('./src/util');
 
-const { handleGetTien, ghiNhanThuNhap, luuTruTrangThai } = require('./src/util2');
+const { ghiNhanThuNhap } = require('./src/util2');
 const { chromium } = require("playwright");
 const path = require("path");
 
@@ -728,8 +728,16 @@ async function ThucHienGiaoDich() {
 
         let totalVol = 0;
         for (const item of ListProp) {
-          // Logic: Tỉ số từ 1-45 vào 1k (đơn vị 1), từ 46 trở lên vào 2k (đơn vị 2)
-          let itemVol = (item.tiso < 46) ? item.tiso : (45 + (item.tiso - 45) * 2);
+          // Logic: Tính đơn vị gốc (baseVol) dựa trên % số dư lớn nhất
+          let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
+          
+          // Đơn vị cho các điểm từ 51 trở lên (tăng 50% và làm tròn xuống)
+          let extraVol = Math.floor(baseVol * 1.5);
+
+          // 50 tỉ số đầu dùng baseVol, từ 51 trở lên dùng extraVol cho phần vượt
+          let itemVol = (item.tiso <= 50) 
+            ? (item.tiso * baseVol) 
+            : (50 * baseVol + (item.tiso - 50) * extraVol);
 
           item.tempVol = itemVol;
           totalVol += itemVol;
@@ -1115,7 +1123,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
-        left: "475px",
+        left: "437px",
         zIndex: 10000,
         background: "rgba(0,0,0,0.8)",
         backdropFilter: "blur(6px)",
