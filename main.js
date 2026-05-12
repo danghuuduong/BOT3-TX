@@ -30,6 +30,8 @@ let currentPassword = "";
 let reLoginInterval = null;
 let currentToken = null;
 let profitAll = 0;
+let totalProfitTP = 0;
+let totalWinCount = 0;
 let CauDepCount = 0;
 let CauXauCount = 0;
 
@@ -192,18 +194,26 @@ let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
 
 
-const LuutruLongmach = [];
-for (let i = 1; i <= 120; i++) {
-  LuutruLongmach.push({
-    id: i, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+const LuutruLongmach = [
+  {
+    id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false,
-    type: (i % 2 !== 0) ? Dep : Xau,
-    isFomo: (i % 2 !== 0) ? true : false,
+    type: Dep,
+    isFomo: true,
     minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: Math.ceil(i / 2), tiso: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 1, tiso: 0,
     phiGD: 0
-  });
-}
+  },
+  {
+    id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false,
+    type: Xau,
+    isFomo: false,
+    minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 1, tiso: 0,
+    phiGD: 0
+  }
+];
 
 loadStateTXT();
 
@@ -404,7 +414,7 @@ async function UI_Reset(page) {
       nguongTienDat = nguongRut;
       soTienMuonRut = soTienRut;
 
-      await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
+      await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown, totalProfitTP, totalWinCount);
       saveStateTXT();
 
       // ===== UPDATE UI =====
@@ -467,7 +477,7 @@ async function UI_Reset(page) {
   await TableChinh_Create(page);//Bắt đầu
   await UI_ToolTitle_Create(page, "Tool 1 - RảiRác");
   await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
-  await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
+  await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown, totalProfitTP, totalWinCount);
   await UI_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
 
   async function injectMouseTracker(page) {
@@ -583,7 +593,7 @@ async function ThucHienGiaoDich() {
       });
 
       LuutruLongmach.forEach(item => {
-        if (item.tiso >= item.soLanChoDoi) item.isReady = true;
+        item.isReady = (item.tiso >= item.soLanChoDoi);
       });
 
       muaGiaLap = "null"
@@ -596,7 +606,7 @@ async function ThucHienGiaoDich() {
       });
 
       LuutruLongmach.forEach(item => {
-        if (item.tiso >= item.soLanChoDoi) item.isReady = true;
+        item.isReady = (item.tiso >= item.soLanChoDoi);
       });
 
       muaGiaLap = "null"
@@ -612,11 +622,6 @@ async function ThucHienGiaoDich() {
 
 
 
-  for (const item of LuutruLongmach) {
-    if (!item.isReady && item.tiso >= item.soLanChoDoi) {
-      item.isReady = true;
-    }
-  }
   await LongMachList_Update_UI(page, ArrayKQ_XAU);
 
   // ====================================================================================== TP / SL =======================================================================
@@ -631,6 +636,11 @@ async function ThucHienGiaoDich() {
         soDuTaiKhoan += winAmount;
         profitAll += winAmount;
         item.phiGD += feeAmount;
+
+        // Ghi nhận TP
+        let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
+        totalProfitTP += (baseVol - feeAmount);
+        totalWinCount += 1;
 
         item.AnNumber += 1;
         if (item.AnNumber >= item.soLanMuonAn) {
@@ -708,10 +718,18 @@ async function ThucHienGiaoDich() {
       // Tính tổng Volume và gán cho từng item
       let totalVol = 0;
       for (const item of ListProp) {
-        const group = Math.ceil(item.id / 45);
-        const baseVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
-        const itemVol = Math.floor(baseVol * (1 + (group - 1) * 0.25));
-        item.tempVol = itemVol; // Lưu tạm volume để update state sau batch submit
+        // Logic: Tính đơn vị gốc (baseVol) dựa trên % số dư lớn nhất
+        let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
+
+        // Đơn vị cho các điểm từ 51 trở lên (tăng 50% và làm tròn xuống)
+        let extraVol = Math.floor(baseVol * 1.5);
+
+        // 50 tỉ số đầu dùng baseVol, từ 51 trở lên dùng extraVol cho phần vượt
+        let itemVol = (item.tiso <= 50)
+          ? (item.tiso * baseVol)
+          : (50 * baseVol + (item.tiso - 50) * extraVol);
+
+        item.tempVol = itemVol;
         totalVol += itemVol;
       }
 
@@ -756,7 +774,7 @@ async function ThucHienGiaoDich() {
 
   // Cập nhật UI sau khi đã xong phần giao dịch (TP/SL + Đặt lệnh mới)
   SignalIndicator_Update(page, tinHieuAI.huong !== "null" ? [tinHieuAI] : []);
-  UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
+  UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown, totalProfitTP, totalWinCount);
   TableChinh_Update_UI(page, LuutruLongmach);
   UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
   UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
@@ -1038,6 +1056,20 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
   const totalVolUocTinh = LuutruLongmach.filter(item => item.isTrading).reduce((acc, item) => acc + (item.vol || 0), 0);
   const totalPhiUocTinh = totalVolUocTinh * 0.02;
 
+  // Define statsList for the UI
+  const statsList = [
+    {
+      sType: "Dep",
+      profit: LuutruLongmach.find(i => i.type === Dep)?.profit || 0,
+      minAn: LuutruLongmach.find(i => i.type === Dep)?.minAnNumber || 0
+    },
+    {
+      sType: "Xau",
+      profit: LuutruLongmach.find(i => i.type === Xau)?.profit || 0,
+      minAn: LuutruLongmach.find(i => i.type === Xau)?.minAnNumber || 0
+    }
+  ];
+
   // Expose function to Node side
   if (!page._resetTiSoExposed) {
     await page.exposeFunction("resetTiSo", async () => {
@@ -1059,63 +1091,132 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
     page._resetTiSoExposed = true;
   }
 
-  await page.evaluate(({ depCount, xauCount, phi, lai, lo, volUT, phiUT }) => {
+  await page.evaluate(({ depCount, xauCount, phi, lai, lo, volUT, phiUT, statsList, tpProfit, winCount }) => {
+    let wrapper = document.getElementById("ui-tiso-wrapper");
+    if (!wrapper) {
+      wrapper = document.createElement("div");
+      wrapper.id = "ui-tiso-wrapper";
+      Object.assign(wrapper.style, {
+        position: "fixed",
+        bottom: "10px",
+        left: "390px",
+        zIndex: 10000,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start"
+      });
+      document.body.appendChild(wrapper);
+
+      // Toggle button
+      const toggleBtn = document.createElement("div");
+      toggleBtn.id = "ui-tiso-toggle";
+      toggleBtn.innerText = "▼";
+      Object.assign(toggleBtn.style, {
+        fontSize: "10px",
+        padding: "0px 4px",
+        cursor: "pointer",
+        background: "#fff",
+        border: "1px solid #ccc",
+        borderRadius: "3px",
+        userSelect: "none",
+        marginBottom: "2px"
+      });
+
+      let isHidden = false;
+      toggleBtn.onclick = () => {
+        isHidden = !isHidden;
+        const box = document.getElementById("ui-tiso-tx");
+        if (box) box.style.display = isHidden ? "none" : "flex";
+        toggleBtn.innerText = isHidden ? "▲" : "▼";
+      };
+      wrapper.appendChild(toggleBtn);
+    }
+
     let box = document.getElementById("ui-tiso-tx");
     if (!box) {
       box = document.createElement("div");
       box.id = "ui-tiso-tx";
       Object.assign(box.style, {
-        position: "fixed",
-        bottom: "10px",
-        left: "555px",
-        zIndex: 10000,
-        background: "rgba(0,0,0,0.75)",
-        backdropFilter: "blur(4px)",
-        color: "white",
-        padding: "8px 12px",
+        background: "#fff",
+        color: "#000",
+        padding: "3px 6px",
         borderRadius: "6px",
-        fontSize: "14px",
+        fontSize: "10px",
         fontWeight: "600",
-        pointerEvents: "none",
-        boxShadow: "0 0 10px rgba(0,0,0,0.5)",
+        boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
         fontFamily: "Arial, sans-serif",
         display: "flex",
         flexDirection: "column",
-        gap: "4px"
+        gap: "3px",
+        border: "1px solid #ccc",
+        minWidth: "185px"
       });
-      document.body.appendChild(box);
+      document.getElementById("ui-tiso-wrapper").appendChild(box);
     }
+
+    const getProfitColor = (val) => {
+      if (val >= 1) return "#00bb00"; // xanh lá
+      if (val < 0) return "#ff0000";  // đỏ
+      return "#555";                 // xám/đen cho số 0
+    };
+
+    const statsRows = statsList.map(s => `
+      <tr style="font-size: 9px; line-height: 1.0;">
+        <td style="text-align: left; color: #333; padding: 1px 2px; border: 1px solid #000; white-space: nowrap;">${s.sType}</td>
+        <td style="text-align: left; padding: 1px 2px; border: 1px solid #000; white-space: nowrap;"><b style="color: ${getProfitColor(s.profit)}">${s.profit.toFixed(1)}</b></td>
+        <td style="text-align: left; color: #886600; padding: 1px 2px; border: 1px solid #000; white-space: nowrap;">${s.minAn}</td>
+      </tr>
+    `).join("");
+
     box.innerHTML = `
-      <div style="display:flex; gap:15px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 4px; align-items: center;">
-        <span style="color:#00ff00; font-size:18px; font-weight:800;">Đẹp: ${depCount}</span>
-        <span style="color:#ff4d4d; font-size:18px; font-weight:800;">Xấu: ${xauCount}</span>
+      <div style="display:flex; gap:10px; border-bottom: 1px solid #eee; padding-bottom: 2px; justify-content: center; align-items: center;">
+        <span style="color:#00bb00; font-size:12px; font-weight:800;">Đẹp: ${depCount}</span>
+        <span style="color:#ff0000; font-size:12px; font-weight:800;">Xấu: ${xauCount}</span>
       </div>
-      <div style="display:flex; flex-direction:column; gap:2px; padding-top: 2px;">
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Tổng Phí:</span>
-          <span style="color:#ffcc00">${phi.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Item Lãi:</span>
-          <span style="color:#00ff00">${lai.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Item Lỗ:</span>
-          <span style="color:#ff4d4d">${lo.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px; border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 2px; padding-top: 2px;">
-          <span style="color:#ccc">Vol đánh :</span>
-          <span style="color:#fff">${volUT.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px;">
-          <span style="color:#ccc">Phí chịu:</span>
-          <span style="color:#ffcc00">${phiUT.toFixed(2)}</span>
-        </div>
+      <div style="margin-top: 1px; border-bottom: 1px solid #eee; padding-bottom: 1px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 10px; text-align: center;">
+          <thead>
+            <tr style="color: #666; border-bottom: 1px solid #f9f9f9;">
+              <th style="font-weight: normal; padding: 1px;">Lãi</th>
+              <th style="font-weight: normal; padding: 1px;">Lỗ</th>
+              <th style="font-weight: normal; padding: 1px;">Phí</th>
+              <th style="font-weight: normal; padding: 1px;">Vol</th>
+              <th style="font-weight: normal; padding: 1px;">Chịu</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="font-weight: bold;">
+              <td style="color: #00bb00;">${lai.toFixed(1)}</td>
+              <td style="color: #ff0000;">${lo.toFixed(1)}</td>
+              <td style="color: #886600;">${phi.toFixed(1)}</td>
+              <td style="color: #333;">${volUT.toFixed(1)}</td>
+              <td style="color: #886600;">${phiUT.toFixed(1)}</td>
+            </tr>
+            <tr style="color: #555; font-size: 9px;">
+              <td colspan="2" style="color: #008800; font-weight: bold; padding-top: 1px;">Lãi ghi nhận: ${tpProfit.toFixed(1)}</td>
+              <td colspan="3" style=" font-weight: bold; padding-top: 1px;">Win: ${winCount}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="border-top: 1px solid #eee;">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="font-size: 8px; color: #000; font-weight: bold;">
+              <th style="text-align: left; border: 1px solid #000; padding: 1px;">Bên nào</th>
+              <th style="text-align: left; border: 1px solid #000; padding: 1px;">Profit</th>
+              <th style="text-align: left; border: 1px solid #000; padding: 1px;">Max</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${statsRows}
+          </tbody>
+        </table>
       </div>
     `;
-  }, { depCount: depCount, xauCount: xauCount, phi: totalPhi, lai: totalLai, lo: totalLo, volUT: totalVolUocTinh, phiUT: totalPhiUocTinh });
-}
 
+  }, { depCount, xauCount, phi: totalPhi, lai: totalLai, lo: totalLo, volUT: totalVolUocTinh, phiUT: totalPhiUocTinh, statsList, tpProfit: totalProfitTP, winCount: totalWinCount });
+}
 
 async function clickTheoTinhVol(page, tinhVol, icon) {
   const vol = Math.floor(tinhVol);
@@ -1329,6 +1430,8 @@ function saveStateTXT() {
     lines.push(`soDuLonNhat=${soDuLonNhat}`);
     lines.push(`phanTramGiaoDich=${phanTramGiaoDich}`);
     lines.push(`profitAll=${profitAll}`);
+    lines.push(`totalProfitTP=${totalProfitTP}`);
+    lines.push(`totalWinCount=${totalWinCount}`);
     lines.push(`maxDrawdown=${maxDrawdown}`);
 
 
@@ -1375,6 +1478,8 @@ function loadStateTXT() {
     soDuLonNhat = Number(getVal("soDuLonNhat")) || soDuLonNhat;
     phanTramGiaoDich = Number(getVal("phanTramGiaoDich")) || phanTramGiaoDich;
     profitAll = Number(getVal("profitAll")) || profitAll;
+    totalProfitTP = Number(getVal("totalProfitTP")) || 0;
+    totalWinCount = Number(getVal("totalWinCount")) || 0;
     maxDrawdown = Number(getVal("maxDrawdown")) || 0;
 
 

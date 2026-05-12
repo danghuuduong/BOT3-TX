@@ -103,15 +103,15 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Bên", "Lực", "Ăn",
-        "Giao dịch", "Vol", "W/L", "Lãi", "Phí",
+        "ID", "Bên", "Tỉ số", "Ăn",
+        "Lệnh", "Vol", "W/L", "Lãi", "Phí",
         "MIN", "STOP"
       ];
 
 
       const widths = [
-        "12px", "35px", "30px", "45px",
-        "25px", "40px", "730px", "40px", "50px",
+        "13px", "35px", "35px",
+        "39px", "30px", "30px", "50px", "50px",
         "25px", "25px"
       ];
 
@@ -147,14 +147,34 @@ async function TableChinh_Create(page) {
 }
 
 async function TableChinh_Update_UI(page, data) {
+  // Sắp xếp: Đưa các item đang giao dịch lên đầu
+  // const sortedData = [...data].sort((a, b) => {
+  //   if (a.isTrading && !b.isTrading) return -1;
+  //   if (!a.isTrading && b.isTrading) return 1;
+  //   return 0;
+  // });
+
+  const active = data;
+
+
   await page.evaluate(({ rows }) => {
     const tbody = document.getElementById("longmach-body");
     if (!tbody) return;
+
     tbody.innerHTML = "";
+
     rows.forEach(item => {
       const tr = document.createElement("tr");
-      if (item.isReady) {
-        tr.style.backgroundColor = item.isTrading ? "#fff176" : "#a4c2f4";
+      // Đơn giản hóa: Cứ đang giao dịch là sáng vàng
+      const isFullMatch = item.isTrading;
+      // Vẫn giữ isTypeMatch để nếu cần dùng logic khác liên quan tới signalType
+
+      if (isFullMatch) {
+        tr.style.backgroundColor = "#fff176"; // vàng nổi bật - khớp cả type + huong
+        tr.style.fontWeight = "bold";
+        tr.style.color = "#000000ff";
+      } else if (item.isReady) {
+        tr.style.backgroundColor = "#a4c2f4"; // xanh nhạt
         tr.style.fontWeight = "bold";
         tr.style.color = "#000000ff";
       } else {
@@ -162,7 +182,7 @@ async function TableChinh_Update_UI(page, data) {
         tr.style.opacity = "0.5";
       }
 
-      const lucStrInput = `<span style="display:inline-block; min-width:10px; text-align:right">${item.tiso}</span>/<input type="number" data-id="${item.id}" value="${item.soLanChoDoi}" style="width:22px; height:14px; font-size:9px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;"> ${item.isReady ? '✅' : ''}`;
+      const lucStrInput = `${item.tiso}/${item.soLanChoDoi}`;
 
       // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
@@ -188,13 +208,7 @@ async function TableChinh_Update_UI(page, data) {
           }
 
 
-          td.innerHTML = lucStrInput;
-          const inp = td.querySelector("input");
-          if (inp) {
-            inp.addEventListener("change", (e) => {
-              window.postMessage({ type: "UPDATE_SOLAN", stopId: item.id, value: e.target.value }, "*");
-            });
-          }
+          td.innerText = lucStrInput;
         } else {
           td.innerText = v;
         }
@@ -206,7 +220,14 @@ async function TableChinh_Update_UI(page, data) {
           color: "inherit" // ✅ Kế thừa màu từ tr
         });
 
-        // ✅ Màu sắc cho cột Lãi (Index 7)
+        // ✅ Màu sắc cho cột Type (Index 1)
+        if (idx === 1) {
+          td.style.fontSize = "10px";
+          td.style.fontWeight = "bold";
+          td.style.color = "#5500aaff";
+        }
+
+        // ✅ Màu sắc cho cột Lãi (Index 8)
         if (idx === 7) {
           if (item.profit > 0) {
             td.style.color = "#0cb30cff"; // xanh lá
@@ -244,8 +265,9 @@ async function TableChinh_Update_UI(page, data) {
 
       tbody.appendChild(tr);
     });
-  }, { rows: data });
+  }, { rows: active });
 }
+
 
 async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 2000) {
   await page.evaluate(({ x, y, size, icon, id, timeoutMs }) => {

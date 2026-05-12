@@ -395,10 +395,6 @@ function handleGetColor_TX(r, g, b) {
 }
 
 
-
-
-
-
 // function handleGetColor_TX(r, g, b) {
 //   return Math.random() < 0.5 ? "white" : "black";
 // }
