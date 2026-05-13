@@ -904,9 +904,10 @@ async function UI_Start(page) {
     btn.innerText = "▶ Bắt đầu";
     Object.assign(btn.style, {
       position: "fixed",
-      bottom: "15px",
-      right: "15px",
+      top: "277px",
+      left: "289px",
       zIndex: 9999,
+      transform: "translateX(-50%)",
       padding: "10px 20px",
       backgroundColor: "#28a745",
       color: "#fff",
