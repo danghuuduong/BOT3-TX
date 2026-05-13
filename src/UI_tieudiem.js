@@ -103,16 +103,16 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Bên", "Thép", "Nhân", "Max N",
+        "ID", "Bên", "Thép",
         "Lệnh", "Vol", "W/L", "Chết", "Lãi", "LãiMax",
-        "Phí", "STOP"
+        "Phí", "PNay", "Target", "Phép", "STOP"
       ];
 
 
       const widths = [
-        "13px", "35px", "15px", "15px", "15px",
+        "13px", "35px", "15px",
         "20px", "25px", "50px", "30px", "40px", "40px",
-        "25px", "13px"
+        "25px", "40px", "40px", "30px", "13px"
       ];
 
 
@@ -168,8 +168,6 @@ async function TableChinh_Update_UI(page, data) {
         item.id,
         item.type === "A" ? `Đẹp ${item.hoanthanh ? ' 😍' : ''}` : `Bẻ🔥${item.hoanthanh ? ' 😍' : ''}`,
         `${item.thep}/3`,
-        item.capSoNhan,
-        item.maxCapSoNhan,
         item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
         item.vol,
         `${item.win}/${item.lost}`,
@@ -177,6 +175,9 @@ async function TableChinh_Update_UI(page, data) {
         item.profit.toFixed(1),
         item.profitMax.toFixed(1),
         item.phiGD.toFixed(1),
+        (item.profitPhienNay ?? 0).toFixed(1),
+        (item.targetProfit ?? 0).toFixed(1),
+        item.isDuocPhepDanh ? "✅" : "❌",
       ];
 
 
@@ -191,13 +192,24 @@ async function TableChinh_Update_UI(page, data) {
           color: "inherit" // ✅ Kế thừa màu từ tr
         });
 
-        // ✅ Màu sắc cho cột Lãi (Index 10)
-        if (idx === 10) {
+        // ✅ Màu sắc cho cột Lãi (Index 7 = profit)
+        if (idx === 7) {
           if (item.profit > 0) {
             td.style.color = "#0cb30cff"; // xanh lá
             td.style.fontWeight = "bold";
           } else if (item.profit < 0) {
             td.style.color = "#d81515ff"; // đỏ
+            td.style.fontWeight = "bold";
+          }
+        }
+        // ✅ Màu sắc cho cột PNay (Index 10 = profitPhienNay)
+        if (idx === 10) {
+          const pn = item.profitPhienNay ?? 0;
+          if (pn > 0) {
+            td.style.color = "#0cb30cff";
+            td.style.fontWeight = "bold";
+          } else if (pn < 0) {
+            td.style.color = "#d81515ff";
             td.style.fontWeight = "bold";
           }
         }
