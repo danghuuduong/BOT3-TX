@@ -104,14 +104,14 @@ async function TableChinh_Create(page) {
 
       const headers = [
         "ID", "Type", "Bên", "Tỉ số", "Ăn",
-        "Giao dịch", "Vol", "W/L", "Lãi", "Phí",
+        "Lệnh", "Vol", "W/L", "Lãi", "Phí",
         "MIN", "STOP"
       ];
 
 
       const widths = [
-        "13px", "30px", "35px", "35px",
-        "25px", "40px", "30px", "50px", "50px",
+        "13px", "50px", "35px", "35px",
+        "39px", "30px", "30px", "50px", "50px",
         "25px", "25px"
       ];
 
