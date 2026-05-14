@@ -1257,23 +1257,23 @@ async function clickN(page, x, y, n, icon = "🖱️") {
 
 async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
   await page.evaluate(
-    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut }) => {
+    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, Diachivi }) => {
       if (document.getElementById("ui-caidat-von")) return;
 
       const container = document.createElement("div");
       container.id = "ui-caidat-von";
       Object.assign(container.style, {
         position: "fixed",
-        top: "33px",
-        right: "5px",
-        width: "180px",
+        top: "53px",
+        left: "5px",
+        width: "216px",
         backgroundColor: "#fff",
         border: "1px solid #000",
         borderRadius: "8px",
         padding: "10px 16px 14px 16px",
         fontSize: "12px",
         fontFamily: "monospace",
-        zIndex: 9999,
+        zIndex: 10000,
         boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
       });
 
@@ -1325,7 +1325,12 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
         </div>
 
         <div style="margin-bottom:10px">
-          💸 Rút tiền tự động
+          <div style="margin-bottom:4px">
+            💸 Rút tiền, Địa chỉ ví:
+            <input id="inp-wallet" type="text"
+              value="${Diachivi}"
+              style="width:100%;padding:4px 6px;border:0.8px solid #ccc;border-radius:5px;margin-top:2px;font-size:10px" />
+          </div>
           <div style="display:flex; gap:6px; margin-top:4px">
             <input id="inp-nguong-rut" type="number"
               value="${nguongTienDat}"
@@ -1353,8 +1358,8 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
         position: "fixed",
-        top: "10px",
-        right: "5px",
+        top: "30px",
+        left: "5px",
         padding: "3px 7px",
         background: "#fff",
         border: "1px solid #999",
@@ -1382,17 +1387,18 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
           Number(document.getElementById("inp-max").value || 0),
           Number(document.getElementById("inp-percent").value || 0),
           nguongTienDat,
-          soTienMuonRut
+          soTienMuonRut,
+          document.getElementById("inp-wallet").value || ""
         );
       };
     },
-    { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut }
+    { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, Diachivi }
   );
 }
 
 async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
   await page.evaluate(
-    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut }) => {
+    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, Diachivi }) => {
       const box = document.getElementById("ui-caidat-von");
       if (!box) return;
 
@@ -1402,6 +1408,7 @@ async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
 
       document.getElementById("inp-nguong-rut").value = nguongTienDat;
       document.getElementById("inp-so-tien-rut").value = soTienMuonRut;
+      document.getElementById("inp-wallet").value = Diachivi;
 
       const spanTien = document.getElementById("tien-gd");
       if (spanTien) {
@@ -1419,10 +1426,12 @@ async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
       percent,
       nguongTienDat,
       soTienMuonRut,
-      tongTienDaRut
+      tongTienDaRut,
+      Diachivi
     }
   );
 }
+
 function saveStateTXT() {
   try {
     let lines = [];

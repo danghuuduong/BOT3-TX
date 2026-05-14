@@ -11,7 +11,7 @@ tongTienDaRut=0
 CauDepCount=128
 CauXauCount=118
 
-ArrayKQ=X,X,X,X,X,X,X,T,T,T,X,X,X,T,T,T,T,T,X,X,X,X,T,X,X,X,X,T,X,T,X,T,X,T,X,X,T,X,T,X,T,X,X,T,T,X,T,T,T,X,X,X,T,T,X,T,T,T,X,X,X,X,X,X,T,T,X,T,T,X,X,T,X,X,T,X,X,X,X,T,X,T,T,T,T,T,X,X,X,X,X,T,T,T,T,X,T,X,X,X
+ArrayKQ=X,X,X,X,X,X,T,T,T,X,X,X,T,T,T,T,T,X,X,X,X,T,X,X,X,X,T,X,T,X,T,X,T,X,X,T,X,T,X,T,X,X,T,T,X,T,T,T,X,X,X,T,T,X,T,T,T,X,X,X,X,X,X,T,T,X,T,T,X,X,T,X,X,T,X,X,X,X,T,X,T,T,T,T,T,X,X,X,X,X,T,T,T,T,X,T,X,X,X,T
 ArrayKQ_XAU=A,A,A,A,A,A,A,A,A,A,B,A,A,B,B,B,A,B,B,A,B,A,A,B,B,A,A,A,A,A,B,B,B,B,B,A,B,A,B,B,B,A,B,B,B,A,B,A,A,B,B,A,B,A,B,B,B,A,B,A,B,B,A,B,A,B,A,B,A,B,B,A,A,B,A,B,B,B,B,B,A,B,A,B,A,B,A,B,A,B,B,A,B,A,B,B,A,A,A,A,B,B,A,A,A,A,A,A,B,A,B,A,B,B,B,A,B,A,B,A,A,B,A,A,A,A,A,A,A,A,A,A,A,B,B,B,B,A,A,B,B,B,B,B,B,A,B,A,B,A,B,B,A,A,A,A,B,B,B,B,B,A,A,A,B,A,B,B,B,A,A,B,A,B,B,A,A,B,A,A,B,B,B,B,B,B,B,A,B,B,A,A,A,B,A,B,B,B,A,A,B,B,A,A,A,A,B,B,B,A,A,A,A,A,A,A,B,B,A,A,B,A,A,B,A,A,A,A,A,A,A,A,A,A,A,B,B,A,A,B,B,A,B,A,B,A,A,B,B
 
 LuutruLongmach=
