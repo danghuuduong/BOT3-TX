@@ -202,16 +202,38 @@ const LuutruLongmach = [
     isFomo: true,
     minAnNumber: 0,
     isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 1, tiso: 0,
-    phiGD: 0
+    phiGD: 0,
+    isKhung: false
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false,
+    type: Dep,
+    isFomo: true,
+    minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, hoanthanh: false, soLanChoDoi: 7, tiso: 0,
+    phiGD: 0,
+    isKhung: true
+  },
+  {
+    id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false,
     type: Xau,
     isFomo: false,
     minAnNumber: 0,
     isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 1, tiso: 0,
-    phiGD: 0
+    phiGD: 0,
+    isKhung: false
+  },
+  {
+    id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false,
+    type: Xau,
+    isFomo: false,
+    minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, hoanthanh: false, soLanChoDoi: 7, tiso: 0,
+    phiGD: 0,
+    isKhung: true
   }
 ];
 
@@ -593,7 +615,7 @@ async function ThucHienGiaoDich() {
       });
 
       LuutruLongmach.forEach(item => {
-        item.isReady = (item.tiso >= item.soLanChoDoi);
+        item.isReady = (item.tiso >= item.soLanChoDoi || item.AnNumber > 0);
       });
 
       muaGiaLap = "null"
@@ -606,7 +628,7 @@ async function ThucHienGiaoDich() {
       });
 
       LuutruLongmach.forEach(item => {
-        item.isReady = (item.tiso >= item.soLanChoDoi);
+        item.isReady = (item.tiso >= item.soLanChoDoi || item.AnNumber > 0);
       });
 
       muaGiaLap = "null"
@@ -629,23 +651,41 @@ async function ThucHienGiaoDich() {
     if (item.isTrading && item.huong) {
       const isWin = resultNew === item.huong
       if (isWin) {
-        // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 2 * 0.98)
-        const winAmount = item.vol * 2 * 0.99;
-        const feeAmount = item.vol * 2 * 0.01;
+        // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 0.98)
+        const winAmount = item.vol * 0.98;
+        const feeAmount = item.vol * 0.02;
 
         soDuTaiKhoan += winAmount;
         profitAll += winAmount;
         item.phiGD += feeAmount;
 
-        // Ghi nhận TP
-        let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
-        totalProfitTP += (baseVol - feeAmount);
-        totalWinCount += 1;
+        // Lãi ghi nhận TP (chỉ áp dụng cho các item cũ, không phải Khung)
+        if (!item.isKhung) {
+          let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
+          let baseFee = baseVol * 0.02; // Tính phí chuẩn của 1 lệnh cơ bản
+          totalProfitTP += (baseVol - baseFee);
+          totalWinCount += 1;
+        }
 
         item.AnNumber += 1;
         if (item.AnNumber >= item.soLanMuonAn) {
           item.AnNumber = 0;
           item.hoanthanh = true;
+
+          if (item.isKhung) {
+            let depItem = LuutruLongmach.find(i => i.isKhung && i.type === Dep);
+            let xauItem = LuutruLongmach.find(i => i.isKhung && i.type === Xau);
+
+            if (depItem && xauItem) {
+              if (item.type === Dep) {
+                depItem.soLanChoDoi += 2;
+                xauItem.soLanChoDoi -= 2;
+              } else if (item.type === Xau) {
+                xauItem.soLanChoDoi += 4;
+                depItem.soLanChoDoi -= 4;
+              }
+            }
+          }
         }
 
         handleUpdate_LongMachList(item.id, {
@@ -654,10 +694,13 @@ async function ThucHienGiaoDich() {
           profit: item.profit + winAmount,
           win: item.win + 1,
           vol: 0,
+          isReady: (item.tiso >= item.soLanChoDoi || item.AnNumber > 0)
         });
         await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       } else {
         // SL: Không trừ nữa vì đã trừ khi vào lệnh
+        soDuTaiKhoan -= item.vol;
+        profitAll -= item.vol;
         item.AnNumber -= 1;
 
         handleUpdate_LongMachList(item.id, {
@@ -665,7 +708,9 @@ async function ThucHienGiaoDich() {
           huong: "null",
           vol: 0,
           lost: item.lost + 1,
-          minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber
+          profit: item.profit - item.vol,
+          minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber,
+          isReady: (item.tiso >= item.soLanChoDoi || item.AnNumber > 0)
         });
         await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       }
@@ -674,7 +719,7 @@ async function ThucHienGiaoDich() {
 
   // Cập nhật lại isReady sau khi đã xử lý TP/SL (để reset tiso có hiệu lực ngay)
   for (const item of LuutruLongmach) {
-    if (item.tiso >= item.soLanChoDoi) {
+    if (item.tiso >= item.soLanChoDoi || item.AnNumber > 0) {
       item.isReady = true;
     } else {
       item.isReady = false;
@@ -724,10 +769,16 @@ async function ThucHienGiaoDich() {
         // Đơn vị cho các điểm từ 51 trở lên (tăng 50% và làm tròn xuống)
         let extraVol = Math.floor(baseVol * 1.5);
 
-        // 50 tỉ số đầu dùng baseVol, từ 51 trở lên dùng extraVol cho phần vượt
-        let itemVol = (item.tiso <= 50)
-          ? (item.tiso * baseVol)
-          : (50 * baseVol + (item.tiso - 50) * extraVol);
+        let itemVol = 0;
+        let safeTiso = Math.max(0, item.tiso); // Ngăn không cho tiso âm tạo ra volume âm
+
+        if (item.isKhung) {
+          itemVol = baseVol * 7;
+        } else {
+          itemVol = (safeTiso <= 50)
+            ? (safeTiso * baseVol)
+            : (50 * baseVol + (safeTiso - 50) * extraVol);
+        }
 
         item.tempVol = itemVol;
         totalVol += itemVol;
@@ -748,17 +799,12 @@ async function ThucHienGiaoDich() {
       await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
       await masterClick(page, X_Submit, Y_Submit);
 
-      // Trừ luôn số dư và lợi nhuận khi vào lệnh
-      soDuTaiKhoan -= totalVol;
-      profitAll -= totalVol;
-
       // Cập nhật trạng thái giao dịch cho từng item trong nhóm
       for (const item of ListProp) {
         handleUpdate_LongMachList(item.id, {
           isTrading: true,
           huong: huongDanhNew,
           vol: item.tempVol,
-          profit: item.profit - item.tempVol
         });
         delete item.tempVol;
       }
@@ -1100,7 +1146,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(wrapper.style, {
         position: "fixed",
         bottom: "10px",
-        left: "390px",
+        left: "414px",
         zIndex: 10000,
         display: "flex",
         flexDirection: "column",
@@ -1527,9 +1573,15 @@ function loadStateTXT() {
           ...i,
           isReady: i.isReady ?? false,
           AnNumber: i.AnNumber ?? 0,
-          soLanMuonAn: i.soLanMuonAn,
+          soLanMuonAn: i.soLanMuonAn ?? 1,
           hoanthanh: i.hoanthanh ?? false,
-          soLanChoDoi: i.soLanChoDoi ?? (i.type === "A" && i.id === 1 ? 7 : i.type === "B" && i.id === 2 ? 7 : 10)
+          soLanChoDoi: i.soLanChoDoi ?? 7,
+          profit: i.profit ?? 0,
+          phiGD: i.phiGD ?? 0,
+          tiso: i.tiso ?? 0,
+          win: i.win ?? 0,
+          lost: i.lost ?? 0,
+          vol: i.vol ?? 0
         }));
         LuutruLongmach.push(...mappedArr);
       }
