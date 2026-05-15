@@ -1,0 +1,103 @@
+soDuTaiKhoan=1000
+soDuLonNhat=1000
+phanTramGiaoDich=1
+profitAll=0
+totalProfitTP=0
+totalWinCount=0
+maxDrawdown=0
+nguongTienDat=6000
+soTienMuonRut=2000
+tongTienDaRut=0
+CauDepCount=0
+CauXauCount=0
+
+ArrayKQ=
+ArrayKQ_XAU=
+
+LuutruLongmach=
+[
+  {
+    "id": 1,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 0,
+    "vol": 0,
+    "win": 0,
+    "lost": 0,
+    "isStop": false,
+    "type": "A",
+    "isFomo": true,
+    "minAnNumber": 0,
+    "isReady": false,
+    "AnNumber": 0,
+    "soLanMuonAn": 1,
+    "hoanthanh": false,
+    "soLanChoDoi": 1,
+    "tiso": 0,
+    "phiGD": 0,
+    "isKhung": false
+  },
+  {
+    "id": 2,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 0,
+    "vol": 0,
+    "win": 0,
+    "lost": 0,
+    "isStop": false,
+    "type": "A",
+    "isFomo": true,
+    "minAnNumber": 0,
+    "isReady": false,
+    "AnNumber": 0,
+    "soLanMuonAn": 2,
+    "hoanthanh": false,
+    "soLanChoDoi": 7,
+    "tiso": 0,
+    "phiGD": 0,
+    "isKhung": true
+  },
+  {
+    "id": 3,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 0,
+    "vol": 0,
+    "win": 0,
+    "lost": 0,
+    "isStop": false,
+    "type": "B",
+    "isFomo": false,
+    "minAnNumber": 0,
+    "isReady": false,
+    "AnNumber": 0,
+    "soLanMuonAn": 1,
+    "hoanthanh": false,
+    "soLanChoDoi": 1,
+    "tiso": 0,
+    "phiGD": 0,
+    "isKhung": false
+  },
+  {
+    "id": 4,
+    "isTrading": false,
+    "huong": "null",
+    "profit": 0,
+    "vol": 0,
+    "win": 0,
+    "lost": 0,
+    "isStop": false,
+    "type": "B",
+    "isFomo": false,
+    "minAnNumber": 0,
+    "isReady": false,
+    "AnNumber": 0,
+    "soLanMuonAn": 2,
+    "hoanthanh": false,
+    "soLanChoDoi": 7,
+    "tiso": 0,
+    "phiGD": 0,
+    "isKhung": true
+  }
+]
