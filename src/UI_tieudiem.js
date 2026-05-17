@@ -103,16 +103,16 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Type", "Bên", "Tỉ số", "Ăn",
+        "ID", "Type", "Bên", "Tỉ số", "Đợi", "Ăn",
         "Lệnh", "Vol", "W/L", "Lãi", "Phí",
         "MIN", "STOP"
       ];
 
 
       const widths = [
-        "13px", "50px", "35px", "35px",
+        "13px", "50px", "35px", "35px", "25px",
         "39px", "30px", "30px", "50px", "50px",
-        "25px", "25px"
+        "25px", "25px", "25px"
       ];
 
 
@@ -182,7 +182,7 @@ async function TableChinh_Update_UI(page, data) {
         tr.style.opacity = "0.5";
       }
 
-      const lucStrInput = `${item.tiso}/${item.soLanChoDoi}`;
+      const lucStrInput = `${item.tiso}`;
 
       // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
@@ -190,6 +190,7 @@ async function TableChinh_Update_UI(page, data) {
         item.strategyType ?? "-",
         item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Bẻ🔥",
         "LUC_COLUMN",
+        "DOI_COLUMN",
         `${item.AnNumber}/${item.soLanMuonAn}${item.hoanthanh ? '😍' : ''}`,
         item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
         item.vol,
@@ -207,9 +208,41 @@ async function TableChinh_Update_UI(page, data) {
           if (item.tiso > 0) {
             td.style.fontWeight = "bold";
           }
-
-
           td.innerText = lucStrInput;
+        } else if (v === "DOI_COLUMN") {
+          td.innerText = item.soLanChoDoi ?? 0;
+          td.style.cursor = "pointer";
+          td.style.color = "blue";
+          td.style.textDecoration = "underline";
+          td.onclick = (e) => {
+            e.stopPropagation();
+            const existing = document.getElementById("edit-floating-input");
+            if (existing) existing.remove();
+
+            const rect = td.getBoundingClientRect();
+            const input = document.createElement("input");
+            input.id = "edit-floating-input";
+            input.type = "number";
+            input.value = item.soLanChoDoi ?? 0;
+            Object.assign(input.style, {
+              position: "fixed", top: rect.top + "px", left: rect.left + "px",
+              width: Math.max(rect.width, 30) + "px", height: rect.height + "px",
+              zIndex: 10001, fontSize: "10px", textAlign: "center", outline: "2px solid red"
+            });
+            document.body.appendChild(input);
+            input.focus();
+            input.select();
+
+            input.onblur = () => input.remove();
+            input.onkeydown = (ev) => {
+              if (ev.key === "Enter") {
+                window.postMessage({ type: "UPDATE_SOLAN_CHODOI", id: item.id, value: parseInt(input.value) }, "*");
+                input.remove();
+              } else if (ev.key === "Escape") {
+                input.remove();
+              }
+            };
+          };
         } else {
           td.innerText = v;
         }

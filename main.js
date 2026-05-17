@@ -196,7 +196,7 @@ let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
 const LuutruLongmach = [];
 
-// Initialize strategies for each signal type
+// Khởi tạo các chiến thuật cho mỗi loại tín hiệu
 let itemId = 1;
 Object.values(TYPES).forEach(typeKey => {
   // Mỗi loại tín hiệu chỉ tạo 2 item: 1 Dep (Side A) và 1 Xau (Side B)
@@ -204,8 +204,8 @@ Object.values(TYPES).forEach(typeKey => {
     // Vẫn giữ logic chặn như yêu cầu:
     // 1. TYPE_123: Chỉ giữ Dep (bỏ qua Xau)
     // 2. TYPE_1_1_PLUS: Chỉ giữ Xau (bỏ qua Dep)
-    if (typeKey === TYPES.TYPE_123 && !isDep) return;
-    if (typeKey === TYPES.TYPE_1_1_PLUS && isDep) return;
+    // if (typeKey === TYPES.TYPE_123 && !isDep) return;
+    // if (typeKey === TYPES.TYPE_1_1_PLUS && isDep) return;
 
     LuutruLongmach.push({
       id: itemId++,
@@ -216,8 +216,8 @@ Object.values(TYPES).forEach(typeKey => {
       win: 0,
       lost: 0,
       isStop: false,
-      type: isDep ? Dep : Xau, // Current side (A or B)
-      strategyType: typeKey,    // The signal type this strategy belongs to
+      type: isDep ? Dep : Xau, // Bên hiện tại (A hoặc B)
+      strategyType: typeKey,    // Loại tín hiệu mà chiến lược này thuộc về
       isFomo: isDep,
       minAnNumber: 0,
       isReady: false,
@@ -226,10 +226,34 @@ Object.values(TYPES).forEach(typeKey => {
       hoanthanh: false,
       soLanChoDoi: 1,
       tiso: 0,
-      phiGD: 0
+      phiGD: 0,
+      isKhung: false
+    });
+
+    LuutruLongmach.push({
+      id: itemId++,
+      isTrading: false,
+      huong: "null",
+      profit: 0,
+      vol: 0,
+      win: 0,
+      lost: 0,
+      isStop: false,
+      type: isDep ? Dep : Xau, // Bên hiện tại (A hoặc B)
+      strategyType: typeKey,    // Loại tín hiệu mà chiến lược này thuộc về
+      isFomo: isDep,
+      minAnNumber: 0,
+      isReady: false,
+      AnNumber: 0,
+      soLanMuonAn: 2,
+      hoanthanh: false,
+      soLanChoDoi: 2,
+      tiso: 0,
+      phiGD: 0,
+      isKhung: true
     });
   });
-  muaGiaLapMap[typeKey] = "null"; // Initialize dummy trade state for this type
+  muaGiaLapMap[typeKey] = "null"; // Khởi tạo trạng thái giao dịch ảo cho loại này
 });
 
 loadStateTXT();
@@ -323,7 +347,7 @@ async function UI_Reset(page) {
     document.body.appendChild(wrap);
   });
 
-  // expose function (Node side)
+  // Đưa hàm ra ngoài (phía Node)
   if (!page._resetExposed) {
     await page.exposeFunction("resetAll", async ({ arrKQ, arrKQXau }) => {
 
@@ -368,7 +392,7 @@ async function UI_Reset(page) {
     page._resetExposed = true;
   }
 
-  // browser side: bind click + clear input cuối cùng
+  // phía trình duyệt: gán sự kiện click + xóa input cuối cùng
   await page.evaluate(() => {
     const btn = document.getElementById("reset-btn");
 
@@ -441,17 +465,17 @@ async function UI_Reset(page) {
   );
 
   // ===== EVENT TỪ BẢNG LƯU TRỮ  Table . click stop các thứ=====
-  await page.exposeFunction("__UI_EVENT__", async ({ type, stopId, value }) => {
+  await page.exposeFunction("__UI_EVENT__", async ({ type, stopId, value, id }) => {
     if (type === "STOP_CLICK") {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { isStop: !item.isStop });
       await TableChinh_Update_UI(page, LuutruLongmach);
     }
-    if (type === "UPDATE_SOLAN") {
-      const item = LuutruLongmach.find(i => i.id === stopId);
+    if (type === "UPDATE_SOLAN_CHODOI") {
+      const item = LuutruLongmach.find(i => i.id === id);
       if (!item) return;
-      handleUpdate_LongMachList(stopId, { soLanChoDoi: Number(value) });
+      handleUpdate_LongMachList(id, { soLanChoDoi: Number(value) });
       saveStateTXT();
       await TableChinh_Update_UI(page, LuutruLongmach);
     }
@@ -520,7 +544,7 @@ async function UI_Reset(page) {
           }, true);
         });
       } catch (e) {
-        // ignore cross-origin iframe
+        // bỏ qua iframe khác nguồn
       }
     }
   }
@@ -599,7 +623,7 @@ async function ThucHienGiaoDich() {
 
   if (resultNew === "null") { console.log("Bị vấn đề về kết quả"); return };
 
-  // 1. Xuử lý kết quả cho tất cả các dummy trade đang active
+  // 1. Xử lý kết quả cho tất cả các giao dịch ảo đang hoạt động
   let updatedAny = false;
   for (const typeKey in muaGiaLapMap) {
     const dummyHuong = muaGiaLapMap[typeKey];
@@ -624,7 +648,7 @@ async function ThucHienGiaoDich() {
           if (item.type === Dep) item.tiso -= 1;
           if (item.type === Xau) item.tiso += 1;
         }
-        if (item.tiso >= item.soLanChoDoi) item.isReady = true;
+        if (item.tiso >= item.soLanChoDoi || item.AnNumber > 0) item.isReady = true;
         else item.isReady = false;
       });
 
@@ -668,6 +692,21 @@ async function ThucHienGiaoDich() {
         if (item.AnNumber >= item.soLanMuonAn) {
           item.AnNumber = 0;
           item.hoanthanh = true;
+
+          if (item.isKhung) {
+            let depItem = LuutruLongmach.find(i => i.isKhung && i.strategyType === item.strategyType && i.type === Dep);
+            let xauItem = LuutruLongmach.find(i => i.isKhung && i.strategyType === item.strategyType && i.type === Xau);
+
+            if (depItem && xauItem) {
+              if (item.type === Dep) {
+                depItem.soLanChoDoi += 5;
+                xauItem.soLanChoDoi -= 5;
+              } else if (item.type === Xau) {
+                xauItem.soLanChoDoi += 5;
+                depItem.soLanChoDoi -= 5;
+              }
+            }
+          }
         }
 
         handleUpdate_LongMachList(item.id, {
@@ -699,7 +738,7 @@ async function ThucHienGiaoDich() {
 
   // Cập nhật lại isReady sau khi đã xử lý TP/SL (để reset tiso có hiệu lực ngay)
   for (const item of LuutruLongmach) {
-    if (item.tiso >= item.soLanChoDoi) {
+    if (item.tiso >= item.soLanChoDoi || item.AnNumber > 0) {
       item.isReady = true;
     } else {
       item.isReady = false;
@@ -723,7 +762,7 @@ async function ThucHienGiaoDich() {
   if (tinHieuAI.huong !== "null" && readyItems.length > 0) {
     const itemsForThisSignal = readyItems.filter(i => i.strategyType === tinHieuAI.type);
     if (itemsForThisSignal.length > 0) {
-      // Reset hoanthanh logic
+      // Đặt lại logic hoàn thành
       for (const item of itemsForThisSignal) {
         if (item.hoanthanh) { item.hoanthanh = false; }
       }
@@ -732,55 +771,87 @@ async function ThucHienGiaoDich() {
       const DepItems = itemsForThisSignal.filter(item => item.type === Dep);
       const XauItems = itemsForThisSignal.filter(item => item.type === Xau);
 
-      const processBatch = async (ListProp, isBenDep) => {
-        if (ListProp.length === 0) return;
-        const huongDanhNew = isBenDep ? (tinHieuAI.huong === T ? X : T) : tinHieuAI.huong;
+      const huongDanhNew_Dep = (tinHieuAI.huong === T ? X : T);
+      const huongDanhNew_Xau = tinHieuAI.huong;
 
-        let totalVol = 0;
-        for (const item of ListProp) {
-          // Logic: Tính đơn vị gốc (baseVol) dựa trên % số dư lớn nhất
-          let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
-
-          // Đơn vị cho các điểm từ 51 trở lên (tăng 50% và làm tròn xuống)
-          let extraVol = Math.floor(baseVol * 1.5);
-
-          // 50 tỉ số đầu dùng baseVol, từ 51 trở lên dùng extraVol cho phần vượt
-          let itemVol = (item.tiso <= 50)
+      let totalVol_Dep = 0;
+      for (const item of DepItems) {
+        let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
+        let extraVol = Math.floor(baseVol * 1.5);
+        let itemVol = 0;
+        if (item.isKhung) {
+          itemVol = 50;
+        } else {
+          itemVol = (item.tiso <= 50)
             ? (item.tiso * baseVol)
             : (50 * baseVol + (item.tiso - 50) * extraVol);
-
-          item.tempVol = itemVol;
-          totalVol += itemVol;
         }
+        item.tempVol = itemVol;
+        totalVol_Dep += itemVol;
+      }
 
+      let totalVol_Xau = 0;
+      for (const item of XauItems) {
+        let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
+        let extraVol = Math.floor(baseVol * 1.5);
+        let itemVol = 0;
+        if (item.isKhung) {
+          itemVol = 50;
+        } else {
+          itemVol = (item.tiso <= 50)
+            ? (item.tiso * baseVol)
+            : (50 * baseVol + (item.tiso - 50) * extraVol);
+        }
+        item.tempVol = itemVol;
+        totalVol_Xau += itemVol;
+      }
 
+      // Xử lý bù trừ (net volume) để vào 1 lệnh duy nhất trên sàn
+      let netVol = 0;
+      let finalHuongDanh = "null";
+
+      if (totalVol_Dep > totalVol_Xau) {
+        netVol = totalVol_Dep - totalVol_Xau;
+        finalHuongDanh = huongDanhNew_Dep;
+      } else if (totalVol_Xau > totalVol_Dep) {
+        netVol = totalVol_Xau - totalVol_Dep;
+        finalHuongDanh = huongDanhNew_Xau;
+      }
+
+      if (netVol > 0 && finalHuongDanh !== "null") {
         // Click chọn hướng (Tài hoặc Xỉu)
-        await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
-        await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
+        await UI_MouseClick(page, finalHuongDanh === T ? X_DatTai : X_DatXiu, finalHuongDanh === T ? Y_DatTai : Y_DatXiu, "👈");
+        await masterClick(page, finalHuongDanh === T ? X_DatTai : X_DatXiu, finalHuongDanh === T ? Y_DatTai : Y_DatXiu);
 
-        // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
-        await clickTheoTinhVol(page, totalVol, "🎯");
+        // Click volume (Chạy net volume)
+        await clickTheoTinhVol(page, netVol, "🎯");
 
         const delay = 50 + Math.floor(Math.random() * 200);
         await page.waitForTimeout(delay);
 
-        // Click Submit 1 lần duy nhất cho cả batch
+        // Click Submit 1 lần duy nhất
         await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
         await masterClick(page, X_Submit, Y_Submit);
+      }
 
-        for (const item of ListProp) {
-          handleUpdate_LongMachList(item.id, {
-            isTrading: true,
-            huong: huongDanhNew,
-            vol: item.tempVol,
+      // Vẫn cập nhật trạng thái ảo cho cả 2 bên (để tính toán profit như bình thường)
+      for (const item of DepItems) {
+        handleUpdate_LongMachList(item.id, {
+          isTrading: true,
+          huong: huongDanhNew_Dep,
+          vol: item.tempVol,
+        });
+        delete item.tempVol;
+      }
 
-          });
-          delete item.tempVol;
-        }
-      };
-
-      await processBatch(DepItems, true);
-      await processBatch(XauItems, false);
+      for (const item of XauItems) {
+        handleUpdate_LongMachList(item.id, {
+          isTrading: true,
+          huong: huongDanhNew_Xau,
+          vol: item.tempVol,
+        });
+        delete item.tempVol;
+      }
     }
   }
 
@@ -887,7 +958,7 @@ async function ThucHienGiaoDich() {
 }
 
 async function UI_Start(page) {
-  // Expose nodejs login logic
+  // Đưa logic đăng nhập của nodejs ra ngoài
   if (!page._loginExposed) {
     await page.exposeFunction("performLoginAPI", async (username, password) => {
       const res = await doLoginAPI(username, password);
@@ -1067,7 +1138,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
   const statsList = Object.values(typeStatsMap)
     .sort((a, b) => a.sType.localeCompare(b.sType, undefined, { numeric: true }));
 
-  // Expose function to Node side
+  // Đưa hàm ra ngoài cho phía Node
   if (!page._resetTiSoExposed) {
     await page.exposeFunction("resetTiSo", async () => {
       ArrayKQ_XAU.length = 0;
@@ -1104,7 +1175,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       });
       document.body.appendChild(wrapper);
 
-      // Toggle button
+      // Nút bật tắt
       const toggleBtn = document.createElement("div");
       toggleBtn.id = "ui-tiso-toggle";
       toggleBtn.innerText = "▼";
@@ -1443,8 +1514,9 @@ function saveStateTXT() {
     lines.push(`soDuLonNhat=${soDuLonNhat}`);
     lines.push(`phanTramGiaoDich=${phanTramGiaoDich}`);
     lines.push(`profitAll=${profitAll}`);
+    lines.push(`totalProfitTP=${totalProfitTP}`);
+    lines.push(`totalWinCount=${totalWinCount}`);
     lines.push(`maxDrawdown=${maxDrawdown}`);
-    lines.push(`Diachivi=${Diachivi}`);
 
 
 
@@ -1455,8 +1527,6 @@ function saveStateTXT() {
 
     lines.push(`CauDepCount=${CauDepCount}`);
     lines.push(`CauXauCount=${CauXauCount}`);
-    lines.push(`totalProfitTP=${totalProfitTP}`);
-    lines.push(`totalWinCount=${totalWinCount}`);
 
     lines.push("");
 
@@ -1482,7 +1552,7 @@ function loadStateTXT() {
   try {
     const content = fs.readFileSync(STATE_FILE, "utf8");
 
-    // ===== SIMPLE KEY VALUE =====
+    // ===== CẶP KHÓA GIÁ TRỊ ĐƠN GIẢN =====
     const getVal = (key) => {
       const m = content.match(new RegExp(`${key}=(.*)`));
       return m ? m[1].trim() : null;
@@ -1492,8 +1562,9 @@ function loadStateTXT() {
     soDuLonNhat = Number(getVal("soDuLonNhat")) || soDuLonNhat;
     phanTramGiaoDich = Number(getVal("phanTramGiaoDich")) || phanTramGiaoDich;
     profitAll = Number(getVal("profitAll")) || profitAll;
+    totalProfitTP = Number(getVal("totalProfitTP")) || 0;
+    totalWinCount = Number(getVal("totalWinCount")) || 0;
     maxDrawdown = Number(getVal("maxDrawdown")) || 0;
-    Diachivi = getVal("Diachivi") || Diachivi;
 
 
     // ✅ LOAD THÊM 3 BIẾN
@@ -1503,8 +1574,6 @@ function loadStateTXT() {
 
     CauDepCount = Number(getVal("CauDepCount")) || 0;
     CauXauCount = Number(getVal("CauXauCount")) || 0;
-    totalProfitTP = Number(getVal("totalProfitTP")) || 0;
-    totalWinCount = Number(getVal("totalWinCount")) || 0;
 
     const arrKQ = getVal("ArrayKQ");
     if (arrKQ) {
@@ -1518,7 +1587,7 @@ function loadStateTXT() {
       ArrayKQ_XAU.push(...arrXAU.split(","));
     }
 
-    // ===== LUUTRU LONGMACH MULTI LINE JSON =====
+    // ===== LƯU TRỮ LONG MẠCH JSON NHIỀU DÒNG =====
     const lmIndex = content.indexOf("LuutruLongmach=");
     if (lmIndex !== -1) {
       const jsonText = content
@@ -1536,15 +1605,7 @@ function loadStateTXT() {
           hoanthanh: i.hoanthanh ?? false,
           soLanChoDoi: i.soLanChoDoi ?? (i.type === "A" && i.id === 1 ? 7 : i.type === "B" && i.id === 2 ? 7 : 10)
         }));
-
-        // Filter out excluded strategies to stay consistent with new initialization
-        const filteredArr = mappedArr.filter(item => {
-          if (item.strategyType === TYPES.TYPE_123 && item.type === Xau) return false;
-          if (item.strategyType === TYPES.TYPE_1_1_PLUS && item.type === Dep) return false;
-          return true;
-        });
-
-        LuutruLongmach.push(...filteredArr);
+        LuutruLongmach.push(...mappedArr);
       }
     }
 
