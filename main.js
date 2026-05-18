@@ -360,7 +360,7 @@ async function UI_Reset(page) {
         // item.AnNumber = 0;
         // item.soLanMuonAn = 1;
         // item.hoanthanh = false;
-        item.tiso = item.type === Dep ? (countB - countA) : (countA - countB);
+        // item.tiso = item.type === Dep ? (countB - countA) : (countA - countB);
       });
 
       for (const item of LuutruLongmach) {
