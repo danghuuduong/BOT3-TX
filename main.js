@@ -818,21 +818,21 @@ async function ThucHienGiaoDich() {
     }
 
     // 4. Đặt lệnh trên sàn với phần Net Volume
-    // if (finalHuong !== "null" && netVol > 0) {
-    //   // Click chọn hướng (Tài hoặc Xỉu)
-    //   await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
-    //   await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
+    if (finalHuong !== "null" && netVol > 0) {
+      // Click chọn hướng (Tài hoặc Xỉu)
+      await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
+      await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
 
-    //   // Click volume
-    //   await clickTheoTinhVol(page, netVol, "🎯");
+      // Click volume
+      await clickTheoTinhVol(page, netVol, "🎯");
 
-    //   const delay = 50 + Math.floor(Math.random() * 200);
-    //   await page.waitForTimeout(delay);
+      const delay = 50 + Math.floor(Math.random() * 200);
+      await page.waitForTimeout(delay);
 
-    //   // Click Submit 1 lần duy nhất
-    //   await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-    //   await masterClick(page, X_Submit, Y_Submit);
-    // }
+      // Click Submit 1 lần duy nhất
+      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      await masterClick(page, X_Submit, Y_Submit);
+    }
 
     // 5. Cập nhật trạng thái giao dịch cho từng item (Dữ liệu vẫn tính như bình thường)
     for (const item of arrayNew) {
