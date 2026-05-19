@@ -1,40 +1,40 @@
-soDuTaiKhoan=2591.88
-soDuLonNhat=2601.88
-phanTramGiaoDich=0.078
-profitAll=-8.120000000000001
-totalProfitTP=1.96
-totalWinCount=1
-maxDrawdown=0.3843374790536074
+soDuTaiKhoan=2604.100000000001
+soDuLonNhat=2610.2800000000007
+phanTramGiaoDich=0.12
+profitAll=4.100000000000003
+totalProfitTP=28.420000000000005
+totalWinCount=7
+maxDrawdown=0.2367562100617495
 nguongTienDat=6000
 soTienMuonRut=2000
 tongTienDaRut=0
-CauDepCount=1
-CauXauCount=4
+CauDepCount=4
+CauXauCount=3
 
-ArrayKQ=X,X,T,X,X,T,T,T,T,T,T,T,T,T,T,X,T,X,X,T,T,T,X,T,T,T,T,X,T
-ArrayKQ_XAU=B,B,A,B,B
+ArrayKQ=T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,X,T,X,X,T,T,X,T,T,T,X,X,T,X,X,T,X,T,X
+ArrayKQ_XAU=B,A,B,B,A,A,A
 
 LuutruLongmach=
 [
   {
     "id": 1,
-    "isTrading": false,
-    "huong": "null",
-    "profit": -8.120000000000001,
-    "vol": 0,
-    "win": 1,
+    "isTrading": true,
+    "huong": "T",
+    "profit": 10.440000000000001,
+    "vol": 3,
+    "win": 4,
     "lost": 3,
     "isStop": false,
     "type": "A",
     "isFomo": true,
     "minAnNumber": -2,
     "isReady": true,
-    "AnNumber": -2,
+    "AnNumber": 0,
     "soLanMuonAn": 1,
     "hoanthanh": false,
-    "soLanChoDoi": 1,
-    "tiso": 3,
-    "phiGD": 0.12,
+    "soLanChoDoi": 0,
+    "tiso": 0,
+    "phiGD": 0.56,
     "isKhung": false
   },
   {
@@ -54,9 +54,30 @@ LuutruLongmach=
     "soLanMuonAn": 2,
     "hoanthanh": false,
     "soLanChoDoi": 7,
-    "tiso": 3,
+    "tiso": -1,
     "phiGD": 0,
     "isKhung": true
+  },
+  {
+    "id": 3,
+    "isTrading": true,
+    "huong": "X",
+    "profit": -6.34,
+    "vol": 12,
+    "win": 3,
+    "lost": 4,
+    "isStop": false,
+    "type": "B",
+    "isFomo": false,
+    "minAnNumber": -3,
+    "isReady": true,
+    "AnNumber": -3,
+    "soLanMuonAn": 1,
+    "hoanthanh": false,
+    "soLanChoDoi": 0,
+    "tiso": 3,
+    "phiGD": 0.34,
+    "isKhung": false
   },
   {
     "id": 4,
@@ -75,7 +96,7 @@ LuutruLongmach=
     "soLanMuonAn": 2,
     "hoanthanh": false,
     "soLanChoDoi": 15,
-    "tiso": -3,
+    "tiso": 1,
     "phiGD": 0,
     "isKhung": true
   }
