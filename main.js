@@ -617,7 +617,14 @@ async function ThucHienGiaoDich() {
       });
 
       LuutruLongmach.forEach(item => {
-        item.isReady = (item.tiso >= item.soLanChoDoi || item.AnNumber > 0);
+        if (item.tiso >= item.soLanChoDoi) {
+          item.isReady = true;
+          item.hoanthanh = false;
+        } else {
+          if (item.hoanthanh) {
+            item.isReady = false;
+          }
+        }
       });
 
       muaGiaLap = "null"
@@ -632,7 +639,14 @@ async function ThucHienGiaoDich() {
       });
 
       LuutruLongmach.forEach(item => {
-        item.isReady = (item.tiso >= item.soLanChoDoi || item.AnNumber > 0);
+        if (item.tiso >= item.soLanChoDoi) {
+          item.isReady = true;
+          item.hoanthanh = false;
+        } else {
+          if (item.hoanthanh) {
+            item.isReady = false;
+          }
+        }
       });
 
       muaGiaLap = "null"
@@ -697,8 +711,7 @@ async function ThucHienGiaoDich() {
           huong: "null",
           profit: item.profit + winAmount,
           win: item.win + 1,
-          vol: 0,
-          isReady: (item.tiso >= item.soLanChoDoi || item.AnNumber > 0)
+          vol: 0
         });
         await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       } else {
@@ -713,8 +726,7 @@ async function ThucHienGiaoDich() {
           vol: 0,
           lost: item.lost + 1,
           profit: item.profit - item.vol,
-          minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber,
-          isReady: (item.tiso >= item.soLanChoDoi || item.AnNumber > 0)
+          minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber
         });
         await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       }
@@ -725,10 +737,13 @@ async function ThucHienGiaoDich() {
 
   // Cập nhật lại isReady sau khi đã xử lý TP/SL (để reset tiso có hiệu lực ngay)
   for (const item of LuutruLongmach) {
-    if (item.tiso >= item.soLanChoDoi || item.AnNumber > 0) {
+    if (item.tiso >= item.soLanChoDoi) {
       item.isReady = true;
+      item.hoanthanh = false;
     } else {
-      item.isReady = false;
+      if (item.hoanthanh) {
+        item.isReady = false;
+      }
     }
   }
 
