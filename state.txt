@@ -1,7 +1,7 @@
-soDuTaiKhoan=2577.580000000009
+soDuTaiKhoan=2545.580000000009
 soDuLonNhat=2652.220000000008
 phanTramGiaoDich=0.078
-profitAll=-42.52000000000013
+profitAll=-74.52000000000012
 totalProfitTP=97.99999999999991
 totalWinCount=50
 maxDrawdown=18.95338844483641
@@ -9,52 +9,52 @@ nguongTienDat=6000
 soTienMuonRut=2000
 tongTienDaRut=0
 CauDepCount=51
-CauXauCount=60
+CauXauCount=61
 
-ArrayKQ=T,T,X,T,T,X,X,T,T,T,X,T,T,T,T,T,X,T,T,T,X,X,X,T,T,T,T,X,X,T,T,T,T,X,T,T,T,T,T,T,X,X,T,T,T,T,X,X,T,X,X,X,T,X,T,X,T,T,X,T,X,T,T,T,T,X,X,X,T,X,X,T,X,T,T,T,T,X,T,X,X,T,T,X,T,T,T,X,X,T,X,X,T,X,T,X,X,T,X,T
-ArrayKQ_XAU=B,B,B,A,A,B,A,B,B,A,B,B,B,B,A,B,B,A,B,B,B,B,A,B,A,A,A,B,A,B,B,B,B,B,B,A,A,A,B,B,B,A,A,B,B,B,B,A,B,A,B,A,A,B,B,B,B,B,A,B,B,A,B,B,A,A,A,A,B,A,A,A,A,B,B,A,B,A,A,B,A,A,A,A,B,A,A,B,A,B,A,A,B,A,A,B,B,B,B,A,A,A,B,B,B,A,B,B,A,A,A,B
+ArrayKQ=T,X,T,T,X,X,T,T,T,X,T,T,T,T,T,X,T,T,T,X,X,X,T,T,T,T,X,X,T,T,T,T,X,T,T,T,T,T,T,X,X,T,T,T,T,X,X,T,X,X,X,T,X,T,X,T,T,X,T,X,T,T,T,T,X,X,X,T,X,X,T,X,T,T,T,T,X,T,X,X,T,T,X,T,T,T,X,X,T,X,X,T,X,T,X,X,T,X,T,T
+ArrayKQ_XAU=B,B,B,A,A,B,A,B,B,A,B,B,B,B,A,B,B,A,B,B,B,B,A,B,A,A,A,B,A,B,B,B,B,B,B,A,A,A,B,B,B,A,A,B,B,B,B,A,B,A,B,A,A,B,B,B,B,B,A,B,B,A,B,B,A,A,A,A,B,A,A,A,A,B,B,A,B,A,A,B,A,A,A,A,B,A,A,B,A,B,A,A,B,A,A,B,B,B,B,A,A,A,B,B,B,A,B,B,A,A,A,B,B
 
 LuutruLongmach=
 [
   {
     "id": 1,
-    "isTrading": true,
-    "huong": "X",
-    "profit": -7.720000000000006,
-    "vol": 20,
+    "isTrading": false,
+    "huong": "null",
+    "profit": -27.720000000000006,
+    "vol": 0,
     "win": 50,
-    "lost": 56,
+    "lost": 57,
     "isStop": false,
     "type": "A",
     "isFomo": true,
     "minAnNumber": -18,
     "isReady": true,
-    "AnNumber": -8,
+    "AnNumber": -9,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 1,
-    "tiso": 9,
+    "tiso": 10,
     "phiGD": 23.72,
     "isKhung": false
   },
   {
     "id": 2,
-    "isTrading": true,
-    "huong": "X",
-    "profit": -34.79999999999996,
-    "vol": 12,
+    "isTrading": false,
+    "huong": "null",
+    "profit": -46.79999999999996,
+    "vol": 0,
     "win": 45,
-    "lost": 47,
+    "lost": 48,
     "isStop": false,
     "type": "A",
     "isFomo": true,
     "minAnNumber": -12,
     "isReady": true,
-    "AnNumber": -2,
+    "AnNumber": -3,
     "soLanMuonAn": 2,
     "hoanthanh": false,
     "soLanChoDoi": 7,
-    "tiso": 8,
+    "tiso": 9,
     "phiGD": 10.800000000000008,
     "isKhung": true
   },
@@ -75,7 +75,7 @@ LuutruLongmach=
     "soLanMuonAn": 2,
     "hoanthanh": false,
     "soLanChoDoi": 12,
-    "tiso": -8,
+    "tiso": -9,
     "phiGD": 0,
     "isKhung": true
   }

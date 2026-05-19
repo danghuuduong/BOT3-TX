@@ -215,16 +215,16 @@ const LuutruLongmach = [
     phiGD: 0,
     isKhung: true
   },
-  // {
-  //   id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-  //   isStop: false,
-  //   type: Xau,
-  //   isFomo: false,
-  //   minAnNumber: 0,
-  //   isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 0, tiso: 0,
-  //   phiGD: 0,
-  //   isKhung: false
-  // },
+  {
+    id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false,
+    type: Xau,
+    isFomo: false,
+    minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 0, tiso: 0,
+    phiGD: 0,
+    isKhung: false
+  },
   {
     id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false,
@@ -750,7 +750,7 @@ async function ThucHienGiaoDich() {
     // 1. Reset hoanthanh logic
     for (const item of arrayNew) {
       if (item.hoanthanh) {
-        if (item.id === 1 || item.id === 2) {
+        if (item.id === 1 || item.id === 3) {
           for (const itm of LuutruLongmach) { itm.hoanthanh = false; } break;
         } else { item.hoanthanh = false; }
       }
@@ -803,21 +803,21 @@ async function ThucHienGiaoDich() {
     }
 
     // 4. Đặt lệnh trên sàn với phần Net Volume
-    if (finalHuong !== "null" && netVol > 0) {
-      // Click chọn hướng (Tài hoặc Xỉu)
-      await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
-      await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
+    // if (finalHuong !== "null" && netVol > 0) {
+    //   // Click chọn hướng (Tài hoặc Xỉu)
+    //   await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
+    //   await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
 
-      // Click volume
-      await clickTheoTinhVol(page, netVol, "🎯");
+    //   // Click volume
+    //   await clickTheoTinhVol(page, netVol, "🎯");
 
-      const delay = 50 + Math.floor(Math.random() * 200);
-      await page.waitForTimeout(delay);
+    //   const delay = 50 + Math.floor(Math.random() * 200);
+    //   await page.waitForTimeout(delay);
 
-      // Click Submit 1 lần duy nhất
-      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-      await masterClick(page, X_Submit, Y_Submit);
-    }
+    //   // Click Submit 1 lần duy nhất
+    //   await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+    //   await masterClick(page, X_Submit, Y_Submit);
+    // }
 
     // 5. Cập nhật trạng thái giao dịch cho từng item (Dữ liệu vẫn tính như bình thường)
     for (const item of arrayNew) {
@@ -1584,7 +1584,6 @@ function loadStateTXT() {
       if (Array.isArray(arr)) {
         LuutruLongmach.length = 0;
         const mappedArr = arr
-          .filter(i => i.id !== 3)
           .map(i => ({
             ...i,
             isReady: i.isReady ?? false,
