@@ -224,7 +224,7 @@ Object.values(TYPES).forEach(typeKey => {
       AnNumber: 0,
       soLanMuonAn: 1,
       hoanthanh: false,
-      soLanChoDoi: 1,
+      soLanChoDoi: 0,
       tiso: 0,
       phiGD: 0,
       isKhung: false
@@ -597,10 +597,6 @@ async function CheckColor_X_Y() {
         ArrayKQ.push(ketqua === "black" ? T : X);
         if (ArrayKQ.length > 100) { ArrayKQ.shift() }
         await KetquaTXList_Update_UI(page, ArrayKQ);
-
-        // Reset countdown trên trình duyệt về 70
-        await page.evaluate(() => { if (window.resetBrowserTimer) window.resetBrowserTimer(); });
-
         await ThucHienGiaoDich();
       }
     }
@@ -644,9 +640,11 @@ async function ThucHienGiaoDich() {
         if (isWin) {
           if (item.type === Dep) item.tiso += 1;
           if (item.type === Xau) item.tiso -= 1;
+          if (item.tiso <= 0 && !item.isKhung) item.tiso = 0;
         } else {
           if (item.type === Dep) item.tiso -= 1;
           if (item.type === Xau) item.tiso += 1;
+          if (item.tiso <= 0 && !item.isKhung) item.tiso = 0;
         }
         if (item.tiso >= item.soLanChoDoi || item.AnNumber > 0) item.isReady = true;
         else item.isReady = false;
@@ -709,7 +707,7 @@ async function ThucHienGiaoDich() {
       if (isWin) {
         // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 2 * 0.98)
         const winAmount = item.vol * 0.98;
-        
+
         // Phân bổ phí thực tế cho item thắng này
         let allocatedFee = 0;
         if (netFee > 0) {
@@ -852,21 +850,21 @@ async function ThucHienGiaoDich() {
         finalHuongDanh = huongDanhNew_Xau;
       }
 
-      if (netVol > 0 && finalHuongDanh !== "null") {
-        // Click chọn hướng (Tài hoặc Xỉu)
-        await UI_MouseClick(page, finalHuongDanh === T ? X_DatTai : X_DatXiu, finalHuongDanh === T ? Y_DatTai : Y_DatXiu, "👈");
-        await masterClick(page, finalHuongDanh === T ? X_DatTai : X_DatXiu, finalHuongDanh === T ? Y_DatTai : Y_DatXiu);
+      // if (netVol > 0 && finalHuongDanh !== "null") {
+      //   // Click chọn hướng (Tài hoặc Xỉu)
+      //   await UI_MouseClick(page, finalHuongDanh === T ? X_DatTai : X_DatXiu, finalHuongDanh === T ? Y_DatTai : Y_DatXiu, "👈");
+      //   await masterClick(page, finalHuongDanh === T ? X_DatTai : X_DatXiu, finalHuongDanh === T ? Y_DatTai : Y_DatXiu);
 
-        // Click volume (Chạy net volume)
-        await clickTheoTinhVol(page, netVol, "🎯");
+      //   // Click volume (Chạy net volume)
+      //   await clickTheoTinhVol(page, netVol, "🎯");
 
-        const delay = 50 + Math.floor(Math.random() * 200);
-        await page.waitForTimeout(delay);
+      //   const delay = 50 + Math.floor(Math.random() * 200);
+      //   await page.waitForTimeout(delay);
 
-        // Click Submit 1 lần duy nhất
-        await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-        await masterClick(page, X_Submit, Y_Submit);
-      }
+      //   // Click Submit 1 lần duy nhất
+      //   await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      //   await masterClick(page, X_Submit, Y_Submit);
+      // }
 
       // Vẫn cập nhật trạng thái ảo cho cả 2 bên (để tính toán profit như bình thường)
       for (const item of DepItems) {
