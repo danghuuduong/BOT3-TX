@@ -111,8 +111,8 @@ async function TableChinh_Create(page) {
 
       const widths = [
         "13px", "35px", "35px", "20px",
-        "39px", "30px", "30px", "50px", "50px",
-        "25px", "25px"
+        "39px", "30px", "30px", "45px", "45px",
+        "25px", "30px", "25px"
       ];
 
 
@@ -261,7 +261,7 @@ async function TableChinh_Update_UI(page, data) {
         }
 
         // ✅ Màu sắc cho cột Lãi (Index 8)
-        if (idx === 7) {
+        if (idx === 8) {
           if (item.profit > 0) {
             td.style.color = "#0cb30cff"; // xanh lá
             td.style.fontWeight = "bold";
@@ -270,6 +270,7 @@ async function TableChinh_Update_UI(page, data) {
             td.style.fontWeight = "bold";
           }
         }
+
 
         tr.appendChild(td);
       });

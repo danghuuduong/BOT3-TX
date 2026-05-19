@@ -201,7 +201,7 @@ const LuutruLongmach = [
     type: Dep,
     isFomo: true,
     minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 1, tiso: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 0, tiso: 0,
     phiGD: 0,
     isKhung: false
   },
@@ -215,23 +215,23 @@ const LuutruLongmach = [
     phiGD: 0,
     isKhung: true
   },
-  {
-    id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false,
-    type: Xau,
-    isFomo: false,
-    minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 1, tiso: 0,
-    phiGD: 0,
-    isKhung: false
-  },
+  // {
+  //   id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+  //   isStop: false,
+  //   type: Xau,
+  //   isFomo: false,
+  //   minAnNumber: 0,
+  //   isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 0, tiso: 0,
+  //   phiGD: 0,
+  //   isKhung: false
+  // },
   {
     id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false,
     type: Xau,
     isFomo: false,
     minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, hoanthanh: false, soLanChoDoi: 7, tiso: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, hoanthanh: false, soLanChoDoi: 15, tiso: 0,
     phiGD: 0,
     isKhung: true
   }
@@ -612,6 +612,8 @@ async function ThucHienGiaoDich() {
       LuutruLongmach.forEach(item => {
         if (item.type === Dep) item.tiso += 1;
         if (item.type === Xau) item.tiso -= 1;
+        if (item.id === 1 && item.tiso < 0) item.tiso = 0;
+        // if (item.id === 3 && item.tiso <= 0) item.tiso = 0;
       });
 
       LuutruLongmach.forEach(item => {
@@ -625,6 +627,8 @@ async function ThucHienGiaoDich() {
       LuutruLongmach.forEach(item => {
         if (item.type === Dep) item.tiso -= 1;
         if (item.type === Xau) item.tiso += 1;
+        if (item.id === 1 && item.tiso < 0) item.tiso = 0;
+        // if (item.id === 3 && item.tiso <= 0) item.tiso = 0;
       });
 
       LuutruLongmach.forEach(item => {
@@ -678,11 +682,11 @@ async function ThucHienGiaoDich() {
 
             if (depItem && xauItem) {
               if (item.type === Dep) {
-                depItem.soLanChoDoi += 2;
-                xauItem.soLanChoDoi -= 2;
+                depItem.soLanChoDoi += 5;
+                xauItem.soLanChoDoi -= 5;
               } else if (item.type === Xau) {
-                xauItem.soLanChoDoi += 4;
-                depItem.soLanChoDoi -= 4;
+                xauItem.soLanChoDoi += 5;
+                depItem.soLanChoDoi -= 5;
               }
             }
           }
@@ -716,6 +720,8 @@ async function ThucHienGiaoDich() {
       }
     }
   }
+
+
 
   // Cập nhật lại isReady sau khi đã xử lý TP/SL (để reset tiso có hiệu lực ngay)
   for (const item of LuutruLongmach) {
@@ -751,70 +757,78 @@ async function ThucHienGiaoDich() {
     }
 
 
-    // 2. Phân loại theo hướng Tài/Xỉu
-    const DepItems = arrayNew.filter(item => item.type === Dep);
-    const XauItems = arrayNew.filter(item => item.type === Xau);
+    // 2. Tính toán Volume và Hướng cho từng item
+    let totalTaiVol = 0;
+    let totalXiuVol = 0;
 
+    for (const item of arrayNew) {
+      let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
+      let extraVol = Math.floor(baseVol * 1.5);
+      let itemVol = 0;
+      let safeTiso = Math.max(0, item.tiso); // Ngăn không cho tiso âm tạo ra volume âm
 
-    const processBatch = async (ListProp, isBenDep) => {
-      if (ListProp.length === 0) return;
-      const huongDanhNew = isBenDep ? (tinHieuAI.huong === T ? X : T) : tinHieuAI.huong;
-
-      // Tính tổng Volume và gán cho từng item
-      let totalVol = 0;
-      for (const item of ListProp) {
-        // Logic: Tính đơn vị gốc (baseVol) dựa trên % số dư lớn nhất
-        let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
-
-        // Đơn vị cho các điểm từ 51 trở lên (tăng 50% và làm tròn xuống)
-        let extraVol = Math.floor(baseVol * 1.5);
-
-        let itemVol = 0;
-        let safeTiso = Math.max(0, item.tiso); // Ngăn không cho tiso âm tạo ra volume âm
-
-        if (item.isKhung) {
-          itemVol = baseVol * 7;
-        } else {
-          itemVol = (safeTiso <= 50)
-            ? (safeTiso * baseVol)
-            : (50 * baseVol + (safeTiso - 50) * extraVol);
-        }
-
-        item.tempVol = itemVol;
-        totalVol += itemVol;
+      if (item.isKhung) {
+        itemVol = baseVol * 6;
+      } else {
+        let currentTiso = safeTiso + 1;
+        itemVol = (currentTiso <= 50)
+          ? (currentTiso * baseVol)
+          : (50 * baseVol + (currentTiso - 50) * extraVol);
       }
 
+      item.tempVol = itemVol;
 
+      // Dep đánh ngược tín hiệu, Xau đánh cùng tín hiệu
+      let isBenDep = item.type === Dep;
+      let huongDanhNew = isBenDep ? (tinHieuAI.huong === T ? X : T) : tinHieuAI.huong;
+      item.tempHuong = huongDanhNew;
+
+      if (huongDanhNew === T) {
+        totalTaiVol += itemVol;
+      } else if (huongDanhNew === X) {
+        totalXiuVol += itemVol;
+      }
+    }
+
+    // 3. Tính Volume thực tế cần đánh (Net Volume)
+    let netVol = 0;
+    let finalHuong = "null";
+
+    if (totalTaiVol > totalXiuVol) {
+      netVol = totalTaiVol - totalXiuVol;
+      finalHuong = T;
+    } else if (totalXiuVol > totalTaiVol) {
+      netVol = totalXiuVol - totalTaiVol;
+      finalHuong = X;
+    }
+
+    // 4. Đặt lệnh trên sàn với phần Net Volume
+    if (finalHuong !== "null" && netVol > 0) {
       // Click chọn hướng (Tài hoặc Xỉu)
-      await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
-      await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
+      await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
+      await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
 
-      // Click volume (Chạy đồng loạt cho tổng volume của cả nhóm)
-      await clickTheoTinhVol(page, totalVol, "🎯");
+      // Click volume
+      await clickTheoTinhVol(page, netVol, "🎯");
 
       const delay = 50 + Math.floor(Math.random() * 200);
       await page.waitForTimeout(delay);
 
-      // Click Submit 1 lần duy nhất cho cả batch
+      // Click Submit 1 lần duy nhất
       await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
       await masterClick(page, X_Submit, Y_Submit);
+    }
 
-      // Cập nhật trạng thái giao dịch cho từng item trong nhóm
-      for (const item of ListProp) {
-        handleUpdate_LongMachList(item.id, {
-          isTrading: true,
-          huong: huongDanhNew,
-          vol: item.tempVol,
-        });
-        delete item.tempVol;
-      }
-
-
-    };
-
-    // Thực hiện đặt cược cho nhóm Tài và nhóm Xỉu
-    await processBatch(DepItems, true);
-    await processBatch(XauItems, false);
+    // 5. Cập nhật trạng thái giao dịch cho từng item (Dữ liệu vẫn tính như bình thường)
+    for (const item of arrayNew) {
+      handleUpdate_LongMachList(item.id, {
+        isTrading: true,
+        huong: item.tempHuong,
+        vol: item.tempVol,
+      });
+      delete item.tempVol;
+      delete item.tempHuong;
+    }
   }
 
 
@@ -1569,20 +1583,22 @@ function loadStateTXT() {
       const arr = JSON.parse(jsonText);
       if (Array.isArray(arr)) {
         LuutruLongmach.length = 0;
-        const mappedArr = arr.map(i => ({
-          ...i,
-          isReady: i.isReady ?? false,
-          AnNumber: i.AnNumber ?? 0,
-          soLanMuonAn: i.soLanMuonAn ?? 1,
-          hoanthanh: i.hoanthanh ?? false,
-          soLanChoDoi: i.soLanChoDoi ?? 7,
-          profit: i.profit ?? 0,
-          phiGD: i.phiGD ?? 0,
-          tiso: i.tiso ?? 0,
-          win: i.win ?? 0,
-          lost: i.lost ?? 0,
-          vol: i.vol ?? 0
-        }));
+        const mappedArr = arr
+          .filter(i => i.id !== 3)
+          .map(i => ({
+            ...i,
+            isReady: i.isReady ?? false,
+            AnNumber: i.AnNumber ?? 0,
+            soLanMuonAn: i.soLanMuonAn ?? 1,
+            hoanthanh: i.hoanthanh ?? false,
+            soLanChoDoi: i.soLanChoDoi ?? 7,
+            profit: i.profit ?? 0,
+            phiGD: i.phiGD ?? 0,
+            tiso: i.tiso ?? 0,
+            win: i.win ?? 0,
+            lost: i.lost ?? 0,
+            vol: i.vol ?? 0
+          }));
         LuutruLongmach.push(...mappedArr);
       }
     }
