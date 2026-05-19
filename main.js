@@ -247,7 +247,7 @@ Object.values(TYPES).forEach(typeKey => {
       AnNumber: 0,
       soLanMuonAn: 2,
       hoanthanh: false,
-      soLanChoDoi: 2,
+      soLanChoDoi: 8,
       tiso: 0,
       phiGD: 0,
       isKhung: true
@@ -669,23 +669,61 @@ async function ThucHienGiaoDich() {
   }
 
   // ====================================================================================== TP / SL =======================================================================
+  // 1. Tính toán volume đang trading của 2 bên trước khi cập nhật trạng thái
+  const volT = LuutruLongmach.filter(item => item.isTrading && item.huong === T).reduce((acc, item) => acc + (item.vol || 0), 0);
+  const volX = LuutruLongmach.filter(item => item.isTrading && item.huong === X).reduce((acc, item) => acc + (item.vol || 0), 0);
+
+  // 2. Tính toán netChange và netFee cho tổng tài khoản thực tế
+  let netChange = 0;
+  let netFee = 0;
+  let netVol = 0;
+
+  if (volT > volX) {
+    netVol = volT - volX;
+    if (resultNew === T) {
+      netChange = netVol * 0.98;
+      netFee = netVol * 0.02;
+    } else if (resultNew === X) {
+      netChange = -netVol;
+      netFee = 0;
+    }
+  } else if (volX > volT) {
+    netVol = volX - volT;
+    if (resultNew === X) {
+      netChange = netVol * 0.98;
+      netFee = netVol * 0.02;
+    } else if (resultNew === T) {
+      netChange = -netVol;
+      netFee = 0;
+    }
+  }
+
+  // Cập nhật số dư tài khoản thực tế và profit tổng một lần duy nhất
+  soDuTaiKhoan += netChange;
+  profitAll += netChange;
+
+  // 3. Cập nhật kết quả ảo cho từng item
   for (const item of LuutruLongmach) {
     if (item.isTrading && item.huong) {
-      const isWin = resultNew === item.huong
+      const isWin = resultNew === item.huong;
       if (isWin) {
         // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 2 * 0.98)
         const winAmount = item.vol * 0.98;
-        const feeAmount = item.vol * 0.02;
-
-        soDuTaiKhoan += winAmount;
-        profitAll += winAmount;
-        item.phiGD += feeAmount;
+        
+        // Phân bổ phí thực tế cho item thắng này
+        let allocatedFee = 0;
+        if (netFee > 0) {
+          const totalWinningVol = (item.huong === T) ? volT : volX;
+          if (totalWinningVol > 0) {
+            allocatedFee = item.vol * (netVol / totalWinningVol) * 0.02;
+          }
+        }
+        item.phiGD += allocatedFee;
 
         // Ghi nhận TP
-
         let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
 
-        totalProfitTP += (baseVol - feeAmount);
+        totalProfitTP += (baseVol - allocatedFee);
         totalWinCount += 1;
 
         item.AnNumber += 1;
@@ -717,12 +755,8 @@ async function ThucHienGiaoDich() {
           vol: 0,
         });
       } else {
-        soDuTaiKhoan -= item.vol;
-        profitAll -= item.vol;
-
         // SL: Không trừ nữa vì đã trừ khi vào lệnh
         item.AnNumber -= 1;
-
 
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
@@ -1106,7 +1140,9 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
   const totalLai = LuutruLongmach.filter(item => item.profit > 0).reduce((acc, item) => acc + item.profit, 0);
   const totalLo = LuutruLongmach.filter(item => item.profit < 0).reduce((acc, item) => acc + item.profit, 0);
 
-  const totalVolUocTinh = LuutruLongmach.filter(item => item.isTrading).reduce((acc, item) => acc + (item.vol || 0), 0);
+  const volT = LuutruLongmach.filter(item => item.isTrading && item.huong === T).reduce((acc, item) => acc + (item.vol || 0), 0);
+  const volX = LuutruLongmach.filter(item => item.isTrading && item.huong === X).reduce((acc, item) => acc + (item.vol || 0), 0);
+  const totalVolUocTinh = Math.abs(volT - volX);
   const totalPhiUocTinh = totalVolUocTinh * 0.02;
 
   // Thống kê theo sType, gộp cả Dep và Xau vào cùng 1 đối tượng
