@@ -612,7 +612,7 @@ async function ThucHienGiaoDich() {
       LuutruLongmach.forEach(item => {
         if (item.type === Dep) item.tiso += 1;
         if (item.type === Xau) item.tiso -= 1;
-        if (item.id === 1 && item.tiso < 0) item.tiso = 0;
+        if (item.id === 1 && item.tiso < -10) item.tiso = -10;
         // if (item.id === 3 && item.tiso <= 0) item.tiso = 0;
       });
 
@@ -627,7 +627,7 @@ async function ThucHienGiaoDich() {
       LuutruLongmach.forEach(item => {
         if (item.type === Dep) item.tiso -= 1;
         if (item.type === Xau) item.tiso += 1;
-        if (item.id === 1 && item.tiso < 0) item.tiso = 0;
+        if (item.id === 1 && item.tiso < -10) item.tiso = -10;
         // if (item.id === 3 && item.tiso <= 0) item.tiso = 0;
       });
 
