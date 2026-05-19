@@ -215,16 +215,16 @@ const LuutruLongmach = [
     phiGD: 0,
     isKhung: true
   },
-  // {
-  //   id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-  //   isStop: false,
-  //   type: Xau,
-  //   isFomo: false,
-  //   minAnNumber: 0,
-  //   isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 0, tiso: 0,
-  //   phiGD: 0,
-  //   isKhung: false
-  // },
+  {
+    id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
+    isStop: false,
+    type: Xau,
+    isFomo: false,
+    minAnNumber: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 0, tiso: 0,
+    phiGD: 0,
+    isKhung: false
+  },
   {
     id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
     isStop: false,
@@ -612,7 +612,7 @@ async function ThucHienGiaoDich() {
       LuutruLongmach.forEach(item => {
         if (item.type === Dep) item.tiso += 1;
         if (item.type === Xau) item.tiso -= 1;
-        if (item.id === 1 && item.tiso < 0) item.tiso = 0;
+        // if (item.id === 1 && item.tiso < 0) item.tiso = 0;
         // if (item.id === 3 && item.tiso <= 0) item.tiso = 0;
       });
 
@@ -627,7 +627,7 @@ async function ThucHienGiaoDich() {
       LuutruLongmach.forEach(item => {
         if (item.type === Dep) item.tiso -= 1;
         if (item.type === Xau) item.tiso += 1;
-        if (item.id === 1 && item.tiso < 0) item.tiso = 0;
+        // if (item.id === 1 && item.tiso < 0) item.tiso = 0;
         // if (item.id === 3 && item.tiso <= 0) item.tiso = 0;
       });
 
@@ -651,22 +651,61 @@ async function ThucHienGiaoDich() {
   await LongMachList_Update_UI(page, ArrayKQ_XAU);
 
   // ====================================================================================== TP / SL =======================================================================
+  // 1. Tính toán volume đang trading của 2 bên trước khi cập nhật trạng thái
+  const volT = LuutruLongmach.filter(item => item.isTrading && item.huong === T).reduce((acc, item) => acc + (item.vol || 0), 0);
+  const volX = LuutruLongmach.filter(item => item.isTrading && item.huong === X).reduce((acc, item) => acc + (item.vol || 0), 0);
+
+  // 2. Tính toán netChange và netFee cho tổng tài khoản thực tế
+  let netChange = 0;
+  let netFee = 0;
+  let netVol = 0;
+
+  if (volT > volX) {
+    netVol = volT - volX;
+    if (resultNew === T) {
+      netChange = netVol * 0.98;
+      netFee = netVol * 0.02;
+    } else if (resultNew === X) {
+      netChange = -netVol;
+      netFee = 0;
+    }
+  } else if (volX > volT) {
+    netVol = volX - volT;
+    if (resultNew === X) {
+      netChange = netVol * 0.98;
+      netFee = netVol * 0.02;
+    } else if (resultNew === T) {
+      netChange = -netVol;
+      netFee = 0;
+    }
+  }
+
+  // Cập nhật số dư tài khoản thực tế và profit tổng một lần duy nhất
+  soDuTaiKhoan += netChange;
+  profitAll += netChange;
+
+  // 3. Cập nhật kết quả ảo cho từng item
   for (const item of LuutruLongmach) {
     if (item.isTrading && item.huong) {
-      const isWin = resultNew === item.huong
+      const isWin = resultNew === item.huong;
       if (isWin) {
-        // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 0.98)
+        // TP: Cộng lại vol đã trừ + lãi (tổng là vol * 2 * 0.98)
         const winAmount = item.vol * 0.98;
-        const feeAmount = item.vol * 0.02;
 
-        soDuTaiKhoan += winAmount;
-        profitAll += winAmount;
-        item.phiGD += feeAmount;
+        // Phân bổ phí thực tế cho item thắng này
+        let allocatedFee = 0;
+        if (netFee > 0) {
+          const totalWinningVol = (item.huong === T) ? volT : volX;
+          if (totalWinningVol > 0) {
+            allocatedFee = item.vol * (netVol / totalWinningVol) * 0.02;
+          }
+        }
+        item.phiGD += allocatedFee;
 
         // Lãi ghi nhận TP (chỉ áp dụng cho các item cũ, không phải Khung)
         if (!item.isKhung) {
           let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
-          let baseFee = baseVol * 0.02; // Tính phí chuẩn của 1 lệnh cơ bản
+          let baseFee = allocatedFee;
           totalProfitTP += (baseVol - baseFee);
           totalWinCount += 1;
         }
@@ -700,11 +739,9 @@ async function ThucHienGiaoDich() {
           vol: 0,
           isReady: (item.tiso >= item.soLanChoDoi || item.AnNumber > 0)
         });
-        await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
+        await TableChinh_Update_UI(page, LuutruLongmach);
       } else {
         // SL: Không trừ nữa vì đã trừ khi vào lệnh
-        soDuTaiKhoan -= item.vol;
-        profitAll -= item.vol;
         item.AnNumber -= 1;
 
         handleUpdate_LongMachList(item.id, {
@@ -716,7 +753,7 @@ async function ThucHienGiaoDich() {
           minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber,
           isReady: (item.tiso >= item.soLanChoDoi || item.AnNumber > 0)
         });
-        await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
+        await TableChinh_Update_UI(page, LuutruLongmach);
       }
     }
   }
@@ -1114,7 +1151,9 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
   const totalLai = LuutruLongmach.filter(item => item.profit > 0).reduce((acc, item) => acc + item.profit, 0);
   const totalLo = LuutruLongmach.filter(item => item.profit < 0).reduce((acc, item) => acc + item.profit, 0);
 
-  const totalVolUocTinh = LuutruLongmach.filter(item => item.isTrading).reduce((acc, item) => acc + (item.vol || 0), 0);
+  const volT = LuutruLongmach.filter(item => item.isTrading && item.huong === T).reduce((acc, item) => acc + (item.vol || 0), 0);
+  const volX = LuutruLongmach.filter(item => item.isTrading && item.huong === X).reduce((acc, item) => acc + (item.vol || 0), 0);
+  const totalVolUocTinh = Math.abs(volT - volX);
   const totalPhiUocTinh = totalVolUocTinh * 0.02;
 
   // Define statsList for the UI
@@ -1583,22 +1622,20 @@ function loadStateTXT() {
       const arr = JSON.parse(jsonText);
       if (Array.isArray(arr)) {
         LuutruLongmach.length = 0;
-        const mappedArr = arr
-          .filter(i => i.id !== 3)
-          .map(i => ({
-            ...i,
-            isReady: i.isReady ?? false,
-            AnNumber: i.AnNumber ?? 0,
-            soLanMuonAn: i.soLanMuonAn ?? 1,
-            hoanthanh: i.hoanthanh ?? false,
-            soLanChoDoi: i.soLanChoDoi ?? 7,
-            profit: i.profit ?? 0,
-            phiGD: i.phiGD ?? 0,
-            tiso: i.tiso ?? 0,
-            win: i.win ?? 0,
-            lost: i.lost ?? 0,
-            vol: i.vol ?? 0
-          }));
+        const mappedArr = arr.map(i => ({
+          ...i,
+          isReady: i.isReady ?? false,
+          AnNumber: i.AnNumber ?? 0,
+          soLanMuonAn: i.soLanMuonAn ?? 1,
+          hoanthanh: i.hoanthanh ?? false,
+          soLanChoDoi: i.soLanChoDoi ?? 7,
+          profit: i.profit ?? 0,
+          phiGD: i.phiGD ?? 0,
+          tiso: i.tiso ?? 0,
+          win: i.win ?? 0,
+          lost: i.lost ?? 0,
+          vol: i.vol ?? 0
+        }));
         LuutruLongmach.push(...mappedArr);
       }
     }
