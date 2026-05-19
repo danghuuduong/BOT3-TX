@@ -811,11 +811,12 @@ async function ThucHienGiaoDich() {
         let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
         let extraVol = Math.floor(baseVol * 1.5);
         let itemVol = 0;
+        let safeTiso = Math.max(0, item.tiso); // Ngăn không cho tiso âm tạo ra volume âm
 
         if (item.isKhung) {
           itemVol = baseVol * 6;
         } else {
-          let currentTiso = safeTiso + 1;
+          let currentTiso = safeTiso;
           itemVol = (currentTiso <= 50)
             ? (currentTiso * baseVol)
             : (50 * baseVol + (currentTiso - 50) * extraVol);
@@ -829,12 +830,14 @@ async function ThucHienGiaoDich() {
         let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
         let extraVol = Math.floor(baseVol * 1.5);
         let itemVol = 0;
+        let safeTiso = Math.max(0, item.tiso); // Ngăn không cho tiso âm tạo ra volume âm
         if (item.isKhung) {
           itemVol = 50;
         } else {
-          itemVol = (item.tiso <= 50)
-            ? (item.tiso * baseVol)
-            : (50 * baseVol + (item.tiso - 50) * extraVol);
+          let currentTiso = safeTiso + 1;
+          itemVol = (currentTiso <= 50)
+            ? (currentTiso * baseVol)
+            : (50 * baseVol + (currentTiso - 50) * extraVol);
         }
         item.tempVol = itemVol;
         totalVol_Xau += itemVol;
