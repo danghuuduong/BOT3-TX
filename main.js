@@ -811,12 +811,14 @@ async function ThucHienGiaoDich() {
         let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
         let extraVol = Math.floor(baseVol * 1.5);
         let itemVol = 0;
+
         if (item.isKhung) {
-          itemVol = 50;
+          itemVol = baseVol * 6;
         } else {
-          itemVol = (item.tiso <= 50)
-            ? (item.tiso * baseVol)
-            : (50 * baseVol + (item.tiso - 50) * extraVol);
+          let currentTiso = safeTiso + 1;
+          itemVol = (currentTiso <= 50)
+            ? (currentTiso * baseVol)
+            : (50 * baseVol + (currentTiso - 50) * extraVol);
         }
         item.tempVol = itemVol;
         totalVol_Dep += itemVol;
