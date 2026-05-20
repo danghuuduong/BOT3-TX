@@ -634,7 +634,7 @@ async function ThucHienGiaoDich() {
       LuutruLongmach.forEach(item => {
         if (item.type === Dep) item.tiso -= 1;
         if (item.type === Xau) item.tiso += 1;
-        if (item.id === 1 && item.tiso < -10) item.tiso = -10;
+        // if (item.id === 1 && item.tiso < -10) item.tiso = -10;
         // if (item.id === 3 && item.tiso <= 0) item.tiso = 0;
       });
 
@@ -1154,8 +1154,8 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       CauXauCount = 0;
 
       LuutruLongmach.forEach(item => {
-        item.tiso = 0;
-        item.isReady = false;
+        // item.tiso = 0;
+        // item.isReady = false;
         // Có thể reset thêm profit/phi nếu cần, nhưng tạm thời theo yêu cầu là reset TiSo
       });
 
