@@ -201,7 +201,8 @@ const LuutruLongmach = [
     type: Dep,
     isFomo: true,
     minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 0, tiso: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 1, tiso: 0,
+    donVi: 1,
     phiGD: 0,
     isKhung: false
   },
@@ -212,6 +213,7 @@ const LuutruLongmach = [
     isFomo: true,
     minAnNumber: 0,
     isReady: false, AnNumber: 0, soLanMuonAn: 2, hoanthanh: false, soLanChoDoi: 7, tiso: 0,
+    donVi: 1,
     phiGD: 0,
     isKhung: true
   },
@@ -221,7 +223,8 @@ const LuutruLongmach = [
     type: Xau,
     isFomo: false,
     minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 0, tiso: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 1, tiso: 0,
+    donVi: 1,
     phiGD: 0,
     isKhung: false
   },
@@ -232,6 +235,7 @@ const LuutruLongmach = [
     isFomo: false,
     minAnNumber: 0,
     isReady: false, AnNumber: 0, soLanMuonAn: 2, hoanthanh: false, soLanChoDoi: 15, tiso: 0,
+    donVi: 1,
     phiGD: 0,
     isKhung: true
   }
@@ -367,6 +371,7 @@ async function UI_Reset(page) {
         if (!item.isReady && item.tiso >= item.soLanChoDoi) {
           item.isReady = true;
           item.hoanthanh = false;
+          item.donVi = 1;
         }
       }
 
@@ -612,7 +617,7 @@ async function ThucHienGiaoDich() {
       LuutruLongmach.forEach(item => {
         if (item.type === Dep) item.tiso += 1;
         if (item.type === Xau) item.tiso -= 1;
-        if (item.id === 1 && item.tiso < -10) item.tiso = -10;
+        // if (item.id === 1 && item.tiso < -10) item.tiso = -10;
         // if (item.id === 3 && item.tiso <= 0) item.tiso = 0;
       });
 
@@ -623,6 +628,7 @@ async function ThucHienGiaoDich() {
         } else {
           if (item.hoanthanh) {
             item.isReady = false;
+            item.donVi = 1;
           }
         }
       });
@@ -645,6 +651,7 @@ async function ThucHienGiaoDich() {
         } else {
           if (item.hoanthanh) {
             item.isReady = false;
+            item.donVi = 1;
           }
         }
       });
@@ -689,6 +696,7 @@ async function ThucHienGiaoDich() {
         if (item.AnNumber >= item.soLanMuonAn) {
           item.AnNumber = 0;
           item.hoanthanh = true;
+          item.donVi = 1;
 
           if (item.isKhung) {
             let depItem = LuutruLongmach.find(i => i.isKhung && i.type === Dep);
@@ -711,7 +719,8 @@ async function ThucHienGiaoDich() {
           huong: "null",
           profit: item.profit + winAmount,
           win: item.win + 1,
-          vol: 0
+          vol: 0,
+          donVi: Math.max(1, (item.donVi || 1) - 1)
         });
         await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       } else {
@@ -726,7 +735,8 @@ async function ThucHienGiaoDich() {
           vol: 0,
           lost: item.lost + 1,
           profit: item.profit - item.vol,
-          minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber
+          minAnNumber: item.AnNumber <= item.minAnNumber ? item.AnNumber : item.minAnNumber,
+          donVi: Math.max(1, (item.donVi || 1) + 1)
         });
         await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
       }
@@ -735,7 +745,7 @@ async function ThucHienGiaoDich() {
 
 
 
-  // Cập nhật lại isReady sau khi đã xử lý TP/SL (để reset tiso có hiệu lực ngay)
+  // Cập nhật lại isReady sau khi đã xử lý TP/SL (để reset donVi có hiệu lực ngay)
   for (const item of LuutruLongmach) {
     if (item.tiso >= item.soLanChoDoi) {
       item.isReady = true;
@@ -743,6 +753,7 @@ async function ThucHienGiaoDich() {
     } else {
       if (item.hoanthanh) {
         item.isReady = false;
+        item.donVi = 1;
       }
     }
   }
@@ -762,16 +773,6 @@ async function ThucHienGiaoDich() {
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
   if (tinHieuAI.huong !== "null" && arrayNew.length > 0) {
-    // 1. Reset hoanthanh logic
-    for (const item of arrayNew) {
-      if (item.hoanthanh) {
-        if (item.id === 1 || item.id === 3) {
-          for (const itm of LuutruLongmach) { itm.hoanthanh = false; } break;
-        } else { item.hoanthanh = false; }
-      }
-    }
-
-
     // 2. Tính toán Volume và Hướng cho từng item
     let totalTaiVol = 0;
     let totalXiuVol = 0;
@@ -780,12 +781,10 @@ async function ThucHienGiaoDich() {
       let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
       let extraVol = Math.floor(baseVol * 1.5);
       let itemVol = 0;
-      let safeTiso = Math.max(0, item.tiso); // Ngăn không cho tiso âm tạo ra volume âm
-
       if (item.isKhung) {
         itemVol = baseVol * 6;
       } else {
-        let currentTiso = safeTiso + 1;
+        let currentTiso = item.donVi || 1;
         itemVol = (currentTiso <= 50)
           ? (currentTiso * baseVol)
           : (50 * baseVol + (currentTiso - 50) * extraVol);
@@ -1154,8 +1153,9 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       CauXauCount = 0;
 
       LuutruLongmach.forEach(item => {
-        // item.tiso = 0;
-        // item.isReady = false;
+        item.tiso = 0;
+        item.isReady = false;
+        item.donVi = 1;
         // Có thể reset thêm profit/phi nếu cần, nhưng tạm thời theo yêu cầu là reset TiSo
       });
 
@@ -1168,10 +1168,10 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
   }
 
   await page.evaluate(({ depCount, xauCount, phi, lai, lo, volUT, phiUT, statsList, tpProfit, winCount }) => {
-    let wrapper = document.getElementById("ui-tiso-wrapper");
+    let wrapper = document.getElementById("ui-donVi-wrapper");
     if (!wrapper) {
       wrapper = document.createElement("div");
-      wrapper.id = "ui-tiso-wrapper";
+      wrapper.id = "ui-donVi-wrapper";
       Object.assign(wrapper.style, {
         position: "fixed",
         bottom: "10px",
@@ -1185,7 +1185,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
 
       // Toggle button
       const toggleBtn = document.createElement("div");
-      toggleBtn.id = "ui-tiso-toggle";
+      toggleBtn.id = "ui-donVi-toggle";
       toggleBtn.innerText = "▼";
       Object.assign(toggleBtn.style, {
         fontSize: "10px",
@@ -1201,17 +1201,17 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       let isHidden = false;
       toggleBtn.onclick = () => {
         isHidden = !isHidden;
-        const box = document.getElementById("ui-tiso-tx");
+        const box = document.getElementById("ui-donVi-tx");
         if (box) box.style.display = isHidden ? "none" : "flex";
         toggleBtn.innerText = isHidden ? "▲" : "▼";
       };
       wrapper.appendChild(toggleBtn);
     }
 
-    let box = document.getElementById("ui-tiso-tx");
+    let box = document.getElementById("ui-donVi-tx");
     if (!box) {
       box = document.createElement("div");
-      box.id = "ui-tiso-tx";
+      box.id = "ui-donVi-tx";
       Object.assign(box.style, {
         background: "#fff",
         color: "#000",
@@ -1227,7 +1227,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
         border: "1px solid #ccc",
         minWidth: "185px"
       });
-      document.getElementById("ui-tiso-wrapper").appendChild(box);
+      document.getElementById("ui-donVi-wrapper").appendChild(box);
     }
 
     const getProfitColor = (val) => {
@@ -1599,20 +1599,24 @@ function loadStateTXT() {
       if (Array.isArray(arr)) {
         LuutruLongmach.length = 0;
         const mappedArr = arr
-          .map(i => ({
-            ...i,
-            isReady: i.isReady ?? false,
-            AnNumber: i.AnNumber ?? 0,
-            soLanMuonAn: i.soLanMuonAn ?? 1,
-            hoanthanh: i.hoanthanh ?? false,
-            soLanChoDoi: i.soLanChoDoi ?? 7,
-            profit: i.profit ?? 0,
-            phiGD: i.phiGD ?? 0,
-            tiso: i.tiso ?? 0,
-            win: i.win ?? 0,
-            lost: i.lost ?? 0,
-            vol: i.vol ?? 0
-          }));
+          .map(i => {
+            const isNewFormat = (i.tiso !== undefined);
+            return {
+              ...i,
+              isReady: i.isReady ?? false,
+              AnNumber: i.AnNumber ?? 0,
+              soLanMuonAn: i.soLanMuonAn ?? 1,
+              hoanthanh: i.hoanthanh ?? false,
+              soLanChoDoi: i.soLanChoDoi ?? 7,
+              profit: i.profit ?? 0,
+              phiGD: i.phiGD ?? 0,
+              tiso: isNewFormat ? (i.tiso ?? 0) : (i.donVi ?? 0),
+              donVi: isNewFormat ? (i.donVi ?? 1) : (i.subtiso ?? 1),
+              win: i.win ?? 0,
+              lost: i.lost ?? 0,
+              vol: i.vol ?? 0
+            };
+          });
         LuutruLongmach.push(...mappedArr);
       }
     }

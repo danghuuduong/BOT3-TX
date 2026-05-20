@@ -104,14 +104,14 @@ async function TableChinh_Create(page) {
 
       const headers = [
         "ID", "Bên", "Tỉ số", "Đợi", "Ăn",
-        "Lệnh", "Vol", "W/L", "Lãi", "Phí",
+        "Lệnh", "Nhân", "Vol", "W/L", "Lãi", "Phí",
         "MIN", "STOP"
       ];
 
 
       const widths = [
-        "13px", "35px", "35px", "20px",
-        "39px", "30px", "30px", "45px", "45px",
+        "13px", "35px", "35px", "35px", "39px",
+        "30px", "30px", "30px", "45px", "45px",
         "25px", "30px", "25px"
       ];
 
@@ -182,16 +182,15 @@ async function TableChinh_Update_UI(page, data) {
         tr.style.opacity = "0.5";
       }
 
-      const lucStrInput = `${item.tiso}/${item.soLanChoDoi}`;
-
       // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
         item.id,
         item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Bẻ🔥",
-        "LUC_COLUMN",
+        `${item.tiso}/${item.soLanChoDoi}`,
         "DOI_COLUMN",
         `${item.AnNumber}/${item.soLanMuonAn}${item.hoanthanh ? '😍' : ''}`,
         item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
+        item.donVi ?? 1,
         item.vol,
         `${item.win}/${item.lost}`,
         item.profit.toFixed(1),
@@ -202,13 +201,7 @@ async function TableChinh_Update_UI(page, data) {
 
       cols.forEach((v, idx) => {
         const td = document.createElement("td");
-        if (v === "LUC_COLUMN") {
-          // ✅ Nếu tỉ số > 0 thì tô xanh
-          if (item.tiso > 0) {
-            td.style.fontWeight = "bold";
-          }
-          td.innerText = lucStrInput;
-        } else if (v === "DOI_COLUMN") {
+        if (v === "DOI_COLUMN") {
           td.innerText = item.soLanChoDoi ?? 0;
           td.style.cursor = "pointer";
           td.style.color = "blue";
@@ -260,8 +253,9 @@ async function TableChinh_Update_UI(page, data) {
           td.style.color = "#5500aaff";
         }
 
-        // ✅ Màu sắc cho cột Lãi (Index 8)
-        if (idx === 8) {
+
+        // ✅ Màu sắc cho cột Lãi (Index 9)
+        if (idx === 9) {
           if (item.profit > 0) {
             td.style.color = "#0cb30cff"; // xanh lá
             td.style.fontWeight = "bold";
