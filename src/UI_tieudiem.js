@@ -105,7 +105,7 @@ async function TableChinh_Create(page) {
       const headers = [
         "ID", "Bên", "Tỉ số", "Đợi", "Ăn",
         "Lệnh", "Nhân", "Vol", "W/L", "Lãi", "Phí",
-        "MIN", "STOP"
+        "MAX", "STOP"
       ];
 
 

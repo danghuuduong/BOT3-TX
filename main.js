@@ -1167,6 +1167,21 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
     page._resetTiSoExposed = true;
   }
 
+  // Expose function reset Tổn thất (maxDrawdown) + minAnNumber
+  if (!page._resetTonThatExposed) {
+    await page.exposeFunction("resetTonThat", async () => {
+      maxDrawdown = 0;
+      LuutruLongmach.forEach(item => {
+        item.minAnNumber = 0;
+      });
+      await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
+      await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown, totalProfitTP, totalWinCount);
+      await TableChinh_Update_UI(page, LuutruLongmach);
+      saveStateTXT();
+    });
+    page._resetTonThatExposed = true;
+  }
+
   await page.evaluate(({ depCount, xauCount, phi, lai, lo, volUT, phiUT, statsList, tpProfit, winCount }) => {
     let wrapper = document.getElementById("ui-donVi-wrapper");
     if (!wrapper) {
@@ -1288,6 +1303,23 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
             ${statsRows}
           </tbody>
         </table>
+      </div>
+      <div style="margin-top: 3px; display: flex; justify-content: center;">
+        <button
+          id="btn-reset-tonthat"
+          onclick="window.resetTonThat()"
+          style="
+            padding: 2px 10px;
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+          "
+        >🔄 Reset Tổn thất & Max</button>
       </div>
     `;
 
