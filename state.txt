@@ -1,18 +1,18 @@
-soDuTaiKhoan=5014.266999999997
-soDuLonNhat=5014.266999999997
-phanTramGiaoDich=0.07
+soDuTaiKhoan=3344.3469999999998
+soDuLonNhat=3344.3469999999998
+phanTramGiaoDich=0.1
 profitAll=2498.8400000000183
 totalProfitTP=3744.580000000058
 totalWinCount=1342
 maxDrawdown=11.704074914351542
 nguongTienDat=6000
-soTienMuonRut=2000
-tongTienDaRut=0
-CauDepCount=1662
-CauXauCount=1659
+soTienMuonRut=2660
+tongTienDaRut=2660
+CauDepCount=1668
+CauXauCount=1663
 
-ArrayKQ=T,T,T,X,X,X,X,X,T,X,T,X,T,X,T,X,T,T,T,T,X,T,T,T,X,X,X,T,T,X,T,T,X,X,T,X,X,T,T,T,X,T,X,T,X,T,T,T,T,T,T,T,X,X,X,X,X,T,T,X,X,T,T,T,T,X,X,X,T,T,X,X,X,T,X,X,X,T,T,X,X,T,T,X,X,X,T,T,X,T,X,T,X,X,X,T,T,X,T,T
-ArrayKQ_XAU=A,A,A,A,A,A,A,A,A,A,B,B,A,A,B,B,A,B,A,B,A,A,A,A,A,A,A,B,B,B,B,B,B,A,B,B,B,A,A,B,A,B,A,A,A,B,B,B,B,B,B,A,A,B,B,A,B,A,B,A,B,B,B,A,A,A,A,A,A,B,A,B,A,B,A,B,B,A,B,A,A,A,A,B,B,B,B,A,B,A,A,B,B,B,A,A,B,B,A,A,A,B,A,A,B,A,B,B,B,B,B,A,A,B,B,A,A,B,A,A,B,A,B,B,B,B,B,A,A,A,B,A,A,A,A,A,A,B,B,A,B,A,B,B,A,B,A,B,A,B,A,A,B,A,A,B,B,B,A,A,A,A,B,B,B,B,B,B,B,A,B,B,B,A,A,B,A,A,A,A,B,B,A,B,A,B,B,B,B,B,A,A,B,B,A,A,B,A,A,B,A,A,B,B,B,A,B,A,A,B,B,A,B,B,A,A,B,A,A,A,A,A,A,B,A,A,B,B,B,B,B,B,A,B,B,B,B,B,A,B,B,B,A,B,A,B,B,B,A,B,A,B,B,A,A,B,A,B,A,A,B,A,A,A,A,B,A,B,A,A,B,A,B,B,A,B,A,A,A,A,A,B,B,A,A,B,A,A,A,B,A,B,A,B,B,B,B,B,B,B,B,A,B,B,B,A,A,B,B,A,A,B,B,A,B,A,B,A,A,B,A,B,A,B,B,B,B,B,A,A,A,B,A,A,A,B,A,A,A,A,B,A,A,A,B,B,B,A,B,A,B,A,A,B,A,B,A,B,B,A,B,A,B,A,B,A,A,B,A,A,A,A,B,A,B,A,A,A,B,B,B,B,B,B,A,B,A,A,A,B,B,A,B,A,B,A,A,B,A,A,A,B,A,A,A,A,B,B,B,B,A,A,A,A,B,A,B,B,B,A,B,A,B,A,A,B,B,B,A,B,B,A,B,A,B,A,A,A,A,A,A,A,A,B,B,B,A,A,B,A,B,B,B,B,B,A,B,A,A,A,B,A,A,A,A,B,A,A,B,B,A,A,A,B,A,B,B,A,B,B,A,B,A,A,B,A,B,A,B,A,B,A,B,B,B,B,A,B,A,B,A,B,A,B,B,B,A,A,A,A,A,B,B,B,A,B,B,B,A,B,A,B,A,A,A,A,A,A,B,B,B,A,B,A,B,B,A,B,B,B,B,B,B,B,A,B,B,B,A,B,B,A,B,B,B,B,A,B,A,A,A,A,B,B,A,A,A,A,A,B,A,A,B,B,A,B,B,A,B,B,B,A,B,B,A,A,B,A,A,A,A,B,A,A,B,B,B,B,A,B,B,B,A,B,B,B,A,A,B,A,A,B,A,A,A,A,B,B,B,B,A,B,A,B,B,B,B,B,B,A,B,A,B,A,B,A,A,B,B,A,B,B,A,B,A,B,A,B,B,B,A,B,A,B,A,A,B,B,A,B,B,A,B,A,A,A,A,B,A,A,A,B,B,B,B,B,A,A,A,A,A,B,A,A,B,A,A,A,A,A,B,A,B,B,B,B,B,A,B,A,B,B,B,A,A,A,A,A,B,A,B,A,A,A,B,A,B,B,A,A,A,B,A,B,A,B,A,B,B,B,B,B,B,A,A,B,B,B,A,A,A,B,B,B,B,A,B,B,A,A,B,A,B,A,A,A,B,B,A,A,B,B,B,B,B,B,B,A,A,A,A,A,A,B,B,A,B,B,A,A,A,A,A,A,B,A,A,B,B,B,A,A,A,A,A,B,A,B,B,A,B,B,A,A,A,A,A,A,B,B,B,A,A,B,A,A,B,B,B,A,A,A,B,A,B,A,A,A,A,A,B,A,B,A,A,B,B,B,A,B,A,A,A,A,A,B,B,A,B,B,A,B,B,B,A,B,A,A,A,B,A,B,A,A,B,A,A,B,A,B,B,B,B,B,B,B,A,A,A,A,B,A,A,B,A,B,A,B,A,B,B,A,A,B,A,B,A,A,A,A,B,A,B,B,A,B,A,A,B,B,A,A,B,A,B,B,B,A,A,A,A,A,B,A,B,A,B,B,B,A,B,B,A,B,B,A,B,B,B,A,A,B,A,A,A,B,B,A,A,A,A,A,A,A,B,B,A,B,B,B,A,B,A,B,A,A,B,B,A,A,A,A,B,B,A,B,B,A,A,A,A,A,B,A,B,A,B,B,A,B,A,A,A,A,A,B,A,A,A,A
+ArrayKQ=T,X,T,T,X,X,T,X,X,T,T,T,X,T,X,T,X,T,T,T,T,T,T,T,X,X,X,X,X,T,T,X,X,T,T,T,T,X,X,X,T,T,X,X,X,T,X,X,X,T,T,X,X,T,T,X,X,X,T,T,X,T,X,T,X,X,X,T,T,X,T,T,X,T,X,T,T,T,T,X,X,T,T,X,T,T,X,T,T,X,T,T,X,T,T,X,X,X,X,T
+ArrayKQ_XAU=B,B,A,A,B,B,A,B,A,B,A,A,A,A,A,A,A,B,B,B,B,B,B,A,B,B,B,A,A,B,A,B,A,A,A,B,B,B,B,B,B,A,A,B,B,A,B,A,B,A,B,B,B,A,A,A,A,A,A,B,A,B,A,B,A,B,B,A,B,A,A,A,A,B,B,B,B,A,B,A,A,B,B,B,A,A,B,B,A,A,A,B,A,A,B,A,B,B,B,B,B,A,A,B,B,A,A,B,A,A,B,A,B,B,B,B,B,A,A,A,B,A,A,A,A,A,A,B,B,A,B,A,B,B,A,B,A,B,A,B,A,A,B,A,A,B,B,B,A,A,A,A,B,B,B,B,B,B,B,A,B,B,B,A,A,B,A,A,A,A,B,B,A,B,A,B,B,B,B,B,A,A,B,B,A,A,B,A,A,B,A,A,B,B,B,A,B,A,A,B,B,A,B,B,A,A,B,A,A,A,A,A,A,B,A,A,B,B,B,B,B,B,A,B,B,B,B,B,A,B,B,B,A,B,A,B,B,B,A,B,A,B,B,A,A,B,A,B,A,A,B,A,A,A,A,B,A,B,A,A,B,A,B,B,A,B,A,A,A,A,A,B,B,A,A,B,A,A,A,B,A,B,A,B,B,B,B,B,B,B,B,A,B,B,B,A,A,B,B,A,A,B,B,A,B,A,B,A,A,B,A,B,A,B,B,B,B,B,A,A,A,B,A,A,A,B,A,A,A,A,B,A,A,A,B,B,B,A,B,A,B,A,A,B,A,B,A,B,B,A,B,A,B,A,B,A,A,B,A,A,A,A,B,A,B,A,A,A,B,B,B,B,B,B,A,B,A,A,A,B,B,A,B,A,B,A,A,B,A,A,A,B,A,A,A,A,B,B,B,B,A,A,A,A,B,A,B,B,B,A,B,A,B,A,A,B,B,B,A,B,B,A,B,A,B,A,A,A,A,A,A,A,A,B,B,B,A,A,B,A,B,B,B,B,B,A,B,A,A,A,B,A,A,A,A,B,A,A,B,B,A,A,A,B,A,B,B,A,B,B,A,B,A,A,B,A,B,A,B,A,B,A,B,B,B,B,A,B,A,B,A,B,A,B,B,B,A,A,A,A,A,B,B,B,A,B,B,B,A,B,A,B,A,A,A,A,A,A,B,B,B,A,B,A,B,B,A,B,B,B,B,B,B,B,A,B,B,B,A,B,B,A,B,B,B,B,A,B,A,A,A,A,B,B,A,A,A,A,A,B,A,A,B,B,A,B,B,A,B,B,B,A,B,B,A,A,B,A,A,A,A,B,A,A,B,B,B,B,A,B,B,B,A,B,B,B,A,A,B,A,A,B,A,A,A,A,B,B,B,B,A,B,A,B,B,B,B,B,B,A,B,A,B,A,B,A,A,B,B,A,B,B,A,B,A,B,A,B,B,B,A,B,A,B,A,A,B,B,A,B,B,A,B,A,A,A,A,B,A,A,A,B,B,B,B,B,A,A,A,A,A,B,A,A,B,A,A,A,A,A,B,A,B,B,B,B,B,A,B,A,B,B,B,A,A,A,A,A,B,A,B,A,A,A,B,A,B,B,A,A,A,B,A,B,A,B,A,B,B,B,B,B,B,A,A,B,B,B,A,A,A,B,B,B,B,A,B,B,A,A,B,A,B,A,A,A,B,B,A,A,B,B,B,B,B,B,B,A,A,A,A,A,A,B,B,A,B,B,A,A,A,A,A,A,B,A,A,B,B,B,A,A,A,A,A,B,A,B,B,A,B,B,A,A,A,A,A,A,B,B,B,A,A,B,A,A,B,B,B,A,A,A,B,A,B,A,A,A,A,A,B,A,B,A,A,B,B,B,A,B,A,A,A,A,A,B,B,A,B,B,A,B,B,B,A,B,A,A,A,B,A,B,A,A,B,A,A,B,A,B,B,B,B,B,B,B,A,A,A,A,B,A,A,B,A,B,A,B,A,B,B,A,A,B,A,B,A,A,A,A,B,A,B,B,A,B,A,A,B,B,A,A,B,A,B,B,B,A,A,A,A,A,B,A,B,A,B,B,B,A,B,B,A,B,B,A,B,B,B,A,A,B,A,A,A,B,B,A,A,A,A,A,A,A,B,B,A,B,B,B,A,B,A,B,A,A,B,B,A,A,A,A,B,B,A,B,B,A,A,A,A,A,B,A,B,A,B,B,A,B,A,A,A,A,A,B,A,A,A,A,A,A,A,B,A,B,A,A,B,B
 
 LuutruLongmach=
 [
@@ -28,12 +28,12 @@ LuutruLongmach=
     "type": "A",
     "isFomo": true,
     "minAnNumber": -22,
-    "isReady": true,
-    "AnNumber": -5,
+    "isReady": false,
+    "AnNumber": 0,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": 15,
-    "tiso": 6,
+    "tiso": -7,
     "phiGD": 1285.0999999999992,
     "isKhung": false,
     "donVi": 6
@@ -42,7 +42,7 @@ LuutruLongmach=
     "id": 2,
     "isTrading": false,
     "huong": "null",
-    "profit": -188.16000000000975,
+    "profit": -130,
     "vol": 0,
     "win": 871,
     "lost": 864,
@@ -50,12 +50,12 @@ LuutruLongmach=
     "type": "A",
     "isFomo": true,
     "minAnNumber": -22,
-    "isReady": true,
-    "AnNumber": -5,
+    "isReady": false,
+    "AnNumber": 0,
     "soLanMuonAn": 2,
     "hoanthanh": false,
     "soLanChoDoi": 19,
-    "tiso": 6,
+    "tiso": -7,
     "phiGD": 302.1600000000064,
     "isKhung": true,
     "donVi": 6
@@ -75,9 +75,9 @@ LuutruLongmach=
     "isReady": false,
     "AnNumber": 0,
     "soLanMuonAn": 1,
-    "hoanthanh": true,
-    "soLanChoDoi": 5,
-    "tiso": -6,
+    "hoanthanh": false,
+    "soLanChoDoi": 15,
+    "tiso": 7,
     "phiGD": 152.98000000000002,
     "isKhung": false,
     "donVi": 1
@@ -97,9 +97,9 @@ LuutruLongmach=
     "isReady": false,
     "AnNumber": 0,
     "soLanMuonAn": 2,
-    "hoanthanh": true,
-    "soLanChoDoi": 10,
-    "tiso": -6,
+    "hoanthanh": false,
+    "soLanChoDoi": 20,
+    "tiso": 7,
     "phiGD": 22.920000000000005,
     "isKhung": true,
     "donVi": 1
