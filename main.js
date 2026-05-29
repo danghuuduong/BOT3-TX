@@ -32,6 +32,7 @@ let currentToken = null;
 let profitAll = 0;
 let totalProfitTP = 0;
 let totalWinCount = 0;
+let lastNetVol = 0; // NetVol thực tế đặt trên sàn lần gần nhất
 let CauDepCount = 0;
 let CauXauCount = 0;
 
@@ -672,6 +673,7 @@ async function ThucHienGiaoDich() {
   await LongMachList_Update_UI(page, ArrayKQ_XAU);
 
   // ====================================================================================== TP / SL =======================================================================
+  let hasNonKhungWin = false; // flag: có item non-Khung nào thắng trong round này không
   for (const item of LuutruLongmach) {
     if (item.isTrading && item.huong) {
       const isWin = resultNew === item.huong
@@ -684,12 +686,9 @@ async function ThucHienGiaoDich() {
         profitAll += winAmount;
         item.phiGD += feeAmount;
 
-        // Lãi ghi nhận TP (chỉ áp dụng cho các item cũ, không phải Khung)
+        // Lãi ghi nhận TP: đánh dấu flag, không tính ngay vì vòng lặp có thể chạy nhiều lần
         if (!item.isKhung) {
-          let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
-          let baseFee = baseVol * 0.02; // Tính phí chuẩn của 1 lệnh cơ bản
-          totalProfitTP += (baseVol - baseFee);
-          totalWinCount += 1;
+          hasNonKhungWin = true;
         }
 
         item.AnNumber += 1;
@@ -743,6 +742,13 @@ async function ThucHienGiaoDich() {
     }
   }
 
+  // Tính totalProfitTP 1 lần duy nhất sau vòng lặp (dù bao nhiêu item non-Khung thắng)
+  if (hasNonKhungWin) {
+    let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
+    let realFee = lastNetVol * 0.02; // 2% của tổng netVol thực tế đặt trên sàn
+    totalProfitTP += (baseVol - realFee);
+    totalWinCount += 1;
+  }
 
 
   // Cập nhật lại isReady sau khi đã xử lý TP/SL (để reset donVi có hiệu lực ngay)
@@ -815,6 +821,7 @@ async function ThucHienGiaoDich() {
       netVol = totalXiuVol - totalTaiVol;
       finalHuong = X;
     }
+    lastNetVol = netVol; // Lưu lại netVol thực tế để tính phí khi TP
 
     // 4. Đặt lệnh trên sàn với phần Net Volume
     if (finalHuong !== "null" && netVol > 0) {
