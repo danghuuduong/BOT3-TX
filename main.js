@@ -704,11 +704,11 @@ async function ThucHienGiaoDich() {
 
             if (depItem && xauItem) {
               if (item.type === Dep) {
-                depItem.soLanChoDoi += 5;
-                xauItem.soLanChoDoi -= 5;
+                depItem.soLanChoDoi += 4;
+                xauItem.soLanChoDoi -= 4;
               } else if (item.type === Xau) {
-                xauItem.soLanChoDoi += 5;
-                depItem.soLanChoDoi -= 5;
+                xauItem.soLanChoDoi += 4;
+                depItem.soLanChoDoi -= 4;
               }
             }
           }
@@ -1190,7 +1190,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(wrapper.style, {
         position: "fixed",
         bottom: "10px",
-        left: "414px",
+        left: "457px",
         zIndex: 10000,
         display: "flex",
         flexDirection: "column",

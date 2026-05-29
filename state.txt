@@ -1,18 +1,18 @@
-soDuTaiKhoan=1000
-soDuLonNhat=1000
-phanTramGiaoDich=1
-profitAll=0
-totalProfitTP=0
-totalWinCount=0
-maxDrawdown=0
+soDuTaiKhoan=5014.266999999997
+soDuLonNhat=5014.266999999997
+phanTramGiaoDich=0.07
+profitAll=2498.8400000000183
+totalProfitTP=3744.580000000058
+totalWinCount=1342
+maxDrawdown=11.704074914351542
 nguongTienDat=6000
 soTienMuonRut=2000
 tongTienDaRut=0
-CauDepCount=0
-CauXauCount=0
+CauDepCount=1662
+CauXauCount=1659
 
-ArrayKQ=
-ArrayKQ_XAU=
+ArrayKQ=T,T,T,X,X,X,X,X,T,X,T,X,T,X,T,X,T,T,T,T,X,T,T,T,X,X,X,T,T,X,T,T,X,X,T,X,X,T,T,T,X,T,X,T,X,T,T,T,T,T,T,T,X,X,X,X,X,T,T,X,X,T,T,T,T,X,X,X,T,T,X,X,X,T,X,X,X,T,T,X,X,T,T,X,X,X,T,T,X,T,X,T,X,X,X,T,T,X,T,T
+ArrayKQ_XAU=A,A,A,A,A,A,A,A,A,A,B,B,A,A,B,B,A,B,A,B,A,A,A,A,A,A,A,B,B,B,B,B,B,A,B,B,B,A,A,B,A,B,A,A,A,B,B,B,B,B,B,A,A,B,B,A,B,A,B,A,B,B,B,A,A,A,A,A,A,B,A,B,A,B,A,B,B,A,B,A,A,A,A,B,B,B,B,A,B,A,A,B,B,B,A,A,B,B,A,A,A,B,A,A,B,A,B,B,B,B,B,A,A,B,B,A,A,B,A,A,B,A,B,B,B,B,B,A,A,A,B,A,A,A,A,A,A,B,B,A,B,A,B,B,A,B,A,B,A,B,A,A,B,A,A,B,B,B,A,A,A,A,B,B,B,B,B,B,B,A,B,B,B,A,A,B,A,A,A,A,B,B,A,B,A,B,B,B,B,B,A,A,B,B,A,A,B,A,A,B,A,A,B,B,B,A,B,A,A,B,B,A,B,B,A,A,B,A,A,A,A,A,A,B,A,A,B,B,B,B,B,B,A,B,B,B,B,B,A,B,B,B,A,B,A,B,B,B,A,B,A,B,B,A,A,B,A,B,A,A,B,A,A,A,A,B,A,B,A,A,B,A,B,B,A,B,A,A,A,A,A,B,B,A,A,B,A,A,A,B,A,B,A,B,B,B,B,B,B,B,B,A,B,B,B,A,A,B,B,A,A,B,B,A,B,A,B,A,A,B,A,B,A,B,B,B,B,B,A,A,A,B,A,A,A,B,A,A,A,A,B,A,A,A,B,B,B,A,B,A,B,A,A,B,A,B,A,B,B,A,B,A,B,A,B,A,A,B,A,A,A,A,B,A,B,A,A,A,B,B,B,B,B,B,A,B,A,A,A,B,B,A,B,A,B,A,A,B,A,A,A,B,A,A,A,A,B,B,B,B,A,A,A,A,B,A,B,B,B,A,B,A,B,A,A,B,B,B,A,B,B,A,B,A,B,A,A,A,A,A,A,A,A,B,B,B,A,A,B,A,B,B,B,B,B,A,B,A,A,A,B,A,A,A,A,B,A,A,B,B,A,A,A,B,A,B,B,A,B,B,A,B,A,A,B,A,B,A,B,A,B,A,B,B,B,B,A,B,A,B,A,B,A,B,B,B,A,A,A,A,A,B,B,B,A,B,B,B,A,B,A,B,A,A,A,A,A,A,B,B,B,A,B,A,B,B,A,B,B,B,B,B,B,B,A,B,B,B,A,B,B,A,B,B,B,B,A,B,A,A,A,A,B,B,A,A,A,A,A,B,A,A,B,B,A,B,B,A,B,B,B,A,B,B,A,A,B,A,A,A,A,B,A,A,B,B,B,B,A,B,B,B,A,B,B,B,A,A,B,A,A,B,A,A,A,A,B,B,B,B,A,B,A,B,B,B,B,B,B,A,B,A,B,A,B,A,A,B,B,A,B,B,A,B,A,B,A,B,B,B,A,B,A,B,A,A,B,B,A,B,B,A,B,A,A,A,A,B,A,A,A,B,B,B,B,B,A,A,A,A,A,B,A,A,B,A,A,A,A,A,B,A,B,B,B,B,B,A,B,A,B,B,B,A,A,A,A,A,B,A,B,A,A,A,B,A,B,B,A,A,A,B,A,B,A,B,A,B,B,B,B,B,B,A,A,B,B,B,A,A,A,B,B,B,B,A,B,B,A,A,B,A,B,A,A,A,B,B,A,A,B,B,B,B,B,B,B,A,A,A,A,A,A,B,B,A,B,B,A,A,A,A,A,A,B,A,A,B,B,B,A,A,A,A,A,B,A,B,B,A,B,B,A,A,A,A,A,A,B,B,B,A,A,B,A,A,B,B,B,A,A,A,B,A,B,A,A,A,A,A,B,A,B,A,A,B,B,B,A,B,A,A,A,A,A,B,B,A,B,B,A,B,B,B,A,B,A,A,A,B,A,B,A,A,B,A,A,B,A,B,B,B,B,B,B,B,A,A,A,A,B,A,A,B,A,B,A,B,A,B,B,A,A,B,A,B,A,A,A,A,B,A,B,B,A,B,A,A,B,B,A,A,B,A,B,B,B,A,A,A,A,A,B,A,B,A,B,B,B,A,B,B,A,B,B,A,B,B,B,A,A,B,A,A,A,B,B,A,A,A,A,A,A,A,B,B,A,B,B,B,A,B,A,B,A,A,B,B,A,A,A,A,B,B,A,B,B,A,A,A,A,A,B,A,B,A,B,B,A,B,A,A,A,A,A,B,A,A,A,A
 
 LuutruLongmach=
 [
@@ -20,84 +20,88 @@ LuutruLongmach=
     "id": 1,
     "isTrading": false,
     "huong": "null",
-    "profit": 0,
+    "profit": 1641.899999999997,
     "vol": 0,
-    "win": 0,
-    "lost": 0,
-    "isStop": false,
+    "win": 1030,
+    "lost": 1007,
+    "isStop": true,
     "type": "A",
     "isFomo": true,
-    "minAnNumber": 0,
-    "isReady": false,
-    "AnNumber": 0,
+    "minAnNumber": -22,
+    "isReady": true,
+    "AnNumber": -5,
     "soLanMuonAn": 1,
     "hoanthanh": false,
-    "soLanChoDoi": 0,
-    "tiso": 0,
-    "phiGD": 0,
-    "isKhung": false
+    "soLanChoDoi": 15,
+    "tiso": 6,
+    "phiGD": 1285.0999999999992,
+    "isKhung": false,
+    "donVi": 6
   },
   {
     "id": 2,
     "isTrading": false,
     "huong": "null",
-    "profit": 0,
+    "profit": -188.16000000000975,
     "vol": 0,
-    "win": 0,
-    "lost": 0,
-    "isStop": false,
+    "win": 871,
+    "lost": 864,
+    "isStop": true,
     "type": "A",
     "isFomo": true,
-    "minAnNumber": 0,
-    "isReady": false,
-    "AnNumber": 0,
+    "minAnNumber": -22,
+    "isReady": true,
+    "AnNumber": -5,
     "soLanMuonAn": 2,
     "hoanthanh": false,
-    "soLanChoDoi": 7,
-    "tiso": 0,
-    "phiGD": 0,
-    "isKhung": true
+    "soLanChoDoi": 19,
+    "tiso": 6,
+    "phiGD": 302.1600000000064,
+    "isKhung": true,
+    "donVi": 6
   },
   {
     "id": 3,
     "isTrading": false,
     "huong": "null",
-    "profit": 0,
+    "profit": 756.0199999999992,
     "vol": 0,
-    "win": 0,
-    "lost": 0,
-    "isStop": false,
+    "win": 312,
+    "lost": 301,
+    "isStop": true,
     "type": "B",
     "isFomo": false,
     "minAnNumber": 0,
     "isReady": false,
     "AnNumber": 0,
     "soLanMuonAn": 1,
-    "hoanthanh": false,
-    "soLanChoDoi": 0,
-    "tiso": 0,
-    "phiGD": 0,
-    "isKhung": false
+    "hoanthanh": true,
+    "soLanChoDoi": 5,
+    "tiso": -6,
+    "phiGD": 152.98000000000002,
+    "isKhung": false,
+    "donVi": 1
   },
   {
     "id": 4,
     "isTrading": false,
     "huong": "null",
-    "profit": 0,
+    "profit": 289.0799999999998,
     "vol": 0,
-    "win": 0,
-    "lost": 0,
-    "isStop": false,
+    "win": 85,
+    "lost": 65,
+    "isStop": true,
     "type": "B",
     "isFomo": false,
     "minAnNumber": 0,
     "isReady": false,
     "AnNumber": 0,
     "soLanMuonAn": 2,
-    "hoanthanh": false,
-    "soLanChoDoi": 15,
-    "tiso": 0,
-    "phiGD": 0,
-    "isKhung": true
+    "hoanthanh": true,
+    "soLanChoDoi": 10,
+    "tiso": -6,
+    "phiGD": 22.920000000000005,
+    "isKhung": true,
+    "donVi": 1
   }
 ]
