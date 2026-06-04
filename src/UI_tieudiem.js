@@ -103,14 +103,14 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Bên", "Ngầm", "Thép", "MaxT",
+        "ID", "Hướng", "Chờ", "Ngầm", "Thếp", "Nhân", "CaoNhất", "TổngVol",
         "Giao dịch", "Vol", "W/L", "Lãi", "LãiMax",
         "Phí", "STOP"
       ];
 
 
       const widths = [
-        "18px", "35px", "50px", "30px", "30px",
+        "18px", "35px", "25px", "50px", "38px", "28px", "45px", "50px",
         "40px", "35px", "50px", "40px", "40px",
         "25px", "25px"
       ];
@@ -171,13 +171,28 @@ async function TableChinh_Update_UI(page, data) {
       `;
 
       // ===== CÁC CỘT CHUẨN =====
+      const huongLabel = !item.isReady
+        ? "-"
+        : item.huong === "T" ? "⚫ T" : item.huong === "X" ? "⚪ X" : "-";
+
+      // Tính TổngVol: sum hệ số từ thép 1 → maxThep, nhân cấp số nhân
+      const heSoMap = { 1: 1, 2: 3, 3: 7, 4: 14, 5: 30 };
+      let tongHeSo = 0;
+      for (let s = 1; s <= (item.maxThep || 1); s++) {
+        tongHeSo += (heSoMap[s] || 0);
+      }
+      const tongBoi = tongHeSo * (item.capSoNhan || 1);
+
       const cols = [
         item.id,
-        item.type === "A" ? `Đẹp ${item.hoanthanh ? ' 😍' : ''}` : `Bẻ🔥${item.hoanthanh ? ' 😍' : ''}`,
+        `${huongLabel}${item.hoanthanh ? ' 😍' : ''}`,
+        item.soLanChoDoi || 1,
         "NGAM_COLUMN",
-        `${item.thep}/5`,
-        item.maxThep || 1,
-        item.isTrading ? (item.huong === "T" ? "⚫" : "⚪") : "Chưa",
+        `${item.thep}/${item.maxThep}`,
+        item.capSoNhan || 1,
+        item.GhiNhanCapSoNhanCaoNhat || 1,
+        `x${tongBoi}`,
+        item.isTrading ? (item.huong === "T" ? "⚫ Tài" : "⚪ Xỉu") : "Chưa",
         item.vol.toFixed(1),
         `${item.win}/${item.lost}`,
         item.profit.toFixed(1),
@@ -207,8 +222,8 @@ async function TableChinh_Update_UI(page, data) {
           color: "inherit" // ✅ Kế thừa màu từ tr
         });
 
-        // ✅ Màu sắc cho cột Lãi (Index 8)
-        if (idx === 8) {
+        // ✅ Màu sắc cho cột Lãi (Index 10 sau khi thêm Cap, CaoNhất, TổngVol)
+        if (idx === 10) {
           if (item.profit > 0) {
             td.style.color = "#0cb30cff"; // xanh lá
             td.style.fontWeight = "bold";

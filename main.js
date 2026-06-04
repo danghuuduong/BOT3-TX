@@ -195,15 +195,69 @@ let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
 const LuutruLongmach = [
   {
-    id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, isFomo: true, minAnNumber: 0, type: null,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 3, countNgam: 0, phiGD: 0, thep: 1, maxThep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
+    id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 2, thep: 1, maxThep: 2,
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
   },
   {
-    id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0,
-    isStop: false, isFomo: true, minAnNumber: 0, type: null,
-    isReady: false, hoanthanh: false, soLanChoDoi: 2, Ngam: 1, countNgam: 0, phiGD: 0, thep: 1, maxThep: 1, capSoNhan: 1, maxCapSoNhan: 1, profitMax: 0
-  }
+    id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 2, thep: 1, maxThep: 3,
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+  },
+
+  {
+    id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 3, thep: 1, maxThep: 2,
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+  },
+  {
+    id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 3, thep: 1, maxThep: 3,
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+  },
+
+  {
+    id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 4, thep: 1, maxThep: 2,
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+  },
+  {
+    id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 4, thep: 1, maxThep: 3,
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+  },
+
+
+  {
+    id: 7, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 4, thep: 1, maxThep: 2,
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+  },
+  {
+    id: 8, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 4, thep: 1, maxThep: 3,
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+  },
+
+
+
+
 ];
 
 
@@ -635,16 +689,18 @@ async function ThucHienGiaoDich() {
           item.profit += winAmount;
 
           item.win = (item.win || 0) + 1; // Chỉ tăng win khi là lệnh thật
+
+          // ✅ Reset capSoNhan về 1 khi profit phục hồi về đỉnh cũ
+          if (item.profit > item.profitMax) {
+            item.capSoNhan = 1;
+            item.profitMax = item.profit;
+          }
         }
 
         item.hoanthanh = true;
         item.thep = 1;
         item.isReady = false;
         item.lockType = null;
-
-        if (!isVirtual && item.profit > (item.profitMax || 0)) {
-          item.profitMax = item.profit;
-        }
 
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
@@ -661,19 +717,26 @@ async function ThucHienGiaoDich() {
 
           // ✅ Chỉ tăng thép khi là lệnh THẬT
           item.thep += 1;
-          item.maxThep = Math.max(item.maxThep || 1, item.thep);
 
-          if (item.thep >= 5) {
-            console.log(`Item ${item.id} CHÁY (thep >= 5)`);
+          if (item.thep > item.maxThep) {
+            console.log(`Item ${item.id} CHÁY (thep=${item.thep}, maxThep=${item.maxThep})`);
             item.thep = 1;
+            item.chay += 1
             item.minAnNumber += 1;
+
+            // 🔺 Nâng capSoNhan nếu chưa đạt maxCapSoNhan
+            if (item.capSoNhan < (item.maxCapSoNhan)) {
+              item.capSoNhan += 1;
+            }
+            // Ghi nhận capSoNhan cao nhất từ trước đến nay
+            item.GhiNhanCapSoNhanCaoNhat = Math.max(item.GhiNhanCapSoNhanCaoNhat || 1, item.capSoNhan);
+
+            item.isChanVaoLenh = true; // Chỉ khóa khi bị CHÁY
           }
         } else {
           item.countNgam = (item.countNgam || 0) + 1;
         }
 
-        // Logic block: Cả lệnh giả và thật đều block
-        item.isChanVaoLenh = true;
         item.isReady = false;
 
         handleUpdate_LongMachList(item.id, {
@@ -699,12 +762,12 @@ async function ThucHienGiaoDich() {
   // 1. Kiểm tra điều kiện vào lệnh và mở khóa cho từng item (Đặt sau TP/SL để có thể vào lệnh lại ngay nếu soLanChoDoi thấp)
   LuutruLongmach.forEach(item => {
     const n = item.soLanChoDoi;
-    if (ArrayKQ_XAU.length < n) return;
+    if (ArrayKQ.length < n) return;
 
-    const lastN = ArrayKQ_XAU.slice(-n);
-    const isAA = lastN.every(x => x === "A");
-    const isBB = lastN.every(x => x === "B");
-    const ketquaGannhat = ArrayKQ_XAU.at(-1);
+    const lastN = ArrayKQ.slice(-n);
+    const isAA = lastN.every(x => x === T);
+    const isBB = lastN.every(x => x === X);
+    const ketquaGannhat = ArrayKQ.at(-1);
 
     // Xử lý mở khóa (Unlock) khi kết quả thay đổi so với lúc bị cháy
     if (item.isChanVaoLenh) {
@@ -718,14 +781,14 @@ async function ThucHienGiaoDich() {
     if (!item.isChanVaoLenh && !item.isReady && !item.isTrading) {
       if (isAA) {
         item.isReady = true;
-        item.type = Xau;
+        item.huong = X; // n T liên tiếp → đặt X
         item.hoanthanh = false;
-        item.lockType = Dep; // Ghi nhận đang chạy theo cầu A
+        item.lockType = T; // Unlock khi kết quả không còn là T
       } else if (isBB) {
         item.isReady = true;
-        item.type = Dep;
+        item.huong = T; // n X liên tiếp → đặt T
         item.hoanthanh = false;
-        item.lockType = Xau; // Ghi nhận đang chạy theo cầu B
+        item.lockType = X; // Unlock khi kết quả không còn là X
       }
     }
   });
@@ -734,7 +797,7 @@ async function ThucHienGiaoDich() {
   // =========================================================================== ĐẶT LỆNH ================================================================
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
-  if (tinHieuAI.huong !== "null" && arrayNew.length > 0) {
+  if (arrayNew.length > 0) {
     // 1. Reset hoanthanh logic
     for (const item of arrayNew) {
       if (item.hoanthanh) {
@@ -744,65 +807,40 @@ async function ThucHienGiaoDich() {
       }
     }
 
+    // 2. Đặt lệnh theo item.huong đã gán sẵn
+    for (const item of arrayNew) {
+      const huongDanhNew = item.huong; // Đã gán từ isAA/isBB
 
-    // 2. Phân loại theo hướng Tài/Xỉu
-    const DepItems = arrayNew.filter(item => item.type === Dep);
-    const XauItems = arrayNew.filter(item => item.type === Xau);
-
-
-    const processBatch = async (ListProp, isBenDep) => {
-      if (ListProp.length === 0) return;
-      const huongDanhNew = isBenDep ? (tinHieuAI.huong === T ? X : T) : tinHieuAI.huong;
-
-      // Tính tổng Volume và gán cho từng item
-      let totalVol = 0;
-      for (const item of ListProp) {
-        const baseVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
-        const heSoMap = { 1: 1, 2: 3, 3: 7, 4: 14, 5: 30 };
-        const volReal = baseVol * (heSoMap[item.thep] || 1);
-
-        item.tempVol = item.id === 1 ? volReal / 2 : volReal;
-
-        // Chỉ cộng dồn Volume nếu đã qua thời gian "ngâm"
-        if ((item.countNgam || 0) >= (item.Ngam || 0)) {
-          totalVol += item.tempVol;
-        }
-      }
-
+      const baseVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
+      const heSoMap = { 1: 1, 2: 3, 3: 7, 4: 14, 5: 30 };
+      const volReal = baseVol * (heSoMap[item.thep] || 1) * (item.capSoNhan || 1);
 
       // Chỉ thực hiện click nếu có lệnh thật
-      if (totalVol > 0) {
-        // Click chọn hướng (Tài hoặc Xỉu)
-        await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
-        await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
+      // if ((item.countNgam || 0) >= (item.Ngam || 0)) {
+      //   // Click chọn hướng (Tài hoặc Xỉu)
+      //   await UI_MouseClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu, "👈");
+      //   await masterClick(page, huongDanhNew === T ? X_DatTai : X_DatXiu, huongDanhNew === T ? Y_DatTai : Y_DatXiu);
 
-        // Click volume
-        await clickTheoTinhVol(page, totalVol, "🎯");
+      //   // Click volume
+      //   await clickTheoTinhVol(page, volReal, "🎯");
 
-        const delay = 50 + Math.floor(Math.random() * 200);
-        await page.waitForTimeout(delay);
+      //   const delay = 50 + Math.floor(Math.random() * 200);
+      //   await page.waitForTimeout(delay);
 
-        // Click Submit
-        await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-        await masterClick(page, X_Submit, Y_Submit);
-      } else {
-        // console.log(`[Virtual] Đang ngâm lệnh hướng ${huongDanhNew}...`);
-      }
+      //   // Click Submit
+      //   await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      //   await masterClick(page, X_Submit, Y_Submit);
+      // } else {
+      //   // console.log(`[Virtual] Đang ngâm lệnh hướng ${huongDanhNew}...`);
+      // }
 
       // Vẫn cập nhật trạng thái Trading cho tất cả (để track virtual loss/win)
-      for (const item of ListProp) {
-        handleUpdate_LongMachList(item.id, {
-          isTrading: true,
-          huong: huongDanhNew,
-          vol: item.tempVol,
-        });
-        delete item.tempVol;
-      }
-    };
-
-    // Thực hiện đặt cược cho nhóm Tài và nhóm Xỉu
-    await processBatch(DepItems, true);
-    await processBatch(XauItems, false);
+      handleUpdate_LongMachList(item.id, {
+        isTrading: true,
+        huong: huongDanhNew,
+        vol: volReal,
+      });
+    }
   }
 
 
@@ -1112,7 +1150,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       // Reset thống kê từng item
       LuutruLongmach.forEach(item => {
         item.capSoNhan = 1;
-        item.maxCapSoNhan = 1;
+        item.GhiNhanCapSoNhanCaoNhat = 1;
       });
 
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
@@ -1130,7 +1168,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
-        left: "450px",
+        left: "580px",
         zIndex: 10000,
         background: "rgba(0,0,0,0.85)",
         backdropFilter: "blur(4px)",
@@ -1194,7 +1232,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
     lo: totalLo,
     volUT: totalVolUocTinh,
     phiUT: totalPhiUocTinh,
-    maxNhan: Math.max(...LuutruLongmach.map(item => item.maxCapSoNhan || 1))
+    maxNhan: Math.max(...LuutruLongmach.map(item => item.GhiNhanCapSoNhanCaoNhat || 1))
   });
 }
 
