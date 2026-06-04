@@ -104,15 +104,15 @@ async function TableChinh_Create(page) {
 
       const headers = [
         "ID", "Hướng", "Chờ", "Ngầm", "Thếp", "Nhân", "CaoNhất", "TổngVol",
-        "Giao dịch", "Vol", "W/L", "Lãi", "LãiMax",
-        "Phí", "STOP"
+        "Vol", "W/L", "Lãi", "LãiMax", "ÂmMax",
+        "Phí", "Cháy", "STOP"
       ];
 
 
       const widths = [
         "18px", "35px", "25px", "50px", "38px", "28px", "45px", "50px",
-        "40px", "35px", "50px", "40px", "40px",
-        "25px", "25px"
+        "35px", "50px", "40px", "40px", "40px",
+        "25px", "25px", "25px"
       ];
 
 
@@ -192,12 +192,13 @@ async function TableChinh_Update_UI(page, data) {
         item.capSoNhan || 1,
         item.GhiNhanCapSoNhanCaoNhat || 1,
         `x${tongBoi}`,
-        item.isTrading ? (item.huong === "T" ? "⚫ Tài" : "⚪ Xỉu") : "Chưa",
         item.vol.toFixed(1),
         `${item.win}/${item.lost}`,
         item.profit.toFixed(1),
         item.profitMax.toFixed(1),
+        (item.maxAm || 0).toFixed(1),
         item.phiGD.toFixed(1),
+        item.chay || 0,
       ];
 
 
@@ -222,7 +223,7 @@ async function TableChinh_Update_UI(page, data) {
           color: "inherit" // ✅ Kế thừa màu từ tr
         });
 
-        // ✅ Màu sắc cho cột Lãi (Index 10 sau khi thêm Cap, CaoNhất, TổngVol)
+        // ✅ Màu sắc cho cột Lãi (Index 10 sau khi bỏ cột Giao dịch)
         if (idx === 10) {
           if (item.profit > 0) {
             td.style.color = "#0cb30cff"; // xanh lá

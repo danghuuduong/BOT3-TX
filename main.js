@@ -199,14 +199,14 @@ const LuutruLongmach = [
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 2, thep: 1, maxThep: 2,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 2, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0
   },
 
   {
@@ -214,14 +214,14 @@ const LuutruLongmach = [
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 3, thep: 1, maxThep: 2,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0
   },
   {
     id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 3, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0
   },
 
   {
@@ -229,14 +229,14 @@ const LuutruLongmach = [
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 4, thep: 1, maxThep: 2,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0
   },
   {
     id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 4, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0
   },
 
 
@@ -245,14 +245,14 @@ const LuutruLongmach = [
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 4, thep: 1, maxThep: 2,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0
   },
   {
     id: 8, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 4, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0
+    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0
   },
 
 
@@ -713,6 +713,10 @@ async function ThucHienGiaoDich() {
           soDuTaiKhoan -= item.vol;
           profitAll -= item.vol;
           item.profit -= item.vol;
+          const currentAm = item.profitMax - item.profit;
+          if (currentAm > (item.maxAm || 0)) {
+            item.maxAm = currentAm;
+          }
           item.lost = (item.lost || 0) + 1;
 
           // ✅ Chỉ tăng thép khi là lệnh THẬT
@@ -1168,7 +1172,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
-        left: "580px",
+        left: "750px",
         zIndex: 10000,
         background: "rgba(0,0,0,0.85)",
         backdropFilter: "blur(4px)",
