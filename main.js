@@ -184,11 +184,11 @@ const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
 
-let soDuTaiKhoan = 1000;
-let soDuLonNhat = 1000;
+let soDuTaiKhoan = 2000;
+let soDuLonNhat = 2000;
 let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
-let phanTramGiaoDich = 1;
+let phanTramGiaoDich = 0.05;
 
 let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
@@ -202,7 +202,7 @@ const LuutruLongmach = [
     type: Dep,
     isFomo: true,
     minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 1, tiso: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 3, tiso: 0,
     donVi: 1,
     phiGD: 0,
     isKhung: false
@@ -213,7 +213,7 @@ const LuutruLongmach = [
     type: Dep,
     isFomo: true,
     minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, hoanthanh: false, soLanChoDoi: 7, tiso: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, hoanthanh: false, soLanChoDoi: 8, tiso: 0,
     donVi: 1,
     phiGD: 0,
     isKhung: true
@@ -224,7 +224,7 @@ const LuutruLongmach = [
     type: Xau,
     isFomo: false,
     minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 1, tiso: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 1, hoanthanh: false, soLanChoDoi: 3, tiso: 0,
     donVi: 1,
     phiGD: 0,
     isKhung: false
@@ -235,7 +235,7 @@ const LuutruLongmach = [
     type: Xau,
     isFomo: false,
     minAnNumber: 0,
-    isReady: false, AnNumber: 0, soLanMuonAn: 2, hoanthanh: false, soLanChoDoi: 15, tiso: 0,
+    isReady: false, AnNumber: 0, soLanMuonAn: 2, hoanthanh: false, soLanChoDoi: 8, tiso: 0,
     donVi: 1,
     phiGD: 0,
     isKhung: true
@@ -614,12 +614,12 @@ async function ThucHienGiaoDich() {
     const isWin = resultNew === muaGiaLap
     if (isWin) {
       CauXauCount++;
-      ArrayKQ_XAU.push(Xau); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
+      // ArrayKQ_XAU.push(Xau);
+      // if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
+
       LuutruLongmach.forEach(item => {
-        if (item.type === Dep) item.tiso += 1;
-        if (item.type === Xau) item.tiso -= 1;
-        // if (item.id === 1 && item.tiso < -10) item.tiso = -10;
-        // if (item.id === 3 && item.tiso <= 0) item.tiso = 0;
+        if (item.type === Dep) item.tiso -= 1;
+        if (item.type === Xau) item.tiso += 1;
       });
 
       LuutruLongmach.forEach(item => {
@@ -637,10 +637,10 @@ async function ThucHienGiaoDich() {
       muaGiaLap = "null"
     } else {
       CauDepCount++;
-      ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
+      // ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       LuutruLongmach.forEach(item => {
-        if (item.type === Dep) item.tiso -= 1;
-        if (item.type === Xau) item.tiso += 1;
+        if (item.type === Dep) item.tiso += 1;
+        if (item.type === Xau) item.tiso -= 1;
         // if (item.id === 1 && item.tiso < -10) item.tiso = -10;
         // if (item.id === 3 && item.tiso <= 0) item.tiso = 0;
       });
@@ -662,8 +662,10 @@ async function ThucHienGiaoDich() {
 
     }
   }
-  if (muaGiaLap === "null" && tinHieuAI.huong !== "null") {
-    muaGiaLap = tinHieuAI.huong
+  // if (muaGiaLap === "null" && tinHieuAI.huong !== "null") {
+  if (muaGiaLap === "null" && ArrayKQ.at(-1) !== "null") {
+    // muaGiaLap = tinHieuAI.huong
+    muaGiaLap = ArrayKQ.at(-1)
   }
 
   // Cập nhật UI chỉ báo tín hiệu
@@ -709,6 +711,19 @@ async function ThucHienGiaoDich() {
                 xauItem.soLanChoDoi += 4;
                 depItem.soLanChoDoi -= 4;
               }
+            }
+          } else {
+            if (item.type === Dep) {
+              LuutruLongmach.forEach(item => {
+                if (item.type === Dep && !item.isKhung) item.soLanChoDoi += 1;
+                if (item.type === Xau && !item.isKhung) item.soLanChoDoi -= 1;
+              });
+            }
+            if (item.type === Xau) {
+              LuutruLongmach.forEach(item => {
+                if (item.type === Xau && !item.isKhung) item.soLanChoDoi += 1;
+                if (item.type === Dep && !item.isKhung) item.soLanChoDoi -= 1;
+              });
             }
           }
         }
@@ -778,7 +793,7 @@ async function ThucHienGiaoDich() {
   // =========================================================================== ĐẶT LỆNH ================================================================
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
-  if (tinHieuAI.huong !== "null" && arrayNew.length > 0) {
+  if (arrayNew.length > 0) {
     // 2. Tính toán Volume và Hướng cho từng item
     let totalTaiVol = 0;
     let totalXiuVol = 0;
@@ -800,7 +815,7 @@ async function ThucHienGiaoDich() {
 
       // Dep đánh ngược tín hiệu, Xau đánh cùng tín hiệu
       let isBenDep = item.type === Dep;
-      let huongDanhNew = isBenDep ? (tinHieuAI.huong === T ? X : T) : tinHieuAI.huong;
+      let huongDanhNew = isBenDep ? ArrayKQ.at(-1) : ArrayKQ.at(-1) === T ? X : T;
       item.tempHuong = huongDanhNew;
 
       if (huongDanhNew === T) {
@@ -824,21 +839,21 @@ async function ThucHienGiaoDich() {
     lastNetVol = netVol; // Lưu lại netVol thực tế để tính phí khi TP
 
     // 4. Đặt lệnh trên sàn với phần Net Volume
-    if (finalHuong !== "null" && netVol > 0) {
-      // Click chọn hướng (Tài hoặc Xỉu)
-      await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
-      await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
+    // if (finalHuong !== "null" && netVol > 0) {
+    //   // Click chọn hướng (Tài hoặc Xỉu)
+    //   await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
+    //   await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
 
-      // Click volume
-      await clickTheoTinhVol(page, netVol, "🎯");
+    //   // Click volume
+    //   await clickTheoTinhVol(page, netVol, "🎯");
 
-      const delay = 50 + Math.floor(Math.random() * 200);
-      await page.waitForTimeout(delay);
+    //   const delay = 50 + Math.floor(Math.random() * 200);
+    //   await page.waitForTimeout(delay);
 
-      // Click Submit 1 lần duy nhất
-      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-      await masterClick(page, X_Submit, Y_Submit);
-    }
+    //   // Click Submit 1 lần duy nhất
+    //   await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+    //   await masterClick(page, X_Submit, Y_Submit);
+    // }
 
     // 5. Cập nhật trạng thái giao dịch cho từng item (Dữ liệu vẫn tính như bình thường)
     for (const item of arrayNew) {
@@ -866,7 +881,7 @@ async function ThucHienGiaoDich() {
   if (
     soDuTaiKhoan >= soDuLonNhat &&
     soDuTaiKhoan >= nguongTienDat &&
-    tinHieuAI.huong === "null" &&
+    // tinHieuAI.huong === "null" &&
     allNotTrading
   ) {
     await UI_MouseClick(page, X_HuyDatCuoc, Y_HuyDatCuoc, "🎯");
