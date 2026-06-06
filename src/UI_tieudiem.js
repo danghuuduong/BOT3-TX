@@ -185,7 +185,7 @@ async function TableChinh_Update_UI(page, data) {
       // ===== CÁC CỘT CHUẨN (GIỮ NGUYÊN LOGIC CŨ) =====
       const cols = [
         item.id,
-        item.isFomo === "null" ? " " : item.isFomo ? "Đẹp" : "Bẻ🔥",
+        item.isFomo === "null" ? " " : item.isFomo ? "Thuận" : "Bẻ🔥",
         `${item.tiso}/${item.soLanChoDoi}`,
         "DOI_COLUMN",
         `${item.AnNumber}/${item.soLanMuonAn}${item.hoanthanh ? '😍' : ''}`,

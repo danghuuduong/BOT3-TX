@@ -613,7 +613,7 @@ async function ThucHienGiaoDich() {
   if (muaGiaLap !== "null") {
     const isWin = resultNew === muaGiaLap
     if (isWin) {
-      CauXauCount++;
+      CauDepCount++;
       // ArrayKQ_XAU.push(Xau);
       // if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
 
@@ -636,7 +636,7 @@ async function ThucHienGiaoDich() {
 
       muaGiaLap = "null"
     } else {
-      CauDepCount++;
+      CauXauCount++;
       // ArrayKQ_XAU.push(Dep); if (ArrayKQ_XAU.length > MAX_LENGTH) { ArrayKQ_XAU.shift() }
       LuutruLongmach.forEach(item => {
         if (item.type === Dep) item.tiso += 1;
@@ -1283,8 +1283,8 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
 
     box.innerHTML = `
       <div style="display:flex; gap:10px; border-bottom: 1px solid #eee; padding-bottom: 2px; justify-content: center; align-items: center;">
-        <span style="color:#00bb00; font-size:12px; font-weight:800;">Đẹp: ${depCount}</span>
-        <span style="color:#ff0000; font-size:12px; font-weight:800;">Xấu: ${xauCount}</span>
+        <span style="color:#00bb00; font-size:12px; font-weight:800;">Thuận: ${depCount}</span>
+        <span style="color:#ff0000; font-size:12px; font-weight:800;">Bẻ: ${xauCount}</span>
       </div>
       <div style="margin-top: 1px; border-bottom: 1px solid #eee; padding-bottom: 1px;">
         <table style="width: 100%; border-collapse: collapse; font-size: 10px; text-align: center;">
