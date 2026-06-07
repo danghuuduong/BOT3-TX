@@ -184,30 +184,30 @@ async function KetquaTXList_Update_UI(page, ArrayKQ) {
   }, ArrayKQ);
 }
 
-async function LongMachList_create(page) {
-  await page.evaluate(() => {
-    if (document.getElementById("ui-array-kq2")) return;
+// async function LongMachList_create(page) {
+//   await page.evaluate(() => {
+//     if (document.getElementById("ui-array-kq2")) return;
 
-    const box = document.createElement("div");
-    box.id = "ui-array-kq2";
+//     const box = document.createElement("div");
+//     box.id = "ui-array-kq2";
 
-    Object.assign(box.style, {
-      position: "fixed",
-      top: "70px",              // cách top 10px
-      left: "289px",              // căn giữa ngang
-      transform: "translateX(-50%)",
-      display: "flex",
-      gap: "1px",               // sát nhau
-      zIndex: 9999,
-      background: "rgba(255,255,255,0.9)",
-      padding: "6px 8px",
-      borderRadius: "6px",
-      border: "1px solid #fff"
-    });
+//     Object.assign(box.style, {
+//       position: "fixed",
+//       top: "70px",              // cách top 10px
+//       left: "289px",              // căn giữa ngang
+//       transform: "translateX(-50%)",
+//       display: "flex",
+//       gap: "1px",               // sát nhau
+//       zIndex: 9999,
+//       background: "rgba(255,255,255,0.9)",
+//       padding: "6px 8px",
+//       borderRadius: "6px",
+//       border: "1px solid #fff"
+//     });
 
-    document.body.appendChild(box);
-  });
-}
+//     document.body.appendChild(box);
+//   });
+// }
 
 async function LongMachList_Update_UI(page, ArrayKQ) {
   await page.evaluate((ArrayKQ) => {
@@ -298,7 +298,7 @@ async function SignalIndicator_Update(page, signals = []) {
         : "linear-gradient(135deg, #ffffff, #e8e8e8)"; // Trắng sứ, giảm chói
       box.style.border = isTai ? "2px solid #444444" : "2px solid #cccccc";
       box.style.animation = "signalPulse 1s ease-in-out infinite";
-      box.innerText = (isTai ? "⚫ TÀI" : "⚪ XỈU") + "  |  " + s.type;
+      box.innerText = (isTai ? "⚫ TÀI" : "⚪ XỈU");
     }
   }, signals);
 }
@@ -309,8 +309,8 @@ module.exports = {
   UI_Show_SoDu,
   KetquaTXList_Create,
   KetquaTXList_Update_UI,
-  LongMachList_create,
-  LongMachList_Update_UI,
+  // LongMachList_create,
+  // LongMachList_Update_UI,
   SignalIndicator_Create,
   SignalIndicator_Update
 };

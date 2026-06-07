@@ -105,14 +105,14 @@ async function TableChinh_Create(page) {
       const headers = [
         "ID", "Hướng", "Chờ", "Ngầm", "Thếp", "Nhân", "CaoNhất", "TổngVol",
         "Vol", "W/L", "Lãi", "LãiMax", "ÂmMax",
-        "Phí", "Cháy", "STOP"
+        "Phí", "Cháy", "TÀI KHOẢN", "STOP"
       ];
 
 
       const widths = [
         "18px", "35px", "25px", "50px", "38px", "28px", "45px", "50px",
         "35px", "50px", "40px", "40px", "40px",
-        "25px", "25px", "25px"
+        "25px", "25px", "40px", "25px"
       ];
 
 
@@ -125,7 +125,7 @@ async function TableChinh_Create(page) {
         Object.assign(th.style, {
           border: "1px solid #000",
           padding: "2px 2px",
-          background: "#eee",
+          background: (i === 5 || i === 10 || i === 11) ? "#87CEFA" : "#eee",
           textAlign: "center",
           whiteSpace: "nowrap",
           width: widths[i],
@@ -170,6 +170,10 @@ async function TableChinh_Update_UI(page, data) {
         ${item.countNgam || 0}/<input type="number" data-id="${item.id}" class="inp-ngam" value="${item.Ngam || 0}" style="width:22px; height:16px; font-size:10px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;">
       `;
 
+      const capSoNhanStrInput = `
+        <input type="number" data-id="${item.id}" class="inp-capsonhan" value="${item.capSoNhan || 1}" min="1" max="99" style="width:25px; height:16px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent; font-weight:bold; color:inherit;">
+      `;
+
       // ===== CÁC CỘT CHUẨN =====
       const huongLabel = !item.isReady
         ? "-"
@@ -189,7 +193,7 @@ async function TableChinh_Update_UI(page, data) {
         item.soLanChoDoi || 1,
         "NGAM_COLUMN",
         `${item.thep}/${item.maxThep}`,
-        item.capSoNhan || 1,
+        "CAP_SO_NHAN_COLUMN",
         item.GhiNhanCapSoNhanCaoNhat || 1,
         `${tongBoi}K`,
         `${item.vol.toFixed(1)}K`,
@@ -212,6 +216,14 @@ async function TableChinh_Update_UI(page, data) {
               window.postMessage({ type: "UPDATE_NGAM", stopId: item.id, value: e.target.value }, "*");
             });
           }
+        } else if (v === "CAP_SO_NHAN_COLUMN") {
+          td.innerHTML = capSoNhanStrInput;
+          const inpCapSoNhan = td.querySelector(".inp-capsonhan");
+          if (inpCapSoNhan) {
+            inpCapSoNhan.addEventListener("change", (e) => {
+              window.postMessage({ type: "UPDATE_CAPSONHAN", stopId: item.id, value: e.target.value }, "*");
+            });
+          }
         } else {
           td.innerText = v;
         }
@@ -222,6 +234,13 @@ async function TableChinh_Update_UI(page, data) {
           textAlign: "center",
           color: "inherit" // ✅ Kế thừa màu từ tr
         });
+
+        if (idx === 5 || idx === 10 || idx === 11) {
+          td.style.backgroundColor = "#f57f8eff"; // xanh nước biển sáng
+          // td.style.color = "#000"; // chữ đen cho dễ đọc
+          td.style.fontWeight = "bold";
+          td.style.opacity = "1";
+        }
 
         // ✅ Màu sắc cho cột Lãi (Index 10 sau khi bỏ cột Giao dịch)
         if (idx === 10) {
@@ -236,6 +255,29 @@ async function TableChinh_Update_UI(page, data) {
 
         tr.appendChild(td);
       });
+
+      // ===== TIỀN THẬT (CLICK ĐƯỢC) =====
+      const realTd = document.createElement("td");
+      realTd.innerText = item.isTienReal ? "Thật💲" : "Ảo";
+
+      Object.assign(realTd.style, {
+        border: "1px solid #000",
+        textAlign: "center",
+        cursor: "pointer",
+        userSelect: "none",
+        fontWeight: "bold",
+        // backgroundColor: item.isTienReal ? "#4caf50" : "transparent"
+      });
+
+      realTd.addEventListener("click", (e) => {
+        e.stopPropagation();
+        window.postMessage({
+          type: "TIEN_REAL_CLICK",
+          stopId: item.id
+        }, "*");
+      });
+
+      tr.appendChild(realTd);
 
       // ===== STOP (CLICK ĐƯỢC) =====
       const stopTd = document.createElement("td");
