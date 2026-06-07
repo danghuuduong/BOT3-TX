@@ -215,6 +215,7 @@ async function TableChinh_Update_UI(page, data) {
             inpNgam.addEventListener("change", (e) => {
               window.postMessage({ type: "UPDATE_NGAM", stopId: item.id, value: e.target.value }, "*");
             });
+
           }
         } else if (v === "CAP_SO_NHAN_COLUMN") {
           td.innerHTML = capSoNhanStrInput;
