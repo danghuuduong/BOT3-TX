@@ -68,9 +68,9 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0, mdd = 0) {
       box.id = "ui-so-du";
       Object.assign(box.style, {
         position: "fixed",
-        bottom: "58px",
-        right: "15px",
-        zIndex: 10000,
+        top: "145px",
+        left: "289px",
+        zIndex: 9000,
 
         /* ===== NỀN & TÁCH MÀU ===== */
         background: "rgba(255,255,255,0.5)",
@@ -124,10 +124,10 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0, mdd = 0) {
     `;
 
     /* ===== NHẤP NHÁY NHẸ ===== */
-    box.style.transform = "scale(1.4)";
     box.style.transition = "transform 0.2s ease";
+    box.style.transform = "translate(-50%,-50%) scale(1.4)";
     setTimeout(() => {
-      box.style.transform = "scale(1)";
+      box.style.transform = "translate(-50%,-50%) scale(1)";
     }, 200);
 
   }, { balance: soDu, pnl: profit, mddValue: mdd });
