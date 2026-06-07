@@ -184,11 +184,11 @@ const ArrayKQ = [];
 const ArrayKQ_XAU = [];
 let muaGiaLap = "null"
 
-let soDuTaiKhoan = 2730;
-let soDuLonNhat = 2730;
+let soDuTaiKhoan = 2000;
+let soDuLonNhat = 2000;
 let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
-let phanTramGiaoDich = 0.0735;
+let phanTramGiaoDich = 0.05;
 
 let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
@@ -781,19 +781,11 @@ async function ThucHienGiaoDich() {
           item.thep += 1;
 
           if (item.thep > item.maxThep) {
-            console.log(`Item ${item.id}, CHÁY (thep=${item.thep}, maxThep=${item.maxThep}) 
-              
-              --- capSoNhan= ${item.capSoNhan} ,maxCapSoNhan =${item.maxCapSoNhan} `);
             item.thep = 1;
             item.chay += 1
             item.minAnNumber += 1;
-
-            // 🔺 Nâng capSoNhan nếu chưa đạt maxCapSoNhan
             if (item.capSoNhan < item.maxCapSoNhan) {
-              console.log("Item ${item.id}, ", item.id);
               item.capSoNhan += 1;
-              console.log("nâng lên nè  ", item.capSoNhan);
-
             }
             // Ghi nhận capSoNhan cao nhất từ trước đến nay
             item.GhiNhanCapSoNhanCaoNhat = Math.max(item.GhiNhanCapSoNhanCaoNhat || 1, item.capSoNhan);
