@@ -1,17 +1,17 @@
-soDuTaiKhoan=3378.5200000001887
+soDuTaiKhoan=3363.5200000001887
 soDuLonNhat=3404.8200000001884
 phanTramGiaoDich=0.05
-profitAll=1378.5200000000234
+profitAll=1363.5200000000234
 totalProfitTP=1125.700000000002
 totalWinCount=1751
 maxDrawdown=45.5679932200979
 nguongTienDat=60000
 soTienMuonRut=2000
 tongTienDaRut=0
-CauDepCount=1950
+CauDepCount=1951
 CauXauCount=1949
 
-ArrayKQ=X,X,X,X,T,X,X,X,T,T,T,T,X,X,X,X,X,T,T,X,T,X,T,X,T,X,X,T,X,X,X,T,T,T,T,T,T,T,X,X,X,T,T,T,T,X,T,X,T,T,T,T,T,T,T,X,X,T,T,X,T,X,X,X,T,X,T,T,X,T,T,X,T,T,T,X,X,X,X,T,X,X,X,T,X,T,X,X,X,X,X,T,T,X,X,X,T,X,X,T
+ArrayKQ=X,X,X,T,X,X,X,T,T,T,T,X,X,X,X,X,T,T,X,T,X,T,X,T,X,X,T,X,X,X,T,T,T,T,T,T,T,X,X,X,T,T,T,T,X,T,X,T,T,T,T,T,T,T,X,X,T,T,X,T,X,X,X,T,X,T,T,X,T,T,X,T,T,T,X,X,X,X,T,X,X,X,T,X,T,X,X,X,X,X,T,T,X,X,X,T,X,X,T,X
 ArrayKQ_XAU=
 
 LuutruLongmach=
@@ -19,44 +19,44 @@ LuutruLongmach=
   {
     "id": 1,
     "isTrading": true,
-    "huong": "T",
-    "profit": 535.0799999999995,
-    "vol": 9,
+    "huong": "X",
+    "profit": 526.0799999999995,
+    "vol": 10,
     "win": 709,
-    "lost": 673,
+    "lost": 674,
     "isStop": false,
     "type": "A",
     "isFomo": true,
     "minAnNumber": -23,
     "isReady": true,
-    "AnNumber": -8,
+    "AnNumber": -9,
     "soLanMuonAn": 1,
     "hoanthanh": false,
     "soLanChoDoi": -7,
-    "tiso": 1,
-    "donVi": 9,
+    "tiso": 2,
+    "donVi": 10,
     "phiGD": 137.92000000000004,
     "isKhung": false
   },
   {
     "id": 2,
     "isTrading": true,
-    "huong": "T",
-    "profit": 65.87999999999987,
+    "huong": "X",
+    "profit": 59.87999999999987,
     "vol": 6,
     "win": 401,
-    "lost": 382,
+    "lost": 383,
     "isStop": false,
     "type": "A",
     "isFomo": true,
     "minAnNumber": -18,
     "isReady": true,
-    "AnNumber": -5,
+    "AnNumber": -6,
     "soLanMuonAn": 2,
     "hoanthanh": false,
     "soLanChoDoi": -4,
-    "tiso": 1,
-    "donVi": 6,
+    "tiso": 2,
+    "donVi": 7,
     "phiGD": 48.11999999999974,
     "isKhung": true
   },
@@ -77,7 +77,7 @@ LuutruLongmach=
     "soLanMuonAn": 1,
     "hoanthanh": true,
     "soLanChoDoi": 11,
-    "tiso": -1,
+    "tiso": -2,
     "donVi": 1,
     "phiGD": 364.5200000000016,
     "isKhung": false
@@ -99,7 +99,7 @@ LuutruLongmach=
     "soLanMuonAn": 2,
     "hoanthanh": true,
     "soLanChoDoi": 20,
-    "tiso": -1,
+    "tiso": -2,
     "donVi": 1,
     "phiGD": 79.92,
     "isKhung": true
