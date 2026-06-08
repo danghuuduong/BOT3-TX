@@ -600,7 +600,7 @@ async function UI_Reset(page) {
   await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
   await UI_Start(page);//Bắt đầu
 
-  await UI_ToolTitle_Create(page, "Tool 4 - 2xanh2đỏ-Block");
+  await UI_ToolTitle_Create(page, "Tool 6 - Cấp Số nhân - 2 Tài - 2 xỉu - là đánh");
 
   await TableChinh_Create(page);//Bắt đầu
   await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
@@ -737,8 +737,8 @@ async function ThucHienGiaoDich() {
         item.countNgam = 0; // Reset khi thắng
 
         if (!isVirtual) {
-          const winAmount = item.vol * 0.99;
-          const feeAmount = item.vol * 0.01;
+          const winAmount = item.vol * 0.98;
+          const feeAmount = item.vol * 0.02;
           soDuTaiKhoan += winAmount;
           profitAll += winAmount;
           item.phiGD += feeAmount;
