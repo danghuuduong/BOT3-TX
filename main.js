@@ -431,7 +431,7 @@ async function UI_Reset(page) {
 
       await KetquaTXList_Update_UI(page, ArrayKQ);
       // await LongMachList_Update_UI(page, ArrayKQ_XAU);
-      await TableChinh_Update_UI(page, LuutruLongmach);
+      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
 
       saveStateTXT();
@@ -505,7 +505,7 @@ async function UI_Reset(page) {
         soDuLonNhat,
         phanTramGiaoDich
       );
-      await TableChinh_Update_UI(page, LuutruLongmach);
+      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
 
     }
   );
@@ -516,7 +516,7 @@ async function UI_Reset(page) {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { isStop: !item.isStop });
-      await TableChinh_Update_UI(page, LuutruLongmach);
+      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
     }
     if (type === "TIEN_REAL_CLICK") {
       const item = LuutruLongmach.find(i => i.id === stopId);
@@ -546,21 +546,21 @@ async function UI_Reset(page) {
 
       saveStateTXT();
       await UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
-      await TableChinh_Update_UI(page, LuutruLongmach);
+      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
     }
     if (type === "UPDATE_SOLAN") {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { soLanChoDoi: Number(value) });
       saveStateTXT();
-      await TableChinh_Update_UI(page, LuutruLongmach);
+      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
     }
     if (type === "UPDATE_NGAM") {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { Ngam: Number(value) });
       saveStateTXT();
-      await TableChinh_Update_UI(page, LuutruLongmach);
+      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
     }
     if (type === "UPDATE_CAPSONHAN") {
       const item = LuutruLongmach.find(i => i.id === stopId);
@@ -569,7 +569,7 @@ async function UI_Reset(page) {
       handleUpdate_LongMachList(stopId, { capSoNhan: newVal });
       item.GhiNhanCapSoNhanCaoNhat = Math.max(item.GhiNhanCapSoNhanCaoNhat || 1, newVal);
       saveStateTXT();
-      await TableChinh_Update_UI(page, LuutruLongmach);
+      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
     }
   });
 
@@ -603,7 +603,7 @@ async function UI_Reset(page) {
   await UI_ToolTitle_Create(page, "Tool 6 - Cấp Số nhân - 2 Tài - 2 xỉu - là đánh");
 
   await TableChinh_Create(page);//Bắt đầu
-  await TableChinh_Update_UI(page, LuutruLongmach);//Bắt đầu
+  await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));//Bắt đầu
   await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
   await UI_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
 
@@ -801,7 +801,7 @@ async function ThucHienGiaoDich() {
           huong: "null",
           vol: 0,
         });
-        TableChinh_Update_UI(page, LuutruLongmach);
+        TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
       }
     }
   }
@@ -850,7 +850,7 @@ async function ThucHienGiaoDich() {
     }
   });
 
-  TableChinh_Update_UI(page, LuutruLongmach);
+  TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
   // =========================================================================== ĐẶT LỆNH ================================================================
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
@@ -905,7 +905,7 @@ async function ThucHienGiaoDich() {
 
   SignalIndicator_Update(page, isTT || isXX ? [{ huong: isTT ? T : X, type: 99 }] : []);
   UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
-  TableChinh_Update_UI(page, LuutruLongmach);
+  TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
   UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
   UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
   saveStateTXT();
@@ -998,7 +998,7 @@ async function ThucHienGiaoDich() {
 
     // Ghi nhận thu nhập tự động sau khi rút tiền thành công
     await ghiNhanThuNhap(soTienMuonRut);
-    await TableChinh_Update_UI(page, LuutruLongmach);
+    await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
 
   }
 }
@@ -1195,7 +1195,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
 
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
       // await LongMachList_Update_UI(page, ArrayKQ_XAU);
-      await TableChinh_Update_UI(page, LuutruLongmach);
+      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
       saveStateTXT();
     });
     page._resetTiSoExposed = true;
@@ -1213,7 +1213,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       // });
 
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
-      await TableChinh_Update_UI(page, LuutruLongmach);
+      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
       saveStateTXT();
     });
     page._resetMaxNhanExposed = true;

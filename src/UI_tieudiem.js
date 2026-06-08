@@ -146,8 +146,8 @@ async function TableChinh_Create(page) {
   });
 }
 
-async function TableChinh_Update_UI(page, data) {
-  await page.evaluate(({ rows }) => {
+async function TableChinh_Update_UI(page, data, baseVol = 1) {
+  await page.evaluate(({ rows, baseVol }) => {
     const tbody = document.getElementById("longmach-body");
     if (!tbody) return;
 
@@ -163,7 +163,6 @@ async function TableChinh_Update_UI(page, data) {
         tr.style.color = "#000000ff";
       } else {
         tr.style.color = "gray";
-        tr.style.opacity = "0.5";
       }
 
       const ngamStrInput = `
@@ -185,7 +184,7 @@ async function TableChinh_Update_UI(page, data) {
       for (let s = 1; s <= (item.maxThep || 1); s++) {
         tongHeSo += (heSoMap[s] || 0);
       }
-      const tongBoi = tongHeSo * (item.capSoNhan || 1);
+      const tongBoi = tongHeSo * (item.capSoNhan || 1) * baseVol;
 
       const cols = [
         item.id,
@@ -236,9 +235,13 @@ async function TableChinh_Update_UI(page, data) {
           color: "inherit" // ✅ Kế thừa màu từ tr
         });
 
+        if (!item.isReady) {
+          td.style.opacity = "0.6";
+        }
+
         if (idx === 5 || idx === 10 || idx === 11) {
           td.style.backgroundColor = "#f57f8eff"; // xanh nước biển sáng
-          // td.style.color = "#000"; // chữ đen cho dễ đọc
+          td.style.color = "#000"; // chữ đen cho dễ đọc
           td.style.fontWeight = "bold";
           td.style.opacity = "1";
         }
@@ -246,7 +249,7 @@ async function TableChinh_Update_UI(page, data) {
         // ✅ Màu sắc cho cột Lãi (Index 10 sau khi bỏ cột Giao dịch)
         if (idx === 10) {
           if (item.profit > 0) {
-            td.style.color = "#0cb30cff"; // xanh lá
+            td.style.color = "#078607ff"; // xanh lá
             td.style.fontWeight = "bold";
           } else if (item.profit < 0) {
             td.style.color = "#d81515ff"; // đỏ
@@ -270,6 +273,10 @@ async function TableChinh_Update_UI(page, data) {
         // backgroundColor: item.isTienReal ? "#4caf50" : "transparent"
       });
 
+      if (!item.isReady) {
+        realTd.style.opacity = "0.6";
+      }
+
       realTd.addEventListener("click", (e) => {
         e.stopPropagation();
         window.postMessage({
@@ -292,6 +299,10 @@ async function TableChinh_Update_UI(page, data) {
         fontWeight: "bold",
       });
 
+      if (!item.isReady) {
+        stopTd.style.opacity = "0.6";
+      }
+
       stopTd.addEventListener("click", (e) => {
         e.stopPropagation();
         window.postMessage({
@@ -304,7 +315,7 @@ async function TableChinh_Update_UI(page, data) {
 
       tbody.appendChild(tr);
     });
-  }, { rows: data });
+  }, { rows: data, baseVol });
 }
 
 async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeoutMs = 2000) {
@@ -364,7 +375,7 @@ async function UI_ToolTitle_Create(page, titleText) {
         top: "3px",
         left: "3px",
         zIndex: 10000,
-        background: "rgba(0, 0, 0, 0.7)",
+        background: "rgba(0, 0, 0, 0.6)",
         color: "#00ff00",
         padding: "5px 15px",
         fontSize: "18px",
