@@ -724,7 +724,7 @@ async function ThucHienGiaoDich() {
           }
 
           // ✅ Reset capSoNhan về 1 khi profit phục hồi về đỉnh cũ
-          if (item.profit > item.profitMax) {
+          if (item.profit >= item.profitMax) {
             item.capSoNhan = 1;
             item.profitMax = item.profit;
           }
@@ -763,7 +763,7 @@ async function ThucHienGiaoDich() {
 
           item.profit -= item.vol;
           const currentAm = item.profitMax - item.profit;
-
+          item.thep += 1;
 
           if (item.isTienReal) {
             soDuTaiKhoan -= item.vol;
@@ -772,21 +772,21 @@ async function ThucHienGiaoDich() {
             if (currentAm > (item.maxAm || 0)) {
               item.maxAm = currentAm;
             }
-          }
-          item.lost = (item.lost || 0) + 1;
-
-          // ✅ Chỉ tăng thép khi là lệnh THẬT
-          item.thep += 1;
-
-          if (item.thep > item.maxThep) {
-            item.thep = 1;
-            item.isChanVaoLenh = true
-            item.minAnNumber += 1;
             if (item.capSoNhan < item.maxCapSoNhan) {
               item.capSoNhan += 1;
             } else {
               item.capSoNhan = 1;
             }
+
+            item.lost = (item.lost || 0) + 1;
+          } else {
+            item.capSoNhan += 1;
+          }
+
+          if (item.thep > item.maxThep) {
+            item.thep = 1;
+            item.isChanVaoLenh = true
+            item.minAnNumber += 1;
 
             if (item.isTienReal) {
               item.chay += 1;
