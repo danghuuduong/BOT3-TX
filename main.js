@@ -715,14 +715,14 @@ async function ThucHienGiaoDich() {
           } else {
             if (item.type === Dep) {
               LuutruLongmach.forEach(item => {
-                if (item.type === Dep && !item.isKhung) item.soLanChoDoi += 1;
-                if (item.type === Xau && !item.isKhung) item.soLanChoDoi -= 1;
+                if (item.type === Dep && !item.isKhung) item.soLanChoDoi += 2;
+                if (item.type === Xau && !item.isKhung) item.soLanChoDoi -= 2;
               });
             }
             if (item.type === Xau) {
               LuutruLongmach.forEach(item => {
-                if (item.type === Xau && !item.isKhung) item.soLanChoDoi += 1;
-                if (item.type === Dep && !item.isKhung) item.soLanChoDoi -= 1;
+                if (item.type === Xau && !item.isKhung) item.soLanChoDoi += 2;
+                if (item.type === Dep && !item.isKhung) item.soLanChoDoi -= 2;
               });
             }
           }
@@ -803,12 +803,12 @@ async function ThucHienGiaoDich() {
       let extraVol = Math.floor(baseVol * 1.5);
       let itemVol = 0;
       if (item.isKhung) {
-        itemVol = baseVol * 6;
+        itemVol = baseVol * 12;
       } else {
         let currentTiso = item.donVi || 1;
-        itemVol = (currentTiso <= 50)
+        itemVol = (currentTiso <= 45)
           ? (currentTiso * baseVol)
-          : (50 * baseVol + (currentTiso - 50) * extraVol);
+          : (45 * baseVol + (currentTiso - 45) * extraVol);
       }
 
       item.tempVol = itemVol;
@@ -839,21 +839,21 @@ async function ThucHienGiaoDich() {
     lastNetVol = netVol; // Lưu lại netVol thực tế để tính phí khi TP
 
     // 4. Đặt lệnh trên sàn với phần Net Volume
-    // if (finalHuong !== "null" && netVol > 0) {
-    //   // Click chọn hướng (Tài hoặc Xỉu)
-    //   await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
-    //   await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
+    if (finalHuong !== "null" && netVol > 0) {
+      // Click chọn hướng (Tài hoặc Xỉu)
+      await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
+      await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
 
-    //   // Click volume
-    //   await clickTheoTinhVol(page, netVol, "🎯");
+      // Click volume
+      await clickTheoTinhVol(page, netVol, "🎯");
 
-    //   const delay = 50 + Math.floor(Math.random() * 200);
-    //   await page.waitForTimeout(delay);
+      const delay = 50 + Math.floor(Math.random() * 200);
+      await page.waitForTimeout(delay);
 
-    //   // Click Submit 1 lần duy nhất
-    //   await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-    //   await masterClick(page, X_Submit, Y_Submit);
-    // }
+      // Click Submit 1 lần duy nhất
+      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      await masterClick(page, X_Submit, Y_Submit);
+    }
 
     // 5. Cập nhật trạng thái giao dịch cho từng item (Dữ liệu vẫn tính như bình thường)
     for (const item of arrayNew) {
