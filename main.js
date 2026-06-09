@@ -772,18 +772,12 @@ async function ThucHienGiaoDich() {
             if (currentAm > (item.maxAm || 0)) {
               item.maxAm = currentAm;
             }
-            if (item.capSoNhan < item.maxCapSoNhan) {
-              item.capSoNhan += 1;
-            } else {
-              item.capSoNhan = 1;
-            }
-
             item.lost = (item.lost || 0) + 1;
-          } else {
-            item.capSoNhan += 1;
           }
 
           if (item.thep > item.maxThep) {
+
+
             item.thep = 1;
             item.isChanVaoLenh = true
             item.minAnNumber += 1;
@@ -791,6 +785,14 @@ async function ThucHienGiaoDich() {
             if (item.isTienReal) {
               item.chay += 1;
               item.GhiNhanCapSoNhanCaoNhat = Math.max(item.GhiNhanCapSoNhanCaoNhat || 1, item.capSoNhan);
+              if (item.capSoNhan < item.maxCapSoNhan) {
+                item.capSoNhan += 1;
+              } else {
+                item.capSoNhan = 1;
+              }
+
+            } else {
+              item.capSoNhan += 1;
             }
 
             if (!item.isTienReal && item.capSoNhan >= item.CapSonhanChoDoi) {
