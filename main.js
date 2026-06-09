@@ -199,83 +199,48 @@ const LuutruLongmach = [
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 2, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false
+    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
+    TienmuonAn: 0, CapSonhanChoDoi: 4
   },
-
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 3, thep: 1, maxThep: 2,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false
+    soLanChoDoi: 3, thep: 1, maxThep: 3,
+    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
+    TienmuonAn: 0, CapSonhanChoDoi: 3
   },
   {
     id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 3, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false
+    soLanChoDoi: 4, thep: 1, maxThep: 3,
+    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
+    TienmuonAn: 0, CapSonhanChoDoi: 2
   },
-
   {
     id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 4, thep: 1, maxThep: 2,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false
+    soLanChoDoi: 5, thep: 1, maxThep: 3,
+    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
+    TienmuonAn: 0, CapSonhanChoDoi: 2
   },
   {
     id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 0, type: Dep,
+    minAnNumber: 6, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 4, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false
+    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
+    TienmuonAn: 0, CapSonhanChoDoi: 2
   },
-
-
   {
     id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 5, thep: 1, maxThep: 2,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false
-  },
-  {
-    id: 7, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 5, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false
-  },
-
-
-  {
-    id: 8, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 6, thep: 1, maxThep: 2,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false
-  },
-  {
-    id: 9, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 6, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false
-  },
-  {
-    id: 10, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 7, thep: 1, maxThep: 2,
-    capSoNhan: 1, maxCapSoNhan: 6, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false
-  },
-  {
-    id: 11, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 0, type: Dep,
+    minAnNumber: 6, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 7, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false
+    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
+    TienmuonAn: 0, CapSonhanChoDoi: 2
   },
 ];
 
@@ -522,8 +487,6 @@ async function UI_Reset(page) {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
 
-      soDuTaiKhoan -= item.profit;
-
       handleUpdate_LongMachList(stopId, {
         isTienReal: !item.isTienReal,
         profit: 0,
@@ -751,6 +714,29 @@ async function ThucHienGiaoDich() {
             item.capSoNhan = 1;
             item.profitMax = item.profit;
           }
+
+          if (item.isTienReal && item.profit >= item.TienmuonAn && item.TienmuonAn > 0) {
+            handleUpdate_LongMachList(item.id, {
+              isTienReal: false,
+              profit: 0,
+              capSoNhan: 1,
+              GhiNhanCapSoNhanCaoNhat: 1,
+              isTrading: false,
+              huong: "null",
+              vol: 0,
+              win: 0,
+              lost: 0,
+              isReady: false,
+              hoanthanh: false,
+              countNgam: 0,
+              phiGD: 0,
+              thep: 1,
+              profitMax: 0,
+              maxAm: 0,
+              chay: 0
+            });
+            continue;
+          }
         }
 
         item.hoanthanh = true;
@@ -788,7 +774,30 @@ async function ThucHienGiaoDich() {
             // Ghi nhận capSoNhan cao nhất từ trước đến nay
             item.GhiNhanCapSoNhanCaoNhat = Math.max(item.GhiNhanCapSoNhanCaoNhat || 1, item.capSoNhan);
 
-            item.isChanVaoLenh = true; // Chỉ khóa khi bị CHÁY
+            if (!item.isTienReal && item.capSoNhan >= item.CapSonhanChoDoi) {
+              handleUpdate_LongMachList(item.id, {
+                isTienReal: true,
+                profit: 0,
+                capSoNhan: 1,
+                GhiNhanCapSoNhanCaoNhat: 1,
+                isTrading: false,
+                huong: "null",
+                vol: 0,
+                win: 0,
+                lost: 0,
+                isReady: false,
+                hoanthanh: false,
+                countNgam: 0,
+                phiGD: 0,
+                thep: 1,
+                profitMax: 0,
+                maxAm: 0,
+                chay: 0
+              });
+              continue;
+            } else {
+              item.isChanVaoLenh = true; // Chỉ khóa khi bị CHÁY
+            }
           }
         } else {
           item.countNgam = (item.countNgam || 0) + 1;
@@ -879,6 +888,7 @@ async function ThucHienGiaoDich() {
         isTrading: true,
         huong: huongDanhNew,
         vol: volReal,
+        TienmuonAn: baseVol * 7
       });
     }
 
