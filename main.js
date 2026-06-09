@@ -188,19 +188,27 @@ let soDuTaiKhoan = 2000;
 let soDuLonNhat = 2000;
 let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
-let phanTramGiaoDich = 0.05;
+let TienCoban = 0.05;
 
 let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
 
 const LuutruLongmach = [
   {
+    id: 0, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 1, thep: 1, maxThep: 3,
+    capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
+    TienmuonAn: 0, CapSonhanChoDoi: 5, profitMaxReal: 0
+  },
+  {
     id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 2, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 4
+    TienmuonAn: 0, CapSonhanChoDoi: 4, profitMaxReal: 0
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
@@ -208,7 +216,7 @@ const LuutruLongmach = [
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 3, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 3
+    TienmuonAn: 0, CapSonhanChoDoi: 3, profitMaxReal: 0
   },
   {
     id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
@@ -216,7 +224,7 @@ const LuutruLongmach = [
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 4, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2
+    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0
   },
   {
     id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
@@ -224,7 +232,7 @@ const LuutruLongmach = [
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 5, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2
+    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0
   },
   {
     id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
@@ -232,7 +240,7 @@ const LuutruLongmach = [
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 4, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2
+    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0
   },
   {
     id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
@@ -240,7 +248,7 @@ const LuutruLongmach = [
     isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 7, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 5, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2
+    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0
   },
 ];
 
@@ -396,7 +404,7 @@ async function UI_Reset(page) {
 
       await KetquaTXList_Update_UI(page, ArrayKQ);
       // await LongMachList_Update_UI(page, ArrayKQ_XAU);
-      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
 
       saveStateTXT();
@@ -454,7 +462,7 @@ async function UI_Reset(page) {
     ) => {
       soDuTaiKhoan = soDu;
       soDuLonNhat = soDuMax;
-      phanTramGiaoDich = percent;
+      TienCoban = percent;
 
       // ✅ GẮN VÀO BIẾN GLOBAL (KHÔNG LOGIC)
       nguongTienDat = nguongRut;
@@ -468,9 +476,9 @@ async function UI_Reset(page) {
         page,
         soDuTaiKhoan,
         soDuLonNhat,
-        phanTramGiaoDich
+        TienCoban
       );
-      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
 
     }
   );
@@ -481,7 +489,7 @@ async function UI_Reset(page) {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { isStop: !item.isStop });
-      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
     }
     if (type === "TIEN_REAL_CLICK") {
       const item = LuutruLongmach.find(i => i.id === stopId);
@@ -508,22 +516,22 @@ async function UI_Reset(page) {
       });
 
       saveStateTXT();
-      await UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
-      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+      await UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, TienCoban);
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
     }
     if (type === "UPDATE_SOLAN") {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { soLanChoDoi: Number(value) });
       saveStateTXT();
-      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
     }
     if (type === "UPDATE_NGAM") {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { Ngam: Number(value) });
       saveStateTXT();
-      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
     }
     if (type === "UPDATE_CAPSONHAN") {
       const item = LuutruLongmach.find(i => i.id === stopId);
@@ -532,7 +540,15 @@ async function UI_Reset(page) {
       handleUpdate_LongMachList(stopId, { capSoNhan: newVal });
       item.GhiNhanCapSoNhanCaoNhat = Math.max(item.GhiNhanCapSoNhanCaoNhat || 1, newVal);
       saveStateTXT();
-      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
+    }
+    if (type === "UPDATE_CHONHAN") {
+      const item = LuutruLongmach.find(i => i.id === stopId);
+      if (!item) return;
+      const newVal = Number(value);
+      handleUpdate_LongMachList(stopId, { CapSonhanChoDoi: newVal });
+      saveStateTXT();
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
     }
   });
 
@@ -566,9 +582,9 @@ async function UI_Reset(page) {
   await UI_ToolTitle_Create(page, "Tool 6 - Cấp Số nhân - 2 Tài - 2 xỉu - là đánh");
 
   await TableChinh_Create(page);//Bắt đầu
-  await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));//Bắt đầu
+  await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);//Bắt đầu
   await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
-  await UI_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
+  await UI_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, TienCoban);
 
   async function injectMouseTracker(page) {
     for (const frame of page.frames()) {
@@ -702,11 +718,15 @@ async function ThucHienGiaoDich() {
         if (!isVirtual) {
           const winAmount = item.vol * 0.98;
           const feeAmount = item.vol * 0.02;
-          soDuTaiKhoan += winAmount;
-          profitAll += winAmount;
+          // soDuTaiKhoan += winAmount;
+          // profitAll += winAmount;
           item.phiGD += feeAmount;
           item.profit += winAmount;
-
+          if (item.isTienReal) {
+            item.profitMaxReal += winAmount;
+            soDuTaiKhoan += winAmount;
+            profitAll += winAmount;
+          }
           item.win = (item.win || 0) + 1; // Chỉ tăng win khi là lệnh thật
 
           // ✅ Reset capSoNhan về 1 khi profit phục hồi về đỉnh cũ
@@ -752,12 +772,16 @@ async function ThucHienGiaoDich() {
 
       } else {
         if (!isVirtual) {
-          soDuTaiKhoan -= item.vol;
-          profitAll -= item.vol;
+
           item.profit -= item.vol;
           const currentAm = item.profitMax - item.profit;
           if (currentAm > (item.maxAm || 0)) {
             item.maxAm = currentAm;
+          }
+          if (item.isTienReal) {
+            soDuTaiKhoan -= item.vol;
+            profitAll -= item.vol;
+            item.profitMaxReal -= item.vol;
           }
           item.lost = (item.lost || 0) + 1;
 
@@ -766,11 +790,15 @@ async function ThucHienGiaoDich() {
 
           if (item.thep > item.maxThep) {
             item.thep = 1;
-            item.chay += 1
+            item.chay += 1;
+            item.isChanVaoLenh = true
             item.minAnNumber += 1;
             if (item.capSoNhan < item.maxCapSoNhan) {
               item.capSoNhan += 1;
+            } else {
+              item.capSoNhan = 1;
             }
+
             // Ghi nhận capSoNhan cao nhất từ trước đến nay
             item.GhiNhanCapSoNhanCaoNhat = Math.max(item.GhiNhanCapSoNhanCaoNhat || 1, item.capSoNhan);
 
@@ -792,12 +820,12 @@ async function ThucHienGiaoDich() {
                 thep: 1,
                 profitMax: 0,
                 maxAm: 0,
-                chay: 0
+                chay: 0,
+                isChanVaoLenh: true
               });
               continue;
-            } else {
-              item.isChanVaoLenh = true; // Chỉ khóa khi bị CHÁY
             }
+
           }
         } else {
           item.countNgam = (item.countNgam || 0) + 1;
@@ -810,7 +838,7 @@ async function ThucHienGiaoDich() {
           huong: "null",
           vol: 0,
         });
-        TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+        TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
       }
     }
   }
@@ -859,7 +887,7 @@ async function ThucHienGiaoDich() {
     }
   });
 
-  TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+  TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
   // =========================================================================== ĐẶT LỆNH ================================================================
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
@@ -874,7 +902,7 @@ async function ThucHienGiaoDich() {
         finalHuong = huongDanhNew;
       }
 
-      const baseVol = handleGetTien(soDuLonNhat, phanTramGiaoDich);
+      const baseVol = TienCoban;
       const heSoMap = { 1: 1, 2: 3, 3: 7, 4: 14, 5: 30 };
       const volReal = baseVol * (heSoMap[item.thep] || 1) * (item.capSoNhan || 1);
 
@@ -893,16 +921,16 @@ async function ThucHienGiaoDich() {
     }
 
     // Thực hiện click tổng vol thật sau vòng lặp (vì bot chỉ đánh 1 hướng mỗi phiên)
-    if (totalVol_Real > 0 && finalHuong) {
-      await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
-      await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
+    // if (totalVol_Real > 0 && finalHuong) {
+    //   await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
+    //   await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
 
-      await clickTheoTinhVol(page, totalVol_Real, "🎯");
-      await page.waitForTimeout(50 + Math.floor(Math.random() * 200));
+    //   await clickTheoTinhVol(page, totalVol_Real, "🎯");
+    //   await page.waitForTimeout(50 + Math.floor(Math.random() * 200));
 
-      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-      await masterClick(page, X_Submit, Y_Submit);
-    }
+    //   await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+    //   await masterClick(page, X_Submit, Y_Submit);
+    // }
   }
 
 
@@ -915,8 +943,8 @@ async function ThucHienGiaoDich() {
 
   SignalIndicator_Update(page, isTT || isXX ? [{ huong: isTT ? T : X, type: 99 }] : []);
   UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
-  TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
-  UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, phanTramGiaoDich);
+  TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
+  UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, TienCoban);
   UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
   saveStateTXT();
 
@@ -1003,12 +1031,12 @@ async function ThucHienGiaoDich() {
       page,
       soDuTaiKhoan,
       soDuLonNhat,
-      phanTramGiaoDich
+      TienCoban
     );
 
     // Ghi nhận thu nhập tự động sau khi rút tiền thành công
     await ghiNhanThuNhap(soTienMuonRut);
-    await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+    await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
 
   }
 }
@@ -1205,7 +1233,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
 
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
       // await LongMachList_Update_UI(page, ArrayKQ_XAU);
-      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
       saveStateTXT();
     });
     page._resetTiSoExposed = true;
@@ -1223,7 +1251,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       // });
 
       await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
-      await TableChinh_Update_UI(page, LuutruLongmach, handleGetTien(soDuLonNhat, phanTramGiaoDich));
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
       saveStateTXT();
     });
     page._resetMaxNhanExposed = true;
@@ -1237,7 +1265,7 @@ async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
       Object.assign(box.style, {
         position: "fixed",
         bottom: "10px",
-        left: "750px",
+        left: "880px",
         zIndex: 10000,
         background: "rgba(0,0,0,0.85)",
         backdropFilter: "blur(4px)",
@@ -1403,14 +1431,14 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
         </div>
 
         <div style="margin-bottom:5px">
-          % giao dịch
+          Tiền Cơ Bản
           <input id="inp-percent" type="number"
             style="width:100%;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
             step="0.01"
             value="${percent}" />
         </div>
 
-        <div style="margin-bottom:10px">
+        <div style="margin-bottom:10px; display:none;">
           💰 Tiền giao dịch:
           <span id="tien-gd" style="color:#dc3545;font-weight:bold">
             ${tienGD}
@@ -1505,9 +1533,7 @@ async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
 
       const spanTien = document.getElementById("tien-gd");
       if (spanTien) {
-        spanTien.innerText = percent
-          ? Math.floor(soDuMax * percent / 100)
-          : 0;
+        spanTien.innerText = percent || 0;
       }
 
       const spanRut = document.getElementById("tong-da-rut");
@@ -1531,7 +1557,7 @@ function saveStateTXT() {
 
     lines.push(`soDuTaiKhoan=${soDuTaiKhoan}`);
     lines.push(`soDuLonNhat=${soDuLonNhat}`);
-    lines.push(`phanTramGiaoDich=${phanTramGiaoDich}`);
+    lines.push(`TienCoban=${TienCoban}`);
     lines.push(`profitAll=${profitAll}`);
     lines.push(`maxDrawdown=${maxDrawdown}`);
 
@@ -1577,7 +1603,7 @@ function loadStateTXT() {
 
     soDuTaiKhoan = Number(getVal("soDuTaiKhoan")) || soDuTaiKhoan;
     soDuLonNhat = Number(getVal("soDuLonNhat")) || soDuLonNhat;
-    phanTramGiaoDich = Number(getVal("phanTramGiaoDich")) || phanTramGiaoDich;
+    TienCoban = Number(getVal("TienCoban")) || TienCoban;
     profitAll = Number(getVal("profitAll")) || profitAll;
     maxDrawdown = Number(getVal("maxDrawdown")) || 0;
 

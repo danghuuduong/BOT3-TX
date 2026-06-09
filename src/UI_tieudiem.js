@@ -104,15 +104,15 @@ async function TableChinh_Create(page) {
 
       const headers = [
         "ID", "Hướng", "Chờ", "Ngầm", "Thếp", "Nhân", "CaoNhất", "TổngVol",
-        "Vol", "W/L", "Lãi", "LãiMax", "ÂmMax",
-        "Phí", "Cháy", "TÀI KHOẢN", "STOP"
+        "Vol", "W/L", "Lãi", "LãiMax", "LãiMReal", "ÂmMax",
+        "Phí", "Cháy", "TÀI KHOẢN", "MụcTiêu", "ChờNhân", "STOP"
       ];
 
 
       const widths = [
         "18px", "35px", "25px", "50px", "38px", "28px", "45px", "50px",
-        "35px", "50px", "40px", "40px", "40px",
-        "25px", "25px", "40px", "25px"
+        "35px", "50px", "40px", "40px", "45px", "40px",
+        "25px", "25px", "40px", "45px", "40px", "25px"
       ];
 
 
@@ -125,7 +125,7 @@ async function TableChinh_Create(page) {
         Object.assign(th.style, {
           border: "1px solid #000",
           padding: "2px 2px",
-          background: (i === 5 || i === 10 || i === 11) ? "#87CEFA" : "#eee",
+          background: (i === 5 || i === 10 || i === 11 || i === 12) ? "#87CEFA" : "#eee",
           textAlign: "center",
           whiteSpace: "nowrap",
           width: widths[i],
@@ -199,6 +199,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
         `${item.win}/${item.lost}`,
         item.profit.toFixed(1),
         item.profitMax.toFixed(1),
+        (item.profitMaxReal || 0).toFixed(1),
         (item.maxAm || 0).toFixed(1),
         item.phiGD.toFixed(1),
         item.chay || 0,
@@ -239,8 +240,12 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
           td.style.opacity = "0.6";
         }
 
-        if (idx === 5 || idx === 10 || idx === 11) {
+        if (idx === 5 || idx === 10 || idx === 11 || idx === 12) {
+
           td.style.backgroundColor = "#f57f8eff"; // xanh nước biển sáng
+          if (idx === 12) {
+            td.style.backgroundColor = "#14ff76ff"; // xanh nước biển sáng
+          }
           td.style.color = "#000"; // chữ đen cho dễ đọc
           td.style.fontWeight = "bold";
           td.style.opacity = "1";
@@ -286,6 +291,28 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       });
 
       tr.appendChild(realTd);
+
+      // ===== TIỀN MUỐN ĂN =====
+      const tienMuonAnTd = document.createElement("td");
+      tienMuonAnTd.innerText = (item.TienmuonAn || 0).toFixed(1);
+      Object.assign(tienMuonAnTd.style, { border: "1px solid #000", textAlign: "center" });
+      if (!item.isReady) tienMuonAnTd.style.opacity = "0.6";
+      tr.appendChild(tienMuonAnTd);
+
+      // ===== CHỜ NHÂN =====
+      const choNhanTd = document.createElement("td");
+      choNhanTd.innerHTML = `
+        <input type="number" data-id="${item.id}" class="inp-chonhan" value="${item.CapSonhanChoDoi || 1}" min="1" max="99" style="width:25px; height:16px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent; font-weight:bold; color:inherit;">
+      `;
+      Object.assign(choNhanTd.style, { border: "1px solid #000", textAlign: "center" });
+      if (!item.isReady) choNhanTd.style.opacity = "0.6";
+      const inpChoNhan = choNhanTd.querySelector(".inp-chonhan");
+      if (inpChoNhan) {
+        inpChoNhan.addEventListener("change", (e) => {
+          window.postMessage({ type: "UPDATE_CHONHAN", stopId: item.id, value: e.target.value }, "*");
+        });
+      }
+      tr.appendChild(choNhanTd);
 
       // ===== STOP (CLICK ĐƯỢC) =====
       const stopTd = document.createElement("td");
