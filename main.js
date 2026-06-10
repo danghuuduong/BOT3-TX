@@ -759,7 +759,7 @@ async function ThucHienGiaoDich() {
 
   // Tính totalProfitTP 1 lần duy nhất sau vòng lặp (dù bao nhiêu item non-Khung thắng)
   if (hasNonKhungWin) {
-    let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
+    let baseVol = Number(phanTramGiaoDich);
     let realFee = lastNetVol * 0.02; // 2% của tổng netVol thực tế đặt trên sàn
     totalProfitTP += (baseVol - realFee);
     totalWinCount += 1;
@@ -799,7 +799,7 @@ async function ThucHienGiaoDich() {
     let totalXiuVol = 0;
 
     for (const item of arrayNew) {
-      let baseVol = Math.floor(soDuLonNhat * (phanTramGiaoDich / 100));
+      let baseVol = Number(phanTramGiaoDich);
       let extraVol = Math.floor(baseVol * 1.5);
       let itemVol = 0;
       if (item.isKhung) {
@@ -1439,18 +1439,11 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
         </div>
 
         <div style="margin-bottom:5px">
-          % giao dịch
+          Tiền giao dịch (Cố định)
           <input id="inp-percent" type="number"
             style="width:100%;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
-            step="0.01"
+            step="1"
             value="${percent}" />
-        </div>
-
-        <div style="margin-bottom:10px">
-          💰 Tiền giao dịch:
-          <span id="tien-gd" style="color:#dc3545;font-weight:bold">
-            ${tienGD}
-          </span>
         </div>
 
         <div style="margin-bottom:10px">
@@ -1541,9 +1534,7 @@ async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
 
       const spanTien = document.getElementById("tien-gd");
       if (spanTien) {
-        spanTien.innerText = percent
-          ? Math.floor(soDuMax * percent / 100)
-          : 0;
+        // removed
       }
 
       const spanRut = document.getElementById("tong-da-rut");
