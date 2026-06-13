@@ -584,12 +584,17 @@ async function CheckColor_X_Y() {
     const hex = "#" + [r, g, b].map(v => v.toString(16).padStart(2, "0")).join("");
 
     if (hex) {
-      const ketqua = handleGetColor_TX(r, g, b)
+      const ketqua = handleGetColor_TX(hex)
       if (ketqua !== "null") {
-        ArrayKQ.push(ketqua === "black" ? T : X);
-        if (ArrayKQ.length > 100) { ArrayKQ.shift() }
-        await KetquaTXList_Update_UI(page, ArrayKQ);
-        await ThucHienGiaoDich();
+        if (ketqua === "tai" || ketqua === "xiu") {
+          ArrayKQ.push(ketqua === "tai" ? T : X);
+          if (ArrayKQ.length > 100) { ArrayKQ.shift() }
+          await KetquaTXList_Update_UI(page, ArrayKQ);
+          await ThucHienGiaoDich();
+        } else {
+          console.clear("")
+          console.log("Game Bị lỗi , reset gấp");
+        }
       }
     }
   } catch (err) {

@@ -387,10 +387,9 @@ async function updateButton(page, text, color) {
 }
 
 // ================= COLOR =================
-function handleGetColor_TX(r, g, b) {
-  const avg = (r + g + b) / (3 * 255);
-  if (avg > 0.85) return "white";
-  if (avg < 0.2) return "black";
+function handleGetColor_TX(hex) {
+  if (hex === "#000000") return "tai";
+  if (hex === "#fff7ec") return "xiu";
   return "null";
 }
 
