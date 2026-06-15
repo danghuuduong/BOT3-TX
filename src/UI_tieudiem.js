@@ -103,16 +103,13 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Hướng", "Chờ", "Ngầm", "Thếp", "Nhân", "CaoNhất", "TổngVol",
-        "Vol", "W/L", "Lãi", "LãiMax", "LãiMReal", "ÂmMax",
-        "Phí", "Cháy", "TÀI KHOẢN", "MụcTiêu", "ChờNhân", "Trend", "STOP"
+        "ID", "Hướng", "MôHình", "Ngâm", "Vol", "W/L", 
+        "Lãi", "LãiMax", "ÂmMax", "Phí", "STOP"
       ];
 
-
       const widths = [
-        "18px", "35px", "25px", "50px", "38px", "28px", "45px", "50px",
-        "35px", "50px", "40px", "40px", "45px", "40px",
-        "25px", "25px", "40px", "45px", "40px", "35px", "25px"
+        "18px", "35px", "35px", "30px", "35px", "35px",
+        "40px", "40px", "40px", "25px", "25px"
       ];
 
 
@@ -125,7 +122,7 @@ async function TableChinh_Create(page) {
         Object.assign(th.style, {
           border: "1px solid #000",
           padding: "2px 2px",
-          background: (i === 5 || i === 10 || i === 11 || i === 12) ? "#87CEFA" : "#eee",
+          background: (i === 6 || i === 7) ? "#87CEFA" : "#eee",
           textAlign: "center",
           whiteSpace: "nowrap",
           width: widths[i],
@@ -165,69 +162,27 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
         tr.style.color = "gray";
       }
 
-      const ngamStrInput = `
-        ${item.countNgam || 0}/<input type="number" data-id="${item.id}" class="inp-ngam" value="${item.Ngam || 0}" style="width:22px; height:16px; font-size:10px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent;">
-      `;
-
-      const capSoNhanStrInput = `
-        <input type="number" data-id="${item.id}" class="inp-capsonhan" value="${item.capSoNhan || 1}" min="1" max="99" style="width:25px; height:16px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent; font-weight:bold; color:inherit;">
-      `;
-
       // ===== CÁC CỘT CHUẨN =====
       const huongLabel = !item.isReady
         ? "-"
         : item.huong === "T" ? "⚫ T" : item.huong === "X" ? "⚪ X" : "-";
 
-      // Tính TổngVol: sum hệ số từ thép 1 → maxThep, nhân cấp số nhân
-      const heSoMap = { 1: 1, 2: 3, 3: 7, 4: 14, 5: 30 };
-      let tongHeSo = 0;
-      for (let s = 1; s <= (item.maxThep || 1); s++) {
-        tongHeSo += (heSoMap[s] || 0);
-      }
-      const tongBoi = tongHeSo * (item.capSoNhan || 1) * baseVol;
-
       const cols = [
         item.id,
         `${huongLabel}${item.hoanthanh ? ' 😍' : ''}`,
         item.soLanChoDoi || 1,
-        "NGAM_COLUMN",
-        `${item.thep}/${item.maxThep}`,
-        "CAP_SO_NHAN_COLUMN",
-        item.GhiNhanCapSoNhanCaoNhat || 1,
-        `${tongBoi}K`,
+        item.countNgam || 0,
         `${item.vol.toFixed(1)}K`,
         `${item.win}/${item.lost}`,
         item.profit.toFixed(1),
         item.profitMax.toFixed(1),
-        (item.profitMaxReal || 0).toFixed(1),
         (item.maxAm || 0).toFixed(1),
         item.phiGD.toFixed(1),
-        item.chay || 0,
       ];
-
 
       cols.forEach((v, idx) => {
         const td = document.createElement("td");
-        if (v === "NGAM_COLUMN") {
-          td.innerHTML = ngamStrInput;
-          const inpNgam = td.querySelector(".inp-ngam");
-          if (inpNgam) {
-            inpNgam.addEventListener("change", (e) => {
-              window.postMessage({ type: "UPDATE_NGAM", stopId: item.id, value: e.target.value }, "*");
-            });
-
-          }
-        } else if (v === "CAP_SO_NHAN_COLUMN") {
-          td.innerHTML = capSoNhanStrInput;
-          const inpCapSoNhan = td.querySelector(".inp-capsonhan");
-          if (inpCapSoNhan) {
-            inpCapSoNhan.addEventListener("change", (e) => {
-              window.postMessage({ type: "UPDATE_CAPSONHAN", stopId: item.id, value: e.target.value }, "*");
-            });
-          }
-        } else {
-          td.innerText = v;
-        }
+        td.innerText = v;
 
         Object.assign(td.style, {
           border: "1px solid #000",  // màu đen
@@ -240,19 +195,15 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
           td.style.opacity = "0.6";
         }
 
-        if (idx === 5 || idx === 10 || idx === 11 || idx === 12) {
-
+        if (idx === 6 || idx === 7) {
           td.style.backgroundColor = "#f57f8eff"; // xanh nước biển sáng
-          if (idx === 12) {
-            td.style.backgroundColor = "#14ff76ff"; // xanh nước biển sáng
-          }
           td.style.color = "#000"; // chữ đen cho dễ đọc
           td.style.fontWeight = "bold";
           td.style.opacity = "1";
         }
 
-        // ✅ Màu sắc cho cột Lãi (Index 10 sau khi bỏ cột Giao dịch)
-        if (idx === 10) {
+        // ✅ Màu sắc cho cột Lãi (Index 6)
+        if (idx === 6) {
           if (item.profit > 0) {
             td.style.color = "#078607ff"; // xanh lá
             td.style.fontWeight = "bold";
@@ -265,71 +216,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
         tr.appendChild(td);
       });
 
-      // ===== TIỀN THẬT (CLICK ĐƯỢC) =====
-      const realTd = document.createElement("td");
-      realTd.innerText = item.isTienReal ? "Thật💲" : "Ảo";
-
-      Object.assign(realTd.style, {
-        border: "1px solid #000",
-        textAlign: "center",
-        cursor: "pointer",
-        userSelect: "none",
-        fontWeight: "bold",
-        // backgroundColor: item.isTienReal ? "#4caf50" : "transparent"
-      });
-
-      if (!item.isReady) {
-        realTd.style.opacity = "0.6";
-      }
-
-      realTd.addEventListener("click", (e) => {
-        e.stopPropagation();
-        window.postMessage({
-          type: "TIEN_REAL_CLICK",
-          stopId: item.id
-        }, "*");
-      });
-
-      tr.appendChild(realTd);
-
-      // ===== TIỀN MUỐN ĂN =====
-      const tienMuonAnTd = document.createElement("td");
-      tienMuonAnTd.innerText = (item.TienmuonAn || 0).toFixed(1);
-      Object.assign(tienMuonAnTd.style, { border: "1px solid #000", textAlign: "center" });
-      if (!item.isReady) tienMuonAnTd.style.opacity = "0.6";
-      tr.appendChild(tienMuonAnTd);
-
-      // ===== CHỜ NHÂN =====
-      const choNhanTd = document.createElement("td");
-      choNhanTd.innerHTML = `
-        <input type="number" data-id="${item.id}" class="inp-chonhan" value="${item.CapSonhanChoDoi || 1}" min="1" max="99" style="width:25px; height:16px; font-size:11px; padding:0; text-align:center; border:1px solid #999; border-radius:2px; background:transparent; font-weight:bold; color:inherit;">
-      `;
-      Object.assign(choNhanTd.style, { border: "1px solid #000", textAlign: "center" });
-      if (!item.isReady) choNhanTd.style.opacity = "0.6";
-      const inpChoNhan = choNhanTd.querySelector(".inp-chonhan");
-      if (inpChoNhan) {
-        inpChoNhan.addEventListener("change", (e) => {
-          window.postMessage({ type: "UPDATE_CHONHAN", stopId: item.id, value: e.target.value }, "*");
-        });
-      }
-      tr.appendChild(choNhanTd);
-
-      // ===== TREND (CLICK ĐƯỢC) =====
-      const trendTd = document.createElement("td");
-      trendTd.innerText = item.isTrend ? "📈" : "📉";
-      Object.assign(trendTd.style, {
-        border: "1px solid #000",
-        textAlign: "center",
-        cursor: "pointer",
-        userSelect: "none",
-        fontWeight: "bold",
-      });
-      if (!item.isReady) trendTd.style.opacity = "0.6";
-      trendTd.addEventListener("click", (e) => {
-        e.stopPropagation();
-        window.postMessage({ type: "TREND_CLICK", stopId: item.id }, "*");
-      });
-      tr.appendChild(trendTd);
+      // Xóa hoàn toàn việc render cột Tiền Thật, Tiền muốn ăn, Chờ Nhân, Trend
 
       // ===== STOP (CLICK ĐƯỢC) =====
       const stopTd = document.createElement("td");
