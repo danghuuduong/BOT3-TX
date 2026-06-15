@@ -105,14 +105,14 @@ async function TableChinh_Create(page) {
       const headers = [
         "ID", "Hướng", "Chờ", "Ngầm", "Thếp", "Nhân", "CaoNhất", "TổngVol",
         "Vol", "W/L", "Lãi", "LãiMax", "LãiMReal", "ÂmMax",
-        "Phí", "Cháy", "TÀI KHOẢN", "MụcTiêu", "ChờNhân", "STOP"
+        "Phí", "Cháy", "TÀI KHOẢN", "MụcTiêu", "ChờNhân", "Trend", "STOP"
       ];
 
 
       const widths = [
         "18px", "35px", "25px", "50px", "38px", "28px", "45px", "50px",
         "35px", "50px", "40px", "40px", "45px", "40px",
-        "25px", "25px", "40px", "45px", "40px", "25px"
+        "25px", "25px", "40px", "45px", "40px", "35px", "25px"
       ];
 
 
@@ -313,6 +313,23 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
         });
       }
       tr.appendChild(choNhanTd);
+
+      // ===== TREND (CLICK ĐƯỢC) =====
+      const trendTd = document.createElement("td");
+      trendTd.innerText = item.isTrend ? "📈" : "📉";
+      Object.assign(trendTd.style, {
+        border: "1px solid #000",
+        textAlign: "center",
+        cursor: "pointer",
+        userSelect: "none",
+        fontWeight: "bold",
+      });
+      if (!item.isReady) trendTd.style.opacity = "0.6";
+      trendTd.addEventListener("click", (e) => {
+        e.stopPropagation();
+        window.postMessage({ type: "TREND_CLICK", stopId: item.id }, "*");
+      });
+      tr.appendChild(trendTd);
 
       // ===== STOP (CLICK ĐƯỢC) =====
       const stopTd = document.createElement("td");

@@ -197,58 +197,58 @@ const LuutruLongmach = [
   {
     id: 0, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 1, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 5, profitMaxReal: 0
+    TienmuonAn: 0, CapSonhanChoDoi: 5, profitMaxReal: 0, isTrend: false
   },
   {
     id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 2, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 4, profitMaxReal: 0
+    TienmuonAn: 0, CapSonhanChoDoi: 4, profitMaxReal: 0, isTrend: false
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 3, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 3, profitMaxReal: 0
+    TienmuonAn: 0, CapSonhanChoDoi: 3, profitMaxReal: 0, isTrend: false
   },
   {
     id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 4, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0
+    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0, isTrend: false
   },
   {
     id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 5, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0
+    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0, isTrend: false
   },
   {
     id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 6, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 6, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0
+    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0, isTrend: false
   },
   {
     id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 6, type: Dep,
-    isReady: false, hoanthanh: false, soLanChoDoi: 1, Ngam: 0, countNgam: 0, phiGD: 0,
+    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
     soLanChoDoi: 7, thep: 1, maxThep: 3,
     capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0
+    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0, isTrend: false
   },
 ];
 
@@ -375,10 +375,10 @@ async function UI_Reset(page) {
       const lastTwo = ArrayKQ_XAU.slice(-2);
       // 2. Kiểm tra điều kiện và update
       if (lastTwo.length === 2) {
-        const isAA = lastTwo.every(item => item === "A");
-        const isBB = lastTwo.every(item => item === "B");
+        const isTT = lastTwo.every(item => item === "A");
+        const isXX = lastTwo.every(item => item === "B");
 
-        if (isAA && CauDangChay !== Xau) {
+        if (isTT && CauDangChay !== Xau) {
           // Cập nhật id 2 khi là "A","A"
 
           LuutruLongmach.forEach(item => {
@@ -389,7 +389,7 @@ async function UI_Reset(page) {
 
           CauDangChay = Xau
         }
-        else if (isBB && CauDangChay !== Dep) {
+        else if (isXX && CauDangChay !== Dep) {
           // Cập nhật id 1 khi là "B","B" (theo logic type: Dep)
 
           LuutruLongmach.forEach(item => {
@@ -489,6 +489,13 @@ async function UI_Reset(page) {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
       handleUpdate_LongMachList(stopId, { isStop: !item.isStop });
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
+    }
+    if (type === "TREND_CLICK") {
+      const item = LuutruLongmach.find(i => i.id === stopId);
+      if (!item) return;
+      handleUpdate_LongMachList(stopId, { isTrend: !item.isTrend });
+      saveStateTXT();
       await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
     }
     if (type === "TIEN_REAL_CLICK") {
@@ -708,7 +715,7 @@ async function ThucHienGiaoDich() {
 
       if (isWin) {
         item.countNgam = 0; // Reset khi thắng
-
+        item.isChanVaoLenh = true;
         if (!isVirtual) {
           const winAmount = item.vol * 0.98;
           const feeAmount = item.vol * 0.02;
@@ -750,7 +757,6 @@ async function ThucHienGiaoDich() {
         item.hoanthanh = true;
         item.thep = 1;
         item.isReady = false;
-        item.lockType = null;
 
         handleUpdate_LongMachList(item.id, {
           isTrading: false,
@@ -759,6 +765,9 @@ async function ThucHienGiaoDich() {
         });
 
       } else {
+        item.isTrend = !item.isTrend;
+        item.isChanVaoLenh = true;
+
         if (!isVirtual) {
 
           item.profit -= item.vol;
@@ -779,7 +788,6 @@ async function ThucHienGiaoDich() {
 
 
             item.thep = 1;
-            item.isChanVaoLenh = true
             item.minAnNumber += 1;
 
             if (item.isTienReal) {
@@ -846,8 +854,8 @@ async function ThucHienGiaoDich() {
     if (ArrayKQ.length < n) return;
 
     const lastN = ArrayKQ.slice(-n);
-    const isAA = lastN.every(x => x === T);
-    const isBB = lastN.every(x => x === X);
+    const isTT = lastN.every(i => i === T);
+    const isXX = lastN.every(i => i === X);
     const ketquaGannhat = ArrayKQ.at(-1);
 
     // Xử lý mở khóa (Unlock) khi kết quả thay đổi so với lúc bị cháy
@@ -860,16 +868,16 @@ async function ThucHienGiaoDich() {
 
     // Xử lý vào lệnh (Ready)
     if (!item.isChanVaoLenh && !item.isReady && !item.isTrading) {
-      if (isAA) {
+      if (isTT) {
         item.isReady = true;
-        item.huong = X; // n T liên tiếp → đặt X
+        item.huong = item.isTrend ? T : X; // n T liên tiếp
         item.hoanthanh = false;
-        item.lockType = T; // Unlock khi kết quả không còn là T
-      } else if (isBB) {
+        item.lockType = T; // Khóa theo màu của chuỗi (T) để chờ ra X mới mở
+      } else if (isXX) {
         item.isReady = true;
-        item.huong = T; // n X liên tiếp → đặt T
+        item.huong = item.isTrend ? X : T; // n X liên tiếp
         item.hoanthanh = false;
-        item.lockType = X; // Unlock khi kết quả không còn là X
+        item.lockType = X; // Khóa theo màu của chuỗi (X) để chờ ra T mới mở
       }
     }
   });
@@ -884,7 +892,7 @@ async function ThucHienGiaoDich() {
     let finalHuong = null;
 
     for (const item of arrayNew) {
-      const huongDanhNew = item.huong; // Đã gán từ isAA/isBB
+      const huongDanhNew = item.huong; // Đã gán từ isTT/isXX
       if (!finalHuong && huongDanhNew) {
         finalHuong = huongDanhNew;
       }
@@ -903,7 +911,7 @@ async function ThucHienGiaoDich() {
         isTrading: true,
         huong: huongDanhNew,
         vol: volReal,
-        TienmuonAn: item.capSoNhan > 1 ? baseVol * 3.5 : baseVol * 5.5
+        TienmuonAn: item.capSoNhan > 1 ? baseVol * 1.5 : baseVol * 3.5
       });
     }
 
