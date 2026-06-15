@@ -188,7 +188,12 @@ let soDuTaiKhoan = 2000;
 let soDuLonNhat = 2000;
 let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
-let TienCoban = 0.05;
+let TienCoban = 10;
+
+let targetLai = 500;
+let soLanNgamSetting = 3;
+let nguongNhanDoi = 100;
+let currentSessionProfit = 0;
 
 let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
@@ -197,59 +202,11 @@ const LuutruLongmach = [
   {
     id: 0, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 1, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 5, profitMaxReal: 0, isTrend: false
-  },
-  {
-    id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 2, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 4, profitMaxReal: 0, isTrend: false
-  },
-  {
-    id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 3, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 3, profitMaxReal: 0, isTrend: false
-  },
-  {
-    id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 4, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0, isTrend: false
-  },
-  {
-    id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 0, type: Dep,
-    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 5, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0, isTrend: false
-  },
-  {
-    id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 6, type: Dep,
-    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 6, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0, isTrend: false
-  },
-  {
-    id: 6, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
-    minAnNumber: 6, type: Dep,
-    isReady: false, hoanthanh: false, Ngam: 0, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 7, thep: 1, maxThep: 3,
-    capSoNhan: 1, maxCapSoNhan: 4, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    TienmuonAn: 0, CapSonhanChoDoi: 2, profitMaxReal: 0, isTrend: false
-  },
+    isReady: false, hoanthanh: false, Ngam: 3, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 2, thep: 1, maxThep: 1,
+    capSoNhan: 1, maxCapSoNhan: 1, GhiNhanCapSoNhanCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
+    TienmuonAn: 0, CapSonhanChoDoi: 99, profitMaxReal: 0, isTrend: false, isChanVaoLenh: false, lockType: null
+  }
 ];
 
 
@@ -458,7 +415,10 @@ async function UI_Reset(page) {
       soDuMax,
       percent,
       nguongRut,
-      soTienRut
+      soTienRut,
+      target,
+      soLanNgam,
+      nguongNhan
     ) => {
       soDuTaiKhoan = soDu;
       soDuLonNhat = soDuMax;
@@ -467,6 +427,9 @@ async function UI_Reset(page) {
       // ✅ GẮN VÀO BIẾN GLOBAL (KHÔNG LOGIC)
       nguongTienDat = nguongRut;
       soTienMuonRut = soTienRut;
+      targetLai = target;
+      soLanNgamSetting = soLanNgam;
+      nguongNhanDoi = nguongNhan;
 
       await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
       saveStateTXT();
@@ -711,51 +674,33 @@ async function ThucHienGiaoDich() {
   for (const item of LuutruLongmach) {
     if (item.isTrading && item.huong) {
       const isWin = resultNew === item.huong;
-      const isVirtual = (item.countNgam || 0) < (item.Ngam || 0);
 
       if (isWin) {
-        item.countNgam = 0; // Reset khi thắng
+        item.countNgam = 0; // Reset khi thắng, chuỗi thua ảo bị đứt
         item.isChanVaoLenh = true;
-        if (!isVirtual) {
+
+        if (item.isTienReal) {
           const winAmount = item.vol * 0.98;
           const feeAmount = item.vol * 0.02;
 
           item.profit += winAmount;
+          item.profitMaxReal += winAmount;
+          soDuTaiKhoan += winAmount;
+          profitAll += winAmount;
+          item.phiGD += feeAmount;
+          item.win = (item.win || 0) + 1;
+          
+          currentSessionProfit += winAmount;
 
-          if (item.isTienReal) {
-            item.profitMaxReal += winAmount;
-            soDuTaiKhoan += winAmount;
-            profitAll += winAmount;
-            item.phiGD += feeAmount;
-            item.win = (item.win || 0) + 1;
-          }
-
-          // ✅ Reset capSoNhan về 1 khi profit phục hồi về đỉnh cũ
-          if (item.profit >= item.profitMax) {
-            item.capSoNhan = 1;
-            item.profitMax = item.profit;
-          }
-
-          if (item.isTienReal && item.profit >= item.TienmuonAn && item.TienmuonAn > 0) {
-            handleUpdate_LongMachList(item.id, {
-              isTienReal: false,
-              profit: 0,
-              capSoNhan: 1,
-              isTrading: false,
-              huong: "null",
-              vol: 0,
-              isReady: false,
-              hoanthanh: false,
-              countNgam: 0,
-              thep: 1,
-              profitMax: 0,
-            });
-            continue;
+          if (currentSessionProfit >= targetLai) {
+            // Đạt target -> quay về đánh ảo
+            currentSessionProfit = 0;
+            item.isTienReal = false;
+            item.countNgam = 0;
           }
         }
 
         item.hoanthanh = true;
-        item.thep = 1;
         item.isReady = false;
 
         handleUpdate_LongMachList(item.id, {
@@ -765,65 +710,22 @@ async function ThucHienGiaoDich() {
         });
 
       } else {
-        item.isTrend = !item.isTrend;
         item.isChanVaoLenh = true;
 
-        if (!isVirtual) {
-
+        if (item.isTienReal) {
           item.profit -= item.vol;
-          const currentAm = item.profitMax - item.profit;
-          item.thep += 1;
+          soDuTaiKhoan -= item.vol;
+          profitAll -= item.vol;
+          item.profitMaxReal -= item.vol;
+          item.lost = (item.lost || 0) + 1;
+          currentSessionProfit -= item.vol;
 
-          if (item.isTienReal) {
-            soDuTaiKhoan -= item.vol;
-            profitAll -= item.vol;
-            item.profitMaxReal -= item.vol;
-            if (currentAm > (item.maxAm || 0)) {
-              item.maxAm = currentAm;
-            }
-            item.lost = (item.lost || 0) + 1;
-          }
-
-          if (item.thep > item.maxThep) {
-
-
-            item.thep = 1;
-            item.minAnNumber += 1;
-
-            if (item.isTienReal) {
-              item.chay += 1;
-              item.GhiNhanCapSoNhanCaoNhat = Math.max(item.GhiNhanCapSoNhanCaoNhat || 1, item.capSoNhan);
-              if (item.capSoNhan < item.maxCapSoNhan) {
-                item.capSoNhan += 1;
-              } else {
-                item.capSoNhan = 1;
-              }
-
-            } else {
-              item.capSoNhan += 1;
-            }
-
-            if (!item.isTienReal && item.capSoNhan >= item.CapSonhanChoDoi) {
-              handleUpdate_LongMachList(item.id, {
-                isTienReal: true,
-                profit: 0,
-                capSoNhan: 1,
-                isTrading: false,
-                huong: "null",
-                vol: 0,
-                isReady: false,
-                hoanthanh: false,
-                countNgam: 0,
-                thep: 1,
-                profitMax: 0,
-                isChanVaoLenh: true
-              });
-              continue;
-            }
-
-          }
         } else {
           item.countNgam = (item.countNgam || 0) + 1;
+          if (item.countNgam >= soLanNgamSetting) {
+            item.isTienReal = true;
+            item.countNgam = 0;
+          }
         }
 
         item.isReady = false;
@@ -870,12 +772,12 @@ async function ThucHienGiaoDich() {
     if (!item.isChanVaoLenh && !item.isReady && !item.isTrading) {
       if (isTT) {
         item.isReady = true;
-        item.huong = item.isTrend ? T : X; // n T liên tiếp
+        item.huong = X; // Luôn bẻ Xỉu khi 2 Tài
         item.hoanthanh = false;
         item.lockType = T; // Khóa theo màu của chuỗi (T) để chờ ra X mới mở
       } else if (isXX) {
         item.isReady = true;
-        item.huong = item.isTrend ? X : T; // n X liên tiếp
+        item.huong = T; // Luôn bẻ Tài khi 2 Xỉu
         item.hoanthanh = false;
         item.lockType = X; // Khóa theo màu của chuỗi (X) để chờ ra T mới mở
       }
@@ -891,18 +793,17 @@ async function ThucHienGiaoDich() {
     let totalVol_Real = 0;
     let finalHuong = null;
 
+    const isNhanDoi = (soDuLonNhat - soDuTaiKhoan) >= nguongNhanDoi;
+    const volReal = isNhanDoi ? (TienCoban * 2) : TienCoban;
+
     for (const item of arrayNew) {
       const huongDanhNew = item.huong; // Đã gán từ isTT/isXX
       if (!finalHuong && huongDanhNew) {
         finalHuong = huongDanhNew;
       }
 
-      const baseVol = TienCoban;
-      const heSoMap = { 1: 1, 2: 3, 3: 7, 4: 14, 5: 30 };
-      const volReal = baseVol * (heSoMap[item.thep] || 1) * (item.capSoNhan || 1);
-
       // Chỉ thực hiện click nếu có lệnh thật và isTienReal = true
-      if ((item.countNgam || 0) >= (item.Ngam || 0) && item.isTienReal === true) {
+      if (item.isTienReal === true) {
         totalVol_Real += volReal;
       }
 
@@ -911,7 +812,7 @@ async function ThucHienGiaoDich() {
         isTrading: true,
         huong: huongDanhNew,
         vol: volReal,
-        TienmuonAn: item.capSoNhan > 1 ? baseVol * 1.5 : baseVol * 3.5
+        TienmuonAn: volReal * 1.5
       });
     }
 
@@ -1373,7 +1274,7 @@ async function clickN(page, x, y, n, icon = "🖱️") {
 
 async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
   await page.evaluate(
-    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, Diachivi }) => {
+    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, Diachivi, targetLai, soLanNgamSetting, nguongNhanDoi }) => {
       if (document.getElementById("ui-caidat-von")) return;
 
       const container = document.createElement("div");
@@ -1391,6 +1292,8 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
         fontFamily: "monospace",
         zIndex: 10000,
         boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+        maxHeight: "80vh",
+        overflowY: "auto"
       });
 
       const tienGD = percent ? Math.floor(soDuMax * percent / 100) : 0;
@@ -1431,6 +1334,27 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
             style="width:100%;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
             step="0.01"
             value="${percent}" />
+        </div>
+
+        <div style="margin-bottom:5px">
+          Target Lãi
+          <input id="inp-target" type="number"
+            style="width:100%;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
+            value="${targetLai}" />
+        </div>
+
+        <div style="margin-bottom:5px">
+          Số lần Ngâm (chờ)
+          <input id="inp-ngam" type="number"
+            style="width:100%;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
+            value="${soLanNgamSetting}" />
+        </div>
+
+        <div style="margin-bottom:5px">
+          Ngưỡng Âm Nhân Đôi
+          <input id="inp-nguong-nhan" type="number"
+            style="width:100%;padding:6px;margin-top:4px;border:0.8px solid #ccc;border-radius:5px"
+            value="${nguongNhanDoi}" />
         </div>
 
         <div style="margin-bottom:10px; display:none;">
@@ -1504,23 +1428,29 @@ async function UI_CaiDatVon(page, soDu, soDuMax, percent) {
           Number(document.getElementById("inp-percent").value || 0),
           nguongTienDat,
           soTienMuonRut,
-          document.getElementById("inp-wallet").value || ""
+          Number(document.getElementById("inp-target").value || targetLai),
+          Number(document.getElementById("inp-ngam").value || soLanNgamSetting),
+          Number(document.getElementById("inp-nguong-nhan").value || nguongNhanDoi)
         );
       };
     },
-    { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, Diachivi }
+    { soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, Diachivi, targetLai, soLanNgamSetting, nguongNhanDoi }
   );
 }
 
 async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
   await page.evaluate(
-    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, Diachivi }) => {
+    ({ soDu, soDuMax, percent, nguongTienDat, soTienMuonRut, tongTienDaRut, Diachivi, targetLai, soLanNgamSetting, nguongNhanDoi }) => {
       const box = document.getElementById("ui-caidat-von");
       if (!box) return;
 
       document.getElementById("inp-sodu").value = soDu;
       document.getElementById("inp-max").value = soDuMax;
       document.getElementById("inp-percent").value = percent;
+
+      document.getElementById("inp-target").value = targetLai;
+      document.getElementById("inp-ngam").value = soLanNgamSetting;
+      document.getElementById("inp-nguong-nhan").value = nguongNhanDoi;
 
       document.getElementById("inp-nguong-rut").value = nguongTienDat;
       document.getElementById("inp-so-tien-rut").value = soTienMuonRut;
@@ -1541,7 +1471,10 @@ async function UI_Update_CaiDatVon(page, soDu, soDuMax, percent) {
       nguongTienDat,
       soTienMuonRut,
       tongTienDaRut,
-      Diachivi
+      Diachivi,
+      targetLai,
+      soLanNgamSetting,
+      nguongNhanDoi
     }
   );
 }
@@ -1556,12 +1489,15 @@ function saveStateTXT() {
     lines.push(`profitAll=${profitAll}`);
     lines.push(`maxDrawdown=${maxDrawdown}`);
 
-
-
-    // ✅ THÊM 3 PHẦN
+    // ✅ THÊM CÁC BIẾN MỚI
     lines.push(`nguongTienDat=${nguongTienDat}`);
     lines.push(`soTienMuonRut=${soTienMuonRut}`);
     lines.push(`tongTienDaRut=${tongTienDaRut}`);
+
+    lines.push(`targetLai=${targetLai}`);
+    lines.push(`soLanNgamSetting=${soLanNgamSetting}`);
+    lines.push(`nguongNhanDoi=${nguongNhanDoi}`);
+    lines.push(`currentSessionProfit=${currentSessionProfit}`);
 
     lines.push(`CauDepCount=${CauDepCount}`);
     lines.push(`CauXauCount=${CauXauCount}`);
@@ -1602,11 +1538,15 @@ function loadStateTXT() {
     profitAll = Number(getVal("profitAll")) || profitAll;
     maxDrawdown = Number(getVal("maxDrawdown")) || 0;
 
-
-    // ✅ LOAD THÊM 3 BIẾN
+    // ✅ LOAD THÊM CÁC BIẾN MỚI
     nguongTienDat = Number(getVal("nguongTienDat")) || nguongTienDat;
     soTienMuonRut = Number(getVal("soTienMuonRut")) || soTienMuonRut;
     tongTienDaRut = Number(getVal("tongTienDaRut")) || tongTienDaRut;
+
+    targetLai = Number(getVal("targetLai")) || targetLai;
+    soLanNgamSetting = Number(getVal("soLanNgamSetting")) || soLanNgamSetting;
+    nguongNhanDoi = Number(getVal("nguongNhanDoi")) || nguongNhanDoi;
+    currentSessionProfit = Number(getVal("currentSessionProfit")) || 0;
 
     CauDepCount = Number(getVal("CauDepCount")) || 0;
     CauXauCount = Number(getVal("CauXauCount")) || 0;
