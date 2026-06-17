@@ -669,10 +669,10 @@ async function ThucHienGiaoDich() {
         item.isChanVaoLenh = true;
         item.lockType = resultNew; // khóa theo kết quả vừa ra, chờ kết quả khác mới mở
 
-        if (item.isTienReal) {
-          const winAmount = item.vol * 0.98;
-          const feeAmount = item.vol * 0.02;
+        const winAmount = item.vol * 0.98;
+        const feeAmount = item.vol * 0.02;
 
+        if (item.isTienReal) {
           item.profit += winAmount;
           soDuTaiKhoan += winAmount;
           profitAll += winAmount;
@@ -680,15 +680,12 @@ async function ThucHienGiaoDich() {
           item.win = (item.win || 0) + 1;
 
           currentSessionProfit += winAmount;
-
-          // Thắng thật → reset thep về 1, reset ngâm ảo
-          item.thep = 1;
-          item.countNgam = 0;
           item.isTienReal = false;
-        } else {
-          // Thắng ảo → reset chuỗi thua ảo
-          item.countNgam = 0;
         }
+
+        // Thắng (dù thật hay ảo) → reset thep về 1, reset ngâm ảo
+        item.thep = 1;
+        item.countNgam = 0;
 
         item.hoanthanh = true;
         item.isReady = false;
@@ -701,7 +698,7 @@ async function ThucHienGiaoDich() {
         item.lockType = resultNew; // khóa theo kết quả vừa ra, chờ kết quả khác mới mở
 
         if (item.isTienReal) {
-          // Thua thật → trừ tiền, tăng thep
+          // Thua thật → trừ tiền thực tế, tăng thep
           item.profit -= item.vol;
           soDuTaiKhoan -= item.vol;
           profitAll -= item.vol;
@@ -710,15 +707,13 @@ async function ThucHienGiaoDich() {
 
           if (item.thep < item.maxThep) {
             item.thep = (item.thep || 1) + 1;
+            // Tiếp tục đánh thật ở thếp cao hơn (giữ nguyên isTienReal = true)
           } else {
-            // Thua cả 5 lệnh thật → reset thep về 1
+            // Thua cả 5 lệnh thật (cháy) → reset thep về 1, quay về ngâm ảo
             item.thep = 1;
           }
           // Ghi nhận thep cao nhất
           item.thepCaoNhat = Math.max(item.thepCaoNhat || 1, item.thep);
-          // Sau khi xử lý thep, quay về ngâm ảo
-          item.countNgam = 0;
-          item.isTienReal = false;
 
         } else {
           // Thua ảo → đếm ngâm
