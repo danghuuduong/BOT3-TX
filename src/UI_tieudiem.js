@@ -103,13 +103,13 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Hướng", "MôHình", "Ngâm", "Vol", "W/L", 
-        "Lãi", "LãiMax", "ÂmMax", "Phí", "STOP"
+        "ID", "Hướng", "Chờ", "Ngâm", "Thép", "Max", "Vol", "W/L",
+        "Lãi", "Phí", "STOP"
       ];
 
       const widths = [
-        "18px", "35px", "35px", "30px", "35px", "35px",
-        "40px", "40px", "40px", "25px", "25px"
+        "18px", "38px", "25px", "45px", "35px", "30px", "38px", "35px",
+        "42px", "28px", "25px"
       ];
 
 
@@ -122,7 +122,7 @@ async function TableChinh_Create(page) {
         Object.assign(th.style, {
           border: "1px solid #000",
           padding: "2px 2px",
-          background: (i === 6 || i === 7) ? "#87CEFA" : "#eee",
+          background: (i === 8) ? "#87CEFA" : "#eee",
           textAlign: "center",
           whiteSpace: "nowrap",
           width: widths[i],
@@ -171,50 +171,87 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
         item.id,
         `${huongLabel}${item.hoanthanh ? ' 😍' : ''}`,
         item.soLanChoDoi || 1,
-        item.countNgam || 0,
-        `${item.vol.toFixed(1)}K`,
-        `${item.win}/${item.lost}`,
-        item.profit.toFixed(1),
-        item.profitMax.toFixed(1),
-        (item.maxAm || 0).toFixed(1),
-        item.phiGD.toFixed(1),
+        // Ngâm render riêng bên dưới
+        `${item.thep || 1}/${item.maxThep || 1}`,
+        item.thepCaoNhat || 1,
+        `${(item.vol || 0).toFixed(1)}K`,
+        `${item.win || 0}/${item.lost || 0}`,
+        (item.profit || 0).toFixed(1),
+        (item.phiGD || 0).toFixed(1),
       ];
 
-      cols.forEach((v, idx) => {
+      const makeTd = (v, idx) => {
         const td = document.createElement("td");
         td.innerText = v;
-
         Object.assign(td.style, {
-          border: "1px solid #000",  // màu đen
+          border: "1px solid #000",
           padding: "1px 2px",
           textAlign: "center",
-          color: "inherit" // ✅ Kế thừa màu từ tr
+          color: "inherit"
         });
+        if (!item.isReady) td.style.opacity = "0.6";
 
-        if (!item.isReady) {
-          td.style.opacity = "0.6";
+        // Lãi (cols[7] = profit)
+        if (idx === 7) {
+          if (item.profit > 0) { td.style.color = "#078607ff"; td.style.fontWeight = "bold"; }
+          else if (item.profit < 0) { td.style.color = "#d81515ff"; td.style.fontWeight = "bold"; }
         }
-
-        if (idx === 6 || idx === 7) {
-          td.style.backgroundColor = "#f57f8eff"; // xanh nước biển sáng
-          td.style.color = "#000"; // chữ đen cho dễ đọc
-          td.style.fontWeight = "bold";
-          td.style.opacity = "1";
+        // Thép (idx 3)
+        if (idx === 3) {
+          const thepLevel = item.thep || 1;
+          const thepColors = ["", "#555", "#e67e00", "#d44000", "#bb1500", "#880000"];
+          td.style.color = thepColors[thepLevel] || "#555";
+          td.style.fontWeight = thepLevel >= 2 ? "bold" : "normal";
         }
-
-        // ✅ Màu sắc cho cột Lãi (Index 6)
-        if (idx === 6) {
-          if (item.profit > 0) {
-            td.style.color = "#078607ff"; // xanh lá
-            td.style.fontWeight = "bold";
-          } else if (item.profit < 0) {
-            td.style.color = "#d81515ff"; // đỏ
-            td.style.fontWeight = "bold";
-          }
+        // ThepMax (idx 4)
+        if (idx === 4) {
+          const maxLevel = item.thepCaoNhat || 1;
+          const thepColors = ["", "#555", "#e67e00", "#d44000", "#bb1500", "#880000"];
+          td.style.color = thepColors[maxLevel] || "#555";
+          td.style.fontWeight = maxLevel >= 3 ? "bold" : "normal";
         }
+        return td;
+      };
 
-        tr.appendChild(td);
+      // Render cột 0,1,2
+      cols.slice(0, 3).forEach((v, i) => tr.appendChild(makeTd(v, i)));
+
+      // ===== CỘT NGÂM (INPUT CHỈNH ĐƯỢC) =====
+      const ngamTd = document.createElement("td");
+      Object.assign(ngamTd.style, {
+        border: "1px solid #000",
+        padding: "1px 2px",
+        textAlign: "center",
       });
+      if (!item.isReady) ngamTd.style.opacity = "0.6";
+
+      const ngamSpan = document.createElement("span");
+      ngamSpan.innerText = `${item.countNgam || 0}/`;
+      Object.assign(ngamSpan.style, { fontSize: "10px", color: "gray" });
+
+      const ngamInput = document.createElement("input");
+      ngamInput.type = "number";
+      ngamInput.value = item.Ngam || 2;
+      ngamInput.min = 1;
+      ngamInput.max = 20;
+      Object.assign(ngamInput.style, {
+        width: "28px", fontSize: "10px",
+        border: "1px solid #aaa", borderRadius: "2px",
+        textAlign: "center", padding: "0",
+      });
+      ngamInput.addEventListener("change", (e) => {
+        e.stopPropagation();
+        const newVal = parseInt(e.target.value);
+        if (!isNaN(newVal) && newVal >= 1)
+          window.postMessage({ type: "UPDATE_NGAM", stopId: item.id, value: newVal }, "*");
+      });
+      ngamInput.addEventListener("click", e => e.stopPropagation());
+      ngamTd.appendChild(ngamSpan);
+      ngamTd.appendChild(ngamInput);
+      tr.appendChild(ngamTd);
+
+      // Render cột còn lại (từ index 3)
+      cols.slice(3).forEach((v, i) => tr.appendChild(makeTd(v, i + 3)));
 
       // Xóa hoàn toàn việc render cột Tiền Thật, Tiền muốn ăn, Chờ Nhân, Trend
 
