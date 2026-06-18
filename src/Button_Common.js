@@ -59,7 +59,7 @@ async function UI_Btn_Show_TieuDiem(page) {
   });
 }
 
-async function UI_Show_SoDu(page, soDu = 0, profit = 0, mdd = 0) {
+async function UI_Show_SoDu(page, soDu = 0, profitOfTang = 0, mdd = 0) {
   await page.evaluate(({ balance, pnl, mddValue }) => {
     let box = document.getElementById("ui-so-du");
 
@@ -130,7 +130,7 @@ async function UI_Show_SoDu(page, soDu = 0, profit = 0, mdd = 0) {
       box.style.transform = "translate(-50%,-50%) scale(1)";
     }, 200);
 
-  }, { balance: soDu, pnl: profit, mddValue: mdd });
+  }, { balance: soDu, pnl: profitOfTang, mddValue: mdd });
 }
 
 

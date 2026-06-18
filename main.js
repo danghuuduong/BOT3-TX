@@ -190,8 +190,6 @@ let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
 let TienCoban = 1;
 
-let targetLai = 500;
-let soLanNgamSetting = 3;
 
 let currentSessionProfit = 0;
 
@@ -199,18 +197,18 @@ let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
 
 const defaultTangs = () => [
-  { index: 1, baseVol: 1, isOpen: false, profit: 0, isTia: false },
-  { index: 2, baseVol: 2, isOpen: false, profit: 0, isTia: false },
-  { index: 3, baseVol: 4, isOpen: false, profit: 0, isTia: false },
-  { index: 4, baseVol: 8, isOpen: false, profit: 0, isTia: false },
-  { index: 5, baseVol: 16, isOpen: false, profit: 0, isTia: false },
-  { index: 6, baseVol: 32, isOpen: false, profit: 0, isTia: false },
-  { index: 7, baseVol: 64, isOpen: false, profit: 0, isTia: false }
+  { index: 1, baseVol: 1, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 2, baseVol: 2, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 3, baseVol: 4, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 4, baseVol: 8, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 5, baseVol: 16, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 6, baseVol: 32, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 7, baseVol: 64, isOpen: false, profitOfTang: 0, isTia: false }
 ];
 
 const LuutruLongmach = [
   {
-    id: 0, isTrading: false, huong: "null", totalProfit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    id: 0, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, Ngam: 3, countNgam: 0, phiGD: 0,
     soLanChoDoi: 2, chay: 0, maxAm: 0, isTienReal: false,
@@ -220,7 +218,7 @@ const LuutruLongmach = [
     Tangs: defaultTangs()
   },
   {
-    id: 1, isTrading: false, huong: "null", totalProfit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, Ngam: 3, countNgam: 0, phiGD: 0,
     soLanChoDoi: 3, chay: 0, maxAm: 0, isTienReal: false,
@@ -394,20 +392,6 @@ async function UI_Reset(page) {
       // await LongMachList_Update_UI(page, ArrayKQ_XAU);
       await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
 
-      // Reset profits for all items
-      LuutruLongmach.forEach(item => {
-        // item.totalProfit = 0;
-        item.realizedProfit = 0;
-        item.soLanThuaReal = 0;
-        item.isTiaLenh = false;
-        item.countNgam = 0;
-        item.Tangs.forEach(t => {
-          t.profit = 0;
-          t.isOpen = false;
-          t.isTia = false;
-        });
-      });
-
       saveStateTXT();
     });
 
@@ -499,7 +483,6 @@ async function UI_Reset(page) {
 
       handleUpdate_LongMachList(stopId, {
         isTienReal: !item.isTienReal,
-        profit: 0,
         isTrading: false,
         huong: "null",
         vol: 0,
@@ -531,7 +514,7 @@ async function UI_Reset(page) {
       if (ngamVal === 0) {
         updates.isTienReal = true;
         if (!item.Tangs.some(t => t.isOpen)) {
-          item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+          item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
           item.Tangs[0].isOpen = true;
           item.soLanThuaReal = 0;
           item.realizedProfit = 0;
@@ -563,14 +546,11 @@ async function UI_Reset(page) {
       item.soLanThuaReal = 0;
       item.realizedProfit = 0;
       item.isTiaLenh = false;
-      item.countNgam = 0;
-      item.totalProfit = 0;
       item.isTrading = false;
       item.isReady = false;
       item.huong = "null";
       item.vol = 0;
-      item.maxTang = 1;
-      item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+      item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
 
       if (item.Ngam === 0) {
         item.isTienReal = true;
@@ -698,8 +678,8 @@ async function CheckColor_X_Y() {
       if (ketqua !== "null") {
         ArrayKQ.push(ketqua === "black" ? T : X);
         if (ArrayKQ.length > 100) { ArrayKQ.shift() }
-        await KetquaTXList_Update_UI(page, ArrayKQ);
-        await ThucHienGiaoDich();
+        KetquaTXList_Update_UI(page, ArrayKQ);
+        ThucHienGiaoDich().catch(err => console.error("❌ Lỗi giao dịch:", err));
       }
     }
   } catch (err) {
@@ -749,7 +729,7 @@ async function ThucHienGiaoDich() {
 
       if (item.Ngam === 0 && !item.isTienReal) {
         item.isTienReal = true;
-        item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+        item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
         item.Tangs[0].isOpen = true;
         item.soLanThuaReal = 0;
         item.realizedProfit = 0;
@@ -762,9 +742,9 @@ async function ThucHienGiaoDich() {
           if (t.isOpen) {
             const volT = Math.floor(t.baseVol * TienCoban);
             if (isWin) {
-              t.profit += volT * 0.98;
+              t.profitOfTang += volT * 0.98;
             } else {
-              t.profit -= volT;
+              t.profitOfTang -= volT;
             }
           }
         });
@@ -778,15 +758,16 @@ async function ThucHienGiaoDich() {
           profitAll += winAmount;
           item.phiGD += feeAmount;
           item.win = (item.win || 0) + 1;
-          currentSessionProfit += winAmount;
+          item.profit += winAmount
+
           if (item.soLanThuaReal > 0) {
             item.soLanThuaReal--;
           }
         } else {
           soDuTaiKhoan -= loseAmount;
           profitAll -= loseAmount;
+          item.profit -= loseAmount;
           item.lost = (item.lost || 0) + 1;
-          currentSessionProfit -= loseAmount;
 
           item.soLanThuaReal++;
 
@@ -795,7 +776,7 @@ async function ThucHienGiaoDich() {
             const tObj = item.Tangs.find(t => t.index === tangIdx);
             if (tObj && !tObj.isOpen) {
               tObj.isOpen = true;
-              tObj.profit = 0;
+              tObj.profitOfTang = 0;
               tObj.isTia = false; // Reset isTia flag khi mở lại
             }
           }
@@ -816,12 +797,12 @@ async function ThucHienGiaoDich() {
           while (openTangs.length >= 2) {
             let first = openTangs[0];
             let last = openTangs[openTangs.length - 1];
-            if (first.profit + last.profit > 0) {
+            if (first.profitOfTang + last.profitOfTang > 0) {
               first.isOpen = false;
               last.isOpen = false;
               first.isTia = true;
               last.isTia = true;
-              item.realizedProfit += (first.profit + last.profit);
+              item.realizedProfit += (first.profitOfTang + last.profitOfTang);
               openTangs = item.Tangs.filter(t => t.isOpen);
             } else {
               break;
@@ -832,16 +813,15 @@ async function ThucHienGiaoDich() {
           }
         }
 
-        const totalProfitChuKy = item.realizedProfit + item.Tangs.reduce((sum, t) => sum + (t.isOpen ? t.profit : 0), 0);
-        item.totalProfit = totalProfitChuKy;
+        const totalProfitChuKy = item.realizedProfit + item.Tangs.reduce((sum, t) => sum + (t.isOpen ? t.profitOfTang : 0), 0);
+
 
         if (totalProfitChuKy >= item.profitMongMuon * TienCoban) {
           item.soLanThuaReal = 0;
           item.realizedProfit = 0;
           item.isTiaLenh = false;
           item.countNgam = 0;
-          item.maxTang = 1;
-          item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+          item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
           if (item.Ngam === 0) {
             item.isTienReal = true;
             item.Tangs[0].isOpen = true;
@@ -854,7 +834,7 @@ async function ThucHienGiaoDich() {
         // Ngâm (Chưa đánh thật)
         if (item.Ngam === 0) {
           item.isTienReal = true;
-          item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+          item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
           item.Tangs[0].isOpen = true;
           item.soLanThuaReal = 0;
           item.realizedProfit = 0;
@@ -866,7 +846,7 @@ async function ThucHienGiaoDich() {
             item.countNgam = (item.countNgam || 0) + 1;
             if (item.countNgam >= item.Ngam) {
               item.isTienReal = true;
-              item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+              item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
               item.Tangs[0].isOpen = true;
               item.soLanThuaReal = 0;
               item.realizedProfit = 0;
@@ -1496,11 +1476,6 @@ function saveStateTXT() {
     lines.push(`soTienMuonRut=${soTienMuonRut}`);
     lines.push(`tongTienDaRut=${tongTienDaRut}`);
 
-    lines.push(`targetLai=${targetLai}`);
-    lines.push(`soLanNgamSetting=${soLanNgamSetting}`);
-
-    lines.push(`currentSessionProfit=${currentSessionProfit}`);
-
     lines.push(`CauDepCount=${CauDepCount}`);
     lines.push(`CauXauCount=${CauXauCount}`);
 
@@ -1544,11 +1519,6 @@ function loadStateTXT() {
     nguongTienDat = Number(getVal("nguongTienDat")) || nguongTienDat;
     soTienMuonRut = Number(getVal("soTienMuonRut")) || soTienMuonRut;
     tongTienDaRut = Number(getVal("tongTienDaRut")) || tongTienDaRut;
-
-    targetLai = Number(getVal("targetLai")) || targetLai;
-    soLanNgamSetting = Number(getVal("soLanNgamSetting")) || soLanNgamSetting;
-
-    currentSessionProfit = Number(getVal("currentSessionProfit")) || 0;
 
     CauDepCount = Number(getVal("CauDepCount")) || 0;
     CauXauCount = Number(getVal("CauXauCount")) || 0;

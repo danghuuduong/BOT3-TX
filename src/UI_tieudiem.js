@@ -105,7 +105,7 @@ async function TableChinh_Create(page) {
       const headers = [
         "ID", "Hướng", "Chờ", "Ngâm", "Vol",
         "L.Thua", "T/T", "T.Cao", "T1", "T2", "T3", "T4", "T5", "T6", "T7",
-        "In.Tỉa", "Tỉa?", "L.Tỉa", "L.Tầng", "L.CK", "Lãi", "Mục Tiêu", "Reset", "STOP"
+        "In.Tỉa", "Tỉa?", "Lãi.Tỉa", "Lãi.Tầng", "L.ChuKi", "Profit", "Mục Tiêu", "Reset", "STOP"
       ];
 
       const widths = [
@@ -229,7 +229,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       tr.appendChild(makeTd(volText));
 
       // 5b. Cột L.Thua (Số lần thua thực tế)
-      const lostCountText = item.soLanThuaReal !== undefined ? `${item.soLanThuaReal}` : "0";
+      const lostCountText = item.soLanThuaReal !== undefined ? `${item.soLanThuaReal}/ ${item.soLanThuaReal.floor(5 / 3)}` : "0";
       const tdLostCount = makeTd(lostCountText);
       if (item.soLanThuaReal > 0) {
         tdLostCount.style.color = "#d81515ff";
@@ -258,7 +258,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
         let fontWeight = "normal";
         let bgColor = "inherit";
         if (t.isOpen) {
-          const profVal = t.profit || 0;
+          const profVal = t.profitOfTang || 0;
           if (profVal === 0) {
             text = "";
           } else if (profVal > 0) {
@@ -337,7 +337,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       tr.appendChild(tdRealized);
 
       // 14b. Cột Tổng lãi Tầng (Lãi Tầng All)
-      const profitTang = (item.Tangs || []).reduce((sum, t) => sum + (t.isOpen ? (t.profit || 0) : 0), 0);
+      const profitTang = (item.Tangs || []).reduce((sum, t) => sum + (t.isOpen ? (t.profitOfTang || 0) : 0), 0);
       const profitTangText = profitTang === 0 ? "0" : profitTang.toFixed(2);
       const tdProfitTang = makeTd(profitTangText);
       if (profitTang > 0) {
@@ -363,13 +363,13 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       tr.appendChild(tdProfitCK);
 
       // 15. Cột Tổng Lãi
-      const totalProfit = item.totalProfit || 0;
-      const totalProfitText = totalProfit === 0 ? "0" : totalProfit.toFixed(2);
+      const profit = item.profit || 0;
+      const totalProfitText = profit === 0 ? "0" : profit.toFixed(2);
       const tdTotal = makeTd(totalProfitText);
-      if (totalProfit > 0) {
+      if (profit > 0) {
         tdTotal.style.color = "#078607ff";
         tdTotal.style.fontWeight = "bold";
-      } else if (totalProfit < 0) {
+      } else if (profit < 0) {
         tdTotal.style.color = "#d81515ff";
         tdTotal.style.fontWeight = "bold";
       }
