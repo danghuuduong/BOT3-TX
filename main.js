@@ -236,6 +236,36 @@ const LuutruLongmach = [
     profitMongMuon: 5, soLanThuaReal: 0, InputTia: 4, isTiaLenh: false, realizedProfit: 0,
     maxTang: 1,
     Tangs: defaultTangs()
+  },
+  {
+    id: 3, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, Ngam: 3, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 5, chay: 0, maxAm: 0, isTienReal: false,
+    isChanVaoLenh: false, lockType: null,
+    profitMongMuon: 5, soLanThuaReal: 0, InputTia: 4, isTiaLenh: false, realizedProfit: 0,
+    maxTang: 1,
+    Tangs: defaultTangs()
+  },
+  {
+    id: 4, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, Ngam: 3, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 6, chay: 0, maxAm: 0, isTienReal: false,
+    isChanVaoLenh: false, lockType: null,
+    profitMongMuon: 5, soLanThuaReal: 0, InputTia: 4, isTiaLenh: false, realizedProfit: 0,
+    maxTang: 1,
+    Tangs: defaultTangs()
+  },
+  {
+    id: 5, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    minAnNumber: 0, type: Dep,
+    isReady: false, hoanthanh: false, Ngam: 3, countNgam: 0, phiGD: 0,
+    soLanChoDoi: 7, chay: 0, maxAm: 0, isTienReal: false,
+    isChanVaoLenh: false, lockType: null,
+    profitMongMuon: 5, soLanThuaReal: 0, InputTia: 4, isTiaLenh: false, realizedProfit: 0,
+    maxTang: 1,
+    Tangs: defaultTangs()
   }
 ];
 

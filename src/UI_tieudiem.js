@@ -110,7 +110,7 @@ async function TableChinh_Create(page) {
 
       const widths = [
         "18px", "38px", "22px", "45px", "28px",
-        "30px", "35px", "35px", "32px", "32px", "32px", "32px", "32px", "32px", "32px",
+        "60px", "35px", "35px", "32px", "32px", "32px", "32px", "32px", "32px", "32px",
         "40px", "30px", "40px", "50px", "50px", "50px", "50px", "35px", "25px"
       ];
 
@@ -229,7 +229,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       tr.appendChild(makeTd(volText));
 
       // 5b. Cột L.Thua (Số lần thua thực tế)
-      const lostCountText = item.soLanThuaReal !== undefined ? `${item.soLanThuaReal}/ ${item.soLanThuaReal.floor(5 / 3)}` : "0";
+      const lostCountText = item.soLanThuaReal !== undefined ? `${item.soLanThuaReal}/ Tầng ${Math.floor((item.soLanThuaReal / 3) + 1)}` : "0";
       const tdLostCount = makeTd(lostCountText);
       if (item.soLanThuaReal > 0) {
         tdLostCount.style.color = "#d81515ff";
