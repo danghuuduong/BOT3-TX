@@ -188,7 +188,7 @@ let soDuTaiKhoan = 2000;
 let soDuLonNhat = 2000;
 let nguongTienDat = 6000;
 let soTienMuonRut = 2000;
-let TienCoban = 5;
+let TienCoban = 1;
 
 let targetLai = 500;
 let soLanNgamSetting = 3;
@@ -198,30 +198,46 @@ let currentSessionProfit = 0;
 let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
 
+const defaultTangs = () => [
+  { index: 1, baseVol: 1, isOpen: false, profit: 0, isTia: false },
+  { index: 2, baseVol: 2, isOpen: false, profit: 0, isTia: false },
+  { index: 3, baseVol: 4, isOpen: false, profit: 0, isTia: false },
+  { index: 4, baseVol: 8, isOpen: false, profit: 0, isTia: false },
+  { index: 5, baseVol: 16, isOpen: false, profit: 0, isTia: false },
+  { index: 6, baseVol: 32, isOpen: false, profit: 0, isTia: false },
+  { index: 7, baseVol: 64, isOpen: false, profit: 0, isTia: false }
+];
+
 const LuutruLongmach = [
   {
-    id: 0, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    id: 0, isTrading: false, huong: "null", totalProfit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, Ngam: 3, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 2, thep: 1, maxThep: 5,
-    thepCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    isChanVaoLenh: false, lockType: null
+    soLanChoDoi: 2, chay: 0, maxAm: 0, isTienReal: false,
+    isChanVaoLenh: false, lockType: null,
+    profitMongMuon: 5, soLanThuaReal: 0, InputTia: 4, isTiaLenh: false, realizedProfit: 0,
+    maxTang: 1,
+    Tangs: defaultTangs()
   },
   {
-    id: 1, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
+    id: 1, isTrading: false, huong: "null", totalProfit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, Ngam: 3, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 3, thep: 1, maxThep: 5,
-    thepCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    isChanVaoLenh: false, lockType: null
+    soLanChoDoi: 3, chay: 0, maxAm: 0, isTienReal: false,
+    isChanVaoLenh: false, lockType: null,
+    profitMongMuon: 5, soLanThuaReal: 0, InputTia: 4, isTiaLenh: false, realizedProfit: 0,
+    maxTang: 1,
+    Tangs: defaultTangs()
   },
   {
     id: 2, isTrading: false, huong: "null", profit: 0, vol: 0, win: 0, lost: 0, isStop: false, isFomo: true,
     minAnNumber: 0, type: Dep,
     isReady: false, hoanthanh: false, Ngam: 3, countNgam: 0, phiGD: 0,
-    soLanChoDoi: 4, thep: 1, maxThep: 5,
-    thepCaoNhat: 1, profitMax: 0, chay: 0, maxAm: 0, isTienReal: false,
-    isChanVaoLenh: false, lockType: null
+    soLanChoDoi: 4, chay: 0, maxAm: 0, isTienReal: false,
+    isChanVaoLenh: false, lockType: null,
+    profitMongMuon: 5, soLanThuaReal: 0, InputTia: 4, isTiaLenh: false, realizedProfit: 0,
+    maxTang: 1,
+    Tangs: defaultTangs()
   }
 ];
 
@@ -245,7 +261,7 @@ async function handleStart() {
 
 
   // chạy 1 lần ngay
-  await CheckColor_X_Y();
+  CheckColor_X_Y();
 
   // interval chính
   intervalId = setInterval(async () => {
@@ -359,7 +375,6 @@ async function UI_Reset(page) {
               item.isReady = true;
             }
           });
-
           CauDangChay = Xau
         }
         else if (isXX && CauDangChay !== Dep) {
@@ -378,7 +393,20 @@ async function UI_Reset(page) {
       await KetquaTXList_Update_UI(page, ArrayKQ);
       // await LongMachList_Update_UI(page, ArrayKQ_XAU);
       await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
-      await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
+
+      // Reset profits for all items
+      LuutruLongmach.forEach(item => {
+        // item.totalProfit = 0;
+        item.realizedProfit = 0;
+        item.soLanThuaReal = 0;
+        item.isTiaLenh = false;
+        item.countNgam = 0;
+        item.Tangs.forEach(t => {
+          t.profit = 0;
+          t.isOpen = false;
+          t.isTia = false;
+        });
+      });
 
       saveStateTXT();
     });
@@ -478,8 +506,10 @@ async function UI_Reset(page) {
         isReady: false,
         hoanthanh: false,
         countNgam: 0,
-        thep: 1,
-        profitMax: 0,
+        soLanThuaReal: 0,
+        isTiaLenh: false,
+        realizedProfit: 0,
+        Tangs: defaultTangs()
       });
 
       saveStateTXT();
@@ -496,7 +526,59 @@ async function UI_Reset(page) {
     if (type === "UPDATE_NGAM") {
       const item = LuutruLongmach.find(i => i.id === stopId);
       if (!item) return;
-      handleUpdate_LongMachList(stopId, { Ngam: Number(value) });
+      const ngamVal = Number(value);
+      const updates = { Ngam: ngamVal };
+      if (ngamVal === 0) {
+        updates.isTienReal = true;
+        if (!item.Tangs.some(t => t.isOpen)) {
+          item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+          item.Tangs[0].isOpen = true;
+          item.soLanThuaReal = 0;
+          item.realizedProfit = 0;
+          item.isTiaLenh = false;
+        }
+      }
+      handleUpdate_LongMachList(stopId, updates);
+      saveStateTXT();
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
+    }
+    if (type === "UPDATE_INPUT_TIA") {
+      const item = LuutruLongmach.find(i => i.id === stopId);
+      if (!item) return;
+      handleUpdate_LongMachList(stopId, { InputTia: Number(value) });
+      saveStateTXT();
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
+    }
+    if (type === "UPDATE_PROFIT_MUON") {
+      const item = LuutruLongmach.find(i => i.id === stopId);
+      if (!item) return;
+      handleUpdate_LongMachList(stopId, { profitMongMuon: Number(value) });
+      saveStateTXT();
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
+    }
+    if (type === "RESET_ITEM_CLICK") {
+      const item = LuutruLongmach.find(i => i.id === stopId);
+      if (!item) return;
+
+      item.soLanThuaReal = 0;
+      item.realizedProfit = 0;
+      item.isTiaLenh = false;
+      item.countNgam = 0;
+      item.totalProfit = 0;
+      item.isTrading = false;
+      item.isReady = false;
+      item.huong = "null";
+      item.vol = 0;
+      item.maxTang = 1;
+      item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+
+      if (item.Ngam === 0) {
+        item.isTienReal = true;
+        item.Tangs[0].isOpen = true;
+      } else {
+        item.isTienReal = false;
+      }
+
       saveStateTXT();
       await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
     }
@@ -527,7 +609,6 @@ async function UI_Reset(page) {
   // Tạo UI tách biệt
   await UI_Btn_Show_TieuDiem(page);
   await SignalIndicator_Create(page);
-  await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
   await UI_Start(page);//Bắt đầu
 
   await UI_ToolTitle_Create(page, "Tool 6 - Cấp Số nhân - 2 Tài - 2 xỉu - là đánh");
@@ -612,6 +693,7 @@ async function CheckColor_X_Y() {
     const hex = "#" + [r, g, b].map(v => v.toString(16).padStart(2, "0")).join("");
 
     if (hex) {
+      if (!isRunning) return;
       const ketqua = handleGetColor_TX(r, g, b)
       if (ketqua !== "null") {
         ArrayKQ.push(ketqua === "black" ? T : X);
@@ -657,79 +739,149 @@ async function ThucHienGiaoDich() {
 
   // await LongMachList_Update_UI(page, ArrayKQ_XAU);
 
-  // Hệ số nhân theo thep (1→x1, 2→x2.5, 3→x5.5, 4→x11, 5→x22)
-  const THEP_MULTIPLIERS = [0, 1, 2.5, 5.5, 11, 22];
-
   // ====================================================================================== TP / SL =======================================================================
   for (const item of LuutruLongmach) {
     if (item.isTrading && item.huong) {
       const isWin = resultNew === item.huong;
 
-      if (isWin) {
-        item.isChanVaoLenh = true;
-        item.lockType = resultNew; // khóa theo kết quả vừa ra, chờ kết quả khác mới mở
+      item.isChanVaoLenh = true;
+      item.lockType = resultNew; // khóa theo kết quả vừa ra, chờ kết quả khác mới mở
 
-        const winAmount = item.vol * 0.98;
-        const feeAmount = item.vol * 0.02;
+      if (item.Ngam === 0 && !item.isTienReal) {
+        item.isTienReal = true;
+        item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+        item.Tangs[0].isOpen = true;
+        item.soLanThuaReal = 0;
+        item.realizedProfit = 0;
+        item.isTiaLenh = false;
+      }
 
-        if (item.isTienReal) {
-          item.profit += winAmount;
+      if (item.isTienReal) {
+        // Phân bổ tiền vào các Tầng
+        item.Tangs.forEach(t => {
+          if (t.isOpen) {
+            const volT = Math.floor(t.baseVol * TienCoban);
+            if (isWin) {
+              t.profit += volT * 0.98;
+            } else {
+              t.profit -= volT;
+            }
+          }
+        });
+
+        const winAmount = isWin ? (item.vol * 0.98) : 0;
+        const loseAmount = isWin ? 0 : item.vol;
+        const feeAmount = isWin ? (item.vol * 0.02) : 0;
+
+        if (isWin) {
           soDuTaiKhoan += winAmount;
           profitAll += winAmount;
           item.phiGD += feeAmount;
           item.win = (item.win || 0) + 1;
-
           currentSessionProfit += winAmount;
-          item.isTienReal = false;
+          if (item.soLanThuaReal > 0) {
+            item.soLanThuaReal--;
+          }
+        } else {
+          soDuTaiKhoan -= loseAmount;
+          profitAll -= loseAmount;
+          item.lost = (item.lost || 0) + 1;
+          currentSessionProfit -= loseAmount;
+
+          item.soLanThuaReal++;
+
+          if (item.soLanThuaReal > 0 && item.soLanThuaReal % 3 === 0) {
+            const tangIdx = Math.min(Math.floor(item.soLanThuaReal / 3) + 1, 7);
+            const tObj = item.Tangs.find(t => t.index === tangIdx);
+            if (tObj && !tObj.isOpen) {
+              tObj.isOpen = true;
+              tObj.profit = 0;
+              tObj.isTia = false; // Reset isTia flag khi mở lại
+            }
+          }
         }
 
-        // Thắng (dù thật hay ảo) → reset thep về 1, reset ngâm ảo
-        item.thep = 1;
-        item.countNgam = 0;
+        // Tỉa Lệnh Logic
+        const maxOpenIndex = Math.max(...item.Tangs.filter(t => t.isOpen).map(t => t.index), 0);
+        if (maxOpenIndex >= item.InputTia) {
+          item.isTiaLenh = true;
+        }
 
-        item.hoanthanh = true;
-        item.isReady = false;
-        item.isTrading = false;
-        item.huong = "null";
-        item.vol = 0;
+        // Cập nhật tầng DCA cao nhất
+        const maxOpenForTrack = Math.max(...item.Tangs.filter(t => t.isOpen).map(t => t.index), 1);
+        item.maxTang = Math.max(item.maxTang || 1, maxOpenForTrack);
+
+        if (item.isTiaLenh) {
+          let openTangs = item.Tangs.filter(t => t.isOpen);
+          while (openTangs.length >= 2) {
+            let first = openTangs[0];
+            let last = openTangs[openTangs.length - 1];
+            if (first.profit + last.profit > 0) {
+              first.isOpen = false;
+              last.isOpen = false;
+              first.isTia = true;
+              last.isTia = true;
+              item.realizedProfit += (first.profit + last.profit);
+              openTangs = item.Tangs.filter(t => t.isOpen);
+            } else {
+              break;
+            }
+          }
+          if (item.Tangs.filter(t => t.isOpen).length === 0) {
+            item.isTiaLenh = false;
+          }
+        }
+
+        const totalProfitChuKy = item.realizedProfit + item.Tangs.reduce((sum, t) => sum + (t.isOpen ? t.profit : 0), 0);
+        item.totalProfit = totalProfitChuKy;
+
+        if (totalProfitChuKy >= item.profitMongMuon * TienCoban) {
+          item.soLanThuaReal = 0;
+          item.realizedProfit = 0;
+          item.isTiaLenh = false;
+          item.countNgam = 0;
+          item.maxTang = 1;
+          item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+          if (item.Ngam === 0) {
+            item.isTienReal = true;
+            item.Tangs[0].isOpen = true;
+          } else {
+            item.isTienReal = false;
+          }
+        }
 
       } else {
-        item.isChanVaoLenh = true;
-        item.lockType = resultNew; // khóa theo kết quả vừa ra, chờ kết quả khác mới mở
-
-        if (item.isTienReal) {
-          // Thua thật → trừ tiền thực tế, tăng thep
-          item.profit -= item.vol;
-          soDuTaiKhoan -= item.vol;
-          profitAll -= item.vol;
-          item.lost = (item.lost || 0) + 1;
-          currentSessionProfit -= item.vol;
-
-          if (item.thep < item.maxThep) {
-            item.thep = (item.thep || 1) + 1;
-            // Tiếp tục đánh thật ở thếp cao hơn (giữ nguyên isTienReal = true)
-          } else {
-            // Thua cả 5 lệnh thật (cháy) → reset thep về 1, quay về ngâm ảo
-            item.thep = 1;
-          }
-          // Ghi nhận thep cao nhất
-          item.thepCaoNhat = Math.max(item.thepCaoNhat || 1, item.thep);
-
+        // Ngâm (Chưa đánh thật)
+        if (item.Ngam === 0) {
+          item.isTienReal = true;
+          item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+          item.Tangs[0].isOpen = true;
+          item.soLanThuaReal = 0;
+          item.realizedProfit = 0;
+          item.isTiaLenh = false;
         } else {
-          // Thua ảo → đếm ngâm
-          item.countNgam = (item.countNgam || 0) + 1;
-          if (item.countNgam >= item.Ngam) {
-            // Đủ ngâm → vào lệnh thật
-            item.isTienReal = true;
+          if (isWin) {
+            item.countNgam = 0;
+          } else {
+            item.countNgam = (item.countNgam || 0) + 1;
+            if (item.countNgam >= item.Ngam) {
+              item.isTienReal = true;
+              item.Tangs.forEach(t => { t.isOpen = false; t.profit = 0; t.isTia = false; });
+              item.Tangs[0].isOpen = true;
+              item.soLanThuaReal = 0;
+              item.realizedProfit = 0;
+              item.isTiaLenh = false;
+            }
           }
         }
-
-        item.isReady = false;
-        item.isTrading = false;
-        item.huong = "null";
-        item.vol = 0;
-        TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
       }
+
+      item.hoanthanh = isWin;
+      item.isReady = false;
+      item.isTrading = false;
+      item.huong = "null";
+      item.vol = 0;
+      TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
     }
   }
 
@@ -743,15 +895,23 @@ async function ThucHienGiaoDich() {
     }
   }
 
-  // 1. Kiểm tra điều kiện vào lệnh và mở khóa cho từng item (Đặt sau TP/SL để có thể vào lệnh lại ngay nếu soLanChoDoi thấp)
   LuutruLongmach.forEach(item => {
     const n = item.soLanChoDoi;
     if (ArrayKQ.length < n) return;
-
     const lastN = ArrayKQ.slice(-n);
     const isTT = lastN.every(i => i === T);
     const isXX = lastN.every(i => i === X);
     const ketquaGannhat = ArrayKQ.at(-1);
+
+    // Kiểm tra xem chuỗi có phải là chuỗi mới xuất hiện không (phần tử trước chuỗi phải khác màu hoặc không tồn tại)
+    let isNewTT = false;
+    let isNewXX = false;
+    if (isTT) {
+      isNewTT = (ArrayKQ.length === n) || (ArrayKQ.at(-(n + 1)) === X);
+    }
+    if (isXX) {
+      isNewXX = (ArrayKQ.length === n) || (ArrayKQ.at(-(n + 1)) === T);
+    }
 
     // Xử lý mở khóa (Unlock) khi kết quả thay đổi so với lúc bị cháy
     if (item.isChanVaoLenh) {
@@ -762,16 +922,18 @@ async function ThucHienGiaoDich() {
     }
 
     // Xử lý vào lệnh (Ready)
-    if (!item.isChanVaoLenh && !item.isReady && !item.isTrading) {
-      if (isTT) {
+    if (!item.isReady && !item.isTrading) {
+      if (isTT && (item.lockType !== T || isNewTT)) {
         item.isReady = true;
         item.huong = X; // Luôn bẻ Xỉu khi 2 Tài
         item.hoanthanh = false;
+        item.isChanVaoLenh = true;
         item.lockType = T; // Khóa theo màu của chuỗi (T) để chờ ra X mới mở
-      } else if (isXX) {
+      } else if (isXX && (item.lockType !== X || isNewXX)) {
         item.isReady = true;
         item.huong = T; // Luôn bẻ Tài khi 2 Xỉu
         item.hoanthanh = false;
+        item.isChanVaoLenh = true;
         item.lockType = X; // Khóa theo màu của chuỗi (X) để chờ ra T mới mở
       }
     }
@@ -779,8 +941,6 @@ async function ThucHienGiaoDich() {
 
   TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
   // =========================================================================== ĐẶT LỆNH ================================================================
-
-  const THEP_MULTIPLIERS_ORDER = [0, 1, 2.5, 5.5, 11, 22];
 
   const arrayNew = LuutruLongmach.filter(i => i.isReady && !i.isStop);
   if (arrayNew.length > 0) {
@@ -794,10 +954,14 @@ async function ThucHienGiaoDich() {
         finalHuong = huongDanhNew;
       }
 
-      // Tính vol theo hệ thep
-      const thepLevel = Math.min(Math.max(item.thep || 1, 1), 5);
-      const multiplier = THEP_MULTIPLIERS_ORDER[thepLevel];
-      const volThep = Math.floor(TienCoban * multiplier);
+      // Tính vol theo các tầng đang mở
+      let volThep = 0;
+      if (item.isTienReal) {
+        const sumBaseVol = item.Tangs.filter(t => t.isOpen).reduce((sum, t) => sum + t.baseVol, 0);
+        volThep = Math.floor(TienCoban * sumBaseVol);
+      } else {
+        volThep = TienCoban; // Lệnh ảo (Virtual mode) mặc định vol = TienCoban
+      }
 
       // Chỉ thực hiện click nếu có lệnh thật và isTienReal = true
       if (item.isTienReal === true) {
@@ -836,7 +1000,6 @@ async function ThucHienGiaoDich() {
   UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
   TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
   UI_Update_CaiDatVon(page, soDuTaiKhoan, soDuLonNhat, TienCoban);
-  UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
   saveStateTXT();
 
 
@@ -1104,131 +1267,6 @@ async function toggleCapture() {
   isRunning ? await handleStop() : await handleStart();
   // await LongMachList_Update_UI(page, ArrayKQ_XAU);
 }
-
-/**
- * Hiển thị tỉ số Tài/Xỉu
- */
-async function UI_Show_TiSo_TX(page, depCount = 0, xauCount = 0) {
-  const totalPhi = LuutruLongmach.reduce((acc, item) => acc + (item.phiGD || 0), 0);
-  const totalLai = LuutruLongmach.filter(item => item.profit > 0).reduce((acc, item) => acc + item.profit, 0);
-  const totalLo = LuutruLongmach.filter(item => item.profit < 0).reduce((acc, item) => acc + item.profit, 0);
-
-  const volThat = LuutruLongmach.filter(item => item.isTrading && item.isTienReal).reduce((acc, item) => acc + (item.vol || 0), 0);
-  const volAo = LuutruLongmach.filter(item => item.isTrading && !item.isTienReal).reduce((acc, item) => acc + (item.vol || 0), 0);
-  const phiThat = volThat * 0.02;
-
-  // Expose function to Node side
-  if (!page._resetTiSoExposed) {
-    await page.exposeFunction("resetTiSo", async () => {
-      ArrayKQ_XAU.length = 0;
-
-      await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
-      // await LongMachList_Update_UI(page, ArrayKQ_XAU);
-      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
-      saveStateTXT();
-    });
-    page._resetTiSoExposed = true;
-  }
-
-  // Expose resetMaxNhan function to Node side
-  if (!page._resetMaxNhanExposed) {
-    await page.exposeFunction("resetMaxNhan", async () => {
-      maxDrawdown = 0;
-
-      // // Reset thống kê từng item
-      // LuutruLongmach.forEach(item => {
-      //   item.thepCaoNhat = 1;
-      // });
-
-      await UI_Show_TiSo_TX(page, CauDepCount, CauXauCount);
-      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
-      saveStateTXT();
-    });
-    page._resetMaxNhanExposed = true;
-  }
-
-  await page.evaluate(({ depCount, xauCount, phi, lai, lo, volThat, volAo, phiThat, maxNhan }) => {
-    let box = document.getElementById("ui-tiso-tx");
-    if (!box) {
-      box = document.createElement("div");
-      box.id = "ui-tiso-tx";
-      Object.assign(box.style, {
-        position: "fixed",
-        bottom: "10px",
-        left: "880px",
-        zIndex: 10000,
-        background: "rgba(0,0,0,0.85)",
-        backdropFilter: "blur(4px)",
-        color: "white",
-        padding: "8px 12px",
-        borderRadius: "8px",
-        fontSize: "14px",
-        fontWeight: "600",
-        boxShadow: "0 4px 15px rgba(0,0,0,0.5)",
-        fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
-        display: "flex",
-        flexDirection: "column",
-        gap: "6px",
-        minWidth: "160px",
-        pointerEvents: "auto" // Cho phép click vào nút reset
-      });
-      document.body.appendChild(box);
-    }
-    box.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 6px; margin-bottom: 2px;">
-        <span style="color:#00ff00; font-size:16px; font-weight:800;">Thuận: ${depCount}</span>
-        <span style="color:#ff4d4d; font-size:16px; font-weight:800;">Bẻ: ${xauCount}</span>
-      </div>
-      <div style="display:flex; flex-direction:column; gap:4px;">
-        <div style="display:flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 4px 8px; borderRadius: 4px;">
-          <div style="display:flex; align-items: center; gap: 8px;">
-            <span style="color:#ccc; font-size:12px;">Thep max:</span>
-            <span style="color:#00ffff; font-size:15px; font-weight:bold;">${maxNhan}</span>
-          </div>
-          <button onclick="window.resetMaxNhan()" style="background: #ff4d4d; color: white; border: none; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 10px; font-weight: bold; transition: all 0.2s;">
-            RESET
-          </button>
-        </div>
-        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
-          <span style="color:#aaa; font-size:12px;">Tổng Phí:</span>
-          <span style="color:#ffcc00; font-size:13px;">${phi.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
-          <span style="color:#aaa; font-size:12px;">Item Lãi:</span>
-          <span style="color:#00ff00; font-size:13px;">${lai.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
-          <span style="color:#aaa; font-size:12px;">Item Lỗ:</span>
-          <span style="color:#ff4d4d; font-size:13px;">${lo.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; gap: 10px; border-top: 1px dashed rgba(255,255,255,0.15); margin-top: 2px; padding: 4px 4px 0 4px;">
-          <span style="color:#aaa; font-size:12px;">Vol thật:</span>
-          <span style="color:#00ff00; font-size:13px;">${volThat.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
-          <span style="color:#aaa; font-size:12px;">Vol ảo:</span>
-          <span style="color:#fff; font-size:13px;">${volAo.toFixed(1)}</span>
-        </div>
-        <div style="display:flex; justify-content: space-between; padding: 0 4px;">
-          <span style="color:#aaa; font-size:12px;">Phí chịu:</span>
-          <span style="color:#ffcc00; font-size:13px;">${phiThat.toFixed(2)}</span>
-        </div>
-      </div>
-    `;
-  }, {
-    depCount: depCount,
-    xauCount: xauCount,
-    phi: totalPhi,
-    lai: totalLai,
-    lo: totalLo,
-    volThat: volThat,
-    volAo: volAo,
-    phiThat: phiThat,
-    maxNhan: Math.max(...LuutruLongmach.map(item => item.thepCaoNhat || 1))
-  });
-}
-
-
 
 async function clickTheoTinhVol(page, tinhVol, icon) {
   const vol = Math.floor(tinhVol);
@@ -1543,7 +1581,14 @@ function loadStateTXT() {
           hoanthanh: i.hoanthanh ?? false,
           soLanChoDoi: i.soLanChoDoi,
           Ngam: i.Ngam ?? 0,
-          countNgam: i.countNgam ?? 0
+          countNgam: i.countNgam ?? 0,
+          profitMongMuon: i.profitMongMuon ?? 5,
+          soLanThuaReal: i.soLanThuaReal ?? 0,
+          InputTia: i.InputTia ?? 4,
+          isTiaLenh: i.isTiaLenh ?? false,
+          realizedProfit: i.realizedProfit ?? 0,
+          maxTang: i.maxTang ?? 1,
+          Tangs: i.Tangs ?? defaultTangs()
         }));
         LuutruLongmach.push(...mappedArr);
       }

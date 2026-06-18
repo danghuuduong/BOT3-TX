@@ -103,13 +103,15 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Hướng", "Chờ", "Ngâm", "Thép", "Max", "Vol", "W/L",
-        "Lãi", "Phí", "STOP"
+        "ID", "Hướng", "Chờ", "Ngâm", "Vol",
+        "L.Thua", "T/T", "T.Cao", "T1", "T2", "T3", "T4", "T5", "T6", "T7",
+        "In.Tỉa", "Tỉa?", "L.Tỉa", "L.Tầng", "L.CK", "Lãi", "Mục Tiêu", "Reset", "STOP"
       ];
 
       const widths = [
-        "18px", "38px", "25px", "45px", "35px", "30px", "38px", "35px",
-        "42px", "28px", "25px"
+        "18px", "38px", "22px", "45px", "28px",
+        "30px", "35px", "35px", "32px", "32px", "32px", "32px", "32px", "32px", "32px",
+        "40px", "30px", "40px", "50px", "50px", "50px", "50px", "35px", "25px"
       ];
 
 
@@ -122,7 +124,7 @@ async function TableChinh_Create(page) {
         Object.assign(th.style, {
           border: "1px solid #000",
           padding: "2px 2px",
-          background: (i === 8) ? "#87CEFA" : "#eee",
+          background: (i === 20) ? "#87CEFA" : "#eee",
           textAlign: "center",
           whiteSpace: "nowrap",
           width: widths[i],
@@ -150,8 +152,6 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
 
     tbody.innerHTML = "";
 
-
-
     rows.forEach(item => {
       const tr = document.createElement("tr");
       if (item.isReady) {
@@ -167,63 +167,36 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
         ? "-"
         : item.huong === "T" ? "⚫ T" : item.huong === "X" ? "⚪ X" : "-";
 
-      const cols = [
-        item.id,
-        `${huongLabel}${item.hoanthanh ? ' 😍' : ''}`,
-        item.soLanChoDoi || 1,
-        // Ngâm render riêng bên dưới
-        `${item.thep || 1}/${item.maxThep || 1}`,
-        item.thepCaoNhat || 1,
-        `${(item.vol || 0).toFixed(1)}K`,
-        `${item.win || 0}/${item.lost || 0}`,
-        (item.profit || 0).toFixed(1),
-        (item.phiGD || 0).toFixed(1),
-      ];
-
-      const makeTd = (v, idx) => {
+      const makeTd = (v, align = "center") => {
         const td = document.createElement("td");
         td.innerText = v;
         Object.assign(td.style, {
           border: "1px solid #000",
           padding: "1px 2px",
-          textAlign: "center",
+          textAlign: align,
           color: "inherit"
         });
-        if (!item.isReady) td.style.opacity = "0.6";
-
-        // Lãi (cols[7] = profit)
-        if (idx === 7) {
-          if (item.profit > 0) { td.style.color = "#078607ff"; td.style.fontWeight = "bold"; }
-          else if (item.profit < 0) { td.style.color = "#d81515ff"; td.style.fontWeight = "bold"; }
-        }
-        // Thép (idx 3)
-        if (idx === 3) {
-          const thepLevel = item.thep || 1;
-          const thepColors = ["", "#555", "#e67e00", "#d44000", "#bb1500", "#880000"];
-          td.style.color = thepColors[thepLevel] || "#555";
-          td.style.fontWeight = thepLevel >= 2 ? "bold" : "normal";
-        }
-        // ThepMax (idx 4)
-        if (idx === 4) {
-          const maxLevel = item.thepCaoNhat || 1;
-          const thepColors = ["", "#555", "#e67e00", "#d44000", "#bb1500", "#880000"];
-          td.style.color = thepColors[maxLevel] || "#555";
-          td.style.fontWeight = maxLevel >= 3 ? "bold" : "normal";
-        }
+        if (!item.isReady) td.style.opacity = "0.8";
         return td;
       };
 
-      // Render cột 0,1,2
-      cols.slice(0, 3).forEach((v, i) => tr.appendChild(makeTd(v, i)));
+      // 1. Cột ID
+      tr.appendChild(makeTd(item.id));
 
-      // ===== CỘT NGÂM (INPUT CHỈNH ĐƯỢC) =====
+      // 2. Cột Hướng
+      tr.appendChild(makeTd(`${huongLabel}${item.hoanthanh ? ' 😍' : ''}`));
+
+      // 3. Cột Chờ
+      tr.appendChild(makeTd(item.soLanChoDoi || 1));
+
+      // 4. Cột Ngâm (Input chỉnh được)
       const ngamTd = document.createElement("td");
       Object.assign(ngamTd.style, {
         border: "1px solid #000",
         padding: "1px 2px",
         textAlign: "center",
       });
-      if (!item.isReady) ngamTd.style.opacity = "0.6";
+      if (!item.isReady) ngamTd.style.opacity = "0.8";
 
       const ngamSpan = document.createElement("span");
       ngamSpan.innerText = `${item.countNgam || 0}/`;
@@ -231,8 +204,8 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
 
       const ngamInput = document.createElement("input");
       ngamInput.type = "number";
-      ngamInput.value = item.Ngam || 2;
-      ngamInput.min = 1;
+      ngamInput.value = item.Ngam !== undefined ? item.Ngam : 2;
+      ngamInput.min = 0;
       ngamInput.max = 20;
       Object.assign(ngamInput.style, {
         width: "28px", fontSize: "10px",
@@ -242,7 +215,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       ngamInput.addEventListener("change", (e) => {
         e.stopPropagation();
         const newVal = parseInt(e.target.value);
-        if (!isNaN(newVal) && newVal >= 1)
+        if (!isNaN(newVal) && newVal >= 0)
           window.postMessage({ type: "UPDATE_NGAM", stopId: item.id, value: newVal }, "*");
       });
       ngamInput.addEventListener("click", e => e.stopPropagation());
@@ -250,15 +223,212 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       ngamTd.appendChild(ngamInput);
       tr.appendChild(ngamTd);
 
-      // Render cột còn lại (từ index 3)
-      cols.slice(3).forEach((v, i) => tr.appendChild(makeTd(v, i + 3)));
+      // 5. Cột Vol (Tổng vol các tầng đang mở)
+      const sumBaseVol = (item.Tangs || []).filter(t => t.isOpen).reduce((sum, t) => sum + t.baseVol, 0);
+      const volText = sumBaseVol > 0 ? `${sumBaseVol} k` : "-";
+      tr.appendChild(makeTd(volText));
 
-      // Xóa hoàn toàn việc render cột Tiền Thật, Tiền muốn ăn, Chờ Nhân, Trend
+      // 5b. Cột L.Thua (Số lần thua thực tế)
+      const lostCountText = item.soLanThuaReal !== undefined ? `${item.soLanThuaReal}` : "0";
+      const tdLostCount = makeTd(lostCountText);
+      if (item.soLanThuaReal > 0) {
+        tdLostCount.style.color = "#d81515ff";
+        tdLostCount.style.fontWeight = "bold";
+      }
+      tr.appendChild(tdLostCount);
 
-      // ===== STOP (CLICK ĐƯỢC) =====
+      // 5c. Cột T/T (Thắng/Thua)
+      const winLossText = `${item.win || 0}/${item.lost || 0}`;
+      tr.appendChild(makeTd(winLossText));
+
+      // 5d. Cột T.Cao (Tầng DCA cao nhất)
+      const maxTangText = `${item.maxTang || 1}`;
+      const tdMaxTang = makeTd(maxTangText);
+      if ((item.maxTang || 1) >= 3) {
+        tdMaxTang.style.color = "#d81515ff";
+        tdMaxTang.style.fontWeight = "bold";
+      }
+      tr.appendChild(tdMaxTang);
+
+      // 6..12. Các cột T1 .. T7
+      const tangsList = item.Tangs || [];
+      tangsList.forEach(t => {
+        let text = "";
+        let color = "inherit";
+        let fontWeight = "normal";
+        let bgColor = "inherit";
+        if (t.isOpen) {
+          const profVal = t.profit || 0;
+          if (profVal === 0) {
+            text = "";
+          } else if (profVal > 0) {
+            text = "+" + profVal.toFixed(1);
+            color = "#078607ff";
+            fontWeight = "bold";
+          } else {
+            text = profVal.toFixed(1);
+            color = "#d81515ff";
+            fontWeight = "bold";
+          }
+          if (item.isReady || item.isTrading) {
+            bgColor = "#90caf9"; // Sáng màu xanh blue khi đang có lệnh
+          }
+        } else if (t.isTia) {
+          text = "✅";
+        }
+        const tdT = makeTd(text);
+        tdT.style.color = color;
+        tdT.style.fontWeight = fontWeight;
+        if (bgColor !== "inherit") {
+          tdT.style.backgroundColor = bgColor;
+        }
+        tr.appendChild(tdT);
+      });
+
+      // 12. Cột In.Tỉa (InputTia) - Input chỉnh được
+      const tiaTd = document.createElement("td");
+      Object.assign(tiaTd.style, {
+        border: "1px solid #000",
+        padding: "1px 2px",
+        textAlign: "center",
+      });
+      if (!item.isReady) tiaTd.style.opacity = "0.8";
+
+      const tiaInput = document.createElement("input");
+      tiaInput.type = "number";
+      tiaInput.value = item.InputTia || 4;
+      tiaInput.min = 1;
+      tiaInput.max = 7;
+      Object.assign(tiaInput.style, {
+        width: "28px", fontSize: "10px",
+        border: "1px solid #aaa", borderRadius: "2px",
+        textAlign: "center", padding: "0",
+      });
+      tiaInput.addEventListener("change", (e) => {
+        e.stopPropagation();
+        const newVal = parseInt(e.target.value);
+        if (!isNaN(newVal) && newVal >= 1)
+          window.postMessage({ type: "UPDATE_INPUT_TIA", stopId: item.id, value: newVal }, "*");
+      });
+      tiaInput.addEventListener("click", e => e.stopPropagation());
+      tiaTd.appendChild(tiaInput);
+      tr.appendChild(tiaTd);
+
+      // 13. Cột Tỉa? (isTiaLenh)
+      const isTiaText = item.isTiaLenh ? "🔥" : "-";
+      const tdTiaState = makeTd(isTiaText);
+      if (item.isTiaLenh) {
+        tdTiaState.style.color = "#ff4d4d";
+        tdTiaState.style.fontWeight = "bold";
+      }
+      tr.appendChild(tdTiaState);
+
+      // 14. Cột L.Tỉa
+      const realizedP = item.realizedProfit || 0;
+      const realizedText = realizedP === 0 ? "0" : realizedP.toFixed(2);
+      const tdRealized = makeTd(realizedText);
+      if (realizedP > 0) {
+        tdRealized.style.color = "#078607ff";
+        tdRealized.style.fontWeight = "bold";
+      } else if (realizedP < 0) {
+        tdRealized.style.color = "#d81515ff";
+        tdRealized.style.fontWeight = "bold";
+      }
+      tr.appendChild(tdRealized);
+
+      // 14b. Cột Tổng lãi Tầng (Lãi Tầng All)
+      const profitTang = (item.Tangs || []).reduce((sum, t) => sum + (t.isOpen ? (t.profit || 0) : 0), 0);
+      const profitTangText = profitTang === 0 ? "0" : profitTang.toFixed(2);
+      const tdProfitTang = makeTd(profitTangText);
+      if (profitTang > 0) {
+        tdProfitTang.style.color = "#078607ff";
+        tdProfitTang.style.fontWeight = "bold";
+      } else if (profitTang < 0) {
+        tdProfitTang.style.color = "#d81515ff";
+        tdProfitTang.style.fontWeight = "bold";
+      }
+      tr.appendChild(tdProfitTang);
+
+      // 14c. Cột Tổng lãi chu kỳ (L.CK)
+      const totalProfitCK = (item.realizedProfit || 0) + profitTang;
+      const totalProfitCKText = totalProfitCK === 0 ? "0" : totalProfitCK.toFixed(2);
+      const tdProfitCK = makeTd(totalProfitCKText);
+      if (totalProfitCK > 0) {
+        tdProfitCK.style.color = "#078607ff";
+        tdProfitCK.style.fontWeight = "bold";
+      } else if (totalProfitCK < 0) {
+        tdProfitCK.style.color = "#d81515ff";
+        tdProfitCK.style.fontWeight = "bold";
+      }
+      tr.appendChild(tdProfitCK);
+
+      // 15. Cột Tổng Lãi
+      const totalProfit = item.totalProfit || 0;
+      const totalProfitText = totalProfit === 0 ? "0" : totalProfit.toFixed(2);
+      const tdTotal = makeTd(totalProfitText);
+      if (totalProfit > 0) {
+        tdTotal.style.color = "#078607ff";
+        tdTotal.style.fontWeight = "bold";
+      } else if (totalProfit < 0) {
+        tdTotal.style.color = "#d81515ff";
+        tdTotal.style.fontWeight = "bold";
+      }
+      tr.appendChild(tdTotal);
+
+      // 16. Cột Mục Tiêu (profitMongMuon) - editable
+      const mucTieuTd = document.createElement("td");
+      Object.assign(mucTieuTd.style, {
+        border: "1px solid #000",
+        padding: "1px",
+        textAlign: "center",
+      });
+      const mucTieuInput = document.createElement("input");
+      mucTieuInput.type = "number";
+      mucTieuInput.value = item.profitMongMuon || 0;
+      Object.assign(mucTieuInput.style, {
+        width: "44px",
+        fontSize: "11px",
+        textAlign: "center",
+        border: "1px solid #aaa",
+        borderRadius: "3px",
+        padding: "1px 2px",
+        background: "#fffde7",
+      });
+      mucTieuInput.addEventListener("change", e => {
+        const value = parseFloat(e.target.value) || 0;
+        window.postMessage({
+          type: "UPDATE_PROFIT_MUON",
+          stopId: item.id,
+          value
+        }, "*");
+      });
+      mucTieuInput.addEventListener("click", e => e.stopPropagation());
+      mucTieuTd.appendChild(mucTieuInput);
+      tr.appendChild(mucTieuTd);
+
+      // 17. Cột Reset
+      const resetTd = document.createElement("td");
+      resetTd.innerText = "🔄";
+      Object.assign(resetTd.style, {
+        border: "1px solid #000",
+        textAlign: "center",
+        cursor: "pointer",
+        userSelect: "none",
+        fontSize: "12px",
+      });
+      if (!item.isReady) resetTd.style.opacity = "0.8";
+      resetTd.addEventListener("click", (e) => {
+        e.stopPropagation();
+        window.postMessage({
+          type: "RESET_ITEM_CLICK",
+          stopId: item.id
+        }, "*");
+      });
+      tr.appendChild(resetTd);
+
+      // 18. Cột STOP
       const stopTd = document.createElement("td");
       stopTd.innerText = item.isStop ? "🔴" : "🟢";
-
       Object.assign(stopTd.style, {
         border: "1px solid #000",
         textAlign: "center",
@@ -266,19 +436,16 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
         userSelect: "none",
         fontWeight: "bold",
       });
-
       if (!item.isReady) {
-        stopTd.style.opacity = "0.6";
+        stopTd.style.opacity = "0.8";
       }
-
       stopTd.addEventListener("click", (e) => {
         e.stopPropagation();
         window.postMessage({
           type: "STOP_CLICK",
-          stopId: item.id   // ✅ QUAN TRỌNG
+          stopId: item.id
         }, "*");
       });
-
       tr.appendChild(stopTd);
 
       tbody.appendChild(tr);
@@ -298,9 +465,9 @@ async function UI_MouseClick(page, x, y, icon, size = 16, id = "tieudiem", timeo
       style.id = "ui-click-style";
       style.innerHTML = `
         @keyframes clickPulse {
-          0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
+          0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.8; }
           50%  { transform: translate(-50%, -50%) scale(1.6); opacity: 1; }
-          100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.6; }
+          100% { transform: translate(-50%, -50%) scale(1);   opacity: 0.8; }
         }
       `;
       document.head.appendChild(style);
