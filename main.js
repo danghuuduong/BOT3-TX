@@ -202,8 +202,7 @@ const defaultTangs = () => [
   { index: 3, baseVol: 4, isOpen: false, profitOfTang: 0, isTia: false },
   { index: 4, baseVol: 8, isOpen: false, profitOfTang: 0, isTia: false },
   { index: 5, baseVol: 16, isOpen: false, profitOfTang: 0, isTia: false },
-  { index: 6, baseVol: 32, isOpen: false, profitOfTang: 0, isTia: false },
-  { index: 7, baseVol: 64, isOpen: false, profitOfTang: 0, isTia: false }
+  { index: 6, baseVol: 32, isOpen: false, profitOfTang: 0, isTia: false }
 ];
 
 const LuutruLongmach = [
@@ -802,7 +801,7 @@ async function ThucHienGiaoDich() {
           item.soLanThuaReal++;
 
           if (item.soLanThuaReal > 0 && item.soLanThuaReal % 3 === 0) {
-            const tangIdx = Math.min(Math.floor(item.soLanThuaReal / 3) + 1, 7);
+            const tangIdx = Math.min(Math.floor(item.soLanThuaReal / 3) + 1, 6);
             const tObj = item.Tangs.find(t => t.index === tangIdx);
             if (tObj && !tObj.isOpen) {
               tObj.isOpen = true;
@@ -1588,7 +1587,7 @@ function loadStateTXT() {
           isTiaLenh: i.isTiaLenh ?? false,
           realizedProfit: i.realizedProfit ?? 0,
           maxTang: i.maxTang ?? 1,
-          Tangs: i.Tangs ?? defaultTangs()
+          Tangs: (i.Tangs ?? defaultTangs()).slice(0, 6)
         }));
         LuutruLongmach.push(...mappedArr);
       }

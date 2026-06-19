@@ -30,6 +30,21 @@ async function UI_TieuDiem(page, X, Y, width, height, id, color = "red") {
 async function TableChinh_Create(page) {
   await page.evaluate(() => {
     if (!document.getElementById("longmach-table-container")) {
+      if (!document.getElementById("ui-floor-pulse-style")) {
+        const style = document.createElement("style");
+        style.id = "ui-floor-pulse-style";
+        style.innerHTML = `
+          @keyframes floorPulse {
+            0% { background-color: #e3f2fd; }
+            50% { background-color: #1bf72eff; }
+            100% { background-color: #e3f2fd; }
+          }
+          .active-floor {
+            animation: floorPulse 1s infinite ease-in-out !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
       const container = document.createElement("div");
       container.id = "longmach-table-container";
       // Wrapper
@@ -104,13 +119,13 @@ async function TableChinh_Create(page) {
 
       const headers = [
         "ID", "Hướng", "Chờ", "Ngâm", "Vol",
-        "L.Thua", "T/T", "T.Cao", "T1", "T2", "T3", "T4", "T5", "T6", "T7",
+        "L.Thua", "W/L", "T.Cao", "T1", "T2", "T3", "T4", "T5", "T6",
         "In.Tỉa", "Tỉa?", "Lãi.Tỉa", "Lãi.Tầng", "L.ChuKi", "Profit", "Mục Tiêu", "Reset", "STOP"
       ];
 
       const widths = [
         "18px", "38px", "22px", "45px", "28px",
-        "60px", "35px", "35px", "32px", "32px", "32px", "32px", "32px", "32px", "32px",
+        "60px", "35px", "35px", "32px", "32px", "32px", "32px", "32px", "32px",
         "40px", "30px", "40px", "50px", "50px", "50px", "50px", "35px", "25px"
       ];
 
@@ -124,7 +139,7 @@ async function TableChinh_Create(page) {
         Object.assign(th.style, {
           border: "1px solid #000",
           padding: "2px 2px",
-          background: (i === 20) ? "#87CEFA" : "#eee",
+          background: (h === "Profit") ? "#87CEFA" : "#eee",
           textAlign: "center",
           whiteSpace: "nowrap",
           width: widths[i],
@@ -225,11 +240,12 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
 
       // 5. Cột Vol (Tổng vol các tầng đang mở)
       const sumBaseVol = (item.Tangs || []).filter(t => t.isOpen).reduce((sum, t) => sum + t.baseVol, 0);
-      const volText = sumBaseVol > 0 ? `${sumBaseVol} k` : "-";
+      const totalVol = Math.floor(sumBaseVol * baseVol);
+      const volText = totalVol > 0 ? `${totalVol} k` : "-";
       tr.appendChild(makeTd(volText));
 
       // 5b. Cột L.Thua (Số lần thua thực tế)
-      const lostCountText = item.soLanThuaReal !== undefined ? `${item.soLanThuaReal}/ Tầng ${Math.floor((item.soLanThuaReal / 3) + 1)}` : "0";
+      const lostCountText = item.soLanThuaReal !== undefined ? `${item.soLanThuaReal}` : "0";
       const tdLostCount = makeTd(lostCountText);
       if (item.soLanThuaReal > 0) {
         tdLostCount.style.color = "#d81515ff";
@@ -250,13 +266,13 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       }
       tr.appendChild(tdMaxTang);
 
-      // 6..12. Các cột T1 .. T7
+      // 6..12. Các cột T1 .. T6
       const tangsList = item.Tangs || [];
       tangsList.forEach(t => {
         let text = "";
         let color = "inherit";
         let fontWeight = "normal";
-        let bgColor = "inherit";
+        let className = "";
         if (t.isOpen) {
           const profVal = t.profitOfTang || 0;
           if (profVal === 0) {
@@ -270,17 +286,15 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
             color = "#d81515ff";
             fontWeight = "bold";
           }
-          if (item.isReady || item.isTrading) {
-            bgColor = "#90caf9"; // Sáng màu xanh blue khi đang có lệnh
-          }
+          className = "active-floor";
         } else if (t.isTia) {
           text = "✅";
         }
         const tdT = makeTd(text);
         tdT.style.color = color;
         tdT.style.fontWeight = fontWeight;
-        if (bgColor !== "inherit") {
-          tdT.style.backgroundColor = bgColor;
+        if (className) {
+          tdT.className = className;
         }
         tr.appendChild(tdT);
       });
@@ -298,7 +312,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       tiaInput.type = "number";
       tiaInput.value = item.InputTia || 4;
       tiaInput.min = 1;
-      tiaInput.max = 7;
+      tiaInput.max = 6;
       Object.assign(tiaInput.style, {
         width: "28px", fontSize: "10px",
         border: "1px solid #aaa", borderRadius: "2px",
