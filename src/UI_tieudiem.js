@@ -118,13 +118,13 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "ID", "Hướng", "Chờ", "Ngâm", "Vol",
+        "Cầu", "Hướng", "Chờ", "Ngâm", "Vol",
         "L.Thua", "W/L", "T.Cao", "T1", "T2", "T3", "T4", "T5", "T6",
         "In.Tỉa", "Tỉa?", "Lãi.Tỉa", "Lãi.Tầng", "L.ChuKi", "Profit", "Mục Tiêu", "Reset", "STOP"
       ];
 
       const widths = [
-        "18px", "38px", "22px", "45px", "28px",
+        "40px", "38px", "22px", "45px", "28px",
         "60px", "35px", "35px", "32px", "32px", "32px", "32px", "32px", "32px",
         "40px", "30px", "40px", "50px", "50px", "50px", "50px", "35px", "25px"
       ];
@@ -196,7 +196,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       };
 
       // 1. Cột ID
-      tr.appendChild(makeTd(item.id));
+      tr.appendChild(makeTd(`${item.type} ${item.isDaoNguoc ? ' 🔄' : ''}`));
 
       // 2. Cột Hướng
       tr.appendChild(makeTd(`${huongLabel}${item.hoanthanh ? ' 😍' : ''}`));

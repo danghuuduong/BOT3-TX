@@ -109,7 +109,7 @@ function detectKhoiChanEarly_TX(str) {
     b3.char === b1.char
   ) {
     return {
-      huong: b1.char === T ? X : T // hoặc đổi theo logic TX của bạn
+      huong: b1.char === T ? T : X // hoặc đổi theo logic TX của bạn
     };
   }
 
@@ -221,7 +221,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s4 === "XTXT" || s4 === "TXTX") {
       lockState[TYPES.TYPE_1_1] = true;
-      return { huong: s4 === "XTXT" ? T : X, type: TYPES.TYPE_1_1 };
+      return { huong: s4 === "XTXT" ? X : T, type: TYPES.TYPE_1_1 };
     }
   }
   // 1-1 Plus
@@ -233,7 +233,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s5 === "TXTXT" || s5 === "XTXTX") {
       lockState[TYPES.TYPE_1_1_PLUS] = true;
-      return { huong: s5 === "TXTXT" ? T : X, type: TYPES.TYPE_1_1_PLUS };
+      return { huong: s5 === "TXTXT" ? X : T, type: TYPES.TYPE_1_1_PLUS };
     }
   }
 
@@ -243,7 +243,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s5 === "TXXTT" || s5 === "XTTXX") {
       lockState[TYPES.TYPE_2_2] = true;
-      return { huong: s5 === "TXXTT" ? T : X, type: TYPES.TYPE_2_2 };
+      return { huong: s5 === "TXXTT" ? X : T, type: TYPES.TYPE_2_2 };
     }
   }
   // 2-2 Plus
@@ -252,7 +252,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s6 === "TXXTTX" || s6 === "XTTXXT") {
       lockState[TYPES.TYPE_2_2_PLUS] = true;
-      return { huong: s6 === "TXXTTX" ? T : X, type: TYPES.TYPE_2_2_PLUS };
+      return { huong: s6 === "TXXTTX" ? X : T, type: TYPES.TYPE_2_2_PLUS };
     }
   }
 
@@ -262,7 +262,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s7 === "TXXXTTT" || s7 === "XTTTXXX") {
       lockState[TYPES.TYPE_3_3] = true;
-      return { huong: s7 === "TXXXTTT" ? T : X, type: TYPES.TYPE_3_3 };
+      return { huong: s7 === "TXXXTTT" ? X : T, type: TYPES.TYPE_3_3 };
     }
   }
   // 3-3 Plus
@@ -271,7 +271,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s8 === "TXXXTTTX" || s8 === "XTTTXXXT") {
       lockState[TYPES.TYPE_3_3_PLUS] = true;
-      return { huong: s8 === "TXXXTTTX" ? T : X, type: TYPES.TYPE_3_3_PLUS };
+      return { huong: s8 === "TXXXTTTX" ? X : T, type: TYPES.TYPE_3_3_PLUS };
     }
   }
 
@@ -281,7 +281,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s9 === "TXXXXTTTT" || s9 === "XTTTTXXXX") {
       lockState[TYPES.TYPE_4_4] = true;
-      return { huong: s9 === "TXXXXTTTT" ? T : X, type: TYPES.TYPE_4_4 };
+      return { huong: s9 === "TXXXXTTTT" ? X : T, type: TYPES.TYPE_4_4 };
     }
   }
   // ==================================================================== 4-4 4-4 Plus
@@ -290,7 +290,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s10 === "TXXXXTTTTX" || s10 === "XTTTTXXXXT") {
       lockState[TYPES.TYPE_4_4_PLUS] = true;
-      return { huong: s10 === "TXXXXTTTTX" ? T : X, type: TYPES.TYPE_4_4_PLUS };
+      return { huong: s10 === "TXXXXTTTTX" ? X : T, type: TYPES.TYPE_4_4_PLUS };
     }
   }
 
@@ -302,7 +302,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s6 === "TXXTXX" || s6 === "XTTXTT") {
       lockState[TYPES.TYPE_2_1] = true;
-      return { huong: s6 === "TXXTXX" ? X : T, type: TYPES.TYPE_2_1 };
+      return { huong: s6 === "TXXTXX" ? T : X, type: TYPES.TYPE_2_1 };
     }
   }
   if (lockState[TYPES.TYPE_2_1_PLUS]) {
@@ -310,7 +310,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s7 === "TXXTXXT" || s7 === "XTTXTTX") {
       lockState[TYPES.TYPE_2_1_PLUS] = true;
-      return { huong: s7 === "TXXTXXT" ? T : X, type: TYPES.TYPE_2_1_PLUS };
+      return { huong: s7 === "TXXTXXT" ? X : T, type: TYPES.TYPE_2_1_PLUS };
     }
   }
 
@@ -320,7 +320,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s8 === "TXXXTXXX" || s8 === "XTTTXTTT") {
       lockState[TYPES.TYPE_3_1] = true;
-      return { huong: s8 === "TXXXTXXX" ? X : T, type: TYPES.TYPE_3_1 };
+      return { huong: s8 === "TXXXTXXX" ? T : X, type: TYPES.TYPE_3_1 };
     }
   }
   if (lockState[TYPES.TYPE_3_1_PLUS]) {
@@ -328,7 +328,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s9 === "TXXXTXXXT" || s9 === "XTTTXTTTX") {
       lockState[TYPES.TYPE_3_1_PLUS] = true;
-      return { huong: s9 === "TXXXTXXXT" ? T : X, type: TYPES.TYPE_3_1_PLUS };
+      return { huong: s9 === "TXXXTXXXT" ? X : T, type: TYPES.TYPE_3_1_PLUS };
     }
   }
 
@@ -338,7 +338,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s10 === "TXXXXTXXXX" || s10 === "XTTTTXTTTT") {
       lockState[TYPES.TYPE_4_1] = true;
-      return { huong: s10 === "TXXXXTXXXX" ? X : T, type: TYPES.TYPE_4_1 };
+      return { huong: s10 === "TXXXXTXXXX" ? T : X, type: TYPES.TYPE_4_1 };
     }
   }
   if (lockState[TYPES.TYPE_4_1_PLUS]) {
@@ -346,7 +346,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s11 === "TXXXXTXXXXT" || s11 === "XTTTTXTTTTX") {
       lockState[TYPES.TYPE_4_1_PLUS] = true;
-      return { huong: s11 === "TXXXXTXXXXT" ? T : X, type: TYPES.TYPE_4_1_PLUS };
+      return { huong: s11 === "TXXXXTXXXXT" ? X : T, type: TYPES.TYPE_4_1_PLUS };
     }
   }
 
@@ -356,7 +356,7 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s7 === "TXTTXXX" || s7 === "XTXXTTT") {
       lockState[TYPES.TYPE_123] = true;
-      return { huong: s7 === "TXTTXXX" ? X : T, type: TYPES.TYPE_123 };
+      return { huong: s7 === "TXTTXXX" ? T : X, type: TYPES.TYPE_123 };
     }
   }
   if (lockState[TYPES.TYPE_123_PLUS]) {
@@ -364,11 +364,9 @@ function TinHieuMuaBan(ArrayKQ) {
   } else {
     if (s8 === "TXTTXXXT" || s8 === "XTXXTTTX") {
       lockState[TYPES.TYPE_123_PLUS] = true;
-      return { huong: s8 === "TXTTXXXT" ? X : T, type: TYPES.TYPE_123_PLUS };
+      return { huong: s8 === "TXTTXXXT" ? T : X, type: TYPES.TYPE_123_PLUS };
     }
   }
-
-
   // ==================================================================== KHOI CHAN =============================================
 
   return { huong: "null", type: "null" };
@@ -399,6 +397,45 @@ function handleGetColor_TX(r, g, b) {
 //   return Math.random() < 0.5 ? "white" : "black";
 // }
 
+const defaultTangs = () => [
+  { index: 1, baseVol: 1, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 2, baseVol: 2, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 3, baseVol: 4, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 4, baseVol: 8, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 5, baseVol: 16, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 6, baseVol: 32, isOpen: false, profitOfTang: 0, isTia: false }
+];
+
+const defaultItem = {
+  isTrading: false,
+  huong: "null",
+  profit: 0,
+  vol: 0,
+  win: 0,
+  lost: 0,
+  isStop: false,
+  isFomo: true,
+  minAnNumber: 0,
+  isReady: false,
+  hoanthanh: false,
+  Ngam: 0,
+  countNgam: 0,
+  phiGD: 0,
+  soLanChoDoi: 0,
+  chay: 0,
+  maxAm: 0,
+  isTienReal: false,
+  // isChanVaoLenh: false,
+  // lockType: null,
+  profitMongMuon: 5,
+  soLanThuaReal: 0,
+  InputTia: 3,
+  isTiaLenh: false,
+  realizedProfit: 0,
+  maxTang: 1,
+  Tangs: defaultTangs(),
+};
+
 
 // ================= EXPORT =================
 module.exports = {
@@ -411,4 +448,5 @@ module.exports = {
   Dep,
   Xau,
   maxThep,
+  defaultItem
 };
