@@ -427,13 +427,12 @@ const defaultItem = {
   isTienReal: false,
   // isChanVaoLenh: false,
   // lockType: null,
-  profitMongMuon: 5,
+  profitMongMuon: 3,
   soLanThuaReal: 0,
   InputTia: 3,
   isTiaLenh: false,
   realizedProfit: 0,
   maxTang: 1,
-  Tangs: defaultTangs(),
 };
 
 
@@ -448,5 +447,6 @@ module.exports = {
   Dep,
   Xau,
   maxThep,
-  defaultItem
+  defaultItem,
+  defaultTangs,
 };

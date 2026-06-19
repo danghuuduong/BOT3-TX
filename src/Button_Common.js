@@ -291,14 +291,14 @@ async function SignalIndicator_Update(page, signals = []) {
       box.style.animation = "";
     } else {
       const s = sigs[0];
-      const isTai = s.huong === "X";
+      const isTai = s.huong === "T";
       box.style.color = isTai ? "#ffffff" : "#222222"; // Chữ trắng trên nền đen, chữ đen trên nền trắng
       box.style.background = isTai
         ? "linear-gradient(135deg, #0f0f0f, #2c2c2c)" // Đen sâu, dịu
         : "linear-gradient(135deg, #ffffff, #e8e8e8)"; // Trắng sứ, giảm chói
       box.style.border = isTai ? "2px solid #444444" : "2px solid #cccccc";
       box.style.animation = "signalPulse 1s ease-in-out infinite";
-      box.innerText = (isTai ? "⚫ TÀI" : "⚪ XỈU");
+      box.innerText = `${isTai ? "⚫ TÀI" : "⚪ XỈU"} (${s.type})`;
     }
   }, signals);
 }

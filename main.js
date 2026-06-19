@@ -199,12 +199,14 @@ const LuutruLongmach = Object.values(TYPES).flatMap((type, index) => [
     id: index * 2,
     type,
     isDaoNguoc: false,
+    Tangs: defaultTangs(), // ✅ Mỗi item có Tangs riêng (tránh shared reference)
   },
   {
     ...defaultItem,
     id: index * 2 + 1,
     type,
     isDaoNguoc: true,
+    Tangs: defaultTangs(), // ✅ Mỗi item có Tangs riêng (tránh shared reference)
   },
 ]);
 
