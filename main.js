@@ -845,7 +845,7 @@ async function ThucHienGiaoDich() {
         const totalProfitChuKy = item.realizedProfit + item.Tangs.reduce((sum, t) => sum + (t.isOpen ? t.profitOfTang : 0), 0);
 
 
-        if (totalProfitChuKy >= item.profitMongMuon * TienCoban) {
+        if (totalProfitChuKy >= item.profitMongMuon) {
           item.soLanThuaReal = 0;
           item.realizedProfit = 0;
           item.isTiaLenh = false;
