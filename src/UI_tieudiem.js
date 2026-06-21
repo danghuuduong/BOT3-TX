@@ -267,6 +267,24 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
         tdMaxTang.style.color = "#d81515ff";
         tdMaxTang.style.fontWeight = "bold";
       }
+
+      const resetMaxTangBtn = document.createElement("button");
+      resetMaxTangBtn.innerText = "🔄";
+      Object.assign(resetMaxTangBtn.style, {
+        marginLeft: "4px",
+        cursor: "pointer",
+        fontSize: "8px",
+        border: "1px solid #aaa",
+        borderRadius: "2px",
+        background: "#fff",
+        padding: "0"
+      });
+      resetMaxTangBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        window.postMessage({ type: "RESET_MAX_TANG", stopId: item.id }, "*");
+      });
+      tdMaxTang.appendChild(resetMaxTangBtn);
+
       tr.appendChild(tdMaxTang);
 
       // 6..11. Các cột T1 .. T5

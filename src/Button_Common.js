@@ -118,8 +118,9 @@ async function UI_Show_SoDu(page, soDu = 0, profitOfTang = 0, mdd = 0) {
           (${pnl > 0 ? "+" : ""}${fmtProfit})
         </span>
       </div>
-      <div style="color:#666; font-size:13px; font-weight:800; text-shadow:0 0 1px #fff;">
+      <div style="color:#666; font-size:13px; font-weight:800; text-shadow:0 0 1px #fff; display:flex; gap:4px; align-items:center;">
         Tổn Thất : ${Number(mddValue).toFixed(1)}%
+        <button style="pointer-events: auto; border: 1px solid #aaa; border-radius: 3px; cursor: pointer; font-size: 10px; background: #fff; padding: 0 4px;" onclick="window.postMessage({type:'RESET_MDD'}, '*')">🔄</button>
       </div>
     `;
 

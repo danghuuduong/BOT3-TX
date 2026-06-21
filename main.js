@@ -677,6 +677,20 @@ async function UI_Reset(page) {
       await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
     }
 
+    if (type === "RESET_MDD") {
+      maxDrawdown = 0;
+      await UI_Show_SoDu(page, soDuTaiKhoan, profitAll, maxDrawdown);
+      saveStateTXT();
+    }
+
+    if (type === "RESET_MAX_TANG") {
+      const item = LuutruLongmach.find(i => i.id === stopId);
+      if (!item) return;
+      handleUpdate_LongMachList(stopId, { maxTang: 1 });
+      saveStateTXT();
+      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
+    }
+
   });
 
   // ===== BẮT MESSAGE TỪ UI =====
