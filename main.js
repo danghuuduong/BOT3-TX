@@ -1081,16 +1081,16 @@ async function ThucHienGiaoDich() {
     }
 
     // Thực hiện click tổng vol thật sau khi đã triệt tiêu
-    // if (totalVol_Real > 0 && finalHuong) {
-    //   await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
-    //   await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
+    if (totalVol_Real > 0 && finalHuong) {
+      await UI_MouseClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu, "👈");
+      await masterClick(page, finalHuong === T ? X_DatTai : X_DatXiu, finalHuong === T ? Y_DatTai : Y_DatXiu);
 
-    //   await clickTheoTinhVol(page, totalVol_Real, "🎯");
-    //   await page.waitForTimeout(50 + Math.floor(Math.random() * 200));
+      await clickTheoTinhVol(page, totalVol_Real, "🎯");
+      await page.waitForTimeout(50 + Math.floor(Math.random() * 200));
 
-    //   await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
-    //   await masterClick(page, X_Submit, Y_Submit);
-    // }
+      await UI_MouseClick(page, X_Submit, Y_Submit, "✅");
+      await masterClick(page, X_Submit, Y_Submit);
+    }
   }
 
   // Cập nhật UI sau khi đã xong phần giao dịch (TP/SL + Đặt lệnh mới)
