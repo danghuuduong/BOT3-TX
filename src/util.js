@@ -402,8 +402,7 @@ const defaultTangs = () => [
   { index: 2, baseVol: 2, isOpen: false, profitOfTang: 0, isTia: false },
   { index: 3, baseVol: 4, isOpen: false, profitOfTang: 0, isTia: false },
   { index: 4, baseVol: 8, isOpen: false, profitOfTang: 0, isTia: false },
-  { index: 5, baseVol: 16, isOpen: false, profitOfTang: 0, isTia: false },
-  { index: 6, baseVol: 32, isOpen: false, profitOfTang: 0, isTia: false }
+  { index: 5, baseVol: 16, isOpen: false, profitOfTang: 0, isTia: false }
 ];
 
 const defaultItem = {
@@ -418,7 +417,7 @@ const defaultItem = {
   minAnNumber: 0,
   isReady: false,
   hoanthanh: false,
-  Ngam: 0,
+  Ngam: 2,
   countNgam: 0,
   phiGD: 0,
   soLanChoDoi: 0,

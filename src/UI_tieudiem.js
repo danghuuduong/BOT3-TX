@@ -119,13 +119,13 @@ async function TableChinh_Create(page) {
 
       const headers = [
         "Cầu", "Hướng", "Chờ", "Ngâm", "Vol",
-        "L.Thua", "W/L", "T.Cao", "T1", "T2", "T3", "T4", "T5", "T6",
+        "L.Thua", "W/L", "T.Cao", "T1", "T2", "T3", "T4", "T5",
         "In.Tỉa", "Tỉa?", "Lãi.Tỉa", "Lãi.Tầng", "L.ChuKi", "Profit", "Mục Tiêu", "Reset", "STOP"
       ];
 
       const widths = [
         "40px", "38px", "22px", "45px", "28px",
-        "60px", "35px", "35px", "32px", "32px", "32px", "32px", "32px", "32px",
+        "60px", "35px", "35px", "32px", "32px", "32px", "32px", "32px",
         "40px", "30px", "40px", "50px", "50px", "50px", "50px", "35px", "25px"
       ];
 
@@ -196,7 +196,10 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       };
 
       // 1. Cột ID
-      tr.appendChild(makeTd(`${item.type} ${item.isDaoNguoc ? ' 🔄' : ''}`));
+      const labelCau = item.Sample === "2tai-2xiu"
+        ? `2T2X [${item.soLanChoDoi}] ${item.isDaoNguoc ? ' 🔄' : ''}`
+        : `${item.type} ${item.isDaoNguoc ? ' 🔄' : ''}`;
+      tr.appendChild(makeTd(labelCau));
 
       // 2. Cột Hướng
       tr.appendChild(makeTd(`${huongLabel}${item.hoanthanh ? ' 😍' : ''}`));
@@ -266,7 +269,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       }
       tr.appendChild(tdMaxTang);
 
-      // 6..12. Các cột T1 .. T6
+      // 6..11. Các cột T1 .. T5
       const tangsList = item.Tangs || [];
       tangsList.forEach(t => {
         let text = "";
