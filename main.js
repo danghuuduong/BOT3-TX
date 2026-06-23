@@ -658,6 +658,7 @@ async function UI_Reset(page) {
       if (!item) return;
 
       item.soLanThuaReal = 0;
+      item.countNgam = 0;
       item.realizedProfit = 0;
       item.isTiaLenh = false;
       item.isTrading = false;
@@ -896,7 +897,7 @@ async function ThucHienGiaoDich() {
           item.soLanThuaReal++;
 
           if (item.soLanThuaReal > 0 && item.soLanThuaReal % 3 === 0) {
-            const tangIdx = Math.min(Math.floor(item.soLanThuaReal / 3) + 1, 5);
+            const tangIdx = Math.min(Math.floor(item.soLanThuaReal / 3) + 1, 4);
             const tObj = item.Tangs.find(t => t.index === tangIdx);
             if (tObj && !tObj.isOpen) {
               tObj.isOpen = true;
