@@ -1689,7 +1689,7 @@ function loadStateTXT() {
         // Tạo một map để tìm kiếm nhanh theo ID từ dữ liệu đã lưu
         const savedMap = new Map();
         arr.forEach(i => {
-          if (i && i.id) savedMap.set(i.id, i);
+          if (i && i.id !== undefined && i.id !== null) savedMap.set(i.id, i);
         });
 
         // Duyệt qua LuutruLongmach hiện tại đã được khai báo trong code, merge state cũ vào
