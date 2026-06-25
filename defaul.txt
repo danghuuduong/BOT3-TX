@@ -1,6 +1,6 @@
-soDuTaiKhoan=1000
-soDuLonNhat=1000
-TienCoban=6
+soDuTaiKhoan=2000
+soDuLonNhat=2000
+TienCoban=10
 profitAll=0
 maxDrawdown=0
 nguongTienDat=6000
@@ -26,14 +26,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -52,28 +52,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -92,14 +92,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -118,28 +118,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -158,14 +158,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 3,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -184,28 +184,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -224,14 +224,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -250,28 +250,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -290,14 +290,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 6,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -316,28 +316,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -356,14 +356,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -382,28 +382,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -422,14 +422,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 7,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -448,28 +448,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -488,14 +488,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 6,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -514,28 +514,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -554,14 +554,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -580,28 +580,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -620,14 +620,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -646,28 +646,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -686,14 +686,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -712,28 +712,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -752,14 +752,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -778,28 +778,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -818,14 +818,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -844,28 +844,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -884,14 +884,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -910,28 +910,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -950,14 +950,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -976,28 +976,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1016,14 +1016,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1042,28 +1042,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1082,14 +1082,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1108,28 +1108,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1148,14 +1148,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 10,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1174,28 +1174,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1214,14 +1214,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1240,28 +1240,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1280,14 +1280,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 6,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1306,28 +1306,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1346,14 +1346,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1372,28 +1372,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1412,14 +1412,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 3,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1438,28 +1438,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1478,14 +1478,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1504,28 +1504,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1544,14 +1544,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1570,28 +1570,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1610,14 +1610,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1636,28 +1636,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1676,14 +1676,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1702,28 +1702,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1742,14 +1742,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1768,28 +1768,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1808,14 +1808,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1834,28 +1834,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1874,14 +1874,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 7,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1900,28 +1900,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -1940,14 +1940,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 7,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -1966,28 +1966,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -2006,14 +2006,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -2032,28 +2032,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -2072,14 +2072,14 @@ LuutruLongmach=
     "minAnNumber": 0,
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 2,
+    "Ngam": 5,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 0,
     "chay": 0,
     "maxAm": 0,
     "isTienReal": false,
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -2098,28 +2098,28 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
@@ -2140,7 +2140,7 @@ LuutruLongmach=
     "type": "A",
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 3,
+    "Ngam": 10,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 2,
@@ -2164,34 +2164,34 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       }
     ],
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -2212,7 +2212,7 @@ LuutruLongmach=
     "type": "A",
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 8,
+    "Ngam": 16,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 2,
@@ -2236,34 +2236,34 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       }
     ],
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -2285,7 +2285,7 @@ LuutruLongmach=
     "type": "A",
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 3,
+    "Ngam": 11,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 3,
@@ -2309,34 +2309,34 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       }
     ],
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -2357,7 +2357,7 @@ LuutruLongmach=
     "type": "A",
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 6,
+    "Ngam": 10,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 3,
@@ -2381,34 +2381,34 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       }
     ],
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -2430,7 +2430,7 @@ LuutruLongmach=
     "type": "A",
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 3,
+    "Ngam": 19,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 4,
@@ -2454,34 +2454,34 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       }
     ],
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -2502,7 +2502,7 @@ LuutruLongmach=
     "type": "A",
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 4,
+    "Ngam": 11,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 4,
@@ -2526,34 +2526,34 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       }
     ],
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -2575,7 +2575,7 @@ LuutruLongmach=
     "type": "A",
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 3,
+    "Ngam": 7,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 5,
@@ -2599,34 +2599,34 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       }
     ],
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
@@ -2647,7 +2647,7 @@ LuutruLongmach=
     "type": "A",
     "isReady": false,
     "hoanthanh": false,
-    "Ngam": 3,
+    "Ngam": 8,
     "countNgam": 0,
     "phiGD": 0,
     "soLanChoDoi": 5,
@@ -2671,34 +2671,34 @@ LuutruLongmach=
       },
       {
         "index": 2,
-        "baseVol": 2,
+        "baseVol": 1.2,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 3,
-        "baseVol": 4,
+        "baseVol": 3.5,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 4,
-        "baseVol": 8,
+        "baseVol": 4.3,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       },
       {
         "index": 5,
-        "baseVol": 16,
+        "baseVol": 6,
         "isOpen": false,
         "profitOfTang": 0,
         "isTia": false
       }
     ],
-    "profitMongMuon": 3,
+    "profitMongMuon": 1,
     "soLanThuaReal": 0,
     "InputTia": 3,
     "isTiaLenh": false,
