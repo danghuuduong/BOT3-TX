@@ -299,7 +299,7 @@ async function SignalIndicator_Update(page, signals = []) {
         : "linear-gradient(135deg, #ffffff, #e8e8e8)"; // Trắng sứ, giảm chói
       box.style.border = isTai ? "2px solid #444444" : "2px solid #cccccc";
       box.style.animation = "signalPulse 1s ease-in-out infinite";
-      box.innerText = `${isTai ? "⚫ TÀI" : "⚪ XỈU"} (${s.type})`;
+      box.innerText = `${isTai ? "⚫ TÀI" : "⚪ XỈU"} Lệch:(${s.type})`;
     }
   }, signals);
 }

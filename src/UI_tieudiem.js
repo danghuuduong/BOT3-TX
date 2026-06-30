@@ -196,10 +196,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       };
 
       // 1. Cột ID
-      const labelCau = item.Sample === "2tai-2xiu"
-        ? `2T2X [${item.soLanChoDoi}] ${item.isDaoNguoc ? ' 🔄' : ''}`
-        : `${item.type} ${item.isDaoNguoc ? ' 🔄' : ''}`;
-      tr.appendChild(makeTd(labelCau));
+      tr.appendChild(makeTd(`${item.id}- [${item.BidinhSl}]`));
 
       // 2. Cột Hướng
       tr.appendChild(makeTd(`${huongLabel}${item.hoanthanh ? ' 😍' : ''}`));

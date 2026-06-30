@@ -2,7 +2,6 @@ const T = "T";
 const X = "X";
 const Dep = "A";
 const Xau = "B";
-const maxThep = 1;
 
 // ================= TYPES =================
 
@@ -445,7 +444,6 @@ module.exports = {
   X,
   Dep,
   Xau,
-  maxThep,
   defaultItem,
   defaultTangs,
 };
