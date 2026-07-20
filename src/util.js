@@ -427,10 +427,12 @@ const defaultItem = {
   // lockType: null,
   profitMongMuon: 3,
   soLanThuaReal: 0,
-  InputTia: 3,
+  vợ: 3,
   isTiaLenh: false,
   realizedProfit: 0,
   maxTang: 1,
+  isX2: false,
+  debtX2: 0,
 };
 
 

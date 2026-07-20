@@ -310,8 +310,8 @@ module.exports = {
   UI_Show_SoDu,
   KetquaTXList_Create,
   KetquaTXList_Update_UI,
-  // LongMachList_create,
-  // LongMachList_Update_UI,
+  LongMachList_create,
+  LongMachList_Update_UI,
   SignalIndicator_Create,
   SignalIndicator_Update
 };
