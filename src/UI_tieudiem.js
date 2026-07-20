@@ -165,6 +165,17 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
     const tbody = document.getElementById("longmach-body");
     if (!tbody) return;
 
+    // 1. Lưu thông tin input đang được gõ/focus
+    const activeEl = document.activeElement;
+    let focusedItemId = null;
+    let focusedField = null;
+    let typedValue = null;
+    if (activeEl && activeEl.tagName === "INPUT" && activeEl.dataset.itemId) {
+      focusedItemId = Number(activeEl.dataset.itemId);
+      focusedField = activeEl.dataset.field;
+      typedValue = activeEl.value;
+    }
+
     tbody.innerHTML = "";
 
     rows.forEach(item => {
@@ -220,7 +231,12 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
 
       const ngamInput = document.createElement("input");
       ngamInput.type = "number";
-      ngamInput.value = item.Ngam !== undefined ? item.Ngam : 2;
+      ngamInput.dataset.itemId = item.id;
+      ngamInput.dataset.field = "Ngam";
+
+      const isNgamFocused = item.id === focusedItemId && focusedField === "Ngam";
+      ngamInput.value = isNgamFocused ? typedValue : (item.Ngam !== undefined ? item.Ngam : 2);
+
       ngamInput.min = 0;
       ngamInput.max = 20;
       Object.assign(ngamInput.style, {
@@ -332,7 +348,12 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
 
       const tiaInput = document.createElement("input");
       tiaInput.type = "number";
-      tiaInput.value = item.InputTia || 4;
+      tiaInput.dataset.itemId = item.id;
+      tiaInput.dataset.field = "InputTia";
+
+      const isTiaFocused = item.id === focusedItemId && focusedField === "InputTia";
+      tiaInput.value = isTiaFocused ? typedValue : (item.InputTia || 4);
+
       tiaInput.min = 1;
       tiaInput.max = 6;
       Object.assign(tiaInput.style, {
@@ -420,7 +441,12 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       });
       const mucTieuInput = document.createElement("input");
       mucTieuInput.type = "number";
-      mucTieuInput.value = item.profitMongMuon || 0;
+      mucTieuInput.dataset.itemId = item.id;
+      mucTieuInput.dataset.field = "profitMongMuon";
+
+      const isProfitFocused = item.id === focusedItemId && focusedField === "profitMongMuon";
+      mucTieuInput.value = isProfitFocused ? typedValue : (item.profitMongMuon || 0);
+
       Object.assign(mucTieuInput.style, {
         width: "44px",
         fontSize: "11px",
@@ -431,6 +457,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
         background: "#fffde7",
       });
       mucTieuInput.addEventListener("change", e => {
+        e.stopPropagation();
         const value = parseFloat(e.target.value) || 0;
         window.postMessage({
           type: "UPDATE_PROFIT_MUON",
@@ -498,6 +525,18 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
 
       tbody.appendChild(tr);
     });
+
+    // 2. Khôi phục focus và vị trí con trỏ
+    if (focusedItemId !== null && focusedField !== null) {
+      const newActive = tbody.querySelector(`input[data-item-id="${focusedItemId}"][data-field="${focusedField}"]`);
+      if (newActive) {
+        newActive.focus();
+        try {
+          const valLen = newActive.value.length;
+          newActive.setSelectionRange(valLen, valLen);
+        } catch (e) {}
+      }
+    }
   }, { rows: data, baseVol });
 }
 
