@@ -158,10 +158,10 @@ const LuutruLongmach = [
   })),
   ...[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(i => ({
     ...defaultItem,
-    id: i + 5,
+    id: i + 100,
     type: Dep,
     Ngam: i,
-    soLanChoDoi: 2,
+    soLanChoDoi: 1,
     profitMongMuon: 1,
     InputTia: 2,
     BidinhSl: 0,
