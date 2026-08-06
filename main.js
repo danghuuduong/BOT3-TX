@@ -138,28 +138,10 @@ let TienCoban = 1;
 let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
 const LuutruLongmach = [
-  ...[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(i => ({
+  ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => ({
     ...defaultItem,
     id: i + 1,
     type: Xau,
-    Ngam: i,
-    soLanChoDoi: 0,
-    profitMongMuon: 0.8,
-    InputTia: 2,
-    BidinhSl: 0,
-    thep: 1,
-    thepCaoNhat: 1,
-    profitMax: 0,
-    chay: 0,
-    maxAm: 0,
-    isChanVaoLenh: false,
-    lockType: null,
-    Tangs: defaultTangs()
-  })),
-  ...[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(i => ({
-    ...defaultItem,
-    id: i + 100,
-    type: Dep,
     Ngam: i,
     soLanChoDoi: 0,
     profitMongMuon: 0.8,
@@ -833,11 +815,13 @@ async function ThucHienGiaoDich() {
     }
   }
 
+  const PhanTuCuoiCungTrongLongMach = ArrayKQ_XAU.at(-1); // kết quả cuối cùng trong array
+
   LuutruLongmach.forEach(item => {
     if (tinHieuAI.huong !== "null" && !item.isReady && !item.isTrading) {
       item.isReady = true;
       item.hoanthanh = false;
-      item.huong = item.type === Dep
+      item.huong = PhanTuCuoiCungTrongLongMach === Dep
         ? tinHieuAI.huong
         : (tinHieuAI.huong === T ? X : T);
     }
