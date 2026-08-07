@@ -155,7 +155,7 @@ const LuutruLongmach = Object.values(TYPES).flatMap(typeName =>
     maxAm: 0,
     isChanVaoLenh: false,
     lockType: null,
-    VanTruoc: "Thang",
+    VanTruoc: "null",
     Tangs: defaultTangs()
   }))
 );
@@ -797,7 +797,11 @@ async function ThucHienGiaoDich() {
         }
       }
 
-      item.VanTruoc = isWin ? "Thang" : "Thua";
+      if (item.VanTruoc === "null") {
+        item.VanTruoc = isWin ? "Thuận" : "Ngược";
+      } else if (!isWin) {
+        item.VanTruoc = item.VanTruoc === "Thuận" ? "Ngược" : "Thuận";
+      }
       item.hoanthanh = isWin;
       item.isReady = false;
       item.isTrading = false;
@@ -825,9 +829,9 @@ async function ThucHienGiaoDich() {
       if (item.type === tinHieuAI.type && !item.isReady && !item.isTrading) {
         item.isReady = true;
         item.hoanthanh = false;
-        item.huong = item.VanTruoc === "Thang"
-          ? tinHieuAI.huong
-          : (tinHieuAI.huong === T ? X : T);
+        item.huong = item.VanTruoc === "Ngược"
+          ? (tinHieuAI.huong === T ? X : T)
+          : tinHieuAI.huong;
       }
     });
   }
@@ -1433,7 +1437,10 @@ function loadStateTXT() {
             item.lockType = savedItem.lockType ?? item.lockType;
             item.isX2 = savedItem.isX2 ?? item.isX2;
             item.debtX2 = savedItem.debtX2 ?? item.debtX2;
-            item.VanTruoc = savedItem.VanTruoc ?? item.VanTruoc;
+            let vt = savedItem.VanTruoc ?? item.VanTruoc;
+            if (vt === "Thang") vt = "Thuận";
+            if (vt === "Thua") vt = "Ngược";
+            item.VanTruoc = vt;
             if (savedItem.Tangs) {
               item.Tangs = savedItem.Tangs.slice(0, 6);
             }

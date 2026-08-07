@@ -433,7 +433,7 @@ const defaultItem = {
   maxTang: 1,
   isX2: false,
   debtX2: 0,
-  VanTruoc: "Thang",
+  VanTruoc: "null",
 };
 
 

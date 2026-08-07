@@ -209,8 +209,8 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       // 1. Cột Type
       tr.appendChild(makeTd(item.type || "-"));
 
-      // 1.5. Cột Ván Trước (Thắng: 🟢, Thua: 🔴)
-      const vanTruocDot = item.VanTruoc === "Thang" ? "🟢" : "🔴";
+      // 1.5. Cột Ván Trước (Thuận: 🟢, Ngược: 🔴, null: ⚪)
+      const vanTruocDot = item.VanTruoc === "Thuận" ? "🟢" : (item.VanTruoc === "Ngược" ? "🔴" : "⚪");
       tr.appendChild(makeTd(vanTruocDot));
 
       // 2. Cột Hướng
