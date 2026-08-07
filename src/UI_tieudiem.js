@@ -118,13 +118,13 @@ async function TableChinh_Create(page) {
       });
 
       const headers = [
-        "Type", "Hướng", "Chờ", "Ngâm", "Vol",
+        "Type", "V.Trước", "Hướng", "Chờ", "Ngâm", "Vol",
         "L.Thua", "W/L", "T.Cao", "T1", "T2", "T3", "T4", "T5",
         "In.Tỉa", "Tỉa?", "Lãi.Tỉa", "Lãi.Tầng", "L.ChuKi", "Profit", "Mục Tiêu", "Nợ X2", "Reset", "STOP"
       ];
 
       const widths = [
-        "40px", "38px", "22px", "45px", "28px",
+        "60px", "35px", "38px", "22px", "45px", "28px",
         "60px", "35px", "35px", "32px", "32px", "32px", "32px", "32px",
         "40px", "30px", "40px", "50px", "50px", "50px", "50px", "50px", "35px", "25px"
       ];
@@ -206,9 +206,12 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
         return td;
       };
 
-      // 1. Cột Type (Thuận / Ngược)
-      const typeLabel = item.type === "A" ? "Thuận" : "Ngược";
-      tr.appendChild(makeTd(`${typeLabel}`));
+      // 1. Cột Type
+      tr.appendChild(makeTd(item.type || "-"));
+
+      // 1.5. Cột Ván Trước (Thắng: 🟢, Thua: 🔴)
+      const vanTruocDot = item.VanTruoc === "Thang" ? "🟢" : "🔴";
+      tr.appendChild(makeTd(vanTruocDot));
 
       // 2. Cột Hướng
       tr.appendChild(makeTd(`${huongLabel}${item.hoanthanh ? ' 😍' : ''}`));

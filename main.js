@@ -137,11 +137,12 @@ let TienCoban = 1;
 
 let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
-const LuutruLongmach = [
-  ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => ({
+let lmId = 1;
+const LuutruLongmach = Object.values(TYPES).flatMap(typeName =>
+  [1, 2, 3, 4, 5, 6, 7, 8].map(i => ({
     ...defaultItem,
-    id: i + 1,
-    type: Xau,
+    id: lmId++,
+    type: typeName,
     Ngam: i,
     soLanChoDoi: 0,
     profitMongMuon: 0.8,
@@ -154,9 +155,10 @@ const LuutruLongmach = [
     maxAm: 0,
     isChanVaoLenh: false,
     lockType: null,
+    VanTruoc: "Thang",
     Tangs: defaultTangs()
   }))
-];
+);
 
 loadStateTXT();
 
@@ -795,6 +797,7 @@ async function ThucHienGiaoDich() {
         }
       }
 
+      item.VanTruoc = isWin ? "Thang" : "Thua";
       item.hoanthanh = isWin;
       item.isReady = false;
       item.isTrading = false;
@@ -817,15 +820,17 @@ async function ThucHienGiaoDich() {
 
   const PhanTuCuoiCungTrongLongMach = ArrayKQ_XAU.at(-1); // kết quả cuối cùng trong array
 
-  LuutruLongmach.forEach(item => {
-    if (tinHieuAI.huong !== "null" && !item.isReady && !item.isTrading) {
-      item.isReady = true;
-      item.hoanthanh = false;
-      item.huong = PhanTuCuoiCungTrongLongMach === Dep
-        ? tinHieuAI.huong
-        : (tinHieuAI.huong === T ? X : T);
-    }
-  });
+  if (tinHieuAI.huong !== "null" && tinHieuAI.type !== "null") {
+    LuutruLongmach.forEach(item => {
+      if (item.type === tinHieuAI.type && !item.isReady && !item.isTrading) {
+        item.isReady = true;
+        item.hoanthanh = false;
+        item.huong = item.VanTruoc === "Thang"
+          ? tinHieuAI.huong
+          : (tinHieuAI.huong === T ? X : T);
+      }
+    });
+  }
 
   TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
   // =========================================================================== ĐẶT LỆNH ================================================================
@@ -1428,6 +1433,7 @@ function loadStateTXT() {
             item.lockType = savedItem.lockType ?? item.lockType;
             item.isX2 = savedItem.isX2 ?? item.isX2;
             item.debtX2 = savedItem.debtX2 ?? item.debtX2;
+            item.VanTruoc = savedItem.VanTruoc ?? item.VanTruoc;
             if (savedItem.Tangs) {
               item.Tangs = savedItem.Tangs.slice(0, 6);
             }
