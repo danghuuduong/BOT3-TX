@@ -677,24 +677,11 @@ async function ThucHienGiaoDich() {
 
           if (item.soLanThuaReal > 0 && item.soLanThuaReal % 3 === 0) {
             const tangIdx = Math.floor(item.soLanThuaReal / 3) + 1;
-            if (tangIdx > 5) {
-              // Tạm thời comment lại tự động reset chu kỳ khi bước qua tầng 6
-              /*
-              item.BiDinhSl += 1;
-              item.soLanThuaReal = 0;
-              item.realizedProfit = 0;
-              item.isTiaLenh = false;
-              item.countNgam = 0;
-              item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
-              if (item.Ngam === 0) {
-                item.isTienReal = true;
-                item.Tangs[0].isOpen = true;
-              } else {
-                item.isTienReal = false;
-              }
-              */
+            if (tangIdx > 4) {
+              // Tối đa 4 tầng: Khi muốn lên tầng 5 (tangIdx > 4), giữ soLanThuaReal = 11 (tay thứ 3 của tầng 4) và giữ nguyên âm tiền
+              item.soLanThuaReal = 11;
             } else {
-              // Mở tầng tiếp theo (tối đa tầng 5)
+              // Mở tầng tiếp theo (tối đa tầng 4)
               const tObj = item.Tangs.find(t => t.index === tangIdx);
               if (tObj && !tObj.isOpen) {
                 tObj.isOpen = true;
@@ -702,6 +689,20 @@ async function ThucHienGiaoDich() {
                 tObj.isTia = false;
               }
             }
+            /*
+            item.BiDinhSl += 1;
+            item.soLanThuaReal = 0;
+            item.realizedProfit = 0;
+            item.isTiaLenh = false;
+            item.countNgam = 0;
+            item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
+            if (item.Ngam === 0) {
+              item.isTienReal = true;
+              item.Tangs[0].isOpen = true;
+            } else {
+              item.isTienReal = false;
+            }
+            */
           }
         }
 
