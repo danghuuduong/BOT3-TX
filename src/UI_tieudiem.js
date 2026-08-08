@@ -120,13 +120,13 @@ async function TableChinh_Create(page) {
       const headers = [
         "Type", "V.Trước", "Hướng", "Chờ", "Ngâm", "Vol",
         "L.Thua", "W/L", "T.Cao", "T1", "T2", "T3", "T4", "T5",
-        "In.Tỉa", "Tỉa?", "Lãi.Tỉa", "Lãi.Tầng", "L.ChuKi", "Profit", "Mục Tiêu", "Nợ X2", "Reset", "STOP"
+        "In.Tỉa", "Tỉa?", "Lãi.Tỉa", "Lãi.Tầng", "L.ChuKi", "Profit", "Mục Tiêu", "Reset", "STOP"
       ];
 
       const widths = [
         "60px", "35px", "38px", "22px", "45px", "28px",
         "60px", "35px", "35px", "32px", "32px", "32px", "32px", "32px",
-        "40px", "30px", "40px", "50px", "50px", "50px", "50px", "50px", "35px", "25px"
+        "40px", "30px", "40px", "50px", "50px", "50px", "50px", "35px", "25px"
       ];
 
 
@@ -261,9 +261,6 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       // 5. Cột Vol (Tổng vol các tầng đang mở)
       const sumBaseVol = (item.Tangs || []).filter(t => t.isOpen).reduce((sum, t) => sum + t.baseVol, 0);
       let totalVol = item.isTienReal ? Math.floor(sumBaseVol * baseVol) : baseVol;
-      if (item.isX2) {
-        totalVol = totalVol * 2;
-      }
       const volText = totalVol > 0 ? `${totalVol} k` : "-";
       tr.appendChild(makeTd(volText));
 
@@ -472,17 +469,7 @@ async function TableChinh_Update_UI(page, data, baseVol = 1) {
       mucTieuTd.appendChild(mucTieuInput);
       tr.appendChild(mucTieuTd);
 
-      // 16b. Cột Nợ X2
-      const isX2Active = item.isX2 ? "🔥 " : "";
-      const debtVal = item.debtX2 || 0;
-      const debtText = debtVal > 0 ? `${isX2Active}${debtVal.toFixed(2)}` : (item.isX2 ? "🔥 X2" : "-");
-      const tdDebt = makeTd(debtText);
-      if (item.isX2) {
-        tdDebt.style.color = "#d81515ff";
-        tdDebt.style.fontWeight = "bold";
-        tdDebt.style.backgroundColor = "#ffeb3b4d"; // màu nền vàng nhạt cảnh báo
-      }
-      tr.appendChild(tdDebt);
+
 
       // 17. Cột Reset
       const resetTd = document.createElement("td");

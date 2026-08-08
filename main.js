@@ -645,7 +645,6 @@ async function ThucHienGiaoDich() {
         item.Tangs.forEach(t => {
           if (t.isOpen) {
             let volT = Math.floor(t.baseVol * TienCoban);
-            if (item.isX2) volT = volT * 2;
             if (isWin) {
               t.profitOfTang += volT * 0.98;
             } else {
@@ -679,23 +678,21 @@ async function ThucHienGiaoDich() {
           if (item.soLanThuaReal > 0 && item.soLanThuaReal % 3 === 0) {
             const tangIdx = Math.floor(item.soLanThuaReal / 3) + 1;
             if (tangIdx > 5) {
-              // Bước qua tầng 6 → lưu nợ + kích hoạt X2 + reset chu kỳ
-              const currentDebt = item.realizedProfit + item.Tangs.reduce((sum, t) => sum + (t.isOpen ? t.profitOfTang : 0), 0);
-              item.debtX2 = (item.debtX2 || 0) + Math.abs(Math.min(0, currentDebt)); // cộng dồn nợ nếu đã X2
-              item.isX2 = true;
-
+              // Tạm thời comment lại tự động reset chu kỳ khi bước qua tầng 6
+              /*
               item.BiDinhSl += 1;
               item.soLanThuaReal = 0;
               item.realizedProfit = 0;
               item.isTiaLenh = false;
               item.countNgam = 0;
               item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
-              if (item.isX2 || item.Ngam === 0) {
+              if (item.Ngam === 0) {
                 item.isTienReal = true;
                 item.Tangs[0].isOpen = true;
               } else {
                 item.isTienReal = false;
               }
+              */
             } else {
               // Mở tầng tiếp theo (tối đa tầng 5)
               const tObj = item.Tangs.find(t => t.index === tangIdx);
@@ -743,21 +740,12 @@ async function ThucHienGiaoDich() {
 
 
         if (totalProfitChuKy >= item.profitMongMuon) {
-          // Nếu đang trong chế độ X2: trừ nợ bằng profit chu kỳ này
-          if (item.isX2) {
-            item.debtX2 = Math.max(0, (item.debtX2 || 0) - totalProfitChuKy);
-            if (item.debtX2 <= 0) {
-              item.isX2 = false;
-              item.debtX2 = 0;
-            }
-          }
-
           item.soLanThuaReal = 0;
           item.realizedProfit = 0;
           item.isTiaLenh = false;
           item.countNgam = 0;
           item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
-          if (item.isX2 || item.Ngam === 0) {
+          if (item.Ngam === 0) {
             item.isTienReal = true;
             item.Tangs[0].isOpen = true;
           } else {
@@ -778,8 +766,8 @@ async function ThucHienGiaoDich() {
           item.isTiaLenh = false;
         } else {
           if (isWin) {
-            // Thắng: trừ 1, không xuống dưới 0
-            item.countNgam = Math.max(0, (item.countNgam || 0) - 1);
+            // Thắng: lập tức reset countNgam về 0
+            item.countNgam = 0;
           } else {
             // Thua: cộng 1
             item.countNgam = (item.countNgam || 0) + 1;
@@ -854,8 +842,6 @@ async function ThucHienGiaoDich() {
       if (item.isTienReal) {
         const sumBaseVol = item.Tangs.filter(t => t.isOpen).reduce((sum, t) => sum + t.baseVol, 0);
         volThep = Math.floor(TienCoban * sumBaseVol);
-        // Chế độ X2: nhân đôi vol để gỡ nợ
-        if (item.isX2) volThep = Math.floor(volThep * 2);
 
         // Cộng dồn vào hướng cược thật tương ứng
         if (huongDanhNew === T) {
@@ -865,7 +851,6 @@ async function ThucHienGiaoDich() {
         }
       } else {
         volThep = TienCoban; // Lệnh ảo (Virtual mode) mặc định vol = TienCoban
-        if (item.isX2) volThep = volThep * 2;
       }
 
       // Vẫn cập nhật trạng thái Trading cho tất cả (để track virtual loss/win)
@@ -1435,8 +1420,6 @@ function loadStateTXT() {
             item.isTienReal = savedItem.isTienReal ?? item.isTienReal;
             item.isChanVaoLenh = savedItem.isChanVaoLenh ?? item.isChanVaoLenh;
             item.lockType = savedItem.lockType ?? item.lockType;
-            item.isX2 = savedItem.isX2 ?? item.isX2;
-            item.debtX2 = savedItem.debtX2 ?? item.debtX2;
             let vt = savedItem.VanTruoc ?? item.VanTruoc;
             if (vt === "Thang") vt = "Thuận";
             if (vt === "Thua") vt = "Ngược";
