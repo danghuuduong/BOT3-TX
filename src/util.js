@@ -238,7 +238,7 @@ function TinHieuMuaBan(ArrayKQ) {
 
   // ==================================================================== 2-2 =============================================
   if (lockState[TYPES.TYPE_2_2]) {
-    if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2] = false;
+    if (!isValid_2_2(s4, s5) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_2_2] = false;
   } else {
     if (s5 === "TXXTT" || s5 === "XTTXX") {
       lockState[TYPES.TYPE_2_2] = true;
@@ -247,7 +247,7 @@ function TinHieuMuaBan(ArrayKQ) {
   }
   // 2-2 Plus
   if (lockState[TYPES.TYPE_2_2_PLUS]) {
-    if (!isValid_2_2(s4, s5)) lockState[TYPES.TYPE_2_2_PLUS] = false;
+    if (!isValid_2_2(s4, s5) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_2_2_PLUS] = false;
   } else {
     if (s6 === "TXXTTX" || s6 === "XTTXXT") {
       lockState[TYPES.TYPE_2_2_PLUS] = true;
@@ -257,7 +257,7 @@ function TinHieuMuaBan(ArrayKQ) {
 
   // ==================================================================== 3-3 =============================================
   if (lockState[TYPES.TYPE_3_3]) {
-    if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3] = false;
+    if (!isValid_3_3(s6, s7, s8) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_3_3] = false;
   } else {
     if (s7 === "TXXXTTT" || s7 === "XTTTXXX") {
       lockState[TYPES.TYPE_3_3] = true;
@@ -266,7 +266,7 @@ function TinHieuMuaBan(ArrayKQ) {
   }
   // 3-3 Plus
   if (lockState[TYPES.TYPE_3_3_PLUS]) {
-    if (!isValid_3_3(s6, s7, s8)) lockState[TYPES.TYPE_3_3_PLUS] = false;
+    if (!isValid_3_3(s6, s7, s8) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_3_3_PLUS] = false;
   } else {
     if (s8 === "TXXXTTTX" || s8 === "XTTTXXXT") {
       lockState[TYPES.TYPE_3_3_PLUS] = true;
@@ -276,7 +276,7 @@ function TinHieuMuaBan(ArrayKQ) {
 
   // ==================================================================== 4-4 =============================================
   if (lockState[TYPES.TYPE_4_4]) {
-    if (!isValid_4_4(s8, s9, s10, s11)) lockState[TYPES.TYPE_4_4] = false;
+    if (!isValid_4_4(s8, s9, s10, s11) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_4_4] = false;
   } else {
     if (s9 === "TXXXXTTTT" || s9 === "XTTTTXXXX") {
       lockState[TYPES.TYPE_4_4] = true;
@@ -285,7 +285,7 @@ function TinHieuMuaBan(ArrayKQ) {
   }
   // ==================================================================== 4-4 4-4 Plus
   if (lockState[TYPES.TYPE_4_4_PLUS]) {
-    if (!isValid_4_4(s8, s9, s10, s11)) lockState[TYPES.TYPE_4_4_PLUS] = false;
+    if (!isValid_4_4(s8, s9, s10, s11) && !isStillInKhoiChan_TX(sKC)) lockState[TYPES.TYPE_4_4_PLUS] = false;
   } else {
     if (s10 === "TXXXXTTTTX" || s10 === "XTTTTXXXXT") {
       lockState[TYPES.TYPE_4_4_PLUS] = true;
@@ -396,7 +396,13 @@ function handleGetColor_TX(r, g, b) {
 //   return Math.random() < 0.5 ? "white" : "black";
 // }
 
-const MULTI_STEPS = [1, 2.4, 5, 11, 20.6];
+const defaultTangs = () => [
+  { index: 1, baseVol: 1, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 2, baseVol: 1.2, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 3, baseVol: 3.5, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 4, baseVol: 4.3, isOpen: false, profitOfTang: 0, isTia: false },
+  { index: 5, baseVol: 6, isOpen: false, profitOfTang: 0, isTia: false }
+];
 
 const defaultItem = {
   isTrading: false,
@@ -417,8 +423,14 @@ const defaultItem = {
   chay: 0,
   maxAm: 0,
   isTienReal: false,
+  // isChanVaoLenh: false,
+  // lockType: null,
+  profitMongMuon: 3,
   soLanThuaReal: 0,
-  stepGapThep: 0,
+  // vợ: 3,
+  isTiaLenh: false,
+  realizedProfit: 0,
+  maxTang: 1,
   VanTruoc: "null",
 };
 
@@ -434,6 +446,5 @@ module.exports = {
   Dep,
   Xau,
   defaultItem,
-  MULTI_STEPS,
+  defaultTangs,
 };
-
