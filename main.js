@@ -498,7 +498,7 @@ async function UI_Reset(page) {
   await SignalIndicator_Create(page);
   await UI_Start(page);//Bắt đầu
 
-  await UI_ToolTitle_Create(page, "Tool 6 - Cấp Số nhân - 2 Tài - 2 xỉu - là đánh");
+  await UI_ToolTitle_Create(page, "Tool Theo Cầu -FOmo- Nhưng là DCA");
 
   await TableChinh_Create(page);//Bắt đầu
   await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);//Bắt đầu
