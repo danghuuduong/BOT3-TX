@@ -139,7 +139,7 @@ let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
 let lmId = 1;
 const LuutruLongmach = Object.values(TYPES).flatMap(typeName =>
-  [3, 4, 5, 6, 7, 8, 9, 10].map(i => ({
+  [2, 3, 4, 5, 6, 7, 8, 9].map(i => ({
     ...defaultItem,
     id: lmId++,
     type: typeName,
