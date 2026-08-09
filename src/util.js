@@ -396,13 +396,7 @@ function handleGetColor_TX(r, g, b) {
 //   return Math.random() < 0.5 ? "white" : "black";
 // }
 
-const defaultTangs = () => [
-  { index: 1, baseVol: 1, isOpen: false, profitOfTang: 0, isTia: false },
-  { index: 2, baseVol: 1.2, isOpen: false, profitOfTang: 0, isTia: false },
-  { index: 3, baseVol: 3.5, isOpen: false, profitOfTang: 0, isTia: false },
-  { index: 4, baseVol: 4.3, isOpen: false, profitOfTang: 0, isTia: false },
-  { index: 5, baseVol: 6, isOpen: false, profitOfTang: 0, isTia: false }
-];
+const MULTI_STEPS = [1, 2.4, 5, 11, 20.6];
 
 const defaultItem = {
   isTrading: false,
@@ -423,14 +417,8 @@ const defaultItem = {
   chay: 0,
   maxAm: 0,
   isTienReal: false,
-  // isChanVaoLenh: false,
-  // lockType: null,
-  profitMongMuon: 3,
   soLanThuaReal: 0,
-  // vợ: 3,
-  isTiaLenh: false,
-  realizedProfit: 0,
-  maxTang: 1,
+  stepGapThep: 0,
   VanTruoc: "null",
 };
 
@@ -446,5 +434,6 @@ module.exports = {
   Dep,
   Xau,
   defaultItem,
-  defaultTangs,
+  MULTI_STEPS,
 };
+

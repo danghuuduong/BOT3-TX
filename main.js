@@ -7,7 +7,7 @@ const {
 const { UI_TieuDiem, TableChinh_Update_UI, TableChinh_Create, UI_MouseClick, UI_ToolTitle_Create } = require("./src/UI_tieudiem");
 const {
   updateButton, handleGetColor_TX, TinHieuMuaBan, T, X, Dep,
-  Xau, TYPES, defaultItem, defaultTangs
+  Xau, TYPES, defaultItem, MULTI_STEPS
 } = require('./src/util');
 
 const { handleGetTien, ghiNhanThuNhap, luuTruTrangThai } = require('./src/util2');
@@ -139,14 +139,12 @@ let maxDrawdown = 0; // Tổn thất lớn nhất (%)
 
 let lmId = 1;
 const LuutruLongmach = Object.values(TYPES).flatMap(typeName =>
-  [1, 2, 3, 4, 5, 6, 7, 8].map(i => ({
+  [3, 4, 5, 6, 7, 8, 9, 10].map(i => ({
     ...defaultItem,
     id: lmId++,
     type: typeName,
     Ngam: i,
     soLanChoDoi: 0,
-    profitMongMuon: 0.8,
-    InputTia: 2,
     BidinhSl: 0,
     thep: 1,
     thepCaoNhat: 1,
@@ -156,7 +154,7 @@ const LuutruLongmach = Object.values(TYPES).flatMap(typeName =>
     isChanVaoLenh: false,
     lockType: null,
     VanTruoc: "null",
-    Tangs: defaultTangs()
+    stepGapThep: 0,
   }))
 );
 
@@ -380,9 +378,7 @@ async function UI_Reset(page) {
         hoanthanh: false,
         countNgam: 0,
         soLanThuaReal: 0,
-        isTiaLenh: false,
-        realizedProfit: 0,
-        Tangs: defaultTangs()
+        stepGapThep: 0,
       });
 
       saveStateTXT();
@@ -403,29 +399,10 @@ async function UI_Reset(page) {
       const updates = { Ngam: ngamVal };
       if (ngamVal === 0) {
         updates.isTienReal = true;
-        if (!item.Tangs.some(t => t.isOpen)) {
-          item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
-          item.Tangs[0].isOpen = true;
-          item.soLanThuaReal = 0;
-          item.realizedProfit = 0;
-          item.isTiaLenh = false;
-        }
+        updates.stepGapThep = 0;
+        updates.soLanThuaReal = 0;
       }
       handleUpdate_LongMachList(stopId, updates);
-      saveStateTXT();
-      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
-    }
-    if (type === "UPDATE_INPUT_TIA") {
-      const item = LuutruLongmach.find(i => i.id === stopId);
-      if (!item) return;
-      handleUpdate_LongMachList(stopId, { InputTia: Number(value) });
-      saveStateTXT();
-      await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
-    }
-    if (type === "UPDATE_PROFIT_MUON") {
-      const item = LuutruLongmach.find(i => i.id === stopId);
-      if (!item) return;
-      handleUpdate_LongMachList(stopId, { profitMongMuon: Number(value) });
       saveStateTXT();
       await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);
     }
@@ -435,17 +412,14 @@ async function UI_Reset(page) {
 
       item.soLanThuaReal = 0;
       item.countNgam = 0;
-      item.realizedProfit = 0;
-      item.isTiaLenh = false;
+      item.stepGapThep = 0;
       item.isTrading = false;
       item.isReady = false;
       item.huong = "null";
       item.vol = 0;
-      item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
 
       if (item.Ngam === 0) {
         item.isTienReal = true;
-        item.Tangs[0].isOpen = true;
       } else {
         item.isTienReal = false;
       }
@@ -498,7 +472,7 @@ async function UI_Reset(page) {
   await SignalIndicator_Create(page);
   await UI_Start(page);//Bắt đầu
 
-  await UI_ToolTitle_Create(page, "Tool 6 - Cấp Số nhân - 2 Tài - 2 xỉu - là đánh");
+  await UI_ToolTitle_Create(page, "Tool 13 - Cầu Fomo- Gấp Thếp");
 
   await TableChinh_Create(page);//Bắt đầu
   await TableChinh_Update_UI(page, LuutruLongmach, TienCoban);//Bắt đầu
@@ -631,28 +605,14 @@ async function ThucHienGiaoDich() {
   for (const item of LuutruLongmach) {
     if (item.isTrading && item.huong) {
       const isWin = resultNew === item.huong;
+
       if (item.Ngam === 0 && !item.isTienReal) {
         item.isTienReal = true;
-        item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
-        item.Tangs[0].isOpen = true;
+        item.stepGapThep = 0;
         item.soLanThuaReal = 0;
-        item.realizedProfit = 0;
-        item.isTiaLenh = false;
       }
 
       if (item.isTienReal) {
-        // Phân bổ tiền vào các Tầng
-        item.Tangs.forEach(t => {
-          if (t.isOpen) {
-            let volT = Math.floor(t.baseVol * TienCoban);
-            if (isWin) {
-              t.profitOfTang += volT * 0.98;
-            } else {
-              t.profitOfTang -= volT;
-            }
-          }
-        });
-
         const winAmount = isWin ? (item.vol * 0.98) : 0;
         const loseAmount = isWin ? 0 : item.vol;
         const feeAmount = isWin ? (item.vol * 0.02) : 0;
@@ -662,97 +622,38 @@ async function ThucHienGiaoDich() {
           profitAll += winAmount;
           item.phiGD += feeAmount;
           item.win = (item.win || 0) + 1;
-          item.profit += winAmount
+          item.profit += winAmount;
 
           if (item.soLanThuaReal > 0) {
             item.soLanThuaReal--;
+          }
+
+          // THẮNG: Reset về Tay 1 (stepGapThep = 0), reset countNgam = 0
+          item.stepGapThep = 0;
+          item.countNgam = 0;
+          if (item.Ngam === 0) {
+            item.isTienReal = true;
+          } else {
+            item.isTienReal = false;
           }
         } else {
           soDuTaiKhoan -= loseAmount;
           profitAll -= loseAmount;
           item.profit -= loseAmount;
           item.lost = (item.lost || 0) + 1;
-
           item.soLanThuaReal++;
 
-          if (item.soLanThuaReal > 0 && item.soLanThuaReal % 3 === 0) {
-            const tangIdx = Math.floor(item.soLanThuaReal / 3) + 1;
-            if (tangIdx > 4) {
-              // Tối đa 4 tầng: Khi muốn lên tầng 5 (tangIdx > 4), giữ soLanThuaReal = 11 (tay thứ 3 của tầng 4) và giữ nguyên âm tiền
-              item.soLanThuaReal = 11;
-            } else {
-              // Mở tầng tiếp theo (tối đa tầng 4)
-              const tObj = item.Tangs.find(t => t.index === tangIdx);
-              if (tObj && !tObj.isOpen) {
-                tObj.isOpen = true;
-                tObj.profitOfTang = 0;
-                tObj.isTia = false;
-              }
-            }
-            /*
-            item.BiDinhSl += 1;
-            item.soLanThuaReal = 0;
-            item.realizedProfit = 0;
-            item.isTiaLenh = false;
-            item.countNgam = 0;
-            item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
-            if (item.Ngam === 0) {
-              item.isTienReal = true;
-              item.Tangs[0].isOpen = true;
-            } else {
-              item.isTienReal = false;
-            }
-            */
-          }
-        }
-
-        // Tỉa Lệnh Logic
-        const maxOpenIndex = Math.max(...item.Tangs.filter(t => t.isOpen).map(t => t.index), 0);
-        if (maxOpenIndex >= item.InputTia) {
-          item.isTiaLenh = true;
-        }
-
-        // Cập nhật tầng DCA cao nhất
-        const maxOpenForTrack = Math.max(...item.Tangs.filter(t => t.isOpen).map(t => t.index), 1);
-        item.maxTang = Math.max(item.maxTang || 1, maxOpenForTrack);
-
-        if (item.isTiaLenh) {
-          let openTangs = item.Tangs.filter(t => t.isOpen);
-          while (openTangs.length >= 2) {
-            let first = openTangs[0];
-            let last = openTangs[openTangs.length - 1];
-            if (first.profitOfTang + last.profitOfTang > 0) {
-              first.isOpen = false;
-              last.isOpen = false;
-              first.isTia = true;
-              last.isTia = true;
-              item.realizedProfit += (first.profitOfTang + last.profitOfTang);
-              openTangs = item.Tangs.filter(t => t.isOpen);
-            } else {
-              break;
-            }
-          }
-          if (item.Tangs.filter(t => t.isOpen).length === 0) {
-            item.isTiaLenh = false;
-          }
-        }
-
-        const totalProfitChuKy = item.realizedProfit + item.Tangs.reduce((sum, t) => sum + (t.isOpen ? t.profitOfTang : 0), 0);
-
-
-        if (totalProfitChuKy >= item.profitMongMuon) {
-          item.soLanThuaReal = 0;
-          item.realizedProfit = 0;
-          item.isTiaLenh = false;
-          item.countNgam = 0;
-          item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
-          if (item.Ngam === 0) {
-            item.isTienReal = true;
-            item.Tangs[0].isOpen = true;
+          // THUA: Chuyển sang tay tiếp theo. Nếu đã thua cả Tay 5 (stepGapThep === 4), reset về Tay 1 và tiếp tục đánh thật!
+          if ((item.stepGapThep || 0) < MULTI_STEPS.length - 1) {
+            item.stepGapThep = (item.stepGapThep || 0) + 1;
           } else {
-            item.isTienReal = false;
+            // Cháy cả 5 tay: reset về Tay 1, giữ countNgam = Ngam và tiếp tục đánh thật ván sau!
+            item.stepGapThep = 0;
+            item.countNgam = item.Ngam;
+            item.isTienReal = true;
           }
         }
+
 
       } else {
 
@@ -760,11 +661,8 @@ async function ThucHienGiaoDich() {
         if (item.Ngam === 0) {
           // Ngam = 0: không cần ngâm, vào thật luôn
           item.isTienReal = true;
-          item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
-          item.Tangs[0].isOpen = true;
+          item.stepGapThep = 0;
           item.soLanThuaReal = 0;
-          item.realizedProfit = 0;
-          item.isTiaLenh = false;
         } else {
           if (isWin) {
             // Thắng: lập tức reset countNgam về 0
@@ -775,12 +673,9 @@ async function ThucHienGiaoDich() {
             // Đủ số lần ngâm → kích hoạt lệnh thật
             if (item.countNgam >= item.Ngam) {
               item.isTienReal = true;
-              item.countNgam = item.Ngam; // giữ nguyên ở mức Ngam, không vượt quá
-              item.Tangs.forEach(t => { t.isOpen = false; t.profitOfTang = 0; t.isTia = false; });
-              item.Tangs[0].isOpen = true;
+              item.countNgam = item.Ngam; // giữ nguyên ở mức Ngam
+              item.stepGapThep = 0;
               item.soLanThuaReal = 0;
-              item.realizedProfit = 0;
-              item.isTiaLenh = false;
             }
           }
         }
@@ -811,8 +706,6 @@ async function ThucHienGiaoDich() {
     }
   }
 
-  const PhanTuCuoiCungTrongLongMach = ArrayKQ_XAU.at(-1); // kết quả cuối cùng trong array
-
   if (tinHieuAI.huong !== "null" && tinHieuAI.type !== "null") {
     LuutruLongmach.forEach(item => {
       if (item.type === tinHieuAI.type && !item.isReady && !item.isTrading) {
@@ -838,11 +731,11 @@ async function ThucHienGiaoDich() {
       const huongDanhNew = item.huong;
       if (!huongDanhNew || huongDanhNew === "null") continue;
 
-      // Tính vol theo các tầng đang mở
+      // Tính vol theo tay gấp thếp (MULTI_STEPS)
       let volThep = 0;
       if (item.isTienReal) {
-        const sumBaseVol = item.Tangs.filter(t => t.isOpen).reduce((sum, t) => sum + t.baseVol, 0);
-        volThep = Math.floor(TienCoban * sumBaseVol);
+        let multi = MULTI_STEPS[item.stepGapThep || 0] || 1;
+        volThep = Math.max(1, Math.floor(TienCoban * multi));
 
         // Cộng dồn vào hướng cược thật tương ứng
         if (huongDanhNew === T) {
@@ -1412,12 +1305,8 @@ function loadStateTXT() {
             item.soLanChoDoi = savedItem.soLanChoDoi ?? item.soLanChoDoi;
             item.Ngam = savedItem.Ngam ?? item.Ngam;
             item.countNgam = savedItem.countNgam ?? item.countNgam;
-            item.profitMongMuon = savedItem.profitMongMuon ?? item.profitMongMuon;
             item.soLanThuaReal = savedItem.soLanThuaReal ?? item.soLanThuaReal;
-            item.InputTia = savedItem.InputTia ?? item.InputTia;
-            item.isTiaLenh = savedItem.isTiaLenh ?? item.isTiaLenh;
-            item.realizedProfit = savedItem.realizedProfit ?? item.realizedProfit;
-            item.maxTang = savedItem.maxTang ?? item.maxTang;
+            item.stepGapThep = savedItem.stepGapThep ?? item.stepGapThep ?? 0;
             item.isTienReal = savedItem.isTienReal ?? item.isTienReal;
             item.isChanVaoLenh = savedItem.isChanVaoLenh ?? item.isChanVaoLenh;
             item.lockType = savedItem.lockType ?? item.lockType;
@@ -1425,9 +1314,6 @@ function loadStateTXT() {
             if (vt === "Thang") vt = "Thuận";
             if (vt === "Thua") vt = "Ngược";
             item.VanTruoc = vt;
-            if (savedItem.Tangs) {
-              item.Tangs = savedItem.Tangs.slice(0, 6);
-            }
           }
         });
       }
